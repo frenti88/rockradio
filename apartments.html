@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apartments & Penthouses — Gravity Tower London</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gt-bg: #f7f5f2;
+            --gt-surface: #ffffff;
+            --gt-muted-bg: #ede9e2;
+            --gt-accent: #a3855c;
+            --gt-dark: #121316;
+            --gt-text: #26272c;
+            --gt-text-muted: #72737c;
+            --gt-border: rgba(20, 22, 28, 0.08);
+            --gt-border-light: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--gt-bg);
+            color: var(--gt-text);
+            margin: 0;
+        }
+
+        h1, h2, h3, h4, .uk-heading-xlarge, .uk-heading-large, .uk-heading-medium, .el-title-serif {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 500;
+            color: #121316;
+        }
+
+        .kicker-tag {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            font-weight: 600;
+            color: var(--gt-accent);
+            display: inline-block;
+            margin-bottom: 0.85rem;
+        }
+
+        .brand-logo-text {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #121316;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+        }
+        .brand-logo-badge {
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid #121316;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        .brand-logo-badge span {
+            transform: rotate(-45deg);
+        }
+
+        .uk-button-default {
+            border: 1px solid #121316;
+            color: #121316;
+            background: transparent;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0 28px;
+            height: 44px;
+            line-height: 42px;
+            transition: all 0.3s ease;
+        }
+        .uk-button-default:hover {
+            background: #121316;
+            color: #ffffff;
+        }
+
+        .apartment-item-card {
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--gt-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .apartment-item-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.1);
+        }
+        .apartment-item-media {
+            height: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+        .apartment-item-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .apartment-item-card:hover .apartment-item-media img {
+            transform: scale(1.05);
+        }
+        .apartment-item-body {
+            padding: 28px;
+        }
+
+        .spec-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #f4f3f0;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #555760;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .gt-footer-reveal {
+            background-color: var(--gt-dark);
+            color: #9ea0ab;
+            padding: 70px 0 40px;
+        }
+        .gt-footer-reveal a {
+            color: #9293a0;
+            text-decoration: none;
+        }
+        .gt-footer-reveal a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navbar -->
+    <div uk-sticky="sel-target: .tm-header-sticky; cls-active: uk-navbar-sticky; show-on-up: true; animation: uk-animation-slide-top">
+        <div class="tm-header-sticky uk-navbar-container uk-navbar-transparent">
+            <div class="uk-container uk-container-expand">
+                <nav class="uk-navbar" uk-navbar>
+                    <div class="uk-navbar-left">
+                        <a href="index.html" class="uk-navbar-item brand-logo-text">
+                            <span class="brand-logo-badge"><span>GT</span></span>
+                            Gravity Tower
+                        </a>
+                        <ul class="uk-navbar-nav uk-visible@m uk-margin-large-left">
+                            <li><a href="development.html">Development</a></li>
+                            <li class="uk-active"><a href="apartments.html">Apartments</a></li>
+                            <li><a href="index.html#interior-tracker">Interior</a></li>
+                            <li><a href="index.html#neighbourhood">Location</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="uk-navbar-right">
+                        <div class="uk-navbar-item">
+                            <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-default">Enquire</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <section class="uk-section uk-section-large" style="padding-top: 60px; padding-bottom: 40px;">
+        <div class="uk-container uk-text-center">
+            <span class="kicker-tag">Available Units &amp; Floor Plans</span>
+            <h1 class="uk-heading-large uk-margin-remove-top" style="font-size: clamp(2.8rem, 6vw, 4.8rem);">
+                Residences &amp; Penthouses
+            </h1>
+            <p class="uk-text-muted uk-margin-auto" style="max-width: 650px; font-size: 1.15rem;">
+                Explore our collection of meticulously curated architectural homes situated across 74 storeys of breathtaking panoramic design.
+            </p>
+        </div>
+    </section>
+
+    <!-- FILTERABLE GRID OF APARTMENTS -->
+    <section class="uk-section uk-padding-remove-top uk-section-large-bottom" uk-filter="target: .js-filter">
+        <div class="uk-container">
+            
+            <!-- Filter Tabs -->
+            <ul class="uk-subnav uk-subnav-pill uk-flex-center uk-margin-large-bottom">
+                <li class="uk-active" uk-filter-control><a href="#">All Residences</a></li>
+                <li uk-filter-control="filter: [data-type='1-bed']"><a href="#">1 Bedroom</a></li>
+                <li uk-filter-control="filter: [data-type='2-bed']"><a href="#">2 Bedrooms</a></li>
+                <li uk-filter-control="filter: [data-type='3-bed']"><a href="#">3-4 Bedrooms</a></li>
+                <li uk-filter-control="filter: [data-type='penthouse']"><a href="#">Duplex Penthouses</a></li>
+            </ul>
+
+            <div class="js-filter uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m uk-child-width-1-3@l" uk-grid="masonry: true">
+                
+                <!-- Unit 1 -->
+                <div data-type="1-bed">
+                    <div class="apartment-item-card">
+                        <div class="apartment-item-media">
+                            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800" alt="Apartment 14B">
+                            <span class="uk-badge uk-position-top-right uk-position-small" style="background: #121316; padding: 6px 12px; font-size: 0.75rem;">Level 14</span>
+                        </div>
+                        <div class="apartment-item-body">
+                            <div class="uk-text-meta uk-text-bold" style="color: var(--gt-accent);">FROM £1,450,000</div>
+                            <h3 class="el-title-serif uk-margin-small-top uk-margin-remove-bottom" style="font-size: 1.6rem;">Apartment 14B</h3>
+                            <p class="uk-text-small uk-text-muted uk-margin-small-top">East-facing sunrise views toward Canary Wharf basin with private loggia balcony.</p>
+                            
+                            <div class="uk-margin-small-top">
+                                <span class="spec-badge"><span uk-icon="icon: home; ratio: 0.8" class="uk-margin-small-right"></span> 1 Bed</span>
+                                <span class="spec-badge"><span uk-icon="icon: check; ratio: 0.8" class="uk-margin-small-right"></span> 1 Bath</span>
+                                <span class="spec-badge">685 sq ft (63.6 m²)</span>
+                            </div>
+
+                            <div class="uk-margin-top uk-flex uk-flex-between uk-flex-middle">
+                                <a href="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=85&w=1200" uk-toggle="target: #lightbox-1" class="uk-button uk-button-text uk-text-bold uk-text-small">Floor Plan &rarr;</a>
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-default uk-button-small">Enquire</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unit 2 -->
+                <div data-type="2-bed">
+                    <div class="apartment-item-card">
+                        <div class="apartment-item-media">
+                            <img src="https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=800" alt="Apartment 28A">
+                            <span class="uk-badge uk-position-top-right uk-position-small" style="background: #121316; padding: 6px 12px; font-size: 0.75rem;">Level 28</span>
+                        </div>
+                        <div class="apartment-item-body">
+                            <div class="uk-text-meta uk-text-bold" style="color: var(--gt-accent);">FROM £2,380,000</div>
+                            <h3 class="el-title-serif uk-margin-small-top uk-margin-remove-bottom" style="font-size: 1.6rem;">Apartment 28A</h3>
+                            <p class="uk-text-small uk-text-muted uk-margin-small-top">Corner aspect with dual exposure over the City skyline and River Thames.</p>
+                            
+                            <div class="uk-margin-small-top">
+                                <span class="spec-badge"><span uk-icon="icon: home; ratio: 0.8" class="uk-margin-small-right"></span> 2 Beds</span>
+                                <span class="spec-badge"><span uk-icon="icon: check; ratio: 0.8" class="uk-margin-small-right"></span> 2 Baths</span>
+                                <span class="spec-badge">1,120 sq ft (104 m²)</span>
+                            </div>
+
+                            <div class="uk-margin-top uk-flex uk-flex-between uk-flex-middle">
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-text uk-text-bold uk-text-small">Floor Plan &rarr;</a>
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-default uk-button-small">Enquire</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unit 3 -->
+                <div data-type="3-bed">
+                    <div class="apartment-item-card">
+                        <div class="apartment-item-media">
+                            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=800" alt="Residence 45C">
+                            <span class="uk-badge uk-position-top-right uk-position-small" style="background: #121316; padding: 6px 12px; font-size: 0.75rem;">Level 45</span>
+                        </div>
+                        <div class="apartment-item-body">
+                            <div class="uk-text-meta uk-text-bold" style="color: var(--gt-accent);">FROM £3,950,000</div>
+                            <h3 class="el-title-serif uk-margin-small-top uk-margin-remove-bottom" style="font-size: 1.6rem;">Sky Residence 45C</h3>
+                            <p class="uk-text-small uk-text-muted uk-margin-small-top">Sublime family residence featuring double reception room and private lift entrance.</p>
+                            
+                            <div class="uk-margin-small-top">
+                                <span class="spec-badge"><span uk-icon="icon: home; ratio: 0.8" class="uk-margin-small-right"></span> 3 Beds</span>
+                                <span class="spec-badge"><span uk-icon="icon: check; ratio: 0.8" class="uk-margin-small-right"></span> 3.5 Baths</span>
+                                <span class="spec-badge">1,940 sq ft (180 m²)</span>
+                            </div>
+
+                            <div class="uk-margin-top uk-flex uk-flex-between uk-flex-middle">
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-text uk-text-bold uk-text-small">Floor Plan &rarr;</a>
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-default uk-button-small">Enquire</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unit 4 -->
+                <div data-type="penthouse">
+                    <div class="apartment-item-card" style="border: 1.5px solid var(--gt-accent);">
+                        <div class="apartment-item-media">
+                            <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=800" alt="Crown Penthouse 72">
+                            <span class="uk-badge uk-position-top-right uk-position-small" style="background: var(--gt-accent); padding: 6px 12px; font-size: 0.75rem;">Floors 72–74</span>
+                        </div>
+                        <div class="apartment-item-body">
+                            <div class="uk-text-meta uk-text-bold" style="color: var(--gt-accent);">PRICE UPON APPLICATION</div>
+                            <h3 class="el-title-serif uk-margin-small-top uk-margin-remove-bottom" style="font-size: 1.6rem;">Crown Duplex Penthouse</h3>
+                            <p class="uk-text-small uk-text-muted uk-margin-small-top">The summit of London living. Private rooftop sky pool, 360° horizon views, and car showroom lift.</p>
+                            
+                            <div class="uk-margin-small-top">
+                                <span class="spec-badge"><span uk-icon="icon: home; ratio: 0.8" class="uk-margin-small-right"></span> 5 Beds</span>
+                                <span class="spec-badge"><span uk-icon="icon: check; ratio: 0.8" class="uk-margin-small-right"></span> 6 Baths</span>
+                                <span class="spec-badge">5,200 sq ft (483 m²)</span>
+                            </div>
+
+                            <div class="uk-margin-top uk-flex uk-flex-between uk-flex-middle">
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-text uk-text-bold uk-text-small">Private Dossier &rarr;</a>
+                                <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-primary uk-button-small">Enquire</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="gt-footer-reveal">
+        <div class="uk-container">
+            <div class="uk-flex uk-flex-between uk-flex-middle">
+                <div class="brand-logo-text" style="color: #ffffff;">
+                    <span class="brand-logo-badge" style="border-color: #ffffff;"><span>GT</span></span>
+                    Gravity Tower
+                </div>
+                <div>
+                    <a href="index.html" class="uk-button uk-button-default" style="border-color: rgba(255,255,255,0.3); color: #fff;">Back to Home</a>
+                </div>
+            </div>
+            <div class="uk-margin-large-top uk-text-small uk-text-muted uk-text-center">
+                &copy; 2026 Gravity Tower London. Powered by YOOtheme Pro &amp; UIkit.
+            </div>
+        </div>
+    </footer>
+
+    <!-- UIkit Scripts -->
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify – Rock en 45 Segundos</title>
+  <meta name="description" content="Plataforma de audio cápsulas de 45 segundos con diseño exacto de Spotify Web Player. Hard Rock, Heavy Metal, Glam y Vieja Guardia con auto-ducking radial y sonido WAV Master.">
+
+  <!-- Spotify Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231db954'><path d='M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z'/></svg>">
+
+  <!-- Google Fonts: Inter as Circular Std fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sp-black: #000000;
+      --sp-dark-base: #121212;
+      --sp-card-base: #181818;
+      --sp-card-hover: #282828;
+      --sp-border: rgba(255, 255, 255, 0.08);
+      --sp-green: #1db954;
+      --sp-green-hover: #1ed760;
+      --sp-text-white: #ffffff;
+      --sp-text-muted: #b3b3b3;
+      --sp-text-subtle: #727272;
+      --band-accent: #e64a19;
+      --font-spotify: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--sp-black);
+      color: var(--sp-text-white);
+      font-family: var(--font-spotify);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    /* APP LAYOUT: SIDEBAR + MAIN STAGE */
+    .app-layout {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 90px);
+      padding: 8px;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    /* SPOTIFY LEFT SIDEBAR */
+    .spotify-sidebar {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 860px) {
+      .spotify-sidebar {
+        display: none;
+      }
+    }
+
+    .sidebar-panel {
+      background-color: var(--sp-dark-base);
+      border-radius: 8px;
+      padding: 16px 20px;
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--sp-text-muted);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .sidebar-nav-item:hover,
+    .sidebar-nav-item.active {
+      color: var(--sp-text-white);
+    }
+
+    .sidebar-nav-item svg {
+      fill: currentColor;
+    }
+
+    /* Library Box */
+    .sidebar-library {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .library-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--sp-text-muted);
+      margin-bottom: 14px;
+    }
+
+    .library-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--sp-text-muted);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .library-title:hover {
+      color: var(--sp-text-white);
+    }
+
+    .library-chips {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .library-chip {
+      background: #232323;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .library-chip:hover,
+    .library-chip.active {
+      background: #333333;
+    }
+
+    .library-playlists {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .playlist-item:hover {
+      background-color: var(--sp-card-hover);
+    }
+
+    .playlist-item.active {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .playlist-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .playlist-info {
+      min-width: 0;
+    }
+
+    .playlist-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-sub {
+      font-size: 0.75rem;
+      color: var(--sp-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* SPOTIFY MAIN STAGE CANVAS */
+    .spotify-main {
+      flex: 1;
+      background-color: var(--sp-dark-base);
+      border-radius: 8px;
+      overflow-y: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* STICKY TOP NAV BAR */
+    .main-top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 64px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(20px);
+      transition: background 0.3s ease;
+    }
+
+    .nav-arrows {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-circle-nav {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      background: #242424;
+      border-radius: 9999px;
+      padding: 8px 16px;
+      width: 320px;
+      gap: 8px;
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-wrapper:focus-within {
+      border-color: #fff;
+    }
+
+    .search-wrapper input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    .search-wrapper input::placeholder {
+      color: var(--sp-text-subtle);
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 3px 12px 3px 3px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .user-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--sp-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 900;
+    }
+
+    /* SPOTIFY HERO HEADER BANNER */
+    .hero-banner {
+      padding: 24px 32px 32px;
+      display: flex;
+      align-items: flex-end;
+      gap: 28px;
+      background: linear-gradient(180deg, var(--band-accent) 0%, rgba(18, 18, 18, 0.95) 100%);
+      transition: background 0.5s ease;
+      min-height: 290px;
+    }
+
+    .hero-artwork {
+      width: 215px;
+      height: 215px;
+      border-radius: 6px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.65);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #1e1e1e;
+      overflow: hidden;
+    }
+
+    .hero-artwork-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero-artwork-pill {
+      position: absolute;
+      bottom: 12px;
+      background: rgba(0, 0, 0, 0.65);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #fff;
+      z-index: 2;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .hero-type-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .hero-main-title {
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: #fff;
+    }
+
+    .hero-subtitle {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.4;
+      max-width: 720px;
+    }
+
+    .hero-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #fff;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .hero-meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    /* ACTION BAR (Spotify Big Green Play Button) */
+    .action-bar {
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: rgba(18, 18, 18, 0.6);
+    }
+
+    .action-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-spotify-play-big {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--sp-green);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-spotify-play-big:hover {
+      transform: scale(1.06);
+      background: var(--sp-green-hover);
+    }
+
+    .btn-spotify-play-big svg {
+      fill: #000;
+      width: 24px;
+      height: 24px;
+      margin-left: 2px;
+    }
+
+    .btn-icon-action {
+      background: transparent;
+      border: none;
+      color: var(--sp-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease;
+    }
+
+    .btn-icon-action:hover {
+      color: #fff;
+    }
+
+    /* Segmented Host / Locutor Switcher */
+    .host-switcher-group {
+      display: flex;
+      align-items: center;
+      background: #1e1e1e;
+      border-radius: 9999px;
+      padding: 3px;
+      border: 1px solid var(--sp-border);
+    }
+
+    .host-switch-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--sp-text-subtle);
+      padding: 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .host-switch-btn {
+      border: none;
+      background: transparent;
+      color: var(--sp-text-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .host-switch-btn:hover {
+      color: #fff;
+    }
+
+    .host-switch-btn.active {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .btn-download-wav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #2a2a2a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-download-wav:hover {
+      background: #383838;
+      border-color: #fff;
+    }
+
+    /* SPOTIFY EPISODE TABLE */
+    .table-section {
+      padding: 0 32px 32px;
+    }
+
+    .spotify-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .spotify-table thead th {
+      color: var(--sp-text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 8px 16px;
+    }
+
+    .spotify-table thead th:last-child {
+      text-align: right;
+    }
+
+    .spotify-table tbody tr {
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .spotify-table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .spotify-table tbody tr.active {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .spotify-table td {
+      padding: 12px 16px;
+      vertical-align: middle;
+      color: var(--sp-text-muted);
+    }
+
+    .td-number {
+      width: 40px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .td-title-cell {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .table-thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .table-main-title {
+      font-weight: 600;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .spotify-table tbody tr.active .table-main-title {
+      color: var(--sp-green);
+    }
+
+    .table-artist-sub {
+      font-size: 0.78rem;
+      color: var(--sp-text-muted);
+    }
+
+    /* SPOTIFY OFFICIAL LYRICS COMPONENT */
+    .lyrics-section-wrapper {
+      padding: 0 32px 36px;
+    }
+
+    .spotify-lyrics-card {
+      background: linear-gradient(180deg, var(--band-accent) 0%, rgba(18, 18, 18, 0.98) 120%);
+      border-radius: 16px;
+      padding: 36px 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: background 0.4s ease, min-height 0.3s ease;
+    }
+
+    .spotify-lyrics-card.fullscreen-mode {
+      position: fixed;
+      inset: 64px 32px 100px 332px;
+      z-index: 900;
+      border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lyrics-card-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .lyrics-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lyrics-pill-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 10px;
+      border-radius: 4px;
+      backdrop-filter: blur(8px);
+    }
+
+    .lyrics-sync-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sp-green);
+      box-shadow: 0 0 8px var(--sp-green);
+      animation: pulseLiveDot 1.5s infinite;
+    }
+
+    @keyframes pulseLiveDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .lyrics-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-lyrics-tool {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-lyrics-tool:hover {
+      background: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      transform: scale(1.06);
+    }
+
+    /* SCROLLABLE LYRICS CONTAINER */
+    .lyrics-scroll-viewport {
+      max-height: 400px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      padding: 30px 0 60px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+      user-select: none;
+      flex: 1;
+    }
+
+    .lyrics-scroll-viewport::-webkit-scrollbar {
+      width: 6px;
+    }
+    .lyrics-scroll-viewport::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+    }
+
+    .spotify-lyric-item {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: -0.025em;
+      color: rgba(255, 255, 255, 0.28);
+      margin-bottom: 22px;
+      cursor: pointer;
+      transition: color 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform-origin: left center;
+    }
+
+    .spotify-lyric-item:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .spotify-lyric-item.past {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .spotify-lyric-item.active {
+      color: #ffffff;
+      font-size: 2.25rem;
+      font-weight: 800;
+      text-shadow: 0 0 24px rgba(255, 255, 255, 0.35);
+      transform: translateX(8px);
+    }
+
+    .spotify-lyric-item.instrumental {
+      font-size: 1.45rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.15em;
+    }
+
+    .spotify-lyric-item.instrumental.active {
+      color: #ffffff;
+      font-size: 1.95rem;
+      animation: noteBounce 1.2s infinite ease-in-out;
+    }
+
+    @keyframes noteBounce {
+      0%, 100% { transform: translateX(8px) scale(1); }
+      50% { transform: translateX(12px) scale(1.08); }
+    }
+
+    /* SPOTIFY ARTIST SECTION HEADINGS */
+    .spotify-section-heading {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin: 0 0 20px 0;
+    }
+
+    /* SPOTIFY ABOUT THE ARTIST SECTION */
+    .spotify-about-section {
+      padding: 0 32px 48px;
+    }
+
+    .spotify-about-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #181818;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: border-color 0.3s ease;
+    }
+
+    .spotify-about-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .spotify-about-bg {
+      position: absolute;
+      inset: 0;
+      background-size: 320px auto;
+      background-repeat: no-repeat;
+      background-position: right 40px center;
+      opacity: 0.18;
+      pointer-events: none;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .spotify-about-card:hover .spotify-about-bg {
+      transform: scale(1.04);
+      opacity: 0.25;
+    }
+
+    .spotify-about-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(18, 18, 18, 0.96) 0%, rgba(18, 18, 18, 0.88) 45%, rgba(18, 18, 18, 0.65) 100%);
+      pointer-events: none;
+    }
+
+    .spotify-about-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+    }
+
+    .spotify-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #3d91f4;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .spotify-about-listeners {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .spotify-about-bio {
+      font-size: 0.95rem;
+      color: #d1d5db;
+      line-height: 1.65;
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    .spotify-about-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .spotify-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      color: #ffffff;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    .spotify-stat-pill-label {
+      color: #9ca3af;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* SPOTIFY DISCOGRAPHY / ALBUMS SECTION */
+    .spotify-discography-section {
+      padding: 0 32px 48px;
+    }
+
+    .discography-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .discography-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .discography-tab {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .discography-tab.active {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .spotify-albums-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .spotify-album-card {
+      background: #181818;
+      padding: 14px;
+      border-radius: 8px;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .spotify-album-card:hover {
+      background: #282828;
+      transform: translateY(-4px);
+    }
+
+    .album-art-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1/1;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .album-art-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .spotify-album-card:hover .album-art-img {
+      transform: scale(1.03);
+    }
+
+    .album-play-btn {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1ed760;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.25s cubic-bezier(0.3, 0, 0, 1);
+      border: none;
+      cursor: pointer;
+    }
+
+    .spotify-album-card:hover .album-play-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .album-play-btn:hover {
+      transform: scale(1.08) !important;
+      background: #1fdf64;
+    }
+
+    .album-play-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #000000;
+      margin-left: 2px;
+    }
+
+    .album-info-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .album-info-meta {
+      font-size: 0.82rem;
+      color: #b3b3b3;
+      font-weight: 500;
+    }
+
+    /* SPOTIFY MEMBERS CIRCLE SECTION */
+        /* SPOTIFY SETTINGS SECTION */
+    .topbar-settings-btn {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #b3b3b3;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .topbar-settings-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.06);
+    }
+
+    .spotify-settings-section {
+      padding: 0 32px 72px;
+    }
+
+    .settings-section-header {
+      margin-bottom: 24px;
+    }
+
+    .settings-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .settings-subtitle {
+      font-size: 0.85rem;
+      color: #a7a7a7;
+    }
+
+    .settings-card {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .settings-group {
+      margin-bottom: 12px;
+    }
+
+    .settings-group-header {
+      margin-bottom: 20px;
+    }
+
+    .settings-group-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .settings-icon-badge {
+      font-size: 1.6rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(30, 215, 96, 0.1);
+      border: 1px solid rgba(30, 215, 96, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .settings-item-label {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 4px 0;
+    }
+
+    .settings-item-desc {
+      font-size: 0.85rem;
+      color: #b3b3b3;
+      margin: 0;
+    }
+
+    .voice-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .voice-card {
+      background: #222222;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .voice-card:hover {
+      background: #2a2a2a;
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .voice-card.active {
+      background: #1c2e22;
+      border-color: #1ed760;
+      box-shadow: 0 6px 20px rgba(30, 215, 96, 0.2);
+    }
+
+    .voice-card-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #727272;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .voice-card.active .voice-card-radio {
+      border-color: #1ed760;
+    }
+
+    .radio-circle {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      transition: background 0.2s ease;
+    }
+
+    .voice-card.active .radio-circle {
+      background: #1ed760;
+    }
+
+    .voice-avatar-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #121212;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .voice-card.active .voice-avatar-box {
+      border-color: #1ed760;
+    }
+
+    .voice-card-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .voice-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .voice-card-name {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .voice-card.active .voice-card-name {
+      color: #1ed760;
+    }
+
+    .voice-card-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #b3b3b3;
+    }
+
+    .voice-card.active .voice-card-badge {
+      background: rgba(30, 215, 96, 0.2);
+      color: #1ed760;
+    }
+
+    .voice-card-role {
+      font-size: 0.8rem;
+      color: #a7a7a7;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .settings-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 24px 0 20px;
+    }
+
+    .settings-row-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+    }
+
+    .settings-row-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .settings-row-desc {
+      font-size: 0.8rem;
+      color: #8c8c8c;
+    }
+
+    .spotify-toggle-switch {
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      background: #727272;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .spotify-toggle-switch.active {
+      background: #1ed760;
+    }
+
+    .toggle-slider {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ffffff;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.25s ease;
+    }
+
+    .spotify-toggle-switch.active .toggle-slider {
+      transform: translateX(20px);
+    }
+
+    .spotify-pill-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .spotify-members-section {
+      padding: 0 32px 64px;
+    }
+
+    .spotify-members-circle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .spotify-member-circle-card {
+      background: #181818;
+      padding: 22px 16px;
+      border-radius: 8px;
+      text-align: center;
+      transition: background-color 0.25s ease, transform 0.25s ease;
+      cursor: default;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .spotify-member-circle-card:hover {
+      background: #282828;
+      transform: translateY(-3px);
+    }
+
+    .member-circle-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: #181818;
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .member-circle-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 50%;
+      transition: transform 0.35s ease;
+    }
+
+    .spotify-member-circle-card:hover .member-circle-avatar {
+      border-color: #1ed760;
+      transform: scale(1.06);
+      box-shadow: 0 12px 30px rgba(30, 215, 96, 0.35);
+    }
+
+    .spotify-member-circle-card:hover .member-circle-img {
+      transform: scale(1.08);
+    }
+
+    .member-circle-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .member-circle-role {
+      font-size: 0.8rem;
+      color: #b3b3b3;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .member-circle-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #1ed760;
+      background: rgba(30, 215, 96, 0.12);
+      border-radius: 9999px;
+      padding: 3px 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* SPOTIFY BOTTOM NOW PLAYING BAR (Fixed 90px) */
+    .spotify-player-bar {
+      height: 90px;
+      background-color: #000000;
+      border-top: 1px solid #282828;
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .spotify-player-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .player-bar-right {
+        display: none !important;
+      }
+    }
+
+    .player-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .now-playing-thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .now-playing-info {
+      min-width: 0;
+    }
+
+    .now-playing-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+
+    .now-playing-title:hover {
+      text-decoration: underline;
+    }
+
+    .now-playing-artist {
+      font-size: 0.72rem;
+      color: var(--sp-text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Center Playback Controls */
+    .player-bar-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      max-width: 580px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .transport-buttons {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .btn-transport {
+      background: transparent;
+      border: none;
+      color: var(--sp-text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn-transport:hover {
+      color: #fff;
+    }
+
+    .btn-transport:active {
+      transform: scale(0.92);
+    }
+
+    .btn-play-pause-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-play-pause-circle:hover {
+      transform: scale(1.08);
+      background: #f0f0f0;
+    }
+
+    .btn-play-pause-circle svg {
+      fill: #000000;
+      width: 18px;
+      height: 18px;
+    }
+
+    .playback-timeline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .time-stamp {
+      font-size: 0.7rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--sp-text-muted);
+      min-width: 34px;
+      text-align: center;
+    }
+
+    .progress-bar-spotify {
+      flex: 1;
+      height: 4px;
+      background: #4d4d4d;
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-bar-spotify:hover .progress-fill {
+      background: var(--sp-green);
+    }
+
+    .progress-bar-spotify:hover .progress-thumb {
+      display: block;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: #ffffff;
+      border-radius: 2px;
+      width: 0%;
+      position: relative;
+    }
+
+    .progress-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      position: absolute;
+      right: -6px;
+      top: -4px;
+      display: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Player Right Side */
+    .player-bar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+    }
+
+
+
+    .volume-control-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 110px;
+    }
+
+    .volume-bar-spotify {
+      flex: 1;
+      height: 4px;
+      background: #4d4d4d;
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .volume-fill {
+      height: 100%;
+      background: #ffffff;
+      border-radius: 2px;
+      width: 85%;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MASTER AUDIO ELEMENT -->
+  <audio id="spotifyAudio" preload="auto"></audio>
+
+  <!-- APP LAYOUT -->
+  <div class="app-layout">
+    
+    <!-- LEFT SIDEBAR -->
+    <aside class="spotify-sidebar">
+      
+      <!-- Top Navigation Box -->
+      <div class="sidebar-panel">
+        <ul class="sidebar-nav-list">
+          <li>
+            <a href="#" class="sidebar-nav-item active">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33z"/></svg>
+              <span>Inicio</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="sidebar-nav-item" id="sidebarSearchBtn">
+              <svg width="24" height="24" viewBox="0 0 24 24"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
+              <span>Buscar</span>
+            </a>
+          </li>
+          <li>
+            <a href="#configuracion" class="sidebar-nav-item" id="sidebarSettingsBtn">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              <span>Configuración</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Library Panel -->
+      <div class="sidebar-panel sidebar-library">
+        <div class="library-header">
+          <div class="library-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"/></svg>
+            <span>Tu Biblioteca</span>
+          </div>
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v8h8a1 1 0 1 1 0 2h-8v8a1 1 0 1 1-2 0v-8H3a1 1 0 1 1 0-2h8V3a1 1 0 0 1 1-1z"/></svg>
+        </div>
+
+        <div class="library-chips">
+          <button class="library-chip active" data-filter="all">Todas</button>
+          <button class="library-chip" data-filter="hard_rock">Hard Rock</button>
+          <button class="library-chip" data-filter="heavy_metal">Heavy</button>
+          <button class="library-chip" data-filter="glam_rock">Glam</button>
+        </div>
+
+        <!-- Sidebar Playlist / Band Items -->
+        <div class="library-playlists" id="sidebarPlaylists">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN SPOTIFY STAGE CANVAS -->
+    <main class="spotify-main" id="spotifyMain">
+      
+      <!-- Top Sticky Navigation Bar -->
+      <header class="main-top-nav" id="mainTopNav">
+        <div class="nav-arrows">
+          <button class="btn-circle-nav" id="btnHistoryBack" title="Atrás">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.957 2.793a1 1 0 0 1 0 1.414L8.164 12l7.793 7.793a1 1 0 1 1-1.414 1.414L5.336 12l9.207-9.207a1 1 0 0 1 1.414 0z"/></svg>
+          </button>
+          <button class="btn-circle-nav" id="btnHistoryForward" title="Adelante">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8.043 21.207a1 1 0 0 1 0-1.414L15.836 12 8.043 4.207a1 1 0 0 1 1.414-1.414L18.664 12l-9.207 9.207a1 1 0 0 1-1.414 0z"/></svg>
+          </button>
+        </div>
+
+        <div class="search-wrapper">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
+          <input type="text" id="spotifySearchInput" placeholder="¿Qué banda quieres escuchar?">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button class="topbar-settings-btn" id="topbarSettingsBtn" title="Configuración">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          </button>
+          <div class="user-profile-badge">
+            <div class="user-avatar">⚡</div>
+            <span>Rockero FM</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- BIG HERO BANNER (Spotify Album Header) -->
+      <section class="hero-banner" id="heroBanner">
+        <div class="hero-artwork" id="heroArtwork" style="background: #000; padding: 0;">
+          <img id="heroArtImg" src="img/covers/cover_kiss.png" alt="Portada Oficial" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
+        </div>
+
+        <div class="hero-content">
+          <span class="hero-type-tag" id="heroBadge">EPISODIO EXCLUSIVO • CÁPSULA 45s</span>
+          <h1 class="hero-main-title" id="heroTitle">KISS: De Queens a la Leyenda</h1>
+          <p class="hero-subtitle" id="heroSummary">
+            1973. En un sótano de Queens, cuatro músicos rompieron las reglas con maquillaje de cómic, botas gigantes de plataforma y toneladas de pirotecnia para crear a la legendaria KISS Army.
+          </p>
+          <div class="hero-meta-row">
+            <span style="color: #fff; font-weight: 800;">Rock en 45"</span>
+            <span class="hero-meta-dot"></span>
+            <span id="heroEra">Nueva York • 1973</span>
+            <span class="hero-meta-dot"></span>
+            <span id="heroListeners" style="color: rgba(255,255,255,0.7);">14,892,105 oyentes mensuales</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTION BAR (Spotify Big Green Play Button, Voices, Download) -->
+      <section class="action-bar">
+        <div class="action-bar-left">
+          <!-- Big Green Play Button -->
+          <button class="btn-spotify-play-big" id="btnBigPlay" title="Reproducir">
+            <svg id="bigPlayIcon" viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            <svg id="bigPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
+          </button>
+
+          <!-- Heart Favorite -->
+          <button class="btn-icon-action" id="btnFavHeart" title="Guardar en Tu Biblioteca">
+            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </button>
+
+
+        </div>
+
+
+      </section>
+
+      <!-- SPOTIFY TRACKLIST TABLE -->
+      <section class="table-section">
+        <table class="spotify-table">
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center;">#</th>
+              <th>Historia</th>
+              <th>Género</th>
+              <th>Origen & Época</th>
+              <th style="width: 80px; text-align: right;">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle;">
+                  <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm9-3.25V8H11v1.5H7.5V4.75H9z"/>
+                </svg>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tracklistTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SPOTIFY OFFICIAL LIVE LYRICS SECTION -->
+      <section class="lyrics-section-wrapper" id="lyricsSection">
+        <div class="spotify-lyrics-card" id="spotifyLyricsCard">
+          <div class="lyrics-card-top-bar">
+            <div class="lyrics-badge-wrap">
+              <span class="lyrics-pill-title">Historia</span>
+              <div class="lyrics-sync-indicator">
+                <span class="live-pulse-dot"></span>
+                <span>Historia narrada en vivo • Sincronización exacta</span>
+              </div>
+            </div>
+            <div class="lyrics-actions">
+              <button class="btn-lyrics-tool" id="btnExpandLyrics" title="Pantalla completa">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="lyrics-scroll-viewport" id="lyricsScrollViewport">
+            <!-- Rendered line-by-line via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SPOTIFY STYLE ABOUT THE ARTIST -->
+      <section class="spotify-about-section">
+        <h2 class="spotify-section-heading">Acerca del artista</h2>
+        <div class="spotify-about-card" id="spotifyAboutCard">
+          <div class="spotify-about-bg" id="spotifyAboutBg"></div>
+          <div class="spotify-about-overlay"></div>
+          <div class="spotify-about-content">
+            <div class="spotify-verified-badge">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="#3d91f4"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              <span>Artista verificado</span>
+            </div>
+            <div class="spotify-about-listeners" id="spotifyAboutListeners">14,892,105 oyentes mensuales</div>
+            <p class="spotify-about-bio" id="spotifyAboutBio"></p>
+            <div class="spotify-about-stats" id="spotifyAboutStats">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SPOTIFY STYLE DISCOGRAPHY / ALBUMS -->
+      <section class="spotify-discography-section">
+        <div class="discography-header">
+          <div>
+            <h2 class="spotify-section-heading" >Discografía</h2>
+
+          </div>
+          <div class="discography-tabs">
+            <button class="discography-tab active">Álbumes oficiales</button>
+          </div>
+        </div>
+        <div class="spotify-albums-grid" id="spotifyAlbumsGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- SPOTIFY STYLE MEMBERS -->
+      <section class="spotify-members-section">
+        <h2 class="spotify-section-heading">Integrantes</h2>
+        <div class="spotify-members-circle-grid" id="spotifyMembersGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- SPOTIFY SETTINGS SECTION (CONFIGURACIÓN) -->
+      <section class="spotify-settings-section" id="settingsSection">
+        <div class="settings-section-header">
+          <div class="settings-title-wrap">
+            <svg width="28" height="28" fill="var(--sp-green)" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            <h2 class="spotify-section-heading" style="margin: 0;">Configuración</h2>
+          </div>
+          <span class="settings-subtitle">Preferencias de audio y selección del locutor de la emisora</span>
+        </div>
+
+        <div class="settings-card">
+          <!-- Voice Selector Group -->
+          <div class="settings-group">
+            <div class="settings-group-header">
+              <div class="settings-group-title">
+                <span class="settings-icon-badge">🎙️</span>
+                <div>
+                  <h3 class="settings-item-label">Locutor de la Emisora</h3>
+                  <p class="settings-item-desc">Elige la voz oficial que narrará cada historia de 45 segundos en vivo:</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Voice Selection Cards Grid -->
+            <div class="voice-cards-grid">
+              <!-- Jorge -->
+              <div class="voice-card active" id="voiceCardJorge" data-voice="jorge">
+                <div class="voice-card-radio">
+                  <div class="radio-circle"></div>
+                </div>
+                <div class="voice-avatar-box">🇲🇽</div>
+                <div class="voice-card-content">
+                  <div class="voice-card-header">
+                    <span class="voice-card-name">Jorge</span>
+                    <span class="voice-card-badge">Voz Principal</span>
+                  </div>
+                  <p class="voice-card-role">Español Latino • Conducción enérgica, potente estilo FM stereo</p>
+                </div>
+              </div>
+
+              <!-- Dalia -->
+              <div class="voice-card" id="voiceCardDalia" data-voice="dalia">
+                <div class="voice-card-radio">
+                  <div class="radio-circle"></div>
+                </div>
+                <div class="voice-avatar-box">⚡</div>
+                <div class="voice-card-content">
+                  <div class="voice-card-header">
+                    <span class="voice-card-name">Dalia</span>
+                    <span class="voice-card-badge">Voz Femenina</span>
+                  </div>
+                  <p class="voice-card-role">Español Latino • Locución dinámica, brillante y clara</p>
+                </div>
+              </div>
+
+              <!-- Alonso -->
+              <div class="voice-card" id="voiceCardAlonso" data-voice="alonso">
+                <div class="voice-card-radio">
+                  <div class="radio-circle"></div>
+                </div>
+                <div class="voice-avatar-box">🎙️</div>
+                <div class="voice-card-content">
+                  <div class="voice-card-header">
+                    <span class="voice-card-name">Alonso</span>
+                    <span class="voice-card-badge">Voz Clásica</span>
+                  </div>
+                  <p class="voice-card-role">EE. UU. Latino • Tono grave clásico de radio rock & broadcasting</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-divider"></div>
+
+          <div class="settings-row-toggle">
+            <div>
+              <div class="settings-row-title">Auto-Ducking dinámico (-16 dB)</div>
+              <div class="settings-row-desc">Atenúa automáticamente los riffs de música de fondo mientras el locutor narra</div>
+            </div>
+            <div class="spotify-toggle-switch active">
+              <div class="toggle-slider"></div>
+            </div>
+          </div>
+
+          <div class="settings-row-toggle">
+            <div>
+              <div class="settings-row-title">Duración reglamentaria de cápsula</div>
+              <div class="settings-row-desc">Estructura calibrada a 45 segundos exactos por historia</div>
+            </div>
+            <div class="spotify-pill-tag">45s Master</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- SPOTIFY BOTTOM NOW PLAYING BAR -->
+  <footer class="spotify-player-bar">
+    
+    <!-- Left: Current Track Info -->
+    <div class="player-bar-left">
+      <div class="now-playing-thumb" id="barThumb" style="background: #000; padding: 2px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
+        <img id="barThumbImg" src="img/covers/cover_kiss.png" alt="Cover" style="width: 100%; height: 100%; object-fit: contain;">
+      </div>
+      <div class="now-playing-info">
+        <div class="now-playing-title" id="barTitle">De Queens a la Leyenda</div>
+        <div class="now-playing-artist" id="barArtist">KISS</div>
+      </div>
+      <button class="btn-transport" id="barHeartBtn" style="color: var(--sp-green);">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
+    </div>
+
+    <!-- Center: Transport Controls & Scrubber -->
+    <div class="player-bar-center">
+      <div class="transport-buttons">
+        <!-- Shuffle -->
+        <button class="btn-transport" title="Aleatorio">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+        </button>
+
+        <!-- Previous Track -->
+        <button class="btn-transport" id="btnBarPrev" title="Anterior">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+
+        <!-- Play/Pause Circle -->
+        <button class="btn-play-pause-circle" id="btnBarPlayPause" title="Reproducir">
+          <svg id="barPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="barPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+
+        <!-- Next Track -->
+        <button class="btn-transport" id="btnBarNext" title="Siguiente">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+
+        <!-- Repeat -->
+        <button class="btn-transport" title="Repetir">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+        </button>
+      </div>
+
+      <!-- Scrubber Timeline -->
+      <div class="playback-timeline">
+        <span class="time-stamp" id="barTimeCurrent">0:00</span>
+        <div class="progress-bar-spotify" id="spotifyProgressBar">
+          <div class="progress-fill" id="spotifyProgressFill">
+            <div class="progress-thumb"></div>
+          </div>
+        </div>
+        <span class="time-stamp" id="barTimeTotal">0:45</span>
+      </div>
+    </div>
+
+    <!-- Right: Audio Features & Volume -->
+    <div class="player-bar-right">
+      <button class="btn-transport" id="btnBarLyrics" title="Ver historia" style="color: var(--sp-green);">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+      </button>
+      <button class="btn-transport" id="btnMuteToggle" title="Silenciar">
+        <svg id="muteIconOn" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="muteIconOff" class="hidden" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+      </button>
+      <div class="volume-control-box">
+        <div class="volume-bar-spotify" id="volumeBar">
+          <div class="volume-fill" id="volumeFill"></div>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <script>
+    const bands = {"kiss": {"id": "kiss", "cover": "img/covers/cover_kiss.png", "soundtrack": "Detroit Rock City & Rock and Roll All Nite", "name": "KISS", "title": "De Queens a la Leyenda", "era": "Nueva York • 1973", "genres": ["hard_rock", "glam_rock"], "genreLabel": "Hard Rock • Glam Rock", "themeColor": "#ea580c", "themeSecondary": "#c2410c", "audioJorgeWav": "audio/kiss_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/kiss_podcast_jorge.mp3", "audioDaliaWav": "audio/kiss_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/kiss_podcast_dalia.mp3", "audioAlonsoWav": "audio/kiss_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/kiss_podcast_alonso.mp3", "headline": "KISS", "summary": "1973. En un sótano de Queens, cuatro músicos rompieron las reglas con maquillaje de cómic, botas gigantes de plataforma y toneladas de pirotecnia para crear a la legendaria KISS Army.", "badge": "EPISODIO 01", "monthlyListeners": "14,892,105 oyentes mensuales", "history": "Formada en Nueva York en 1973 por Paul Stanley, Gene Simmons, Ace Frehley y Peter Criss, KISS revolucionó el concepto del espectáculo de estadio en el rock. Con sus rostros pintados emulando personajes de cómic, botas de plataforma de 18 centímetros, fuego real, sangre artificial y guitarras humeantes, crearon la multitudinaria 'KISS Army' y vendieron más de 100 millones de discos, consagrándose en el Salón de la Fama del Rock and Roll.", "stats": [{"label": "Origen", "val": "Queens, Nueva York"}, {"label": "Formación", "val": "1973"}, {"label": "Género", "val": "Hard Rock / Glam Rock"}, {"label": "Ventas Mundiales", "val": "+100M Discos"}], "albums": [{"title": "KISS", "year": "1974", "type": "Álbum Debut", "cover": "img/albums/kiss_1974_kiss.png"}, {"title": "Alive!", "year": "1975", "type": "Álbum en Vivo", "cover": "img/albums/kiss_1975_alive.png"}, {"title": "Destroyer", "year": "1976", "type": "Álbum de Estudio", "cover": "img/albums/kiss_1976_destroyer.png"}, {"title": "Love Gun", "year": "1977", "type": "Álbum de Estudio", "cover": "img/albums/kiss_1977_love_gun.png"}, {"title": "Creatures of the Night", "year": "1982", "type": "Álbum de Estudio", "cover": "img/albums/kiss_1982_creatures.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 5.33, "text": "¡Nueva York, 1973!"}, {"start": 5.48, "end": 9.25, "text": "Cuatro músicos hambrientos cambiaron las reglas del rock."}, {"start": 9.4, "end": 11.94, "text": "Paul Stanley como The Starchild,"}, {"start": 12.09, "end": 15.33, "text": "Gene Simmons escupiendo fuego como The Demon,"}, {"start": 15.48, "end": 18.65, "text": "Ace Frehley en la guitarra como The Spaceman,"}, {"start": 18.8, "end": 22.04, "text": "y Peter Criss en la batería como The Catman."}, {"start": 22.19, "end": 26.15, "text": "Con botas gigantes de plataforma y maquillaje de cómic,"}, {"start": 26.3, "end": 30.45, "text": "toneladas de pirotecnia para reventar estadios por el planeta."}, {"start": 30.6, "end": 34.68, "text": "Vendiendo más de cien millones de discos junto a la KISS Army."}, {"start": 34.83, "end": 39.58, "text": "¡Súbele al volumen!... ¡esto es KISS en Rock en 45 segundos!"}, {"start": 39.73, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Paul Stanley", "photo": "img/members/kiss_paul_stanley.jpg", "role": "Voz principal & Guitarra rítmica", "alias": "The Starchild", "icon": "⭐"}, {"name": "Gene Simmons", "photo": "img/members/kiss_gene_simmons.jpg", "role": "Bajo, Fuego & Voz", "alias": "The Demon", "icon": "🔥"}, {"name": "Ace Frehley", "photo": "img/members/kiss_ace_frehley.jpg", "role": "Guitarra líder & Coros", "alias": "The Spaceman", "icon": "🚀"}, {"name": "Peter Criss", "photo": "img/members/kiss_peter_criss.jpg", "role": "Batería, Percusión & Voz", "alias": "The Catman", "icon": "🐱"}]}, "acdc": {"id": "acdc", "cover": "img/covers/cover_acdc.png", "soundtrack": "Highway to Hell & Back In Black", "name": "AC/DC", "title": "High Voltage Rock & Roll", "era": "Sídney • 1973", "genres": ["hard_rock", "vieja_guardia"], "genreLabel": "Hard Rock • High Voltage", "themeColor": "#d97706", "themeSecondary": "#b45309", "audioJorgeWav": "audio/acdc_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/acdc_podcast_jorge.mp3", "audioDaliaWav": "audio/acdc_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/acdc_podcast_dalia.mp3", "audioAlonsoWav": "audio/acdc_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/acdc_podcast_alonso.mp3", "headline": "AC/DC", "summary": "Dos hermanos escoceses en Australia electrificaron el mundo a base de acordes cortantes, uniforme de colegial y el voltaje más demoledor del planeta.", "badge": "EPISODIO 02", "monthlyListeners": "31,450,220 oyentes mensuales", "history": "Fundada en Sídney en 1973 por los hermanos escoceses Malcolm y Angus Young, AC/DC convirtió la fuerza del blues pesado en una máquina imparable de acordes demoledores. Con Angus en uniforme de colegial y el carisma indomable de Bon Scott, y luego Brian Johnson, grabaron 'Back in Black', el segundo álbum más vendido de todos los tiempos en la música mundial (+50 millones de copias), consolidándose como titanes indiscutibles del rock.", "stats": [{"label": "Origen", "val": "Sídney, Australia"}, {"label": "Formación", "val": "1973"}, {"label": "Género", "val": "Hard Rock / Blues Rock"}, {"label": "Ventas Mundiales", "val": "+200M Discos"}], "albums": [{"title": "High Voltage", "year": "1976", "type": "Álbum de Estudio", "cover": "img/albums/acdc_1976_high_voltage.png"}, {"title": "Let There Be Rock", "year": "1977", "type": "Álbum de Estudio", "cover": "img/albums/acdc_1977_let_there_be_rock.png"}, {"title": "Highway to Hell", "year": "1979", "type": "Álbum de Estudio", "cover": "img/albums/acdc_1979_highway_to_hell.png"}, {"title": "Back in Black", "year": "1980", "type": "Álbum de Estudio", "cover": "img/albums/acdc_1980_back_in_black.png"}, {"title": "The Razors Edge", "year": "1990", "type": "Álbum de Estudio", "cover": "img/albums/acdc_1990_razors_edge.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 6.12, "text": "¡Sídney, Australia, 1973!"}, {"start": 6.27, "end": 11.67, "text": "Dos hermanos, Malcolm y Angus Young, decidieron electrificar el planeta."}, {"start": 11.82, "end": 15.52, "text": "Con Bon Scott al micrófono desatando pura dinamita,"}, {"start": 15.67, "end": 20.47, "text": "y Angus vestido de colegial endemoniado disparando riffs incendiarios."}, {"start": 20.62, "end": 25.3, "text": "AC/DC convirtió el hard rock en una fuerza demoledora."}, {"start": 25.45, "end": 29.45, "text": "Desde Highway to Hell hasta el poder descomunal de Back in Black,"}, {"start": 29.6, "end": 33.71, "text": "vendieron más de doscientos millones de discos a puro volumen."}, {"start": 33.86, "end": 39.69, "text": "¡Súbele al volumen!... ¡esto es AC/DC en Rock en 45 segundos!"}, {"start": 39.84, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Angus Young", "photo": "img/members/acdc_angus_young.jpg", "role": "Guitarra líder", "alias": "Escolar Endemoniado", "icon": "⚡"}, {"name": "Malcolm Young", "photo": "img/members/acdc_malcolm_young.jpg", "role": "Guitarra rítmica", "alias": "Cerebro del Riff", "icon": "🎸"}, {"name": "Bon Scott", "photo": "img/members/acdc_bon_scott.jpg", "role": "Voz inmortal (1974-1980)", "alias": "La Voz Salvaje", "icon": "🎤"}, {"name": "Brian Johnson", "photo": "img/members/acdc_brian_johnson.jpg", "role": "Voz líder (1980-presente)", "alias": "El Martillo Vocal", "icon": "🎙️"}, {"name": "Phil Rudd", "photo": "img/members/acdc_phil_rudd.jpg", "role": "Batería", "alias": "Reloj de Acero", "icon": "🥁"}]}, "queen": {"id": "queen", "cover": "img/covers/cover_queen.png", "soundtrack": "Bohemian Rhapsody & We Will Rock You", "name": "Queen", "title": "La Ópera Monumental del Rock", "era": "Londres • 1970", "genres": ["glam_rock", "hard_rock"], "genreLabel": "Glam Rock • Arena Rock", "themeColor": "#db2777", "themeSecondary": "#9d174d", "audioJorgeWav": "audio/queen_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/queen_podcast_jorge.mp3", "audioDaliaWav": "audio/queen_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/queen_podcast_dalia.mp3", "audioAlonsoWav": "audio/queen_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/queen_podcast_alonso.mp3", "headline": "Queen", "summary": "Glamour aristocrático, coros operísticos de vanguardia y la presencia escénica más arrolladora que pisó jamás un estadio de fútbol.", "badge": "EPISODIO 03", "monthlyListeners": "48,120,900 oyentes mensuales", "history": "Surgida en Londres en 1970 de la unión de Freddie Mercury, Brian May, Roger Taylor y John Deacon, Queen fusionó la furia del rock británico con la majestuosidad de la ópera y coros orquestados. Impulsados por el rango irrepetible de cuatro octavas de Freddie, la guitarra 'Red Special' de May e himnos universales como 'Bohemian Rhapsody', 'We Will Rock You' y 'Somebody to Love', protagonizaron en Live Aid 1985 la consagración en vivo más aclamada del rock mundial.", "stats": [{"label": "Origen", "val": "Londres, Reino Unido"}, {"label": "Formación", "val": "1970"}, {"label": "Género", "val": "Glam Rock / Arena Rock"}, {"label": "Ventas Mundiales", "val": "+300M Discos"}], "albums": [{"title": "Queen II", "year": "1974", "type": "Álbum de Estudio", "cover": "img/albums/queen_1974_queen_ii.png"}, {"title": "A Night at the Opera", "year": "1975", "type": "Álbum de Estudio", "cover": "img/albums/queen_1975_night_at_opera.png"}, {"title": "News of the World", "year": "1977", "type": "Álbum de Estudio", "cover": "img/albums/queen_1977_news_of_world.png"}, {"title": "The Game", "year": "1980", "type": "Álbum de Estudio", "cover": "img/albums/queen_1980_the_game.png"}, {"title": "Innuendo", "year": "1991", "type": "Álbum de Estudio", "cover": "img/albums/queen_1991_innuendo.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 4.85, "text": "¡Londres, 1970!"}, {"start": 5.0, "end": 9.2, "text": "Freddie Mercury, Brian May, Roger Taylor y John Deacon."}, {"start": 9.35, "end": 14.12, "text": "Unieron el glam, la ópera y el hard rock en una obra monumental."}, {"start": 14.27, "end": 17.71, "text": "Con la voz incomparable de cuatro octavas de Freddie,"}, {"start": 17.86, "end": 21.91, "text": "guitarras orquestadas y la apoteosis de Bohemian Rhapsody."}, {"start": 22.06, "end": 26.72, "text": "Hasta coronarse en Live Aid como los reyes indiscutibles de los estadios."}, {"start": 26.87, "end": 31.62, "text": "¡Súbele al volumen!... ¡esto es Queen en Rock en 45 segundos!"}, {"start": 31.77, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Freddie Mercury", "photo": "img/members/queen_freddie_mercury.jpg", "role": "Voz principal & Piano", "alias": "Showman Supremo", "icon": "👑"}, {"name": "Brian May", "photo": "img/members/queen_brian_may.jpg", "role": "Guitarra 'Red Special' & Coros", "alias": "Doctor del Riff", "icon": "🎸"}, {"name": "Roger Taylor", "photo": "img/members/queen_roger_taylor.jpg", "role": "Batería & Coros agudos", "alias": "Pegada de Trueno", "icon": "🥁"}, {"name": "John Deacon", "photo": "img/members/queen_john_deacon.jpg", "role": "Bajo & Compositor", "alias": "El Ancla Melódica", "icon": "🎻"}]}, "led_zeppelin": {"id": "led_zeppelin", "cover": "img/covers/cover_led_zeppelin.png", "soundtrack": "Whole Lotta Love & Immigrant Song", "name": "Led Zeppelin", "title": "El Martillo de los Dioses", "era": "Londres • 1968", "genres": ["hard_rock", "vieja_guardia"], "genreLabel": "Hard Rock • Blues Rock", "themeColor": "#0891b2", "themeSecondary": "#0e7490", "audioJorgeWav": "audio/led_zeppelin_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/led_zeppelin_podcast_jorge.mp3", "audioDaliaWav": "audio/led_zeppelin_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/led_zeppelin_podcast_dalia.mp3", "audioAlonsoWav": "audio/led_zeppelin_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/led_zeppelin_podcast_alonso.mp3", "headline": "Led Zeppelin", "summary": "Cuatro virtuosos crearon el molde supremo del hard rock. Mística celta, batería demoledora y récords mundiales sin singles radiales.", "badge": "EPISODIO 04", "monthlyListeners": "20,380,410 oyentes mensuales", "history": "Formada en Londres en 1968 por Jimmy Page, Robert Plant, John Bonham y John Paul Jones, Led Zeppelin es el pilar fundacional del hard rock y heavy metal moderno. Con un virtuosismo implacable, la batería sísmica de 'Bonzo' y el misticismo épico de Plant, rompieron todos los récords de audiencia mundial en vivo sin depender de sencillos de radio, vendiendo más de 300 millones de discos encabezados por obras inmortales como 'Led Zeppelin IV' y 'Physical Graffiti'.", "stats": [{"label": "Origen", "val": "Londres, Reino Unido"}, {"label": "Formación", "val": "1968"}, {"label": "Género", "val": "Hard Rock / Blues Rock"}, {"label": "Ventas Mundiales", "val": "+300M Discos"}], "albums": [{"title": "Led Zeppelin I", "year": "1969", "type": "Álbum Debut", "cover": "img/albums/led_zeppelin_1969_i.png"}, {"title": "Led Zeppelin II", "year": "1969", "type": "Álbum de Estudio", "cover": "img/albums/led_zeppelin_1969_ii.png"}, {"title": "Led Zeppelin IV", "year": "1971", "type": "Álbum de Estudio", "cover": "img/albums/led_zeppelin_1971_iv.png"}, {"title": "Houses of the Holy", "year": "1973", "type": "Álbum de Estudio", "cover": "img/albums/led_zeppelin_1973_houses.png"}, {"title": "Physical Graffiti", "year": "1975", "type": "Álbum Doble", "cover": "img/albums/led_zeppelin_1975_physical.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 5.14, "text": "¡Londres, 1968!"}, {"start": 5.29, "end": 9.7, "text": "Jimmy Page, Robert Plant, John Bonham y John Paul Jones."}, {"start": 9.85, "end": 14.2, "text": "Desataron una tormenta sónica que creó el molde del hard rock."}, {"start": 14.35, "end": 18.26, "text": "Con la batería demoledora de Bonzo y solos hipnóticos,"}, {"start": 18.41, "end": 21.46, "text": "y la mística eterna de Stairway to Heaven."}, {"start": 21.61, "end": 26.45, "text": "Sin lanzar sencillos comerciales: puro poder de álbum en vinilo."}, {"start": 26.6, "end": 31.74, "text": "¡Súbele al volumen!... ¡esto es Led Zeppelin en Rock en 45 segundos!"}, {"start": 31.89, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Jimmy Page", "photo": "img/members/led_zeppelin_jimmy_page.jpg", "role": "Guitarras & Producción", "alias": "Arquitecto Sónico", "icon": "⚡"}, {"name": "Robert Plant", "photo": "img/members/led_zeppelin_robert_plant.jpg", "role": "Voz líder & Armónica", "alias": "El Dios Dorado", "icon": "🎙️"}, {"name": "John Bonham", "photo": "img/members/led_zeppelin_john_bonham.jpg", "role": "Batería legendaria", "alias": "Bonzo", "icon": "🥁"}, {"name": "John Paul Jones", "photo": "img/members/led_zeppelin_john_paul_jones.jpg", "role": "Bajo, Teclados & Mandolina", "alias": "Maestro Multiinstrumentista", "icon": "🎹"}]}, "black_sabbath": {"id": "black_sabbath", "cover": "img/covers/cover_black_sabbath.png", "soundtrack": "Iron Man & Paranoid", "name": "Black Sabbath", "title": "Los Padres del Heavy Metal", "era": "Birmingham • 1968", "genres": ["heavy_metal", "vieja_guardia"], "genreLabel": "Heavy Metal • Doom", "themeColor": "#7c3aed", "themeSecondary": "#5b21b6", "audioJorgeWav": "audio/black_sabbath_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/black_sabbath_podcast_jorge.mp3", "audioDaliaWav": "audio/black_sabbath_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/black_sabbath_podcast_dalia.mp3", "audioAlonsoWav": "audio/black_sabbath_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/black_sabbath_podcast_alonso.mp3", "headline": "Black Sabbath", "summary": "De las fundiciones de Birmingham nació el tritono del diablo, afinaciones graves y la oscuridad que dio vida al Heavy Metal para siempre.", "badge": "EPISODIO 05", "monthlyListeners": "16,110,500 oyentes mensuales", "history": "Nacidos en el entorno fabril de Birmingham en 1968, Ozzy Osbourne, Tony Iommi, Geezer Butler y Bill Ward concibieron el sonido y la estética del Heavy Metal. Con afinaciones rebajadas nacidas tras el accidente laboral de Iommi y riffs construidos sobre el temido 'tritono del diablo', temas como 'Paranoid', 'Iron Man' y 'War Pigs' inauguraron una era musical oscura y poderosa que sentó las bases de todo el metal moderno.", "stats": [{"label": "Origen", "val": "Birmingham, Reino Unido"}, {"label": "Formación", "val": "1968"}, {"label": "Género", "val": "Heavy Metal / Doom"}, {"label": "Ventas Mundiales", "val": "+75M Discos"}], "albums": [{"title": "Black Sabbath", "year": "1970", "type": "Álbum Debut", "cover": "img/albums/black_sabbath_1970_debut.png"}, {"title": "Paranoid", "year": "1970", "type": "Álbum de Estudio", "cover": "img/albums/black_sabbath_1970_paranoid.png"}, {"title": "Master of Reality", "year": "1971", "type": "Álbum de Estudio", "cover": "img/albums/black_sabbath_1971_master.png"}, {"title": "Sabbath Bloody Sabbath", "year": "1973", "type": "Álbum de Estudio", "cover": "img/albums/black_sabbath_1973_sabbath_bloody.png"}, {"title": "Heaven and Hell", "year": "1980", "type": "Álbum de Estudio", "cover": "img/albums/black_sabbath_1980_heaven_and_hell.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 6.1, "text": "¡Birmingham, Inglaterra, 1968!"}, {"start": 6.25, "end": 9.87, "text": "Entre las fábricas de acero y la niebla industrial,"}, {"start": 10.02, "end": 14.41, "text": "Ozzy Osbourne, Tony Iommi, Geezer Butler y Bill Ward."}, {"start": 14.56, "end": 18.91, "text": "Con el legendario tritono del diablo y afinaciones aplastantes,"}, {"start": 19.06, "end": 22.22, "text": "nació el Heavy Metal para sacudir al mundo."}, {"start": 22.37, "end": 26.81, "text": "Con Paranoid y Iron Man cambiaron la música pesada para siempre."}, {"start": 26.96, "end": 32.1, "text": "¡Súbele al volumen!... ¡esto es Black Sabbath en Rock en 45 segundos!"}, {"start": 32.25, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Tony Iommi", "photo": "img/members/black_sabbath_tony_iommi.jpg", "role": "Guitarra & Riffs eternos", "alias": "El Padre del Riff", "icon": "🎸"}, {"name": "Ozzy Osbourne", "photo": "img/members/black_sabbath_ozzy_osbourne.jpg", "role": "Voz principal", "alias": "Príncipe de las Tinieblas", "icon": "🦇"}, {"name": "Geezer Butler", "photo": "img/members/black_sabbath_geezer_butler.jpg", "role": "Bajo & Letrista místico", "alias": "El Filósofo Oscuro", "icon": "🔮"}, {"name": "Bill Ward", "photo": "img/members/black_sabbath_bill_ward.jpg", "role": "Batería & Percusión", "alias": "La Apisonadora de Jazz", "icon": "🥁"}]}, "guns_n_roses": {"id": "guns_n_roses", "cover": "img/covers/cover_guns_n_roses.png", "soundtrack": "Welcome To The Jungle & Sweet Child O' Mine", "name": "Guns N' Roses", "title": "Salvajes en Sunset Strip", "era": "Los Ángeles • 1985", "genres": ["hard_rock", "glam_rock"], "genreLabel": "Hard Rock • Sleaze", "themeColor": "#e11d48", "themeSecondary": "#be123c", "audioJorgeWav": "audio/guns_n_roses_podcast_45s_jorge.wav", "audioJorgeMp3": "audio/guns_n_roses_podcast_jorge.mp3", "audioDaliaWav": "audio/guns_n_roses_podcast_45s_dalia.wav", "audioDaliaMp3": "audio/guns_n_roses_podcast_dalia.mp3", "audioAlonsoWav": "audio/guns_n_roses_podcast_45s_alonso.wav", "audioAlonsoMp3": "audio/guns_n_roses_podcast_alonso.mp3", "headline": "Guns N' Roses", "summary": "Peligro real, actitud punk y los solos más memorables de los 80s. El álbum debut más vendido de la historia del rock estadounidense.", "badge": "EPISODIO 06", "monthlyListeners": "28,740,300 oyentes mensuales", "history": "Emergidos de la intensidad salvaje de Sunset Strip en Los Ángeles en 1985, Axl Rose, Slash, Duff McKagan, Izzy Stradlin y Steven Adler sacudieron el rock mundial combinando la crudeza punk con la fuerza del hard rock clásico. Su debut 'Appetite for Destruction' (1987) es el álbum debut más vendido de la historia de EE.UU. (+30 millones en el mundo), inmortalizado por gemas como 'Sweet Child O' Mine' y 'Welcome to the Jungle'.", "stats": [{"label": "Origen", "val": "Los Ángeles, California"}, {"label": "Formación", "val": "1985"}, {"label": "Género", "val": "Hard Rock / Sleaze Rock"}, {"label": "Ventas Mundiales", "val": "+100M Discos"}], "albums": [{"title": "Appetite for Destruction", "year": "1987", "type": "Álbum Debut", "cover": "img/albums/guns_n_roses_1987_appetite.png"}, {"title": "G N' R Lies", "year": "1988", "type": "Álbum de Estudio", "cover": "img/albums/guns_n_roses_1988_lies.png"}, {"title": "Use Your Illusion I", "year": "1991", "type": "Álbum de Estudio", "cover": "img/albums/guns_n_roses_1991_illusion_1.png"}, {"title": "Use Your Illusion II", "year": "1991", "type": "Álbum de Estudio", "cover": "img/albums/guns_n_roses_1991_illusion_2.png"}, {"title": "The Spaghetti Incident?", "year": "1993", "type": "Álbum de Covers", "cover": "img/albums/guns_n_roses_1993_spaghetti.png"}], "lyrics": [{"start": 0.0, "end": 1.8, "text": "♪  ♪  ♪"}, {"start": 1.8, "end": 5.38, "text": "¡Los Ángeles, 1985!"}, {"start": 5.53, "end": 10.61, "text": "Axl Rose, Slash, Duff McKagan, Izzy Stradlin y Steven Adler."}, {"start": 10.76, "end": 15.11, "text": "Conquistaron Sunset Strip a puro peligro y actitud callejera."}, {"start": 15.26, "end": 20.08, "text": "Con Appetite for Destruction, el disco debut más vendido de la historia."}, {"start": 20.23, "end": 24.38, "text": "Resucitando el rock and roll sucio, salvaje y visceral."}, {"start": 24.53, "end": 29.05, "text": "Sweet Child O' Mine y Welcome to the Jungle reventaron el planeta."}, {"start": 29.2, "end": 34.86, "text": "¡Súbele al volumen!... ¡esto es Guns N' Roses en Rock en 45 segundos!"}, {"start": 35.01, "end": 44.95, "text": "♪  ♪  ♪"}], "members": [{"name": "Axl Rose", "photo": "img/members/guns_n_roses_axl_rose.jpg", "role": "Voz principal & Piano", "alias": "Fuerza Volcánica", "icon": "🎤"}, {"name": "Slash", "photo": "img/members/guns_n_roses_slash.jpg", "role": "Guitarra líder", "alias": "El Icono del Riff", "icon": "🎩"}, {"name": "Duff McKagan", "photo": "img/members/guns_n_roses_duff_mckagan.jpg", "role": "Bajo & Coros", "alias": "Espíritu Punk", "icon": "🎸"}, {"name": "Izzy Stradlin", "photo": "img/members/guns_n_roses_izzy_stradlin.jpg", "role": "Guitarra rítmica", "alias": "El Poeta Bohemio", "icon": "⚡"}, {"name": "Steven Adler", "photo": "img/members/guns_n_roses_steven_adler.jpg", "role": "Batería clásica", "alias": "Pulso Callejero", "icon": "🥁"}]}};
+    const bandKeys = Object.keys(bands);
+    let activeBandId = "kiss";
+    let activeVoice = "jorge"; // jorge, dalia, alonso
+    let currentFilter = "all";
+
+    const spotifyAudio = document.getElementById('spotifyAudio');
+    const heroBanner = document.getElementById('heroBanner');
+    const heroArtwork = document.getElementById('heroArtwork');
+    const heroArtBand = document.getElementById('heroArtBand');
+    const heroBadge = document.getElementById('heroBadge');
+    const heroTitle = document.getElementById('heroTitle');
+    const heroSummary = document.getElementById('heroSummary');
+    const heroEra = document.getElementById('heroEra');
+    const heroListeners = document.getElementById('heroListeners');
+
+    const btnBigPlay = document.getElementById('btnBigPlay');
+    const bigPlayIcon = document.getElementById('bigPlayIcon');
+    const bigPauseIcon = document.getElementById('bigPauseIcon');
+
+    const btnBarPlayPause = document.getElementById('btnBarPlayPause');
+    const barPlayIcon = document.getElementById('barPlayIcon');
+    const barPauseIcon = document.getElementById('barPauseIcon');
+
+    const btnBarPrev = document.getElementById('btnBarPrev');
+    const btnBarNext = document.getElementById('btnBarNext');
+
+
+    // Download button removed
+
+    const barThumb = document.getElementById('barThumb');
+    const barThumbText = document.getElementById('barThumbText');
+    const barTitle = document.getElementById('barTitle');
+    const barArtist = document.getElementById('barArtist');
+    const barTimeCurrent = document.getElementById('barTimeCurrent');
+    const barTimeTotal = document.getElementById('barTimeTotal');
+    const btnMuteToggle = document.getElementById('btnMuteToggle');
+    const muteIconOn = document.getElementById('muteIconOn');
+    const muteIconOff = document.getElementById('muteIconOff');
+
+    const spotifyProgressBar = document.getElementById('spotifyProgressBar');
+    const spotifyProgressFill = document.getElementById('spotifyProgressFill');
+
+    const volumeBar = document.getElementById('volumeBar');
+    const volumeFill = document.getElementById('volumeFill');
+
+    const tracklistTableBody = document.getElementById('tracklistTableBody');
+    const lyricsLineList = document.getElementById('lyricsLineList');
+    const spotifyMembersGrid = document.getElementById('spotifyMembersGrid');
+    const membersSectionTitle = document.getElementById('membersSectionTitle');
+    const sidebarPlaylists = document.getElementById('sidebarPlaylists');
+    const spotifySearchInput = document.getElementById('spotifySearchInput');
+
+    function formatTime(sec) {
+      if (isNaN(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function getAudioSrc(bandId, voice) {
+      const b = bands[bandId];
+      if (voice === 'dalia') return b.audioDaliaMp3 || b.audioDaliaWav;
+      if (voice === 'alonso') return b.audioAlonsoMp3 || b.audioAlonsoWav;
+      return b.audioJorgeMp3 || b.audioJorgeWav;
+    }
+
+    function getDownloadFilename(bandId, voice) {
+      const b = bands[bandId];
+      return `${b.name.replace(/[^a-zA-Z0-9]/g, '_')}_45s_Master_${voice.toUpperCase()}.wav`;
+    }
+
+    function loadBand(bandId, autoPlay = false) {
+      activeBandId = bandId;
+      const b = bands[bandId];
+
+      // Update Theme Colors
+      document.documentElement.style.setProperty('--band-accent', b.themeColor);
+      heroBanner.style.background = `linear-gradient(180deg, ${b.themeColor} 0%, rgba(18, 18, 18, 0.95) 100%)`;
+      const heroArtImg = document.getElementById('heroArtImg');
+      if (heroArtImg && b.cover) heroArtImg.src = b.cover;
+      heroBadge.textContent = `${b.badge} • CÁPSULA 45s • ${b.genreLabel.toUpperCase()}`;
+      heroTitle.textContent = `${b.name}: ${b.title}`;
+      heroSummary.textContent = b.summary;
+      heroEra.textContent = b.era;
+      heroListeners.textContent = b.monthlyListeners;
+
+      // Update Player Bar
+      const barThumbImg = document.getElementById('barThumbImg');
+      if (barThumbImg && b.cover) barThumbImg.src = b.cover;
+      barTitle.textContent = b.title;
+      barArtist.textContent = b.name;
+
+      const audioUrl = getAudioSrc(bandId, activeVoice);
+
+      // Set Audio Source
+      const wasPlaying = !spotifyAudio.paused;
+      spotifyAudio.src = audioUrl;
+      spotifyAudio.playbackRate = 1.0;
+      spotifyAudio.currentTime = 0;
+      spotifyProgressFill.style.width = '0%';
+      barTimeCurrent.textContent = '0:00';
+      barTimeTotal.textContent = '0:45';
+
+      renderTable();
+      renderLyrics();
+      renderArtistDetails();
+      renderSidebarPlaylists();
+
+      if (autoPlay || wasPlaying) {
+        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+      } else {
+        updatePlayUI(false);
+      }
+    }
+
+    function renderTable() {
+      tracklistTableBody.innerHTML = '';
+      const filter = currentFilter;
+      const search = (spotifySearchInput.value || '').toLowerCase().trim();
+
+      Object.values(bands).forEach((b, index) => {
+        if (filter !== 'all' && !b.genres.includes(filter)) return;
+        if (search) {
+          const match = b.name.toLowerCase().includes(search) || 
+                        b.title.toLowerCase().includes(search) || 
+                        b.headline.toLowerCase().includes(search) || 
+                        b.genreLabel.toLowerCase().includes(search);
+          if (!match) return;
+        }
+
+        const row = document.createElement('tr');
+        row.className = (b.id === activeBandId ? 'active' : '');
+        row.dataset.bandId = b.id;
+        row.innerHTML = `
+          <td class="td-number" style="text-align: center;">${index + 1}</td>
+          <td>
+            <div class="td-title-cell">
+              <div class="table-thumb" style="background: #000; padding: 2px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
+                <img src="${b.cover}" alt="${b.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
+              </div>
+              <div>
+                <div class="table-main-title">${b.title}</div>
+                <div class="table-artist-sub">${b.name}</div>
+              </div>
+            </div>
+          </td>
+          <td><span style="color: var(--sp-text-muted); font-size: 0.85rem;">${b.genreLabel}</span></td>
+          <td><span style="color: var(--sp-text-muted); font-size: 0.85rem;">${b.era}</span></td>
+          <td style="text-align: right; font-variant-numeric: tabular-nums; color: var(--sp-text-muted); font-size: 0.85rem; font-weight: 500;">0:45</td>
+        `;
+
+        row.addEventListener('click', () => {
+          if (activeBandId !== b.id) {
+            loadBand(b.id, true);
+          } else {
+            togglePlay();
+          }
+        });
+
+        tracklistTableBody.appendChild(row);
+      });
+    }
+
+    const lyricsScrollViewport = document.getElementById('lyricsScrollViewport');
+    const spotifyLyricsCard = document.getElementById('spotifyLyricsCard');
+    const btnExpandLyrics = document.getElementById('btnExpandLyrics');
+    const btnBarLyrics = document.getElementById('btnBarLyrics');
+    let lastActiveLyricIndex = -1;
+
+    if (btnExpandLyrics) {
+      btnExpandLyrics.addEventListener('click', () => {
+        spotifyLyricsCard.classList.toggle('fullscreen-mode');
+        const isFull = spotifyLyricsCard.classList.contains('fullscreen-mode');
+        btnExpandLyrics.innerHTML = isFull 
+          ? '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>'
+          : '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>';
+      });
+    }
+
+    if (btnBarLyrics) {
+      btnBarLyrics.addEventListener('click', () => {
+        const target = document.getElementById('lyricsSection');
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+
+    function renderLyrics() {
+      const b = bands[activeBandId];
+      if (!lyricsScrollViewport) return;
+      lyricsScrollViewport.innerHTML = '';
+      lastActiveLyricIndex = -1;
+
+      const lyricsList = b.lyrics || [];
+      lyricsList.forEach((item, idx) => {
+        const line = document.createElement('div');
+        line.className = 'spotify-lyric-item' + (item.instrumental ? ' instrumental' : '') + (idx === 0 ? ' active' : ' upcoming');
+        line.dataset.start = item.start;
+        line.dataset.end = item.end;
+        line.dataset.index = idx;
+        line.textContent = item.text;
+
+        line.addEventListener('click', () => {
+          spotifyAudio.currentTime = item.start;
+          if (spotifyAudio.paused) {
+            spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+          }
+        });
+
+        lyricsScrollViewport.appendChild(line);
+      });
+    }
+
+    // PUBLIC API INTEGRATION: iTunes / Apple Music Public Catalog API
+    // Sincroniza en tiempo real carátulas oficiales en alta resolución (600x600)
+    async function fetchPublicAlbumArtwork(bandName, albumTitle) {
+      try {
+        const query = encodeURIComponent(`${bandName} ${albumTitle}`);
+        const response = await fetch(`https://itunes.apple.com/search?term=${query}&entity=album&limit=1`);
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          return data.results[0].artworkUrl100.replace('100x100bb', '600x600bb');
+        }
+      } catch (err) {
+        console.warn('API error fetching artwork:', err);
+      }
+      return null;
+    }
+
+    function renderArtistDetails() {
+      const b = bands[activeBandId];
+      if (!b) return;
+
+      // 1. Acerca del artista
+      const spotifyAboutBg = document.getElementById('spotifyAboutBg');
+      const spotifyAboutListeners = document.getElementById('spotifyAboutListeners');
+      const spotifyAboutBio = document.getElementById('spotifyAboutBio');
+      const spotifyAboutStats = document.getElementById('spotifyAboutStats');
+
+      if (spotifyAboutBg && b.cover) {
+        spotifyAboutBg.style.backgroundImage = `url("${b.cover}")`;
+      }
+      if (spotifyAboutListeners) {
+        spotifyAboutListeners.textContent = b.monthlyListeners;
+      }
+      if (spotifyAboutBio) {
+        spotifyAboutBio.textContent = b.history;
+      }
+      if (spotifyAboutStats && b.stats) {
+        spotifyAboutStats.innerHTML = '';
+        b.stats.forEach(st => {
+          const pill = document.createElement('div');
+          pill.className = 'spotify-stat-pill';
+          pill.innerHTML = `<span class="spotify-stat-pill-label">${st.label}:</span> <span>${st.val}</span>`;
+          spotifyAboutStats.appendChild(pill);
+        });
+      }
+
+      // 2. Discografía
+      const spotifyAlbumsGrid = document.getElementById('spotifyAlbumsGrid');
+      if (spotifyAlbumsGrid && b.albums) {
+        spotifyAlbumsGrid.innerHTML = '';
+        b.albums.forEach(alb => {
+          const card = document.createElement('div');
+          card.className = 'spotify-album-card';
+          card.innerHTML = `
+            <div class="album-art-wrap">
+              <img src="${alb.cover}" alt="${alb.title}" class="album-art-img" loading="lazy">
+              <button class="album-play-btn" title="Reproducir ${alb.title}">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="album-info-title" title="${alb.title}">${alb.title}</div>
+            <div class="album-info-meta">${alb.year} • ${alb.type}</div>
+          `;
+          card.addEventListener('click', () => {
+            togglePlay();
+          });
+          spotifyAlbumsGrid.appendChild(card);
+        });
+      }
+
+      // 3. Integrantes
+      const spotifyMembersGrid = document.getElementById('spotifyMembersGrid');
+      if (spotifyMembersGrid && b.members) {
+        spotifyMembersGrid.innerHTML = '';
+        b.members.forEach(m => {
+          const card = document.createElement('div');
+          card.className = 'spotify-member-circle-card';
+          const avatarHtml = m.photo ? `
+            <div class="member-circle-avatar">
+              <img src="${m.photo}" alt="${m.name}" class="member-circle-img" loading="lazy" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\"font-size:2.2rem;\">${m.icon || '🎸'}</span>';">
+            </div>
+          ` : `
+            <div class="member-circle-avatar"><span>${m.icon || '🎸'}</span></div>
+          `;
+          card.innerHTML = `
+            ${avatarHtml}
+            <div class="member-circle-name">${m.name}</div>
+            <div class="member-circle-role">${m.role}</div>
+            <div class="member-circle-tag">${m.alias}</div>
+          `;
+          spotifyMembersGrid.appendChild(card);
+        });
+      }
+    }
+
+    function renderSidebarPlaylists() {
+      sidebarPlaylists.innerHTML = '';
+      Object.values(bands).forEach(b => {
+        const item = document.createElement('div');
+        item.className = 'playlist-item' + (b.id === activeBandId ? ' active' : '');
+        item.innerHTML = `
+          <div class="playlist-icon" style="background: #000; padding: 3px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
+            <img src="${b.cover}" alt="${b.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
+          </div>
+          <div class="playlist-info">
+            <div class="playlist-name">${b.name}</div>
+            <div class="playlist-sub">Cápsula 45s • ${b.genreLabel}</div>
+          </div>
+        `;
+        item.addEventListener('click', () => {
+          loadBand(b.id, true);
+        });
+        sidebarPlaylists.appendChild(item);
+      });
+    }
+
+    // Play / Pause Logic
+    function togglePlay() {
+      if (spotifyAudio.paused) {
+        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+      } else {
+        spotifyAudio.pause();
+        updatePlayUI(false);
+      }
+    }
+
+    function updatePlayUI(isPlaying) {
+      if (isPlaying) {
+        bigPlayIcon.classList.add('hidden');
+        bigPauseIcon.classList.remove('hidden');
+        barPlayIcon.classList.add('hidden');
+        barPauseIcon.classList.remove('hidden');
+      } else {
+        bigPlayIcon.classList.remove('hidden');
+        bigPauseIcon.classList.add('hidden');
+        barPlayIcon.classList.remove('hidden');
+        barPauseIcon.classList.add('hidden');
+      }
+    }
+
+    btnBigPlay.addEventListener('click', togglePlay);
+    btnBarPlayPause.addEventListener('click', togglePlay);
+
+    // Audio time update
+    spotifyAudio.addEventListener('timeupdate', () => {
+      const cur = spotifyAudio.currentTime;
+      const dur = spotifyAudio.duration || 44.95;
+      const pct = (cur / dur) * 100;
+      spotifyProgressFill.style.width = `${pct}%`;
+      barTimeCurrent.textContent = formatTime(cur);
+      barTimeTotal.textContent = formatTime(dur);
+
+
+
+      // Second-by-second Spotify lyrics sync & auto-scroll
+      const lyricItems = document.querySelectorAll('.spotify-lyric-item');
+      let currentIdx = -1;
+
+      lyricItems.forEach((el, idx) => {
+        const start = parseFloat(el.dataset.start);
+        const end = parseFloat(el.dataset.end);
+        if (cur >= start && cur < end) {
+          currentIdx = idx;
+        }
+      });
+
+      if (currentIdx !== -1) {
+        lyricItems.forEach((el, idx) => {
+          el.classList.remove('active', 'past', 'upcoming');
+          if (idx === currentIdx) {
+            el.classList.add('active');
+          } else if (idx < currentIdx) {
+            el.classList.add('past');
+          } else {
+            el.classList.add('upcoming');
+          }
+        });
+
+        // Smooth auto-scroll when active lyric line advances
+        if (currentIdx !== lastActiveLyricIndex) {
+          lastActiveLyricIndex = currentIdx;
+          const activeEl = lyricItems[currentIdx];
+          if (activeEl && lyricsScrollViewport) {
+            const containerRect = lyricsScrollViewport.getBoundingClientRect();
+            const elRect = activeEl.getBoundingClientRect();
+            const offset = elRect.top - containerRect.top - (lyricsScrollViewport.clientHeight / 2) + (activeEl.clientHeight / 2);
+            lyricsScrollViewport.scrollBy({ top: offset, behavior: 'smooth' });
+          }
+        }
+      }
+    });
+
+    spotifyAudio.addEventListener('ended', () => {
+      updatePlayUI(false);
+      spotifyAudio.currentTime = 0;
+      spotifyProgressFill.style.width = '0%';
+    });
+
+    // Timeline Scrubbing
+    spotifyProgressBar.addEventListener('click', (e) => {
+      const rect = spotifyProgressBar.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      const dur = spotifyAudio.duration || 44.95;
+      spotifyAudio.currentTime = pos * dur;
+    });
+
+    // Next / Previous Band
+    btnBarNext.addEventListener('click', () => {
+      const curIdx = bandKeys.indexOf(activeBandId);
+      const nextIdx = (curIdx + 1) % bandKeys.length;
+      loadBand(bandKeys[nextIdx], true);
+    });
+
+    btnBarPrev.addEventListener('click', () => {
+      const curIdx = bandKeys.indexOf(activeBandId);
+      const prevIdx = (curIdx - 1 + bandKeys.length) % bandKeys.length;
+      loadBand(bandKeys[prevIdx], true);
+    });
+
+    // Settings & Voice Switcher
+    function selectVoice(voice) {
+      activeVoice = voice;
+      document.querySelectorAll('.voice-card').forEach(c => {
+        if (c.dataset.voice === voice) {
+          c.classList.add('active');
+        } else {
+          c.classList.remove('active');
+        }
+      });
+
+      const wasPlaying = !spotifyAudio.paused;
+      const prevTime = spotifyAudio.currentTime;
+      spotifyAudio.pause();
+
+      const newSrc = getAudioSrc(activeBandId, activeVoice);
+      spotifyAudio.src = newSrc;
+      spotifyAudio.currentTime = Math.min(prevTime, 44.95);
+
+      if (wasPlaying) {
+        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+      }
+    }
+
+    document.querySelectorAll('.voice-card').forEach(card => {
+      card.addEventListener('click', () => {
+        selectVoice(card.dataset.voice);
+      });
+    });
+
+    // Settings Navigation Triggers
+    const sidebarSettingsBtn = document.getElementById('sidebarSettingsBtn');
+    const topbarSettingsBtn = document.getElementById('topbarSettingsBtn');
+
+    function scrollToSettings(e) {
+      if (e) e.preventDefault();
+      const sec = document.getElementById('settingsSection');
+      if (sec) {
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    if (sidebarSettingsBtn) sidebarSettingsBtn.addEventListener('click', scrollToSettings);
+    if (topbarSettingsBtn) topbarSettingsBtn.addEventListener('click', scrollToSettings);
+
+    // Volume Slider & Mute Toggle
+    let previousVolume = 0.8;
+
+    function updateVolumeUI() {
+      const isMuted = spotifyAudio.muted || spotifyAudio.volume === 0;
+      if (isMuted) {
+        if (muteIconOn) muteIconOn.classList.add('hidden');
+        if (muteIconOff) muteIconOff.classList.remove('hidden');
+        if (btnMuteToggle) {
+          btnMuteToggle.title = 'Activar sonido';
+          btnMuteToggle.style.color = '#ff5555';
+        }
+        volumeFill.style.width = '0%';
+      } else {
+        if (muteIconOn) muteIconOn.classList.remove('hidden');
+        if (muteIconOff) muteIconOff.classList.add('hidden');
+        if (btnMuteToggle) {
+          btnMuteToggle.title = 'Silenciar';
+          btnMuteToggle.style.color = '';
+        }
+        volumeFill.style.width = `${spotifyAudio.volume * 100}%`;
+      }
+    }
+
+    if (btnMuteToggle) {
+      btnMuteToggle.addEventListener('click', () => {
+        if (spotifyAudio.muted || spotifyAudio.volume === 0) {
+          // Activar sonido (unmute)
+          spotifyAudio.muted = false;
+          spotifyAudio.volume = previousVolume > 0 ? previousVolume : 0.8;
+        } else {
+          // Desactivar sonido (mute)
+          previousVolume = spotifyAudio.volume > 0 ? spotifyAudio.volume : 0.8;
+          spotifyAudio.muted = true;
+          spotifyAudio.volume = 0;
+        }
+        updateVolumeUI();
+      });
+    }
+
+    volumeBar.addEventListener('click', (e) => {
+      const rect = volumeBar.getBoundingClientRect();
+      const vol = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      spotifyAudio.muted = false;
+      spotifyAudio.volume = vol;
+      if (vol > 0) {
+        previousVolume = vol;
+      }
+      updateVolumeUI();
+    });
+
+    // Initialize default volume
+    spotifyAudio.volume = 0.8;
+    updateVolumeUI();
+
+    // Library chips
+    document.querySelectorAll('.library-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.library-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        currentFilter = chip.dataset.filter;
+        renderTable();
+      });
+    });
+
+    // Search filter
+    spotifySearchInput.addEventListener('input', () => {
+      renderTable();
+    });
+
+    // Initialize with hash and query param support
+    const urlParams = new URLSearchParams(window.location.search);
+    const bandParam = urlParams.get('band');
+    const scrollTarget = urlParams.get('scroll');
+
+    const initBand = bandParam || (window.location.hash || '').replace('#', '');
+    if (initBand && bands[initBand]) {
+      loadBand(initBand, false);
+    } else {
+      loadBand("kiss", false);
+    }
+
+    if (scrollTarget === 'members') {
+      const spotifyMain = document.getElementById('spotifyMain');
+      if (spotifyMain) {
+        spotifyMain.scrollTop = 999999;
+      }
+      const membersSec = document.querySelector('.spotify-members-section');
+      if (membersSec) {
+        membersSec.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ditto — Sunlit Wildflower Compliance Atelier</title>
+  <meta name="description" content="Ditto uses a sunlit, garden-inspired SaaS language for CSR & ESG compliance recognition. Warm cream surfaces, vivid yellow primary action, deep navy ink, and organic blooming backdrops.">
+
+  <!-- Favicon: Ditto Leaf Mark -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><path d=%22M6 26C6 14.9543 14.9543 6 26 6C26 17.0457 17.0457 26 6 26Z%22 fill=%22%23130e30%22/><circle cx=%2216%22 cy=%2216%22 r=%224.5%22 fill=%22%23ffe228%22/></svg>">
+
+  <!-- Preconnect & Google Fonts: Hedvig Letters Serif & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz,wght@12..24,400;700&family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap" rel="stylesheet">
+
+  <!-- Ditto Design Tokens & Component Stylesheet -->
+  <link rel="stylesheet" href="css/ditto.css">
+
+  <style>
+    /* Inline enhancements for organic SVG blooms and micro-interactions */
+    .blob-green { fill: var(--color-moss-green); opacity: 0.88; }
+    .blob-fuchsia { fill: var(--color-fuchsia); opacity: 0.82; }
+    .blob-yellow { fill: var(--color-hi-yellow); opacity: 0.92; }
+    .blob-navy { fill: var(--color-deep-ink); opacity: 0.18; }
+
+    /* Animated subtle float for organic shapes */
+    @keyframes subtle-drift {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1.5deg); }
+    }
+    .organic-blobs-layer svg {
+      animation: subtle-drift 10s ease-in-out infinite alternate;
+    }
+
+    /* Interactive feedback toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--color-deep-ink);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      font-size: var(--text-body-sm);
+      font-weight: 500;
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 12px 30px rgba(19, 14, 48, 0.2);
+    }
+    .toast-pill.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================================
+       TOP NAVIGATION BAR
+       Background: #eff2e5 (Soft Meadow), flush on canvas, pill-shaped controls
+       ========================================================================= -->
+  <header class="site-header">
+    <div class="container nav-container">
+      
+      <!-- Brand Identity (Organic Leaf Mark + Wordmark 'ditto') -->
+      <a href="ditto.html" class="brand-lockup" aria-label="Ditto Home">
+        <svg class="brand-leaf-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Stylized organic petal / leaf mark -->
+          <path d="M6 26C6 14.9543 14.9543 6 26 6C26 17.0457 17.0457 26 6 26Z" fill="#130e30"/>
+          <circle cx="16" cy="16" r="4.5" fill="#ffe228"/>
+        </svg>
+        <span>ditto</span>
+      </a>
+
+      <!-- Center Navigation Links (Inter 500 16px #130e30 with chevrons) -->
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li>
+            <a href="#features" class="nav-link">
+              <span>Platform</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#compliance" class="nav-link">
+              <span>Frameworks</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#case-studies" class="nav-link">
+              <span>Customers</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor"/></svg>
+            </a>
+          </li>
+          <li>
+            <a href="#tokens" class="nav-link">
+              <span>Design System</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Right Action CTA Pair + Language Selector -->
+      <div class="nav-actions">
+        <!-- Language Selector with Globe Icon -->
+        <button class="lang-selector" aria-label="Select Language">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span>EN</span>
+        </button>
+
+        <!-- Secondary Button (Dark Pill #130e30, text #ffffff) -->
+        <a href="#login" class="btn btn-secondary">Log In</a>
+
+        <!-- Primary CTA Button (Hi-Yellow #ffe228, text #130e30, 1440px radius) -->
+        <a href="#start" class="btn btn-primary">Get Started</a>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================================
+         HERO SECTION (Two-Column Layout)
+         Left: Headline, subtext, email capsule, Trustpilot
+         Right: White product card floating over organic blooming color blobs
+         ========================================================================= -->
+    <section class="section section-canvas">
+      <div class="container hero-grid">
+        
+        <!-- Left Column: Copy & Action -->
+        <div class="hero-content">
+          <!-- Small caps taxonomic label -->
+          <span class="small-caps-label">CSR & ESG COMPLIANCE ATELIER</span>
+
+          <!-- Hero Headline in Hedvig Letters Serif 700 -->
+          <h1 class="hero-headline">
+            Get the CSR recognition you deserve
+          </h1>
+
+          <!-- Body copy in Slate #5f5c6e -->
+          <p class="hero-subtext">
+            Audit-ready ESG reporting and CSR verification engineered for ambitious European enterprises. Replace friction with garden-fresh clarity and achieve certification four times faster.
+          </p>
+
+          <!-- Email Input Capsule Form (Merged Pill Radius 1440px) -->
+          <form class="capsule-form" id="heroEmailForm" onsubmit="handleEmailSubmit(event)">
+            <input 
+              type="email" 
+              class="capsule-input" 
+              id="heroEmailInput"
+              placeholder="Enter your work email..." 
+              required
+              aria-label="Work Email Address"
+            >
+            <button type="submit" class="btn btn-primary">
+              Get Started
+            </button>
+          </form>
+
+          <!-- Trustpilot Trust Badge -->
+          <div class="trustpilot-badge" aria-label="Rated 4.9 on Trustpilot">
+            <div class="trustpilot-stars" aria-hidden="true">
+              <div class="star-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="star-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="star-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="star-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+              <div class="star-box"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            </div>
+            <span><strong>4.9 / 5</strong> rating on Trustpilot from 1,420+ audits</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Card Floating on Blooming Organic Blobs -->
+        <div class="hero-visual">
+          
+          <!-- Background Organic Blooming Blobs Layer (strictly decorative behind product) -->
+          <div class="organic-blobs-layer" aria-hidden="true">
+            <svg viewBox="0 0 540 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Moss Green Blob (#59e25d) -->
+              <path class="blob-green" d="M420 180C475 250 490 350 430 410C370 470 270 460 190 430C110 400 60 340 70 260C80 180 150 110 230 80C310 50 365 110 420 180Z" />
+              
+              <!-- Fuchsia Blob (#e261e5) -->
+              <path class="blob-fuchsia" d="M120 220C170 140 260 110 340 140C420 170 460 250 440 330C420 410 330 470 250 450C170 430 80 370 70 290C60 240 90 260 120 220Z" />
+              
+              <!-- Hi-Yellow Accent Blob (#ffe228) -->
+              <path class="blob-yellow" d="M360 380C420 340 450 260 420 200C390 140 320 120 260 150C200 180 160 240 180 310C200 380 300 420 360 380Z" />
+              
+              <!-- Soft Violet / Deep Ink Depth Blob (#130e30) -->
+              <path class="blob-navy" d="M220 130C300 100 390 130 430 200C470 270 430 360 370 410C310 460 220 440 160 390C100 340 80 250 110 180C140 110 170 150 220 130Z" />
+            </svg>
+          </div>
+
+          <!-- White Product Mockup Card (Floating with 24px radius) -->
+          <div class="product-card-mockup" role="region" aria-label="Ditto Compliance Overview Mockup">
+            
+            <div class="product-card-header">
+              <div class="product-card-status">
+                <span class="status-dot-active"></span>
+                <span>EcoVadis &amp; CSRD Readiness</span>
+              </div>
+              <span class="score-badge">Gold Tier</span>
+            </div>
+
+            <div class="score-display-row">
+              <span class="score-huge">94.8</span>
+              <span class="score-unit">/ 100 Benchmark Index</span>
+            </div>
+
+            <!-- Progress Track -->
+            <div class="progress-track" aria-label="94% readiness progress">
+              <div class="progress-fill" style="width: 94.8%;"></div>
+            </div>
+
+            <!-- Verification Milestone -->
+            <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--color-slate); margin-bottom: 16px;">
+              <span>Audit Scope: Scope 1, 2 &amp; 3 Full Chain</span>
+              <span style="color: var(--color-deep-ink); font-weight: 600;">Verified 2026</span>
+            </div>
+
+            <!-- Audit Metrics Grid -->
+            <div class="audit-metrics-grid">
+              <div class="metric-item">
+                <div class="metric-label">Decarbonization</div>
+                <div class="metric-value">A+ Prime</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">Supply Chain Trace</div>
+                <div class="metric-value">99.4%</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">CSRD Alignment</div>
+                <div class="metric-value">12 / 12 Standards</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-label">Labor Verification</div>
+                <div class="metric-value">Zero Violations</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         CUSTOMER LOGO TRUST STRIP
+         Full-width Soft Meadow (#eff2e5) band, 48px vertical padding
+         8 monochrome client logos in #130e30 with small-caps CASE STUDY links
+         ========================================================================= -->
+    <section class="trust-strip" id="case-studies" aria-label="Customer Showcase">
+      <div class="container">
+        <div class="trust-strip-header">
+          <span class="small-caps-label">TRUSTED BY 450+ SUSTAINABILITY TEAMS ACROSS EUROPE</span>
+        </div>
+
+        <div class="trust-logos-grid">
+          <!-- Logo 1: Northwind -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="10" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="16" letter-spacing="0.08em" fill="#130e30">NORTHWIND</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 2: Solaria -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="15" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="16" letter-spacing="0.06em" fill="#130e30">SOLARIA AG</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 3: KRONOS -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="20" y="22" font-family="'Inter', sans-serif" font-weight="800" font-size="16" letter-spacing="0.1em" fill="#130e30">KRONOS</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 4: AURELIA -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="18" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="16" letter-spacing="0.07em" fill="#130e30">AURELIA</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 5: VERDANT -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="15" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="16" letter-spacing="0.08em" fill="#130e30">VERDANT</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 6: MERIDIAN -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="12" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="15" letter-spacing="0.06em" fill="#130e30">MERIDIAN</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 7: HELSINKI BIO -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="10" y="22" font-family="'Inter', sans-serif" font-weight="700" font-size="14" letter-spacing="0.06em" fill="#130e30">HELSINKI BIO</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+
+          <!-- Logo 8: VOLTIX -->
+          <div class="customer-logo-card">
+            <svg class="customer-logo-svg" viewBox="0 0 140 32" fill="none">
+              <text x="24" y="22" font-family="'Inter', sans-serif" font-weight="800" font-size="16" letter-spacing="0.1em" fill="#130e30">VOLTIX</text>
+            </svg>
+            <a href="#case-study" class="case-study-link">
+              <span>Case Study</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         FEATURE GRID: "Get compliant four times faster"
+         3 equal columns on #eff2e5 cards, 24px radius, 32px padding, NO shadows
+         Hedvig Letters Serif headings 22-32px, Inter 16px body copy
+         ========================================================================= -->
+    <section class="section section-canvas" id="features">
+      <div class="container">
+        
+        <div class="feature-header">
+          <span class="small-caps-label">EFFORTLESS COMPLIANCE PIPELINE</span>
+          <h2 class="text-heading-lg" style="font-weight: 700;">Get compliant four times faster</h2>
+          <p style="font-size: 18px; max-width: 580px;">
+            Eliminate fragmented spreadsheets and endless audit reconciliations with our unified compliance atelier.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          
+          <!-- Card 1 -->
+          <div class="card-meadow">
+            <div class="feature-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="card-title">Continuous CSRD Auditing</h3>
+            <p class="card-body">
+              Automate mandatory ESRS disclosures with dynamic data ingestors that connect straight to your enterprise ERP and accounting registers.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card-meadow">
+            <div class="feature-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="card-title">Tier-1 Supplier Verification</h3>
+            <p class="card-body">
+              Onboard and verify upstream vendor carbon emissions and social governance with frictionless self-serve questionnaire portals.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card-meadow">
+            <div class="feature-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="card-title">Certified EcoVadis Dossiers</h3>
+            <p class="card-body">
+              Compile evidence packages, policy documents, and KPI dashboards ready for single-click export to accredited assessment bodies.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         CUSTOMER TESTIMONIAL CAROUSEL
+         Surface: #eff2e5 cards, 24px radius, 32px padding
+         Hedvig / Inter quotes, Author block, Active yellow pill pagination dot
+         ========================================================================= -->
+    <section class="section section-canvas testimonials-section" id="testimonials">
+      <div class="container">
+        
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px;">
+          <div>
+            <span class="small-caps-label">AUTHENTIC IMPACT</span>
+            <h2 class="text-heading" style="margin-top: 8px;">Loved by sustainability officers</h2>
+          </div>
+
+          <!-- Carousel Arrow Controls -->
+          <div class="carousel-controls" style="margin: 0;">
+            <button class="carousel-arrow-btn" id="prevSlide" aria-label="Previous Testimonial">
+              <svg viewBox="0 0 24 24" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <button class="carousel-arrow-btn" id="nextSlide" aria-label="Next Testimonial">
+              <svg viewBox="0 0 24 24" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="carousel-viewport">
+          <div class="carousel-track" id="testimonialTrack">
+            
+            <!-- Slide 1 -->
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                “Ditto turned an 8-month manual compliance ordeal into an intuitive 6-week sprint. Our executive committee was stunned by how effortlessly we obtained our EcoVadis Gold rating.”
+              </p>
+              <div class="author-block">
+                <div class="author-avatar" aria-hidden="true">EL</div>
+                <div class="author-info">
+                  <span class="author-name">Éléonore Laurent</span>
+                  <span class="author-title">Chief Sustainability Officer, Aurelia Group</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                “The warmth and clarity of the Ditto platform stands in stark contrast to clinical enterprise tools. Our entire supply chain actually enjoys submitting their carbon audits here.”
+              </p>
+              <div class="author-block">
+                <div class="author-avatar" aria-hidden="true">MK</div>
+                <div class="author-info">
+                  <span class="author-name">Magnus Kjellberg</span>
+                  <span class="author-title">VP Supply Chain &amp; ESG, Solaria AG</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                “By combining deep regulatory rigour with immaculate design, Ditto gave our leadership team the exact proof points needed to secure our green bond financing on schedule.”
+              </p>
+              <div class="author-block">
+                <div class="author-avatar" aria-hidden="true">SR</div>
+                <div class="author-info">
+                  <span class="author-name">Sophia Rossi</span>
+                  <span class="author-title">Director of Corporate Governance, Meridian</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                “A breath of fresh air in B2B compliance. We replaced three disjointed legacy advisors and saved over €180,000 in external auditing fees within the first two quarters.”
+              </p>
+              <div class="author-block">
+                <div class="author-avatar" aria-hidden="true">JB</div>
+                <div class="author-info">
+                  <span class="author-name">Jan de Bruin</span>
+                  <span class="author-title">Head of ESG Compliance, Northwind Logistics</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Pagination Dots: Inactive line in slate, Active Hi-Yellow #ffe228 pill -->
+        <div class="carousel-controls">
+          <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Testimonial navigation">
+            <button class="dot-indicator active" data-index="0" aria-label="Slide 1"></button>
+            <button class="dot-indicator" data-index="1" aria-label="Slide 2"></button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         INTERACTIVE COMPONENT SHOWCASE & DESIGN SYSTEM PLAYGROUND
+         Allows inspecting tokens, buttons, surfaces, and testing forms
+         ========================================================================= -->
+    <section class="section section-canvas" id="tokens">
+      <div class="container">
+        
+        <div class="component-playground">
+          <span class="small-caps-label">SPECIFICATION COMPLIANCE</span>
+          <h2 class="text-heading" style="margin-top: 8px;">Ditto Design Tokens &amp; Component Playground</h2>
+          <p style="margin-top: 6px;">Live inspection of the sunlit wildflower design system, strictly honoring all token boundaries, 1440px pill radii, and contrast ratios.</p>
+
+          <div class="playground-grid">
+            
+            <!-- Left: Color Palette Swatches -->
+            <div>
+              <h4 class="text-heading-sm" style="margin-bottom: 16px;">Color Palette &amp; Token Roles</h4>
+              <div class="token-swatch-list">
+                
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-deep-ink);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Deep Ink</div>
+                    <div class="swatch-hex">#130e30</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-hi-yellow);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Hi-Yellow</div>
+                    <div class="swatch-hex">#ffe228</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-soft-meadow);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Soft Meadow</div>
+                    <div class="swatch-hex">#eff2e5</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-canvas);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Canvas</div>
+                    <div class="swatch-hex">#f9fbf2</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-slate);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Slate</div>
+                    <div class="swatch-hex">#5f5c6e</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-moss-green);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Moss Green *</div>
+                    <div class="swatch-hex">#59e25d</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-fuchsia);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Fuchsia *</div>
+                    <div class="swatch-hex">#e261e5</div>
+                  </div>
+                </div>
+
+                <div class="swatch-card">
+                  <div class="swatch-color-box" style="background-color: var(--color-charcoal);"></div>
+                  <div class="swatch-meta">
+                    <div class="swatch-name">Charcoal</div>
+                    <div class="swatch-hex">#222222</div>
+                  </div>
+                </div>
+
+              </div>
+              <p style="font-size: 12px; margin-top: 10px; color: var(--color-slate);">
+                * <em>Note: Moss Green and Fuchsia are strictly reserved for decorative background blobs behind the hero product card and never used for UI controls.</em>
+              </p>
+            </div>
+
+            <!-- Right: Component Hierarchy & Button Pairing -->
+            <div>
+              <h4 class="text-heading-sm" style="margin-bottom: 16px;">Component Rules &amp; Hierarchy</h4>
+              
+              <div style="background: var(--surface-canvas); padding: 24px; border-radius: 20px; display: flex; flex-direction: column; gap: 20px;">
+                
+                <div>
+                  <div class="small-caps-label" style="margin-bottom: 8px;">Primary &amp; Secondary Action Pair</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+                    <button class="btn btn-primary" onclick="showToast('Primary Action: Hi-Yellow (#ffe228) triggered!')">
+                      Primary CTA
+                    </button>
+                    <button class="btn btn-secondary" onclick="showToast('Secondary Action: Deep Ink (#130e30) triggered!')">
+                      Secondary Pill
+                    </button>
+                    <button class="btn btn-outline" onclick="showToast('Ghost Pill button clicked')">
+                      Ghost Pill
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="small-caps-label" style="margin-bottom: 8px;">Interactive Capsule Input Field</div>
+                  <div class="capsule-form" style="max-width: 100%;">
+                    <input type="text" class="capsule-input" id="demoCapsuleInput" placeholder="Try typing here...">
+                    <button class="btn btn-primary" onclick="showToast('Captured: ' + (document.getElementById('demoCapsuleInput').value || 'empty'))">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="small-caps-label" style="margin-bottom: 6px;">Geometry Verification</div>
+                  <p style="font-size: 13px; color: var(--color-slate);">
+                    All buttons, tags, and form fields enforce <code>border-radius: 1440px</code>. Cards strictly use <code>24px</code> on <code>#eff2e5</code> without drop shadows.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       SITE FOOTER
+       Background: Soft Meadow #eff2e5, subtle borders, brand wordmark
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      
+      <div class="footer-top">
+        
+        <div class="footer-brand-column">
+          <a href="ditto.html" class="brand-lockup">
+            <svg class="brand-leaf-icon" viewBox="0 0 32 32" fill="none">
+              <path d="M6 26C6 14.9543 14.9543 6 26 6C26 17.0457 17.0457 26 6 26Z" fill="#130e30"/>
+              <circle cx="16" cy="16" r="4.5" fill="#ffe228"/>
+            </svg>
+            <span>ditto</span>
+          </a>
+          <p style="font-size: 14px;">
+            The sunlit wildflower compliance atelier. Streamlining ESG governance, CSRD verification, and carbon accounting across Europe.
+          </p>
+          <span class="small-caps-label">EST. 2026 · BERLIN &amp; PARIS</span>
+        </div>
+
+        <div>
+          <div class="footer-nav-title">Platform</div>
+          <ul class="footer-nav-list">
+            <li><a href="#features">CSRD Automation</a></li>
+            <li><a href="#features">Scope 1-3 Accounting</a></li>
+            <li><a href="#features">EcoVadis Readiness</a></li>
+            <li><a href="#features">Supplier Ingestor</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-nav-title">Frameworks</div>
+          <ul class="footer-nav-list">
+            <li><a href="#compliance">ESRS Standards</a></li>
+            <li><a href="#compliance">GRI Alignment</a></li>
+            <li><a href="#compliance">TCFD Disclosures</a></li>
+            <li><a href="#compliance">EU Taxonomy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-nav-title">Company</div>
+          <ul class="footer-nav-list">
+            <li><a href="#case-studies">Customer Stories</a></li>
+            <li><a href="#tokens">Design Philosophy</a></li>
+            <li><a href="#security">Security &amp; ISO 27001</a></li>
+            <li><a href="#contact">Contact Atelier</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Ditto Technologies SAS. All rights reserved.</div>
+        <div style="display: flex; gap: 24px;">
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Service</a>
+          <a href="#trust">Trust Center</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Toast Notification Pill for Interactive Feedback -->
+  <div class="toast-pill" id="toastPill" role="status" aria-live="polite"></div>
+
+  <!-- Vanilla JavaScript for Carousel and Form Interactions -->
+  <script>
+    // Toast helper
+    function showToast(message) {
+      const toast = document.getElementById('toastPill');
+      toast.textContent = message;
+      toast.classList.add('visible');
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 3200);
+    }
+
+    // Hero Email Submission
+    function handleEmailSubmit(event) {
+      event.preventDefault();
+      const input = document.getElementById('heroEmailInput');
+      if (input && input.value) {
+        showToast('Invite sent to: ' + input.value);
+        input.value = '';
+      }
+    }
+
+    // Testimonial Carousel Logic
+    (function initCarousel() {
+      const track = document.getElementById('testimonialTrack');
+      const prevBtn = document.getElementById('prevSlide');
+      const nextBtn = document.getElementById('nextSlide');
+      const dots = document.querySelectorAll('.dot-indicator');
+      if (!track) return;
+
+      let currentStep = 0;
+      const maxSteps = 1; // 2 steps for 4 slides in viewports
+
+      function updateSlide(step) {
+        currentStep = Math.max(0, Math.min(step, maxSteps));
+        const shiftPercent = currentStep * (window.innerWidth < 768 ? 100 : 33.333);
+        track.style.transform = `translateX(-${shiftPercent}%)`;
+
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentStep);
+        });
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => updateSlide(currentStep - 1));
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => updateSlide(currentStep + 1));
+      }
+
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => updateSlide(idx));
+      });
+    })();
+  </script>
+</body>
+</html>

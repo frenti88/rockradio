@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development — Gravity Tower London</title>
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gt-bg: #f7f5f2;
+            --gt-surface: #ffffff;
+            --gt-muted-bg: #ede9e2;
+            --gt-accent: #a3855c;
+            --gt-dark: #121316;
+            --gt-text: #26272c;
+            --gt-text-muted: #72737c;
+            --gt-border: rgba(20, 22, 28, 0.08);
+            --gt-border-light: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--gt-bg);
+            color: var(--gt-text);
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        h1, h2, h3, h4, .uk-heading-xlarge, .uk-heading-large, .uk-heading-medium, .el-title-serif {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 500;
+            color: #121316;
+        }
+
+        .kicker-tag {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.22em;
+            font-weight: 600;
+            color: var(--gt-accent);
+            display: inline-block;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Navbar */
+        .tm-header-sticky {
+            transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+        }
+        .uk-navbar-sticky {
+            background: rgba(247, 245, 242, 0.94) !important;
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--gt-border);
+        }
+        .uk-navbar-nav > li > a {
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gt-text);
+        }
+        .uk-navbar-nav > li > a:hover, .uk-navbar-nav > li.uk-active > a {
+            color: var(--gt-accent);
+        }
+
+        .brand-logo-text {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #121316;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none !important;
+        }
+        .brand-logo-badge {
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid #121316;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        .brand-logo-badge span {
+            transform: rotate(-45deg);
+        }
+
+        .uk-button-default {
+            border: 1px solid #121316;
+            color: #121316;
+            background: transparent;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 0 28px;
+            height: 44px;
+            line-height: 42px;
+            transition: all 0.3s ease;
+        }
+        .uk-button-default:hover {
+            background: #121316;
+            color: #ffffff;
+        }
+
+        /* 300vh Cascade Parallax Section */
+        .cascade-track {
+            height: 260vh;
+            position: relative;
+            background-color: var(--gt-muted-bg);
+            overflow: hidden;
+            border-bottom: 1px solid var(--gt-border);
+        }
+        .cascade-sticky-title {
+            position: sticky;
+            top: 40vh;
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .cascade-floating-item {
+            position: absolute;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fff;
+        }
+        .cascade-floating-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gt-footer-reveal {
+            background-color: var(--gt-dark);
+            color: #9ea0ab;
+            padding: 70px 0 40px;
+        }
+        .gt-footer-reveal a {
+            color: #9293a0;
+            text-decoration: none;
+        }
+        .gt-footer-reveal a:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Navbar -->
+    <div uk-sticky="sel-target: .tm-header-sticky; cls-active: uk-navbar-sticky; show-on-up: true; animation: uk-animation-slide-top">
+        <div class="tm-header-sticky uk-navbar-container uk-navbar-transparent">
+            <div class="uk-container uk-container-expand">
+                <nav class="uk-navbar" uk-navbar>
+                    <div class="uk-navbar-left">
+                        <a href="index.html" class="uk-navbar-item brand-logo-text">
+                            <span class="brand-logo-badge"><span>GT</span></span>
+                            Gravity Tower
+                        </a>
+                        <ul class="uk-navbar-nav uk-visible@m uk-margin-large-left">
+                            <li class="uk-active"><a href="development.html">Development</a></li>
+                            <li><a href="apartments.html">Apartments</a></li>
+                            <li><a href="index.html#interior-tracker">Interior</a></li>
+                            <li><a href="index.html#neighbourhood">Location</a></li>
+                            <li><a href="index.html#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="uk-navbar-right">
+                        <div class="uk-navbar-item">
+                            <a href="index.html#enquiry-modal" uk-toggle class="uk-button uk-button-default">Enquire</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- CASCADE PARALLAX HERO (Signature Development Page from Gravity Tower) -->
+    <div class="cascade-track">
+        
+        <!-- Pinned Sticky Title -->
+        <div class="cascade-sticky-title">
+            <span class="kicker-tag">Architectural Radiance</span>
+            <h1 class="uk-heading-xlarge uk-margin-remove" style="font-size: clamp(3.2rem, 7vw, 6.2rem); text-shadow: 0 4px 25px rgba(255,255,255,0.7);">
+                A Tower With Radiance
+            </h1>
+            <p class="uk-text-muted uk-text-lead uk-margin-small-top">
+                Scroll down to see the architectural assembly in motion
+            </p>
+        </div>
+
+        <!-- Floating Architectural Assets in Differential Parallax -->
+        <div class="cascade-floating-item" style="width: 380px; height: 460px; left: 8vw; top: 15vh;" uk-parallax="y: -120vh; easing: 0.3;">
+            <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&q=80&w=800" alt="Tower Structure">
+        </div>
+
+        <div class="cascade-floating-item" style="width: 320px; height: 440px; right: 10vw; top: 35vh;" uk-parallax="y: -160vh; easing: 0.4;">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800" alt="Facade Ribs">
+        </div>
+
+        <div class="cascade-floating-item" style="width: 360px; height: 420px; left: 16vw; top: 95vh;" uk-parallax="y: -140vh; easing: 0.5;">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" alt="Balcony Cantilever">
+        </div>
+
+        <div class="cascade-floating-item" style="width: 440px; height: 380px; right: 14vw; top: 125vh;" uk-parallax="y: -180vh; easing: 0.35;">
+            <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=800" alt="Interior Architecture">
+        </div>
+
+    </div>
+
+    <!-- OUR PHILOSOPHY SECTION -->
+    <section class="uk-section uk-section-large" style="background-color: var(--gt-surface);">
+        <div class="uk-container">
+            <div class="uk-grid-large uk-flex-middle" uk-grid>
+                
+                <div class="uk-width-1-2@m">
+                    <span class="kicker-tag">Our Philosophy</span>
+                    <h2 class="uk-heading-medium uk-margin-small-top" style="font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.15;">
+                        It Was Important to Us to Put Sustainability and Practicability in the Focus
+                    </h2>
+                    <p class="uk-text-muted uk-margin-medium-top" style="font-size: 1.05rem; line-height: 1.8;">
+                        Gravity Tower was envisioned as a net-zero carbon flagship development. Combining advanced photovoltaic glass, geothermal heat pump loops, rainwater recycling, and biophilic internal sky gardens.
+                    </p>
+                    <div class="uk-grid-small uk-child-width-1-3 uk-margin-large-top uk-text-center" uk-grid>
+                        <div>
+                            <div class="el-title-serif" style="font-size: 2.8rem; font-weight: bold; color: var(--gt-accent);">74</div>
+                            <div class="uk-text-small uk-text-muted uk-text-uppercase">Storeys High</div>
+                        </div>
+                        <div>
+                            <div class="el-title-serif" style="font-size: 2.8rem; font-weight: bold; color: var(--gt-accent);">100%</div>
+                            <div class="uk-text-small uk-text-muted uk-text-uppercase">Renewable Power</div>
+                        </div>
+                        <div>
+                            <div class="el-title-serif" style="font-size: 2.8rem; font-weight: bold; color: var(--gt-accent);">BREEAM</div>
+                            <div class="uk-text-small uk-text-muted uk-text-uppercase">Outstanding</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uk-width-1-2@m">
+                    <div style="border-radius: 12px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+                        <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=85&w=1200" alt="Sustainability Architecture">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="gt-footer-reveal">
+        <div class="uk-container">
+            <div class="uk-flex uk-flex-between uk-flex-middle">
+                <div class="brand-logo-text" style="color: #ffffff;">
+                    <span class="brand-logo-badge" style="border-color: #ffffff;"><span>GT</span></span>
+                    Gravity Tower
+                </div>
+                <div>
+                    <a href="index.html" class="uk-button uk-button-default" style="border-color: rgba(255,255,255,0.3); color: #fff;">Back to Home</a>
+                </div>
+            </div>
+            <div class="uk-margin-large-top uk-text-small uk-text-muted uk-text-center">
+                &copy; 2026 Gravity Tower. Powered by YOOtheme Pro &amp; UIkit.
+            </div>
+        </div>
+    </footer>
+
+    <!-- UIkit Scripts -->
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+</body>
+</html>
