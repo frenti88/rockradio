@@ -8,3 +8,5 @@ audio/*.wav
 alegra-clone/
 .agents/
 .impeccable/
+.vercel
+.env*
