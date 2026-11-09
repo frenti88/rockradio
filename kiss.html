@@ -8004,7 +8004,14 @@
 
     function saveDjEddieCustomTracks(tracks) {
       try {
-        localStorage.setItem('dj_eddie_custom_tracks_v2', JSON.stringify(tracks));
+        const sanitized = tracks.map(t => {
+          const copy = { ...t };
+          if (copy.audioUrl && copy.audioUrl.startsWith('data:audio') && copy.fileUrl && !copy.fileUrl.startsWith('data:audio')) {
+            copy.audioUrl = copy.fileUrl;
+          }
+          return copy;
+        });
+        localStorage.setItem('dj_eddie_custom_tracks_v2', JSON.stringify(sanitized));
       } catch (e) {
         console.warn('Error saving dj_eddie_custom_tracks_v2 to localStorage:', e);
       }
@@ -8564,6 +8571,9 @@
       delete activeStoryGenerations[pairId];
 
       if (audioData && (audioData.fileUrl || audioData.audioUrl)) {
+        if (!window.__eddieAudioCache) window.__eddieAudioCache = {};
+        if (audioData.audioUrl) window.__eddieAudioCache[pairId] = audioData.audioUrl;
+
         // Validación rigurosa de audio reproducible
         introItem.audioUrl = audioData.fileUrl || audioData.audioUrl;
         introItem.fileUrl = audioData.fileUrl || audioData.audioUrl;
@@ -8579,6 +8589,12 @@
         saveDjEddieCustomTracks(customTracks);
         buildDjEddieCatalog();
         renderDjEddiePlaylistSongs();
+        renderLyrics();
+
+        // Precarga en segundo plano de la canción completa de Spotify vinculada
+        if (introItem.relatedSongId) {
+          resolveFullSongForTrack(introItem.relatedSongId, introItem.songTitle, introItem.bandName).catch(() => {});
+        }
 
         // Alerta no invasiva al finalizar con el tiempo real de backend
         showAppToast({
@@ -8787,11 +8803,12 @@
 
       listEl.innerHTML = '';
       catalog.forEach((item, idx) => {
-        const isCurrentTrack = (GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive && djEddieIndex === idx);
-        const isPlayingNow = isCurrentTrack && !spotifyAudio.paused;
+        const isCurrentTrack = (isDjEddieActive && djEddieIndex === idx);
+        const isAudioActive = !spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0);
+        const isPlayingNow = isCurrentTrack && isAudioActive;
 
         const row = document.createElement('div');
-        row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '') + (item.isIntro ? ' is-intro-row' : ' is-song-row');
+        row.className = 'dj-song-row' + (isPlayingNow ? ' playing' : (isCurrentTrack ? ' active-track' : '')) + (item.isIntro ? ' is-intro-row' : ' is-song-row');
         row.setAttribute('data-track-id', item.id);
         if (item.pairId) row.setAttribute('data-pair-id', item.pairId);
 
@@ -8939,9 +8956,8 @@
         if (playBtn) {
           playBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (isCurrentTrack) {
+            if (isDjEddieActive && djEddieIndex === idx) {
               GlobalAudioPlayer.togglePlay();
-              renderDjEddiePlaylistSongs();
             } else {
               playDjEddieItem(idx, false);
             }
@@ -8949,9 +8965,8 @@
         }
 
         row.addEventListener('click', () => {
-          if (isCurrentTrack) {
+          if (isDjEddieActive && djEddieIndex === idx) {
             GlobalAudioPlayer.togglePlay();
-            renderDjEddiePlaylistSongs();
           } else {
             playDjEddieItem(idx, false);
           }
@@ -9009,33 +9024,63 @@
       // Audio Source Selection:
       if (item.isIntro) {
         if (!item.hasRealAudio || !item.audioUrl) {
-          // Si la historia aún no ha sido generada, reproducir directamente la canción completa de Spotify
-          let songIdx = -1;
-          if (item.relatedSongId) {
-            songIdx = djEddieQueue.findIndex(x => x.id === item.relatedSongId);
-          }
-          if (songIdx !== -1) {
-            showAppToast(`Esta canción aún no tiene historia generada. Reproduciendo canción original de Spotify.`, 'info');
-            playDjEddieItem(songIdx, false);
-            return;
+          if (window.__eddieAudioCache && window.__eddieAudioCache[item.pairId]) {
+            item.audioUrl = window.__eddieAudioCache[item.pairId];
+            item.hasRealAudio = true;
+          } else {
+            // Si la historia aún no ha sido generada, reproducir directamente la canción completa de Spotify
+            let songIdx = -1;
+            if (item.relatedSongId) {
+              songIdx = djEddieQueue.findIndex(x => x.id === item.relatedSongId);
+            }
+            if (songIdx !== -1) {
+              showAppToast({
+                title: 'Historia aún no generada',
+                desc: `Reproduciendo versión original de «${item.songTitle}». Pulsa "✨ Generar historia" para crear la locución.`,
+                type: 'info',
+                icon: '🎙️',
+                duration: 4000
+              });
+              playDjEddieItem(songIdx, false);
+              return;
+            }
           }
         }
         // Pure voice intro narrated by Eddie (no background music)
-        spotifyAudio.src = item.audioUrl;
+        const srcUrl = (window.__eddieAudioCache && window.__eddieAudioCache[item.pairId]) || item.audioUrl;
+        spotifyAudio.src = srcUrl;
         spotifyAudio.currentTime = 0;
         spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
       } else {
         // Normal song unmodified from Spotify (reproduced 100% complete)
         let directAudioUrl = item.audioUrl || item.fileUrl || item.previewUrl || item._resolvedAudioUrl || null;
-        const isFullFile = directAudioUrl && directAudioUrl.includes('audio/full_');
 
         if (directAudioUrl) {
           spotifyAudio.src = directAudioUrl;
           spotifyAudio.currentTime = 0;
           spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play notice:', e));
+        } else {
+          showAppToast({
+            title: 'Cargando pista completa',
+            desc: `Obteniendo «${item.songTitle}» de Spotify...`,
+            type: 'info',
+            icon: '🎵',
+            duration: 4000
+          });
+          resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(fullUrl => {
+            if (fullUrl && isDjEddieActive && djEddieIndex === index) {
+              item.audioUrl = fullUrl;
+              item.fileUrl = fullUrl;
+              item._resolvedAudioUrl = fullUrl;
+              spotifyAudio.src = fullUrl;
+              spotifyAudio.currentTime = 0;
+              spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play full track notice:', e));
+            }
+          });
         }
 
-        if (!isFullFile) {
+        const isFullFile = directAudioUrl && directAudioUrl.includes('audio/full_');
+        if (directAudioUrl && !isFullFile) {
           // Resolve full song file in background and seamlessly continue full track
           resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(fullUrl => {
             if (fullUrl && isDjEddieActive && djEddieIndex === index) {
@@ -9529,31 +9574,49 @@
       },
 
       togglePlay() {
-        if (this.source === 'spotify') {
-          if (this.spotifyIsPlaying) {
-            // Pause Spotify
-            this.spotifyIsPlaying = false;
-            if (!spotifyAudio.paused) spotifyAudio.pause();
-            if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
-            stopSpotifyProgressSimulation();
-            updatePlayUI(false);
-          } else {
-            // Resume Spotify
+        // Universal Source of Truth: Is audio actively playing?
+        const isAudioActive = !spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0);
+
+        if (isAudioActive || this.spotifyIsPlaying) {
+          // Unconditional Pause across all audio sources
+          if (!spotifyAudio.paused) {
+            spotifyAudio.pause();
+          }
+          if (spotifySdkPlayer) {
+            try { spotifySdkPlayer.pause(); } catch(e) {}
+          }
+          this.spotifyIsPlaying = false;
+          stopSpotifyProgressSimulation();
+          updatePlayUI(false);
+        } else {
+          // Resume / Start Playback
+          if (this.source === 'spotify' && this.spotifyTrack) {
             this.spotifyIsPlaying = true;
-            if (this.spotifyTrack && (this.spotifyTrack.preview_url || this.spotifyTrack._resolvedAudioUrl)) {
-              spotifyAudio.play().catch(() => {});
+            const directUrl = this.spotifyTrack.audioUrl || this.spotifyTrack.preview_url || this.spotifyTrack._resolvedAudioUrl;
+            if (directUrl && (!spotifyAudio.src || spotifyAudio.src.endsWith('/') || spotifyAudio.src === window.location.href)) {
+              spotifyAudio.src = directUrl;
             }
-            if (spotifySdkPlayer) { try { spotifySdkPlayer.resume(); } catch(e){} }
+            if (spotifyAudio.src && !spotifyAudio.src.endsWith('/') && spotifyAudio.src !== window.location.href) {
+              spotifyAudio.play().then(() => updatePlayUI(true)).catch(() => {});
+            }
+            if (spotifySdkPlayer) {
+              try { spotifySdkPlayer.resume(); } catch(e) {}
+            }
             startSpotifyProgressSimulation();
             updatePlayUI(true);
-          }
-        } else {
-          // DJ Eddie or Local 45s
-          if (spotifyAudio.paused) {
-            spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
           } else {
-            spotifyAudio.pause();
-            updatePlayUI(false);
+            // DJ Eddie or Local Band Audio
+            if (spotifyAudio.src && !spotifyAudio.src.endsWith('/') && spotifyAudio.src !== window.location.href) {
+              spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => {
+                console.warn('Resume error:', e);
+                if (isDjEddieActive && djEddieQueue.length) {
+                  playDjEddieItem(djEddieIndex, false);
+                }
+              });
+            } else if (isDjEddieActive && djEddieQueue.length) {
+              playDjEddieItem(djEddieIndex, false);
+            }
+            updatePlayUI(true);
           }
         }
       },
@@ -9718,10 +9781,39 @@
           djPlPause.classList.add('hidden');
         }
       }
-      if (currentAppView === 'djeddie') {
-        renderDjEddiePlaylistSongs();
-      }
+      // Synchronize in-list rows (in DJ Eddie table) in real-time
+      const rows = document.querySelectorAll('.dj-song-row');
+      rows.forEach((row, rIdx) => {
+        const isThisRowActive = (isDjEddieActive && djEddieIndex === rIdx);
+        const playBtn = row.querySelector('.dj-row-play-btn');
+        const numCol = row.querySelector('.dj-col-num');
+        if (isThisRowActive && isPlaying) {
+          row.classList.add('playing');
+          if (numCol) numCol.textContent = '🔊';
+          if (playBtn) {
+            playBtn.setAttribute('title', 'Pausar');
+            playBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+          }
+        } else {
+          row.classList.remove('playing');
+          if (numCol) numCol.textContent = String(rIdx + 1);
+          if (playBtn) {
+            const item = djEddieQueue[rIdx];
+            const title = (item && item.isIntro) ? 'Escuchar Historia' : 'Reproducir';
+            playBtn.setAttribute('title', title);
+            playBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+          }
+        }
+      });
     }
+
+    // Native HTML5 audio events ensuring 100% unified synchronization
+    spotifyAudio.addEventListener('play', () => {
+      updatePlayUI(true);
+    });
+    spotifyAudio.addEventListener('pause', () => {
+      updatePlayUI(false);
+    });
 
     btnBigPlay.addEventListener('click', togglePlay);
     // Format switcher button listeners
