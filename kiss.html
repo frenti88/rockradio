@@ -3088,6 +3088,291 @@
       border: 1px solid rgba(245, 158, 11, 0.4);
     }
 
+    
+    /* ========================================================
+       DJ EDDIE PLAYLIST / SONG LIST VIEW (SPOTIFY PLAYLIST STYLE)
+       ======================================================== */
+    .dj-eddie-playlist-view {
+      padding: 16px 24px 28px;
+      animation: fadeInDjView 0.22s ease-out;
+    }
+    @keyframes fadeInDjView {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dj-playlist-top-nav,
+    .band-view-top-nav {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .btn-back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 9999px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+    .btn-back-home:hover {
+      background: rgba(255, 255, 255, 0.16);
+      transform: translateX(-2px);
+    }
+    .dj-playlist-hero {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 28px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #065f46 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
+      margin-bottom: 20px;
+    }
+    .dj-playlist-orb-cover {
+      width: 156px;
+      height: 156px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+    .dj-playlist-hero-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .dj-playlist-main-title {
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      margin: 6px 0 8px;
+      line-height: 1.05;
+    }
+    .dj-playlist-main-desc {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.5;
+      max-width: 680px;
+      margin-bottom: 12px;
+    }
+    .dj-playlist-meta-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #e5e7eb;
+    }
+    .dj-playlist-action-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .dj-playlist-table-wrap {
+      background: rgba(18, 18, 18, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .dj-playlist-table-header {
+      display: grid;
+      grid-template-columns: 44px minmax(220px, 1.4fr) minmax(200px, 1.6fr) 80px 96px;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #b3b3b3;
+    }
+    .dj-playlist-songs-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .dj-song-row {
+      display: grid;
+      grid-template-columns: 44px minmax(220px, 1.4fr) minmax(200px, 1.6fr) 80px 96px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .dj-song-row:last-child {
+      border-bottom: none;
+    }
+    .dj-song-row:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .dj-song-row.playing {
+      background: rgba(30, 215, 96, 0.13);
+    }
+    .dj-col-num {
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #b3b3b3;
+      font-variant-numeric: tabular-nums;
+    }
+    .dj-song-row.playing .dj-col-num {
+      color: #1ed760;
+    }
+    .dj-col-title-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .dj-song-thumb {
+      width: 46px;
+      height: 46px;
+      border-radius: 6px;
+      background: #000;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .dj-song-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .dj-song-meta {
+      min-width: 0;
+    }
+    .dj-song-name {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+    .dj-song-row.playing .dj-song-name {
+      color: #1ed760;
+    }
+    .dj-song-band {
+      font-size: 0.78rem;
+      color: #b3b3b3;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .dj-intro-pill {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.16);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      border-radius: 4px;
+      padding: 1px 6px;
+    }
+    .dj-col-story {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .dj-col-year {
+      font-size: 0.82rem;
+      color: #b3b3b3;
+      font-variant-numeric: tabular-nums;
+    }
+    .dj-col-dur {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #e5e7eb;
+      font-variant-numeric: tabular-nums;
+    }
+    .dj-row-play-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #1ed760;
+      color: #000;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+      flex-shrink: 0;
+    }
+    .dj-row-play-btn:hover {
+      transform: scale(1.08);
+      background: #3be477;
+    }
+    .dj-row-play-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+    .dj-eddie-hero-card {
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .dj-eddie-hero-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(16, 185, 129, 0.22);
+    }
+
+    @media (max-width: 900px) {
+      .dj-playlist-table-header {
+        grid-template-columns: 32px 1fr 76px;
+      }
+      .dj-playlist-table-header .dj-col-story,
+      .dj-playlist-table-header .dj-col-year {
+        display: none;
+      }
+      .dj-song-row {
+        grid-template-columns: 32px 1fr 76px;
+        padding: 10px 12px;
+      }
+      .dj-song-row .dj-col-story,
+      .dj-song-row .dj-col-year {
+        display: none;
+      }
+      .dj-playlist-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 16px;
+      }
+      .dj-playlist-orb-cover {
+        width: 104px;
+        height: 104px;
+      }
+      .dj-eddie-playlist-view {
+        padding: 12px 14px 24px;
+      }
+    }
+
     /* SPOTIFY BOTTOM NOW PLAYING BAR (Fixed 90px) */
     .spotify-player-bar {
       height: 90px;
@@ -4289,7 +4574,7 @@
       <div class="sidebar-panel">
         <ul class="sidebar-nav-list">
           <li>
-            <a href="#" class="sidebar-nav-item active">
+            <a href="#" class="sidebar-nav-item active" id="sidebarHomeBtn">
               <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33z"/></svg>
               <span>Inicio</span>
             </a>
@@ -4410,7 +4695,7 @@
             <div class="dj-eddie-actions-row">
               <button class="btn-dj-eddie-play" id="btnStartDjEddie" type="button">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <span id="btnStartDjEddieLabel">Escuchar DJ Eddie IA</span>
+                <span id="btnStartDjEddieLabel">Ver listado de canciones (11)</span>
               </button>
               <button class="btn-dj-eddie-next" id="btnNextDjEddie" type="button" title="Cambiar a la siguiente mezcla de DJ Eddie">
                 <span>⏭ Siguiente mezcla IA</span>
@@ -4488,6 +4773,78 @@
           </div>
         </div>
       </section>
+
+      <!-- ========================================================
+           VISTA DE PLAYLIST / LISTADO DE CANCIONES DE DJ EDDIE
+           ======================================================== -->
+      <section class="dj-eddie-playlist-view" id="djEddiePlaylistSection" style="display: none;">
+        <div class="dj-playlist-top-nav">
+          <button class="btn-back-home" id="btnBackHomeFromDj" type="button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            <span>Volver al Inicio</span>
+          </button>
+        </div>
+
+        <div class="dj-playlist-hero">
+          <div class="dj-playlist-orb-cover">
+            <div class="dj-eddie-orb-ring"></div>
+            <div class="dj-eddie-orb-inner">
+              <div class="dj-eddie-orb-waves">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <span>DJ EDDIE</span>
+            </div>
+          </div>
+          <div class="dj-playlist-hero-info">
+            <div class="dj-eddie-badge-row">
+              <span class="dj-eddie-live-dot"></span>
+              <span>LA RADIO DE LA IA • LOCUTOR OFICIAL: EDDIE</span>
+            </div>
+            <h1 class="dj-playlist-main-title">DJ Eddie • Radio IA</h1>
+            <p class="dj-playlist-main-desc">
+              Elige de la lista cuál canción quieres reproducir. Cada pista inicia con la historia real narrada por Eddie sobre la introducción original y luego suena la canción completa al 100%.
+            </p>
+            <div class="dj-playlist-meta-line">
+              <span style="color:#6ee7b7;font-weight:800;">🤖 Locutor: Eddie</span>
+              <span>•</span>
+              <span id="djPlaylistTrackCount">11 canciones completas</span>
+              <span>•</span>
+              <span style="color:#b3b3b3;">Edición Radio FM</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dj-playlist-action-bar">
+          <button class="btn-spotify-play-big" id="btnDjPlaylistPlayAll" type="button" title="Reproducir / Pausar DJ Eddie">
+            <svg id="djPlaylistPlayIcon" viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+            <svg id="djPlaylistPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
+          </button>
+          <button class="btn-dj-eddie-next" id="btnDjPlaylistShuffle" type="button" title="Reproducir una canción aleatoria de DJ Eddie">
+            <span>🔀 Aleatorio</span>
+          </button>
+        </div>
+
+        <div class="dj-playlist-table-wrap">
+          <div class="dj-playlist-table-header">
+            <div class="dj-col-num">#</div>
+            <div>Canción y Banda</div>
+            <div class="dj-col-story">Historia Real (Intro narrada por Eddie)</div>
+            <div class="dj-col-year">Año</div>
+            <div class="dj-col-dur">Duración</div>
+          </div>
+          <div class="dj-playlist-songs-list" id="djEddiePlaylistSongsList">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Barra para volver al Home cuando estás viendo una Banda -->
+      <div class="band-view-top-nav" id="bandViewTopNav" style="display: none; padding: 14px 24px 0;">
+        <button class="btn-back-home" id="btnBackHomeFromBand" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          <span>Volver al Inicio</span>
+        </button>
+      </div>
 
       <!-- BIG HERO BANNER (Spotify Album Header) -->
       <section class="hero-banner" id="heroBanner">
@@ -4945,6 +5302,7 @@
     let activeVoice = "eddie"; // jorge, dalia, alonso
     let activeTrackFormat = "45s"; // "45s" | "full"
     let currentFilter = "all";
+    let currentAppView = "home"; // "home" | "djeddie" | "band"
     let spotifySearchDebounce = null;
     let spotifySdkPlayer = null;
     let spotifySdkDeviceId = null;
@@ -5494,9 +5852,27 @@
 
     function renderSidebarPlaylists() {
       sidebarPlaylists.innerHTML = '';
+
+      // Item #1 pinned: DJ Eddie • Radio IA (Listado de 11 canciones)
+      const djItem = document.createElement('div');
+      djItem.className = 'playlist-item' + (currentAppView === 'djeddie' ? ' active' : '');
+      djItem.innerHTML = `
+        <div class="playlist-icon" style="background: radial-gradient(circle, #10b981 0%, #1e3a8a 100%); display:flex; align-items:center; justify-content:center; font-size:1.3rem; border: 1px solid rgba(52,211,153,0.45);">
+          <span>🤖</span>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
+          <div class="playlist-sub">Playlist IA • 11 canciones completas</div>
+        </div>
+      `;
+      djItem.addEventListener('click', () => {
+        openDjEddiePlaylistView();
+      });
+      sidebarPlaylists.appendChild(djItem);
+
       Object.values(bands).forEach(b => {
         const item = document.createElement('div');
-        item.className = 'playlist-item' + (b.id === activeBandId ? ' active' : '');
+        item.className = 'playlist-item' + (currentAppView === 'band' && b.id === activeBandId ? ' active' : '');
         item.innerHTML = `
           <div class="playlist-icon" style="background: #000; padding: 3px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
             <img src="${b.cover}" alt="${b.name}" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
@@ -5507,7 +5883,7 @@
           </div>
         `;
         item.addEventListener('click', () => {
-          loadBand(b.id, true);
+          openBandView(b.id, true, '45s');
         });
         sidebarPlaylists.appendChild(item);
       });
@@ -5552,6 +5928,143 @@
       return list;
     }
 
+    function switchAppView(mode) {
+      currentAppView = mode;
+      const quickSec = document.getElementById('spotifyQuickBannersSection');
+      const djHeroSec = document.getElementById('djEddieHeroSection');
+      const homeShelvesSec = document.getElementById('spotifyHomeShelves');
+      const djPlaylistSec = document.getElementById('djEddiePlaylistSection');
+      const bandTopNav = document.getElementById('bandViewTopNav');
+      const heroBannerEl = document.getElementById('heroBanner');
+      const actionBarEl = document.querySelector('.action-bar');
+      const tableSecEl = document.querySelector('.table-section');
+      const lyricsSecEl = document.getElementById('lyricsSection');
+      const aboutSecEl = document.querySelector('.spotify-about-section');
+      const discoSecEl = document.querySelector('.spotify-discography-section');
+      const membersSecEl = document.querySelector('.spotify-members-section');
+
+      if (mode === 'home') {
+        if (quickSec) quickSec.style.display = '';
+        if (djHeroSec) djHeroSec.style.display = '';
+        if (homeShelvesSec) homeShelvesSec.style.display = '';
+        if (djPlaylistSec) djPlaylistSec.style.display = 'none';
+        if (bandTopNav) bandTopNav.style.display = 'none';
+        if (heroBannerEl) heroBannerEl.style.display = 'none';
+        if (actionBarEl) actionBarEl.style.display = 'none';
+        if (tableSecEl) tableSecEl.style.display = 'none';
+        if (lyricsSecEl) lyricsSecEl.style.display = 'none';
+        if (aboutSecEl) aboutSecEl.style.display = 'none';
+        if (discoSecEl) discoSecEl.style.display = 'none';
+        if (membersSecEl) membersSecEl.style.display = 'none';
+      } else if (mode === 'djeddie') {
+        if (quickSec) quickSec.style.display = 'none';
+        if (djHeroSec) djHeroSec.style.display = 'none';
+        if (homeShelvesSec) homeShelvesSec.style.display = 'none';
+        if (djPlaylistSec) djPlaylistSec.style.display = 'block';
+        if (bandTopNav) bandTopNav.style.display = 'none';
+        if (heroBannerEl) heroBannerEl.style.display = 'none';
+        if (actionBarEl) actionBarEl.style.display = 'none';
+        if (tableSecEl) tableSecEl.style.display = 'none';
+        if (lyricsSecEl) lyricsSecEl.style.display = '';
+        if (aboutSecEl) aboutSecEl.style.display = 'none';
+        if (discoSecEl) discoSecEl.style.display = 'none';
+        if (membersSecEl) membersSecEl.style.display = 'none';
+        renderDjEddiePlaylistSongs();
+      } else if (mode === 'band') {
+        if (quickSec) quickSec.style.display = 'none';
+        if (djHeroSec) djHeroSec.style.display = 'none';
+        if (homeShelvesSec) homeShelvesSec.style.display = 'none';
+        if (djPlaylistSec) djPlaylistSec.style.display = 'none';
+        if (bandTopNav) bandTopNav.style.display = 'flex';
+        if (heroBannerEl) heroBannerEl.style.display = '';
+        if (actionBarEl) actionBarEl.style.display = '';
+        if (tableSecEl) tableSecEl.style.display = '';
+        if (lyricsSecEl) lyricsSecEl.style.display = '';
+        if (aboutSecEl) aboutSecEl.style.display = '';
+        if (discoSecEl) discoSecEl.style.display = '';
+        if (membersSecEl) membersSecEl.style.display = '';
+      }
+
+      renderSidebarPlaylists();
+      renderQuickBanners();
+      const mainStage = document.getElementById('spotifyMain');
+      if (mainStage && typeof mainStage.scrollTo === 'function') {
+        mainStage.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      if (typeof window.scrollTo === 'function') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function openDjEddiePlaylistView() {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      switchAppView('djeddie');
+    }
+
+    function openBandView(bandId, autoPlay = true, format = null) {
+      isDjEddieActive = false;
+      loadBand(bandId, autoPlay, format);
+      switchAppView('band');
+    }
+
+    function renderDjEddiePlaylistSongs() {
+      const listEl = document.getElementById('djEddiePlaylistSongsList');
+      if (!listEl) return;
+      const catalog = djEddieQueue.length ? djEddieQueue : buildDjEddieCatalog();
+      const countEl = document.getElementById('djPlaylistTrackCount');
+      if (countEl) countEl.textContent = `${catalog.length} canciones completas`;
+
+      listEl.innerHTML = '';
+      catalog.forEach((item, idx) => {
+        const isCurrentTrack = (
+          GlobalAudioPlayer.source === 'djeddie' &&
+          activeBandId === item.bandId &&
+          activeTrackFormat === 'full' &&
+          bands[item.bandId] &&
+          bands[item.bandId].fullTrack &&
+          bands[item.bandId].fullTrack.songTitle === item.songTitle
+        );
+        const isPlayingNow = isCurrentTrack && !spotifyAudio.paused;
+
+        const row = document.createElement('div');
+        row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '');
+        row.innerHTML = `
+          <div class="dj-col-num">${isPlayingNow ? '🔊' : (idx + 1)}</div>
+          <div class="dj-col-title-cell">
+            <div class="dj-song-thumb">
+              <img src="${item.cover}" alt="${escapeHtmlStr(item.songTitle)}" loading="lazy">
+            </div>
+            <div class="dj-song-meta">
+              <div class="dj-song-name" title="${escapeHtmlStr(item.songTitle)}">${escapeHtmlStr(item.songTitle)}</div>
+              <div class="dj-song-band">
+                <span>${escapeHtmlStr(item.bandName)}</span>
+                <span class="dj-intro-pill">🎙️ Intro Eddie (${item.introSec})</span>
+              </div>
+            </div>
+          </div>
+          <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">${escapeHtmlStr(item.summary || '')}</div>
+          <div class="dj-col-year">${escapeHtmlStr(String(item.year || ''))}</div>
+          <div class="dj-col-dur">
+            <span>${formatTime(item.duration)}</span>
+            <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Reproducir'} ${escapeHtmlStr(item.songTitle)}">
+              ${isPlayingNow
+                ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
+            </button>
+          </div>
+        `;
+        row.addEventListener('click', () => {
+          if (isCurrentTrack) {
+            GlobalAudioPlayer.togglePlay();
+            renderDjEddiePlaylistSongs();
+          } else {
+            playDjEddieItem(idx, false);
+          }
+        });
+        listEl.appendChild(row);
+      });
+    }
+
     function playDjEddieItem(index, scrollToLyrics = false) {
       if (!djEddieQueue.length) buildDjEddieCatalog();
       if (index < 0 || index >= djEddieQueue.length) index = 0;
@@ -5570,12 +6083,9 @@
       if (statusEl) {
         statusEl.textContent = `Sonando: ${item.songTitle} — ${item.bandName} (Locución: Eddie)`;
       }
-      const btnLabel = document.getElementById('btnStartDjEddieLabel');
-      if (btnLabel) {
-        btnLabel.textContent = `Sonando: ${item.songTitle}`;
-      }
 
       renderSpotifyHomeShelves();
+      renderDjEddiePlaylistSongs();
 
       if (scrollToLyrics) {
         const lyr = document.getElementById('lyricsSection');
@@ -5594,9 +6104,9 @@
       if (!container) return;
       container.innerHTML = '';
 
-      // Tile #1: DJ Eddie (La Radio de la IA)
+      // Tile #1: DJ Eddie (La Radio de la IA) -> Opens Song List View!
       const djTile = document.createElement('div');
-      djTile.className = 'spotify-quick-banner-card' + (isDjEddieActive ? ' active' : '');
+      djTile.className = 'spotify-quick-banner-card' + (currentAppView === 'djeddie' || isDjEddieActive ? ' active' : '');
       djTile.style.background = 'linear-gradient(90deg, rgba(37,99,235,0.42) 0%, rgba(16,185,129,0.28) 100%)';
       djTile.style.borderColor = 'rgba(52, 211, 153, 0.45)';
       djTile.innerHTML = `
@@ -5604,34 +6114,31 @@
           <span>🤖</span>
         </div>
         <div class="quick-banner-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
-        <button class="quick-banner-play-btn" title="Iniciar DJ Eddie IA">
+        <button class="quick-banner-play-btn" title="Abrir listado de canciones de DJ Eddie">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
       `;
       djTile.addEventListener('click', () => {
-        playDjEddieItem(djEddieIndex, false);
+        openDjEddiePlaylistView();
       });
       container.appendChild(djTile);
 
       // Next tiles: Featured Bands
       Object.values(bands).slice(0, 7).forEach(b => {
         const card = document.createElement('div');
-        card.className = 'spotify-quick-banner-card' + (!isDjEddieActive && b.id === activeBandId ? ' active' : '');
+        card.className = 'spotify-quick-banner-card' + (currentAppView === 'band' && !isDjEddieActive && b.id === activeBandId ? ' active' : '');
         card.dataset.bandId = b.id;
         card.innerHTML = `
           <div class="quick-banner-thumb">
             <img src="${b.cover}" alt="${b.name}">
           </div>
           <div class="quick-banner-name">${b.name}</div>
-          <button class="quick-banner-play-btn" title="Reproducir ${b.name}">
+          <button class="quick-banner-play-btn" title="Abrir ${b.name}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
         `;
         card.addEventListener('click', () => {
-          isDjEddieActive = false;
-          loadBand(b.id, true, b.hasFullTrack ? 'full' : '45s');
-          const heroEl = document.getElementById('heroBanner');
-          if (heroEl) heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          openBandView(b.id, true, b.hasFullTrack ? 'full' : '45s');
         });
         container.appendChild(card);
       });
@@ -5640,31 +6147,32 @@
     function renderSpotifyHomeShelves() {
       const catalog = buildDjEddieCatalog();
 
-      // 1. DJ Eddie Row (All 11 full radio tracks generated with voices)
+      // 1. Categoría: La Radio de la IA -> Card Principal de DJ Eddie (lleva al listado de las 11 canciones)
       const djRow = document.getElementById('djEddieTracksRow');
       if (djRow) {
         djRow.innerHTML = '';
-        catalog.forEach((item, idx) => {
-          const isPlayingThis = (activeBandId === item.bandId && activeTrackFormat === 'full' && bands[item.bandId].fullTrack && bands[item.bandId].fullTrack.songTitle === item.songTitle);
-          const card = document.createElement('div');
-          card.className = 'home-sp-card' + (isPlayingThis ? ' active-playing' : '');
-          card.innerHTML = `
-            <div class="home-sp-card-art">
-              <img src="${item.cover}" alt="${item.songTitle}" loading="lazy">
-              <span class="home-sp-card-badge">🤖 DJ Eddie IA</span>
-              <span class="home-sp-card-dur">${formatTime(item.duration)}</span>
-              <button class="home-sp-card-play" type="button" title="Reproducir ${item.songTitle} con DJ Eddie">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="home-sp-card-title" title="${item.songTitle} — ${item.bandName}">${item.songTitle}</div>
-            <div class="home-sp-card-sub">${item.bandName} (${item.year}) • Intro IA (${item.introSec}) + Tema Completo</div>
-          `;
-          card.addEventListener('click', () => {
-            playDjEddieItem(idx, false);
-          });
-          djRow.appendChild(card);
+
+        // Main DJ Eddie Card (Clicking opens the full song list where the user chooses which song to play)
+        const mainDjCard = document.createElement('div');
+        mainDjCard.className = 'home-sp-card' + (isDjEddieActive ? ' active-playing' : '');
+        mainDjCard.style.borderColor = 'rgba(52, 211, 153, 0.45)';
+        mainDjCard.style.background = 'linear-gradient(160deg, rgba(15,23,42,0.95) 0%, rgba(30,58,138,0.55) 55%, rgba(6,95,70,0.55) 100%)';
+        mainDjCard.innerHTML = `
+          <div class="home-sp-card-art" style="background: radial-gradient(circle at 50% 45%, #10b981 0%, #1d4ed8 55%, #090d16 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
+            <div style="font-size:3rem; filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6));">🤖</div>
+            <div style="font-size:0.75rem; font-weight:900; letter-spacing:0.12em; color:#ffffff; background:rgba(0,0,0,0.45); padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.2);">DJ EDDIE IA</div>
+            <span class="home-sp-card-badge">11 CANCIONES</span>
+            <button class="home-sp-card-play" type="button" title="Ver listado de canciones de DJ Eddie">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="home-sp-card-title" style="color:#6ee7b7;">DJ Eddie • La Radio de la IA</div>
+          <div class="home-sp-card-sub">Ingresa para ver el listado de las 11 canciones con voz de Eddie y elegir cuál reproducir</div>
+        `;
+        mainDjCard.addEventListener('click', () => {
+          openDjEddiePlaylistView();
         });
+        djRow.appendChild(mainDjCard);
       }
 
       // 2. "Hecho para ti" Row (Spotify Daily Mixes & Curated Rock Sessions)
@@ -5676,7 +6184,7 @@
             sub: 'Toto, Alphaville, Tears for Fears, Def Leppard y más con DJ Eddie',
             cover: 'img/covers/cover_toto.png',
             badge: 'DAILY MIX 01',
-            action: () => playDjEddieItem(0, false)
+            action: () => { openDjEddiePlaylistView(); playDjEddieItem(0, false); }
           },
           {
             title: 'Daily Mix 2: Heavy & Thrash',
@@ -5685,6 +6193,7 @@
             badge: 'DAILY MIX 02',
             action: () => {
               const idx = catalog.findIndex(x => x.bandId === 'metallica');
+              openDjEddiePlaylistView();
               playDjEddieItem(idx >= 0 ? idx : 0, false);
             }
           },
@@ -5695,6 +6204,7 @@
             badge: 'DAILY MIX 03',
             action: () => {
               const idx = catalog.findIndex(x => x.bandId === 'acdc');
+              openDjEddiePlaylistView();
               playDjEddieItem(idx >= 0 ? idx : 0, false);
             }
           },
@@ -5705,16 +6215,18 @@
             badge: 'DAILY MIX 04',
             action: () => {
               const idx = catalog.findIndex(x => x.bandId === 'rush');
+              openDjEddiePlaylistView();
               playDjEddieItem(idx >= 0 ? idx : 0, false);
             }
           },
           {
-            title: 'Baladas & Himnos de Estadio',
+            title: 'Power Ballads & Himnos FM',
             sub: 'KISS (Forever), Led Zeppelin, Def Leppard (Hysteria)',
             cover: 'img/covers/cover_kiss.png',
             badge: 'RADIO MIX',
             action: () => {
               const idx = catalog.findIndex(x => x.bandId === 'kiss');
+              openDjEddiePlaylistView();
               playDjEddieItem(idx >= 0 ? idx : 0, false);
             }
           },
@@ -5725,6 +6237,7 @@
             badge: 'GLAM MIX',
             action: () => {
               const idx = catalog.findIndex(x => x.bandId === 'motley_crue');
+              openDjEddiePlaylistView();
               playDjEddieItem(idx >= 0 ? idx : 0, false);
             }
           }
@@ -5770,8 +6283,7 @@
             <div class="home-sp-card-sub">${b.era} • ${b.genreLabel}</div>
           `;
           card.addEventListener('click', () => {
-            isDjEddieActive = false;
-            loadBand(b.id, true, '45s');
+            openBandView(b.id, true, '45s');
           });
           capRow.appendChild(card);
         });
@@ -5794,9 +6306,7 @@
             <div class="home-sp-card-sub" style="text-align:center;">Artista • ${b.genreLabel}</div>
           `;
           card.addEventListener('click', () => {
-            loadBand(b.id, true, b.hasFullTrack ? 'full' : '45s');
-            const heroEl = document.getElementById('heroBanner');
-            if (heroEl) heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            openBandView(b.id, true, b.hasFullTrack ? 'full' : '45s');
           });
           artRow.appendChild(card);
         });
@@ -6120,6 +6630,12 @@
           modalPlayIcon.classList.add('hidden');
           modalPauseIcon.classList.remove('hidden');
         }
+        const djPlPlay = document.getElementById('djPlaylistPlayIcon');
+        const djPlPause = document.getElementById('djPlaylistPauseIcon');
+        if (djPlPlay && djPlPause) {
+          djPlPlay.classList.add('hidden');
+          djPlPause.classList.remove('hidden');
+        }
       } else {
         bigPlayIcon.classList.remove('hidden');
         bigPauseIcon.classList.add('hidden');
@@ -6133,6 +6649,15 @@
           modalPlayIcon.classList.remove('hidden');
           modalPauseIcon.classList.add('hidden');
         }
+        const djPlPlay = document.getElementById('djPlaylistPlayIcon');
+        const djPlPause = document.getElementById('djPlaylistPauseIcon');
+        if (djPlPlay && djPlPause) {
+          djPlPlay.classList.remove('hidden');
+          djPlPause.classList.add('hidden');
+        }
+      }
+      if (currentAppView === 'djeddie') {
+        renderDjEddiePlaylistSongs();
       }
     }
 
@@ -6508,10 +7033,28 @@
       if (!mobileSheetBandsList) return;
       mobileSheetBandsList.innerHTML = '';
       const filter = currentFilter;
+
+      const djItem = document.createElement('div');
+      djItem.className = 'mobile-sheet-band-item' + (currentAppView === 'djeddie' ? ' active' : '');
+      djItem.innerHTML = `
+        <div class="mobile-sheet-band-thumb" style="background: radial-gradient(circle, #10b981 0%, #1e3a8a 100%); display:flex; align-items:center; justify-content:center; font-size:1.35rem;">
+          <span>🤖</span>
+        </div>
+        <div>
+          <div class="mobile-sheet-band-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
+          <div class="mobile-sheet-band-sub">Listado de 11 canciones completas con IA</div>
+        </div>
+      `;
+      djItem.addEventListener('click', () => {
+        openDjEddiePlaylistView();
+        closeMobileLibrarySheet();
+      });
+      mobileSheetBandsList.appendChild(djItem);
+
       Object.values(bands).forEach(b => {
         if (filter !== 'all' && !b.genres.includes(filter)) return;
         const item = document.createElement('div');
-        item.className = 'mobile-sheet-band-item' + (b.id === activeBandId ? ' active' : '');
+        item.className = 'mobile-sheet-band-item' + (currentAppView === 'band' && b.id === activeBandId ? ' active' : '');
         item.innerHTML = `
           <div class="mobile-sheet-band-thumb">
             <img src="${b.cover}" alt="${b.name}">
@@ -6522,7 +7065,7 @@
           </div>
         `;
         item.addEventListener('click', () => {
-          loadBand(b.id, true);
+          openBandView(b.id, true);
           closeMobileLibrarySheet();
         });
         mobileSheetBandsList.appendChild(item);
@@ -7647,40 +8190,102 @@
 
     document.querySelectorAll('[data-filterjump]').forEach(btn => {
       btn.addEventListener('click', () => {
-        applyHomeCategoryFilter(btn.dataset.filterjump || 'all');
+        if (btn.dataset.filterjump === 'djeddie') {
+          openDjEddiePlaylistView();
+        } else {
+          applyHomeCategoryFilter(btn.dataset.filterjump || 'all');
+        }
       });
     });
 
+    const djHeroCardEl = document.querySelector('.dj-eddie-hero-card');
+    if (djHeroCardEl) {
+      djHeroCardEl.addEventListener('click', (e) => {
+        if (e.target.closest('#btnNextDjEddie')) return;
+        openDjEddiePlaylistView();
+      });
+    }
+
     const btnStartDjEddie = document.getElementById('btnStartDjEddie');
     if (btnStartDjEddie) {
-      btnStartDjEddie.addEventListener('click', () => {
-        playDjEddieItem(djEddieIndex, false);
+      btnStartDjEddie.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDjEddiePlaylistView();
       });
     }
 
     const btnNextDjEddie = document.getElementById('btnNextDjEddie');
     if (btnNextDjEddie) {
-      btnNextDjEddie.addEventListener('click', () => {
+      btnNextDjEddie.addEventListener('click', (e) => {
+        e.stopPropagation();
         nextDjEddieTrack();
       });
     }
 
     const djEddieOrbBtn = document.getElementById('djEddieOrbBtn');
     if (djEddieOrbBtn) {
-      djEddieOrbBtn.addEventListener('click', () => {
-        if (!isDjEddieActive || spotifyAudio.paused) {
-          playDjEddieItem(djEddieIndex, false);
+      djEddieOrbBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openDjEddiePlaylistView();
+      });
+    }
+
+    const btnBackHomeFromDj = document.getElementById('btnBackHomeFromDj');
+    if (btnBackHomeFromDj) {
+      btnBackHomeFromDj.addEventListener('click', () => {
+        switchAppView('home');
+      });
+    }
+
+    const btnBackHomeFromBand = document.getElementById('btnBackHomeFromBand');
+    if (btnBackHomeFromBand) {
+      btnBackHomeFromBand.addEventListener('click', () => {
+        switchAppView('home');
+      });
+    }
+
+    const sidebarHomeBtn = document.getElementById('sidebarHomeBtn');
+    if (sidebarHomeBtn) {
+      sidebarHomeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchAppView('home');
+      });
+    }
+
+    if (tabHome) {
+      tabHome.addEventListener('click', () => {
+        switchAppView('home');
+      });
+    }
+
+    const btnDjPlaylistPlayAll = document.getElementById('btnDjPlaylistPlayAll');
+    if (btnDjPlaylistPlayAll) {
+      btnDjPlaylistPlayAll.addEventListener('click', () => {
+        if (GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive) {
+          GlobalAudioPlayer.togglePlay();
         } else {
-          nextDjEddieTrack();
+          playDjEddieItem(djEddieIndex, false);
         }
       });
     }
 
+    const btnDjPlaylistShuffle = document.getElementById('btnDjPlaylistShuffle');
+    if (btnDjPlaylistShuffle) {
+      btnDjPlaylistShuffle.addEventListener('click', () => {
+        if (!djEddieQueue.length) buildDjEddieCatalog();
+        const randIdx = Math.floor(Math.random() * djEddieQueue.length);
+        playDjEddieItem(randIdx, false);
+      });
+    }
 
-
-    // Initial render of quick banners & Spotify Home shelves
+    // Initial render of quick banners, Spotify Home shelves & default view
     renderQuickBanners();
     renderSpotifyHomeShelves();
+    if (bandParam) {
+      switchAppView('band');
+    } else {
+      switchAppView('home');
+    }
   </script>
   <!-- Spotify Embed Iframe API for Programmatic Controller -->
   <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
