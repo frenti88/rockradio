@@ -1522,8 +1522,69 @@
         gap: 22px;
       }
       .home-cards-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+      .home-sp-card {
+        padding: 10px !important;
+        border-radius: 8px !important;
+        min-width: 0 !important;
+        background: #181818 !important;
+      }
+      .home-sp-card-art {
+        margin-bottom: 8px !important;
+        border-radius: 6px !important;
+      }
+      .home-sp-card-title {
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin-bottom: 2px !important;
+      }
+      .home-sp-card-sub {
+        font-size: 0.72rem !important;
+        line-height: 1.3 !important;
+        -webkit-line-clamp: 2 !important;
+      }
+      .home-sp-card-badge {
+        font-size: 0.58rem !important;
+        padding: 2px 6px !important;
+        top: 6px !important;
+        left: 6px !important;
+      }
+      .home-sp-card-dur {
+        font-size: 0.62rem !important;
+        padding: 2px 5px !important;
+        bottom: 6px !important;
+        left: 6px !important;
+      }
+      .home-sp-card-play {
+        opacity: 1 !important;
+        transform: none !important;
+        width: 32px !important;
+        height: 32px !important;
+        right: 6px !important;
+        bottom: 6px !important;
+      }
+      .home-sp-card-play svg {
+        width: 14px !important;
+        height: 14px !important;
+      }
+      .home-shelf-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+      }
+      .home-shelf-title {
+        font-size: 1.15rem !important;
+      }
+      .home-shelf-subtitle {
+        font-size: 0.76rem !important;
+      }
+      .home-shelf-more {
+        font-size: 0.74rem !important;
+        margin-top: 2px !important;
       }
     }
 
@@ -4152,9 +4213,9 @@
         padding: max(24px, env(safe-area-inset-top, 24px)) 20px max(24px, env(safe-area-inset-bottom, 24px)) !important;
       }
 
-      /* Mobile Discography Horizontal Carousel */
+      /* Mobile Discography 2 Columns Grid */
       .spotify-discography-section {
-        padding: 0 16px 28px !important;
+        padding: 0 14px 28px !important;
       }
 
       .discography-header {
@@ -4162,16 +4223,12 @@
       }
 
       .spotify-albums-grid {
-        display: flex !important;
-        overflow-x: auto !important;
-        scroll-snap-type: x mandatory !important;
-        -webkit-overflow-scrolling: touch !important;
-        gap: 12px !important;
-        padding-bottom: 12px !important;
-        margin: 0 -16px !important;
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-        scrollbar-width: none !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
       }
 
       .spotify-albums-grid::-webkit-scrollbar {
@@ -4179,12 +4236,13 @@
       }
 
       .spotify-album-card {
-        min-width: 140px !important;
-        max-width: 140px !important;
-        flex-shrink: 0 !important;
-        scroll-snap-align: start !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
         padding: 10px !important;
         border-radius: 8px !important;
+        background: #181818 !important;
       }
 
       .spotify-album-card .album-art-wrap {
@@ -4194,29 +4252,30 @@
       }
 
       .album-info-title {
-        font-size: 0.85rem !important;
+        font-size: 0.82rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin-top: 6px !important;
+        margin-bottom: 2px !important;
       }
 
       .album-info-meta {
-        font-size: 0.72rem !important;
+        font-size: 0.7rem !important;
+        color: #a7a7a7 !important;
       }
 
-      /* Mobile Band Members Horizontal Carousel */
+      /* Mobile Band Members 2 Columns Grid */
       .spotify-members-section {
-        padding: 0 16px 28px !important;
+        padding: 0 14px 28px !important;
       }
 
       .spotify-members-circle-grid {
-        display: flex !important;
-        overflow-x: auto !important;
-        scroll-snap-type: x mandatory !important;
-        -webkit-overflow-scrolling: touch !important;
-        gap: 16px !important;
-        padding-bottom: 12px !important;
-        margin: 0 -16px !important;
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-        scrollbar-width: none !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
       }
 
       .spotify-members-circle-grid::-webkit-scrollbar {
@@ -4224,34 +4283,40 @@
       }
 
       .spotify-member-circle-card {
-        min-width: 100px !important;
-        max-width: 100px !important;
-        flex-shrink: 0 !important;
-        scroll-snap-align: start !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px 8px !important;
+        background: #181818 !important;
+        border-radius: 8px !important;
         text-align: center !important;
       }
 
       .member-circle-avatar {
-        width: 72px !important;
-        height: 72px !important;
+        width: 68px !important;
+        height: 68px !important;
         margin: 0 auto 8px !important;
       }
 
       .member-circle-name {
-        font-size: 0.82rem !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
       }
 
       .member-circle-role {
-        font-size: 0.7rem !important;
+        font-size: 0.68rem !important;
+        color: #a7a7a7 !important;
       }
 
       /* Mobile About Section */
       .spotify-about-section {
-        padding: 0 16px 28px !important;
+        padding: 0 14px 28px !important;
       }
 
       .spotify-about-card {
-        padding: 24px 18px !important;
+        padding: 20px 16px !important;
         border-radius: 12px !important;
       }
 
@@ -4260,18 +4325,34 @@
         gap: 10px !important;
       }
 
-      /* Mobile Settings Section */
+      /* Mobile Settings / Voice Cards 2 Columns Grid */
       .spotify-settings-section {
-        padding: 0 16px 36px !important;
+        padding: 0 14px 36px !important;
       }
 
       .voice-cards-grid {
-        grid-template-columns: 1fr !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
       }
 
       .voice-card {
-        padding: 14px 16px !important;
+        padding: 12px 10px !important;
+      }
+
+      /* Mobile Spotify Search & Media Cards 2 Columns Grid */
+      .sp-media-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+
+      .sp-media-card {
+        min-width: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 10px !important;
+        border-radius: 8px !important;
       }
 
       /* ========================================================
@@ -5173,6 +5254,14 @@
           <!-- Rendered dynamically via Spotify Web API -->
         </div>
       </section>
+
+      <!-- 2. Barra de Filtros de Categoría del Home estilo Spotify (Todo, DJ Eddie, Cápsulas 45s, Artistas) -->
+      <div class="spotify-home-filter-bar" id="spotifyHomeFilterBar">
+        <button class="home-filter-pill active" data-homefilter="all" type="button">Todo</button>
+        <button class="home-filter-pill djeddie-pill" data-homefilter="djeddie" type="button">🤖 DJ Eddie</button>
+        <button class="home-filter-pill" data-homefilter="podcasts" type="button">⚡ Cápsulas 45s</button>
+        <button class="home-filter-pill" data-homefilter="artists" type="button">🎸 Artistas</button>
+      </div>
 
       <!-- 3. Accesos Rápidos estilo Spotify Home (Incluye DJ Eddie IA + Favoritos) -->
       <section class="spotify-quick-banners-section" id="spotifyQuickBannersSection">
@@ -7969,6 +8058,7 @@
     function switchAppView(mode) {
       currentAppView = mode;
       const quickSec = document.getElementById('spotifyQuickBannersSection');
+      const filterBarEl = document.getElementById('spotifyHomeFilterBar');
       const djHeroSec = document.getElementById('djEddieHeroSection');
       const homeShelvesSec = document.getElementById('spotifyHomeShelves');
       const djPlaylistSec = document.getElementById('djEddiePlaylistSection');
@@ -7982,6 +8072,7 @@
       const membersSecEl = document.querySelector('.spotify-members-section');
 
       if (mode === 'home') {
+        if (filterBarEl) filterBarEl.style.display = 'flex';
         if (quickSec) quickSec.style.display = '';
         if (djHeroSec) djHeroSec.style.display = '';
         if (homeShelvesSec) homeShelvesSec.style.display = '';
@@ -7995,6 +8086,7 @@
         if (discoSecEl) discoSecEl.style.display = 'none';
         if (membersSecEl) membersSecEl.style.display = 'none';
       } else if (mode === 'djeddie') {
+        if (filterBarEl) filterBarEl.style.display = 'none';
         if (quickSec) quickSec.style.display = 'none';
         if (djHeroSec) djHeroSec.style.display = 'none';
         if (homeShelvesSec) homeShelvesSec.style.display = 'none';
@@ -8009,6 +8101,7 @@
         if (membersSecEl) membersSecEl.style.display = 'none';
         renderDjEddiePlaylistSongs();
       } else if (mode === 'band') {
+        if (filterBarEl) filterBarEl.style.display = 'none';
         if (quickSec) quickSec.style.display = 'none';
         if (djHeroSec) djHeroSec.style.display = 'none';
         if (homeShelvesSec) homeShelvesSec.style.display = 'none';
