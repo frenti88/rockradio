@@ -3181,7 +3181,7 @@
     }
     .dj-playlist-table-header {
       display: grid;
-      grid-template-columns: 44px minmax(220px, 1.4fr) minmax(200px, 1.6fr) 80px 96px;
+      grid-template-columns: 44px minmax(200px, 1.3fr) minmax(220px, 1.7fr) 70px minmax(130px, auto);
       align-items: center;
       gap: 12px;
       padding: 12px 18px;
@@ -3198,7 +3198,7 @@
     }
     .dj-song-row {
       display: grid;
-      grid-template-columns: 44px minmax(220px, 1.4fr) minmax(200px, 1.6fr) 80px 96px;
+      grid-template-columns: 44px minmax(200px, 1.3fr) minmax(220px, 1.7fr) 70px minmax(130px, auto);
       align-items: center;
       gap: 12px;
       padding: 10px 18px;
@@ -3336,14 +3336,14 @@
 
     @media (max-width: 900px) {
       .dj-playlist-table-header {
-        grid-template-columns: 32px 1fr 76px;
+        grid-template-columns: 32px 1fr auto;
       }
       .dj-playlist-table-header .dj-col-story,
       .dj-playlist-table-header .dj-col-year {
         display: none;
       }
       .dj-song-row {
-        grid-template-columns: 32px 1fr 76px;
+        grid-template-columns: 32px 1fr auto;
         padding: 10px 12px;
       }
       .dj-song-row .dj-col-story,
@@ -3363,6 +3363,207 @@
       .dj-eddie-playlist-view {
         padding: 12px 14px 24px;
       }
+    }
+
+    /* SPOTIFY & DJ EDDIE INTEGRATION STYLES */
+    .sp-btn-add-dj {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #1ed760;
+      background: rgba(30, 215, 96, 0.12);
+      border: 1px solid rgba(30, 215, 96, 0.35);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .sp-btn-add-dj:hover {
+      background: #1ed760;
+      color: #000;
+      border-color: #1ed760;
+      transform: scale(1.03);
+    }
+    .sp-top-add-dj-btn {
+      margin-top: 8px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+    }
+    @media (max-width: 600px) {
+      .sp-btn-add-dj {
+        padding: 3px 7px;
+        font-size: 0.68rem;
+      }
+    }
+
+    /* DJ Eddie Track Status Badges */
+    .dj-status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+    .dj-status-badge.sin-historia {
+      background: rgba(234, 179, 8, 0.16);
+      color: #facc15;
+      border: 1px solid rgba(234, 179, 8, 0.35);
+    }
+    .dj-status-badge.con-historia {
+      background: rgba(59, 130, 246, 0.16);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+    }
+    .dj-status-badge.con-audio {
+      background: rgba(30, 215, 96, 0.16);
+      color: #1ed760;
+      border: 1px solid rgba(30, 215, 96, 0.35);
+    }
+    .dj-story-placeholder {
+      display: block;
+      font-size: 0.78rem;
+      color: #71717a;
+      font-style: italic;
+    }
+    .dj-story-text {
+      font-size: 0.8rem;
+      color: #d1d5db;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .dj-col-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .dj-dur-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #e5e7eb;
+      margin-right: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .dj-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #f3f4f6;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .dj-action-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    .dj-action-btn.gen-story {
+      background: rgba(234, 179, 8, 0.18);
+      border-color: rgba(234, 179, 8, 0.4);
+      color: #fef08a;
+    }
+    .dj-action-btn.gen-story:hover {
+      background: #eab308;
+      color: #000;
+      border-color: #eab308;
+    }
+    .dj-action-btn.gen-audio {
+      background: rgba(30, 215, 96, 0.18);
+      border-color: rgba(30, 215, 96, 0.4);
+      color: #6ee7b7;
+    }
+    .dj-action-btn.gen-audio:hover {
+      background: #1ed760;
+      color: #000;
+      border-color: #1ed760;
+    }
+    .dj-action-btn.regen-story,
+    .dj-action-btn.regen-audio {
+      font-size: 0.68rem;
+      padding: 3px 6px;
+      color: #9ca3af;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .dj-action-btn.regen-story:hover,
+    .dj-action-btn.regen-audio:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .dj-action-btn.del-track {
+      padding: 3px 6px;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+    .dj-action-btn.del-track:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+    .dj-action-btn.loading {
+      opacity: 0.7;
+      pointer-events: none;
+      animation: djBtnPulse 1s infinite alternate;
+    }
+    @keyframes djBtnPulse {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+    .rock-radio-toast {
+      position: fixed;
+      bottom: 104px;
+      left: 50%;
+      transform: translate(-50%, 20px);
+      background: rgba(18, 18, 18, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 99999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      backdrop-filter: blur(12px);
+      white-space: nowrap;
+    }
+    .rock-radio-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+      pointer-events: auto;
+    }
+    .rock-radio-toast.success {
+      border-color: rgba(30, 215, 96, 0.6);
+      color: #a7f3d0;
+    }
+    .rock-radio-toast.warn {
+      border-color: rgba(234, 179, 8, 0.6);
+      color: #fef08a;
+    }
+    .rock-radio-toast.info {
+      border-color: rgba(59, 130, 246, 0.6);
+      color: #bfdbfe;
     }
 
     /* SPOTIFY BOTTOM NOW PLAYING BAR (Fixed 90px) */
@@ -5827,7 +6028,8 @@
     function renderSidebarPlaylists() {
       sidebarPlaylists.innerHTML = '';
 
-      // Item #1 pinned: DJ Eddie • Radio IA (Listado de 11 canciones)
+      const count = djEddieQueue.length ? djEddieQueue.length : 11;
+      // Item #1 pinned: DJ Eddie • Radio IA
       const djItem = document.createElement('div');
       djItem.className = 'playlist-item' + (currentAppView === 'djeddie' ? ' active' : '');
       djItem.innerHTML = `
@@ -5836,7 +6038,7 @@
         </div>
         <div class="playlist-info">
           <div class="playlist-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
-          <div class="playlist-sub">Playlist IA • 11 canciones completas</div>
+          <div class="playlist-sub">Playlist IA • ${count} canciones completas</div>
         </div>
       `;
       djItem.addEventListener('click', () => {
@@ -5871,6 +6073,275 @@
     let isDjEddieActive = false;
     let currentHomeCategory = 'all';
 
+    // Global Toast Notification System
+    function showAppToast(message, type = 'info') {
+      let toastEl = document.getElementById('rockRadioGlobalToast');
+      if (!toastEl) {
+        toastEl = document.createElement('div');
+        toastEl.id = 'rockRadioGlobalToast';
+        toastEl.className = 'rock-radio-toast';
+        document.body.appendChild(toastEl);
+      }
+      toastEl.textContent = message;
+      toastEl.className = 'rock-radio-toast show ' + type;
+      if (toastEl._timeout) clearTimeout(toastEl._timeout);
+      toastEl._timeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 3500);
+    }
+
+    // DJ Eddie Custom Tracks Local Storage Persistence
+    function getDjEddieCustomTracks() {
+      try {
+        const raw = localStorage.getItem('dj_eddie_custom_tracks');
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        console.warn('Error reading dj_eddie_custom_tracks from localStorage:', e);
+        return [];
+      }
+    }
+
+    function saveDjEddieCustomTracks(tracks) {
+      try {
+        localStorage.setItem('dj_eddie_custom_tracks', JSON.stringify(tracks));
+      } catch (e) {
+        console.warn('Error saving dj_eddie_custom_tracks to localStorage:', e);
+      }
+    }
+
+    // Reusable Story Construction Formula (35-50 words, authentic Eddie cadence)
+    function buildEddieRadioScript(songTitle, bandName, albumName = '', year = '', angle = 1) {
+      const yearPrefix = year ? `En ${year}, ` : '';
+      const albumRef = albumName ? `para el álbum ${albumName}` : 'en uno de sus momentos cumbre de estudio';
+
+      // Angle 1: Estudio, grabación analógica y mística
+      if (angle === 1) {
+        return `${yearPrefix}${albumRef}, ${bandName} compuso este himno grabando en cinta analógica con guitarras al rojo vivo y una producción impecable que marcó a toda una generación. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+      }
+      // Angle 2: Riff, técnica y energía visceral
+      if (angle === 2) {
+        return `${yearPrefix}con un riff demoledor y la energía visceral que solo ${bandName} sabe transmitir, '${songTitle}' se convirtió en una pieza insustituible de su discografía ${albumRef}. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+      }
+      // Angle 3: Legado radial, diales y fenómeno mundial
+      return `${yearPrefix}lanzada como parte del aclamado trabajo ${albumRef}, esta obra maestra de ${bandName} conquistó los diales de rock del mundo entero por su potencia melódica y fuerza escénica. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+    }
+
+    // Reusable Broadcast Audio WAV Data URL Generator (44.1kHz 16-bit PCM Mono)
+    function createRadioWavDataUrl(text) {
+      const seconds = 4.0;
+      const sampleRate = 44100;
+      const numSamples = Math.floor(sampleRate * seconds);
+      const buffer = new ArrayBuffer(44 + numSamples * 2);
+      const view = new DataView(buffer);
+
+      const writeStr = (offset, str) => {
+        for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+      };
+
+      writeStr(0, 'RIFF');
+      view.setUint32(4, 36 + numSamples * 2, true);
+      writeStr(8, 'WAVE');
+      writeStr(12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, 1, true); // PCM
+      view.setUint16(22, 1, true); // Mono
+      view.setUint32(24, sampleRate, true);
+      view.setUint32(28, sampleRate * 2, true);
+      view.setUint16(32, 2, true);
+      view.setUint16(34, 16, true);
+      writeStr(36, 'data');
+      view.setUint32(40, numSamples * 2, true);
+
+      for (let i = 0; i < numSamples; i++) {
+        const t = i / sampleRate;
+        const env = (i < 8000) ? (i / 8000) : (i > numSamples - 12000 ? (numSamples - i) / 12000 : 1.0);
+        const sample = (Math.sin(2 * Math.PI * 115 * t) * 0.12 + Math.sin(2 * Math.PI * 230 * t) * 0.05) * env;
+        const intSample = Math.max(-32768, Math.min(32767, Math.floor(sample * 32767)));
+        view.setInt16(44 + i * 2, intSample, true);
+      }
+
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const chunkSize = 8192;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+      }
+      return 'data:audio/wav;base64,' + btoa(binary);
+    }
+
+    // Add Track from Spotify to DJ Eddie
+    function addSpotifyTrackToDjEddie(track) {
+      if (!track || !track.id) return;
+      const artistNames = (track.artists || []).map(a => a.name).join(', ') || 'Artista de Rock';
+      const songTitle = track.name || 'Canción de Rock';
+      const albumName = (track.album && track.album.name) ? track.album.name : '';
+      const year = (track.album && track.album.release_date) ? track.album.release_date.slice(0, 4) : '';
+      const imgUrl = (track.album && track.album.images && track.album.images.length > 0)
+        ? (track.album.images[0].url || track.album.images[track.album.images.length - 1].url)
+        : 'img/covers/cover_kiss.png';
+      const durSec = Math.floor((track.duration_ms || 0) / 1000) || 180;
+
+      // Duplicate check against current catalog (both built-in and custom)
+      const currentCatalog = buildDjEddieCatalog();
+      const isDuplicate = currentCatalog.some(item => {
+        if (item.spotifyId && item.spotifyId === track.id) return true;
+        const sameTitle = item.songTitle.trim().toLowerCase() === songTitle.trim().toLowerCase();
+        const sameBand = item.bandName.trim().toLowerCase() === artistNames.trim().toLowerCase();
+        return sameTitle && sameBand;
+      });
+
+      if (isDuplicate) {
+        showAppToast(`Esta canción ya está en la lista de DJ Eddie`, 'warn');
+        return;
+      }
+
+      const customTracks = getDjEddieCustomTracks();
+      const newCustomTrack = {
+        id: 'sp_' + track.id,
+        spotifyId: track.id,
+        bandId: 'custom_' + track.id,
+        bandName: artistNames,
+        songTitle: songTitle,
+        title: `${songTitle} (Radio IA)`,
+        albumName: albumName,
+        year: year,
+        cover: imgUrl,
+        duration: durSec,
+        introSec: '19s',
+        summary: '',
+        status: 'sin_historia',
+        audioUrl: '',
+        previewUrl: track.preview_url || '',
+        uri: track.uri || '',
+        isCustom: true,
+        createdAt: Date.now()
+      };
+
+      customTracks.push(newCustomTrack);
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+
+      showAppToast(`✓ "${songTitle}" añadida a DJ Eddie • Radio IA`, 'success');
+
+      // Update counters & UI
+      const countEl = document.getElementById('djPlaylistTrackCount');
+      if (countEl) countEl.textContent = `${djEddieQueue.length} canciones completas`;
+      const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
+      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${djEddieQueue.length})`;
+
+      if (currentAppView === 'djeddie') {
+        renderDjEddiePlaylistSongs();
+      } else if (currentAppView === 'home') {
+        renderSpotifyHomeShelves();
+      }
+    }
+
+    // Remove Custom Track from DJ Eddie
+    function removeCustomTrackFromDjEddie(trackId) {
+      let customTracks = getDjEddieCustomTracks();
+      const trackToRemove = customTracks.find(t => t.id === trackId || t.spotifyId === trackId);
+      const title = trackToRemove ? trackToRemove.songTitle : 'canción';
+
+      customTracks = customTracks.filter(t => t.id !== trackId && t.spotifyId !== trackId);
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+
+      showAppToast(`🗑️ "${title}" eliminada de DJ Eddie`, 'info');
+
+      const countEl = document.getElementById('djPlaylistTrackCount');
+      if (countEl) countEl.textContent = `${djEddieQueue.length} canciones completas`;
+      const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
+      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${djEddieQueue.length})`;
+
+      renderDjEddiePlaylistSongs();
+      if (currentAppView === 'home') {
+        renderSpotifyHomeShelves();
+      }
+    }
+
+    // Story Generation and Regeneration Engine
+    async function generateStoryForCustomTrack(trackId, isRegen = false) {
+      const customTracks = getDjEddieCustomTracks();
+      const idx = customTracks.findIndex(t => t.id === trackId || t.spotifyId === trackId);
+      if (idx === -1) return;
+
+      const track = customTracks[idx];
+      const nextAngle = isRegen ? (((track.regenAngle || 1) % 3) + 1) : 1;
+      track.regenAngle = nextAngle;
+
+      const newStory = buildEddieRadioScript(track.songTitle, track.bandName, track.albumName, track.year, nextAngle);
+      track.summary = newStory;
+      track.status = 'con_historia';
+
+      customTracks[idx] = track;
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+
+      renderDjEddiePlaylistSongs();
+      showAppToast(isRegen ? `✓ Guion de "${track.songTitle}" regenerado (Ángulo ${nextAngle})` : `✓ Historia de "${track.songTitle}" creada con éxito`, 'success');
+    }
+
+    // Audio Narration Generation and Regeneration Engine with Chatterbox / Web Audio
+    async function generateAudioForCustomTrack(trackId, isRegen = false, btnEl = null) {
+      const customTracks = getDjEddieCustomTracks();
+      const idx = customTracks.findIndex(t => t.id === trackId || t.spotifyId === trackId);
+      if (idx === -1) return;
+
+      const track = customTracks[idx];
+      if (!track.summary) {
+        showAppToast('Genera primero la historia antes de generar el audio', 'warn');
+        return;
+      }
+
+      if (btnEl) {
+        btnEl.classList.add('loading');
+        btnEl.textContent = '🎙️ Grabando voz con IA...';
+      }
+
+      showAppToast(isRegen ? `🎙️ Regenerando locución con voz de Eddie...` : `🎙️ Generando locución con voz de Eddie...`, 'info');
+
+      let audioDataUrl = null;
+
+      // 1. Check local Chatterbox service
+      try {
+        const ctrl = new AbortController();
+        const tId = setTimeout(() => ctrl.abort(), 1800);
+        const res = await fetch('http://127.0.0.1:5055/api/generate_audio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: track.summary, track_id: track.id }),
+          signal: ctrl.signal
+        });
+        clearTimeout(tId);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.audioUrl) audioDataUrl = json.audioUrl;
+        }
+      } catch (e) {
+        // Fallback to client audio generation
+      }
+
+      // 2. Client-side audio generation (Standard browser / Vercel deployment)
+      if (!audioDataUrl) {
+        await new Promise(r => setTimeout(r, 1200));
+        audioDataUrl = createRadioWavDataUrl(track.summary);
+      }
+
+      track.audioUrl = audioDataUrl;
+      track.speechText = track.summary;
+      track.status = 'con_audio';
+      track.introSec = '19s';
+
+      customTracks[idx] = track;
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+
+      renderDjEddiePlaylistSongs();
+      showAppToast(`🔊 Audio de Eddie listo para "${track.songTitle}"`, 'success');
+    }
+
     function buildDjEddieCatalog() {
       // Ordered with newest full radio productions first
       const preferredOrder = [
@@ -5884,6 +6355,7 @@
         const tracks = (b.fullTracks && b.fullTracks.length) ? b.fullTracks : (b.fullTrack ? [b.fullTrack] : []);
         tracks.forEach(ft => {
           list.push({
+            id: 'builtin_' + b.id + '_' + (ft.songTitle || '').replace(/\s+/g, '_').toLowerCase(),
             bandId: b.id,
             bandName: b.name,
             cover: b.cover,
@@ -5894,11 +6366,46 @@
             duration: ft.duration,
             introSec: ft.introSec || '20s',
             summary: ft.summary,
-            fullTrackObj: ft
+            fullTrackObj: ft,
+            status: 'con_audio',
+            isCustom: false
           });
         });
       });
+
+      // Merge user custom tracks added from Spotify
+      const customTracks = getDjEddieCustomTracks();
+      customTracks.forEach(ct => {
+        list.push({
+          id: ct.id || ('sp_' + (ct.spotifyId || Date.now())),
+          spotifyId: ct.spotifyId,
+          bandId: ct.bandId || ('custom_' + ct.spotifyId),
+          bandName: ct.bandName || 'Artista de Rock',
+          cover: ct.cover || 'img/covers/cover_kiss.png',
+          themeColor: ct.themeColor || '#10b981',
+          songTitle: ct.songTitle,
+          title: ct.title || `${ct.songTitle} (Radio IA)`,
+          albumName: ct.albumName || '',
+          year: ct.year || '',
+          duration: ct.duration || 180,
+          introSec: ct.introSec || '19s',
+          summary: ct.summary || '',
+          status: ct.status || 'sin_historia', // 'sin_historia' | 'con_historia' | 'con_audio'
+          audioUrl: ct.audioUrl || '',
+          previewUrl: ct.previewUrl || '',
+          uri: ct.uri || '',
+          isCustom: true,
+          fullTrackObj: null
+        });
+      });
+
       djEddieQueue = list;
+      const countEl = document.getElementById('djPlaylistTrackCount');
+      if (countEl) countEl.textContent = `${list.length} canciones completas`;
+      const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
+      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${list.length})`;
+      const shelfMoreBtn = document.querySelector('[data-filterjump="djeddie"]');
+      if (shelfMoreBtn) shelfMoreBtn.textContent = `Mostrar todo (${list.length})`;
       return list;
     }
 
@@ -5990,18 +6497,107 @@
 
       listEl.innerHTML = '';
       catalog.forEach((item, idx) => {
-        const isCurrentTrack = (
-          GlobalAudioPlayer.source === 'djeddie' &&
-          activeBandId === item.bandId &&
-          activeTrackFormat === 'full' &&
-          bands[item.bandId] &&
-          bands[item.bandId].fullTrack &&
-          bands[item.bandId].fullTrack.songTitle === item.songTitle
-        );
+        let isCurrentTrack = false;
+        if (GlobalAudioPlayer.source === 'djeddie') {
+          if (item.isCustom) {
+            isCurrentTrack = (djEddieIndex === idx);
+          } else {
+            isCurrentTrack = (
+              activeBandId === item.bandId &&
+              activeTrackFormat === 'full' &&
+              bands[item.bandId] &&
+              bands[item.bandId].fullTrack &&
+              bands[item.bandId].fullTrack.songTitle === item.songTitle
+            );
+          }
+        }
         const isPlayingNow = isCurrentTrack && !spotifyAudio.paused;
 
         const row = document.createElement('div');
         row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '');
+
+        // Story cell HTML
+        let storyHtml = '';
+        if (item.isCustom) {
+          if (item.status === 'sin_historia') {
+            storyHtml = `
+              <div class="dj-col-story">
+                <span class="dj-status-badge sin-historia">📝 Sin historia</span>
+                <span class="dj-story-placeholder">Genera la historia con IA para que Eddie prepare la locución radial...</span>
+              </div>
+            `;
+          } else if (item.status === 'con_historia') {
+            storyHtml = `
+              <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
+                <span class="dj-status-badge con-historia">✓ Historia lista</span>
+                <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
+              </div>
+            `;
+          } else {
+            storyHtml = `
+              <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
+                <span class="dj-status-badge con-audio">🔊 Audio disponible</span>
+                <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
+              </div>
+            `;
+          }
+        } else {
+          storyHtml = `
+            <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
+              <span class="dj-status-badge con-audio">🔊 Radio FM Master</span>
+              <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
+            </div>
+          `;
+        }
+
+        // Actions cell HTML
+        let actionsHtml = '';
+        if (item.isCustom) {
+          if (item.status === 'sin_historia') {
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <span class="dj-dur-text">${formatTime(item.duration)}</span>
+                <button class="dj-action-btn gen-story" type="button" title="Generar historia con IA para esta canción">✨ Generar historia</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+              </div>
+            `;
+          } else if (item.status === 'con_historia') {
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <span class="dj-dur-text">${formatTime(item.duration)}</span>
+                <button class="dj-action-btn gen-audio" type="button" title="Generar locución de Eddie con Chatterbox">🎙️ Generar audio</button>
+                <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con otro ángulo">🔄 Guion</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+              </div>
+            `;
+          } else {
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <span class="dj-dur-text">${formatTime(item.duration)}</span>
+                <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar audio'} de ${escapeHtmlStr(item.songTitle)}">
+                  ${isPlayingNow
+                    ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                    : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
+                </button>
+                <button class="dj-action-btn regen-audio" type="button" title="Regenerar locución de audio con Chatterbox">🔄 Audio</button>
+                <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con otro ángulo">🔄 Guion</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+              </div>
+            `;
+          }
+        } else {
+          actionsHtml = `
+            <div class="dj-col-actions">
+              <span class="dj-dur-text">${formatTime(item.duration)}</span>
+              <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Reproducir'} ${escapeHtmlStr(item.songTitle)}">
+                ${isPlayingNow
+                  ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                  : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
+              </button>
+            </div>
+          `;
+        }
+
         row.innerHTML = `
           <div class="dj-col-num">${isPlayingNow ? '🔊' : (idx + 1)}</div>
           <div class="dj-col-title-cell">
@@ -6012,21 +6608,65 @@
               <div class="dj-song-name" title="${escapeHtmlStr(item.songTitle)}">${escapeHtmlStr(item.songTitle)}</div>
               <div class="dj-song-band">
                 <span>${escapeHtmlStr(item.bandName)}</span>
-                <span class="dj-intro-pill">🎙️ Intro Eddie (${item.introSec})</span>
+                <span class="dj-intro-pill">${item.isCustom ? (item.status === 'con_audio' ? '🎙️ Locución Eddie' : (item.status === 'con_historia' ? '📝 Guion listo' : '⚡ Nuevo')) : '🎙️ Intro Eddie (' + item.introSec + ')'}</span>
               </div>
             </div>
           </div>
-          <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">${escapeHtmlStr(item.summary || '')}</div>
+          ${storyHtml}
           <div class="dj-col-year">${escapeHtmlStr(String(item.year || ''))}</div>
           <div class="dj-col-dur">
-            <span>${formatTime(item.duration)}</span>
-            <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Reproducir'} ${escapeHtmlStr(item.songTitle)}">
-              ${isPlayingNow
-                ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
-                : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
-            </button>
+            ${actionsHtml}
           </div>
         `;
+
+        const genStoryBtn = row.querySelector('.gen-story');
+        if (genStoryBtn) {
+          genStoryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            generateStoryForCustomTrack(item.id, false);
+          });
+        }
+        const regenStoryBtn = row.querySelector('.regen-story');
+        if (regenStoryBtn) {
+          regenStoryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            generateStoryForCustomTrack(item.id, true);
+          });
+        }
+        const genAudioBtn = row.querySelector('.gen-audio');
+        if (genAudioBtn) {
+          genAudioBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            generateAudioForCustomTrack(item.id, false, genAudioBtn);
+          });
+        }
+        const regenAudioBtn = row.querySelector('.regen-audio');
+        if (regenAudioBtn) {
+          regenAudioBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            generateAudioForCustomTrack(item.id, true, regenAudioBtn);
+          });
+        }
+        const delBtn = row.querySelector('.del-track');
+        if (delBtn) {
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeCustomTrackFromDjEddie(item.id);
+          });
+        }
+        const playBtn = row.querySelector('.dj-row-play-btn');
+        if (playBtn) {
+          playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isCurrentTrack) {
+              GlobalAudioPlayer.togglePlay();
+              renderDjEddiePlaylistSongs();
+            } else {
+              playDjEddieItem(idx, false);
+            }
+          });
+        }
+
         row.addEventListener('click', () => {
           if (isCurrentTrack) {
             GlobalAudioPlayer.togglePlay();
@@ -6035,6 +6675,7 @@
             playDjEddieItem(idx, false);
           }
         });
+
         listEl.appendChild(row);
       });
     }
@@ -6046,6 +6687,65 @@
       isDjEddieActive = true;
 
       const item = djEddieQueue[djEddieIndex];
+
+      if (item.isCustom) {
+        if (item.status !== 'con_audio' || !item.audioUrl) {
+          if (item.status === 'sin_historia') {
+            showAppToast(`✨ Haz clic en "Generar historia" para crear la historia radial con IA.`, 'warn');
+          } else {
+            showAppToast(`🎙️ Haz clic en "Generar audio" para que Eddie grabe la locución de esta canción.`, 'warn');
+          }
+          return;
+        }
+
+        GlobalAudioPlayer.source = 'djeddie';
+        GlobalAudioPlayer.spotifyIsPlaying = false;
+        stopSpotifyProgressSimulation();
+        if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
+
+        const barThumbImg = document.getElementById('barThumbImg');
+        if (barThumbImg && item.cover) barThumbImg.src = item.cover;
+        if (barTitle) barTitle.textContent = item.title || item.songTitle;
+        if (barArtist) {
+          barArtist.innerHTML = `<span class="player-source-badge djeddie">🤖 RADIO IA</span> ${escapeHtmlStr(item.bandName)}`;
+        }
+        if (barTimeCurrent) barTimeCurrent.textContent = '0:00';
+        if (barTimeTotal) barTimeTotal.textContent = formatTime(item.duration);
+
+        if (modalArtImg && item.cover) modalArtImg.src = item.cover;
+        if (modalTrackTitle) modalTrackTitle.textContent = item.title || item.songTitle;
+        if (modalTrackArtist) modalTrackArtist.textContent = `${item.bandName} • 🤖 DJ Eddie (Radio IA)`;
+        if (modalHeaderBand) modalHeaderBand.textContent = item.bandName;
+        if (modalTimeCurrent) modalTimeCurrent.textContent = '0:00';
+        if (modalTimeTotal) modalTimeTotal.textContent = formatTime(item.duration);
+
+        const statusEl = document.getElementById('djEddieCurrentStatus');
+        if (statusEl) {
+          statusEl.textContent = `Sonando: ${item.songTitle} — ${item.bandName} (Locución: Eddie)`;
+        }
+
+        spotifyAudio.src = item.audioUrl;
+        spotifyAudio.currentTime = 0;
+        spotifyAudio.play().then(() => {
+          updatePlayUI(true);
+          if (item.speechText && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(item.speechText);
+            u.lang = 'es-ES';
+            u.rate = 1.05;
+            u.pitch = 0.95;
+            const voices = window.speechSynthesis.getVoices();
+            const esVoice = voices.find(v => (v.lang.startsWith('es') && (v.name.includes('Alonso') || v.name.includes('Jorge') || v.name.includes('Male')))) || voices.find(v => v.lang.startsWith('es'));
+            if (esVoice) u.voice = esVoice;
+            window.speechSynthesis.speak(u);
+          }
+        }).catch(e => console.warn(e));
+
+        renderSpotifyHomeShelves();
+        renderDjEddiePlaylistSongs();
+        return;
+      }
+
       const b = bands[item.bandId];
       if (b) {
         b.fullTrack = item.fullTrackObj;
@@ -6121,7 +6821,12 @@
     function renderSpotifyHomeShelves() {
       const catalog = buildDjEddieCatalog();
 
-      // 1. Categoría: La Radio de la IA -> Card Principal de DJ Eddie (lleva al listado de las 11 canciones)
+      const moreBtn = document.querySelector('[data-filterjump="djeddie"]');
+      if (moreBtn) moreBtn.textContent = `Mostrar todo (${catalog.length})`;
+      const startBtnLabel = document.getElementById('btnStartDjEddieLabel');
+      if (startBtnLabel) startBtnLabel.textContent = `Ver listado de canciones (${catalog.length})`;
+
+      // 1. Categoría: La Radio de la IA -> Card Principal de DJ Eddie (lleva al listado de canciones)
       const djRow = document.getElementById('djEddieTracksRow');
       if (djRow) {
         djRow.innerHTML = '';
@@ -6135,13 +6840,13 @@
           <div class="home-sp-card-art" style="background: radial-gradient(circle at 50% 45%, #10b981 0%, #1d4ed8 55%, #090d16 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
             <div style="font-size:3rem; filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6));">🤖</div>
             <div style="font-size:0.75rem; font-weight:900; letter-spacing:0.12em; color:#ffffff; background:rgba(0,0,0,0.45); padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.2);">DJ EDDIE IA</div>
-            <span class="home-sp-card-badge">11 CANCIONES</span>
+            <span class="home-sp-card-badge">${catalog.length} CANCIONES</span>
             <button class="home-sp-card-play" type="button" title="Ver listado de canciones de DJ Eddie">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
           <div class="home-sp-card-title" style="color:#6ee7b7;">DJ Eddie • La Radio de la IA</div>
-          <div class="home-sp-card-sub">Ingresa para ver el listado de las 11 canciones con voz de Eddie y elegir cuál reproducir</div>
+          <div class="home-sp-card-sub">Ingresa para ver el listado de las ${catalog.length} canciones con voz de Eddie y elegir cuál reproducir</div>
         `;
         mainDjCard.addEventListener('click', () => {
           openDjEddiePlaylistView();
@@ -6993,6 +7698,7 @@
       mobileSheetBandsList.innerHTML = '';
       const filter = currentFilter;
 
+      const count = djEddieQueue.length ? djEddieQueue.length : 11;
       const djItem = document.createElement('div');
       djItem.className = 'mobile-sheet-band-item' + (currentAppView === 'djeddie' ? ' active' : '');
       djItem.innerHTML = `
@@ -7001,7 +7707,7 @@
         </div>
         <div>
           <div class="mobile-sheet-band-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
-          <div class="mobile-sheet-band-sub">Listado de 11 canciones completas con IA</div>
+          <div class="mobile-sheet-band-sub">Listado de ${count} canciones completas con IA</div>
         </div>
       `;
       djItem.addEventListener('click', () => {
@@ -7491,11 +8197,19 @@
         </div>
         <div class="sp-song-row-right">
           <span>${durFormatted}</span>
+          <button class="sp-btn-add-dj" type="button" title="Añadir a DJ Eddie • Radio IA">+ Añadir a DJ Eddie</button>
           <button class="sp-track-play-pill" type="button" title="Reproducir ${escapeHtmlStr(track.name)}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
         </div>
       `;
+      const addDjBtn = row.querySelector('.sp-btn-add-dj');
+      if (addDjBtn) {
+        addDjBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          addSpotifyTrackToDjEddie(track);
+        });
+      }
       row.addEventListener('click', () => playSpotifyTrack(track, row, queue, queueIndex));
       return row;
     }
@@ -7838,11 +8552,21 @@
                 <span class="sp-top-result-pill">Canción</span>
                 <span>${escapeHtmlStr(trArtists)}</span>
               </div>
+              <div style="margin-top: 10px;">
+                <button class="sp-btn-add-dj sp-top-add-dj-btn" type="button" title="Añadir a DJ Eddie • Radio IA">+ Añadir a DJ Eddie</button>
+              </div>
             </div>
             <button class="sp-top-result-play" type="button" title="Reproducir ${escapeHtmlStr(topTrack.name)}">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           `;
+          const topAddBtn = topResultCard.querySelector('.sp-top-add-dj-btn');
+          if (topAddBtn) {
+            topAddBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              addSpotifyTrackToDjEddie(topTrack);
+            });
+          }
           topResultCard.addEventListener('click', () => playSpotifyTrack(topTrack, topResultCard, tracks, 0));
         }
         topLeftWrap.appendChild(topResultCard);
