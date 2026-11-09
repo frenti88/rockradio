@@ -3567,27 +3567,90 @@
       color: #000;
       border-color: #eab308;
     }
-    .dj-action-btn.gen-audio {
-      background: rgba(30, 215, 96, 0.18);
-      border-color: rgba(30, 215, 96, 0.4);
-      color: #6ee7b7;
+    .dj-action-btn.cancel-gen {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
     }
-    .dj-action-btn.gen-audio:hover {
-      background: #1ed760;
+    .dj-action-btn.cancel-gen:hover {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }
+    .dj-action-btn.retry-gen {
+      background: rgba(245, 158, 11, 0.18);
+      border-color: rgba(245, 158, 11, 0.45);
+      color: #fde68a;
+    }
+    .dj-action-btn.retry-gen:hover {
+      background: #f59e0b;
       color: #000;
-      border-color: #1ed760;
+      border-color: #f59e0b;
     }
-    .dj-action-btn.regen-story,
-    .dj-action-btn.regen-audio {
-      font-size: 0.68rem;
-      padding: 3px 6px;
-      color: #9ca3af;
-      background: rgba(255, 255, 255, 0.05);
+    .dj-action-btn.regen-story {
+      font-size: 0.72rem;
+      padding: 4px 8px;
+      color: #e5e7eb;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
     }
-    .dj-action-btn.regen-story:hover,
-    .dj-action-btn.regen-audio:hover {
+    .dj-action-btn.regen-story:hover {
       color: #fff;
       background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .dj-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      margin-left: 6px;
+      letter-spacing: 0.02em;
+    }
+    .dj-status-badge.pending {
+      background: rgba(161, 161, 170, 0.15);
+      color: #a1a1aa;
+      border: 1px solid rgba(161, 161, 170, 0.25);
+    }
+    .dj-status-badge.running {
+      background: rgba(234, 179, 8, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(234, 179, 8, 0.4);
+      animation: djBadgePulse 1.2s infinite alternate;
+    }
+    .dj-status-badge.cancelled {
+      background: rgba(156, 163, 175, 0.16);
+      color: #d1d5db;
+      border: 1px solid rgba(156, 163, 175, 0.25);
+    }
+    .dj-status-badge.error {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+    @keyframes djBadgePulse {
+      from { opacity: 0.7; }
+      to { opacity: 1; }
+    }
+    .dj-script-preview {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: #9ca3af;
+      line-height: 1.35;
+      max-width: 580px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-style: italic;
+    }
+    .dj-script-preview.is-generating {
+      color: #fde68a;
+      border-left: 2px solid #eab308;
+      padding-left: 6px;
     }
     .dj-action-btn.del-track {
       padding: 3px 6px;
@@ -8053,12 +8116,6 @@
         return;
       }
 
-      const storyText = buildEddieRadioScript(songTitle, artistNames, albumName, year, 1);
-      const sents = storyText.split('. ').filter(Boolean);
-      const l1 = (sents[0] || '').trim() + '.';
-      const l2 = (sents[1] || '').trim() + '.';
-      const l3 = `Sube el volumen... — ¡esto es ${songTitle}, de ${artistNames}!`;
-
       const introItem = {
         id: 'intro_' + pairId,
         pairId: pairId,
@@ -8071,19 +8128,16 @@
         year: year,
         cover: imgUrl,
         tag: 'Historia',
-        duration: 22,
-        introSec: '22s',
-        summary: storyText,
-        status: 'generando',
+        duration: 45,
+        introSec: '',
+        summary: '',
+        status: 'sin_historia',
         audioUrl: '',
+        fileUrl: '',
         hasRealAudio: false,
         isCustom: true,
         relatedSongId: 'song_' + pairId,
-        lyrics: [
-          { start: 0.0, end: 8.5, text: l1 },
-          { start: 8.9, end: 17.0, text: l2 },
-          { start: 17.4, end: 21.8, text: l3 }
-        ],
+        lyrics: [],
         createdAt: Date.now()
       };
 
@@ -8109,7 +8163,7 @@
         hasRealAudio: true,
         isCustom: true,
         relatedIntroId: 'intro_' + pairId,
-        lyrics: buildFullLyricsForTrack(songTitle, artistNames, albumName, durSec, null, storyText),
+        lyrics: buildFullLyricsForTrack(songTitle, artistNames, albumName, durSec, null, ''),
         createdAt: Date.now()
       };
 
@@ -8119,7 +8173,7 @@
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
-      showAppToast(`✓ "${songTitle}" añadida a DJ Eddie • Generando locución con IA...`, 'success');
+      showAppToast(`✓ "${songTitle}" añadida a DJ Eddie. Pulsa "Generar historia" para crear su locución.`, 'success');
 
       if (currentAppView === 'djeddie') {
         renderDjEddiePlaylistSongs();
@@ -8127,14 +8181,15 @@
         renderSpotifyHomeShelves();
       }
 
-      // Start real voice synthesis via background DJ Eddie audio daemon
-      generateAudioForCustomTrack(introItem.id, false);
-      // Simultaneously resolve the complete 100% full song audio track
+      // Pre-resolve full song in background for the unmodified song, but do NOT auto-generate voice for the intro
       resolveFullSongForTrack(songItem.id, songTitle, artistNames);
     }
 
     // Remove Custom Track Pair from DJ Eddie
     function removeCustomTrackFromDjEddie(pairId) {
+      if (activeStoryGenerations[pairId]) {
+        cancelStoryGeneration(pairId);
+      }
       let customTracks = getDjEddieCustomTracks();
       const itemToRemove = customTracks.find(t => t.pairId === pairId || t.id === pairId);
       const title = itemToRemove ? itemToRemove.songTitle : 'canción';
@@ -8150,121 +8205,242 @@
       }
     }
 
-    // Story Generation and Regeneration Engine
-    function generateStoryForCustomTrack(pairId, isRegen = false) {
-      const customTracks = getDjEddieCustomTracks();
-      const idx = customTracks.findIndex(t => t.id === pairId || t.pairId === pairId);
-      if (idx === -1) return;
+    // Active Generation Tracking System
+    const activeStoryGenerations = {};
 
-      const introItem = customTracks[idx];
-      const nextAngle = isRegen ? (((introItem.regenAngle || 1) % 3) + 1) : 1;
-      introItem.regenAngle = nextAngle;
-
-      const newStory = buildEddieRadioScript(introItem.songTitle, introItem.bandName, introItem.albumName, introItem.year, nextAngle);
-      introItem.summary = newStory;
-      introItem.status = 'con_historia';
-      introItem.introSec = '21s';
-
-      customTracks[idx] = introItem;
-      saveDjEddieCustomTracks(customTracks);
-      buildDjEddieCatalog();
-
-      renderDjEddiePlaylistSongs();
-      showAppToast(isRegen ? `✓ Guion de "${introItem.songTitle}" regenerado (Ángulo ${nextAngle})` : `✓ Historia de "${introItem.songTitle}" creada con éxito`, 'success');
+    function startGenerationTimer(pairId) {
+      if (!activeStoryGenerations[pairId]) return;
+      const gen = activeStoryGenerations[pairId];
+      if (gen.timerId) clearInterval(gen.timerId);
+      gen.timerId = setInterval(() => {
+        if (!activeStoryGenerations[pairId]) return;
+        const elapsed = Math.floor((Date.now() - gen.startTime) / 1000);
+        gen.elapsed = elapsed;
+        const badge = document.querySelector(`.dj-audio-timer[data-pair-id="${pairId}"]`);
+        if (badge) {
+          badge.textContent = `🎙️ Sintetizando audio (${elapsed}s)...`;
+        }
+      }, 1000);
     }
 
-    // Audio Narration Generation and Regeneration Engine with DJ Eddie IA Service
-    async function generateAudioForCustomTrack(trackId, isRegen = false, btnEl = null) {
+    function stopGenerationTimer(pairId) {
+      if (activeStoryGenerations[pairId] && activeStoryGenerations[pairId].timerId) {
+        clearInterval(activeStoryGenerations[pairId].timerId);
+        activeStoryGenerations[pairId].timerId = null;
+      }
+    }
+
+    // Unified Story & Audio Generation Engine with Real Backend & Live Cancellation
+    async function startStoryGeneration(targetId, isRegen = false) {
       const customTracks = getDjEddieCustomTracks();
-      const introIdx = customTracks.findIndex(t => t.id === trackId || t.pairId === trackId);
+      const introIdx = customTracks.findIndex(t => t.id === targetId || t.pairId === targetId || t.relatedSongId === targetId);
       if (introIdx === -1) return;
 
       const introItem = customTracks[introIdx];
-      if (!introItem.summary) {
-        showAppToast('Genera primero la historia antes de generar el audio', 'warn');
+      const pairId = introItem.pairId || introItem.id;
+
+      // Concurrency check: avoid duplicate requests on the same song
+      if (activeStoryGenerations[pairId]) {
+        showAppToast('Ya hay una generación en curso para esta canción', 'warn');
         return;
       }
 
-      let elapsedSeconds = 0;
-      let timerInterval = null;
-      const rowEl = document.querySelector(`.dj-song-row[data-track-id="${introItem.id}"]`);
-      const badgeEl = rowEl ? rowEl.querySelector('.dj-status-badge') : null;
-      if (badgeEl) {
-        badgeEl.style.background = 'rgba(234, 179, 8, 0.2)';
-        badgeEl.style.color = '#fbbf24';
-        badgeEl.textContent = '⏳ Sintetizando locución con IA...';
-      }
+      const jobId = 'job_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      const abortController = new AbortController();
 
-      if (btnEl) {
-        btnEl.classList.add('loading');
-        btnEl.disabled = true;
-        btnEl.textContent = '🎙️ Grabando... (0s)';
-        timerInterval = setInterval(() => {
-          elapsedSeconds++;
-          if (btnEl) btnEl.textContent = `🎙️ Grabando... (${elapsedSeconds}s)`;
-        }, 1000);
-      }
+      const previousState = {
+        status: introItem.status,
+        audioUrl: introItem.audioUrl,
+        fileUrl: introItem.fileUrl,
+        hasRealAudio: introItem.hasRealAudio,
+        summary: introItem.summary,
+        duration: introItem.duration,
+        introSec: introItem.introSec,
+        lyrics: introItem.lyrics ? JSON.parse(JSON.stringify(introItem.lyrics)) : []
+      };
 
-      let audioDataUrl = null;
-      let durationStr = '22s';
+      activeStoryGenerations[pairId] = {
+        jobId: jobId,
+        abortController: abortController,
+        isRegen: isRegen,
+        previousState: previousState,
+        startTime: Date.now(),
+        elapsed: 0,
+        timerId: null
+      };
 
-      try {
-        const ctrl = new AbortController();
-        const tId = setTimeout(() => ctrl.abort(), 60000);
-        const res = await fetch('http://127.0.0.1:5055/api/generate_audio', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            text: introItem.summary,
-            track_id: introItem.pairId,
-            song_title: introItem.songTitle,
-            band_name: introItem.bandName,
-            album: introItem.albumName || '',
-            year: introItem.year || ''
-          }),
-          signal: ctrl.signal
-        });
-        clearTimeout(tId);
-        if (res.ok) {
-          const json = await res.json();
-          if (json.audioUrl || json.fileUrl) {
-            audioDataUrl = json.fileUrl || json.audioUrl;
-            if (json.duration) durationStr = json.duration;
-            if (json.durationSec) {
-              introItem.duration = Math.round(json.durationSec);
-            }
-            if (json.fileUrl) introItem.fileUrl = json.fileUrl;
-            if (json.full_script) introItem.summary = json.full_script;
-            if (json.intro_timings) {
-              introItem.lyrics = json.intro_timings;
-              introItem.introSec = `${Math.round(json.intro_end || 21)}s`;
-            }
-          }
-        }
-      } catch (e) {
-        console.warn('Servicio de audio local no respondió, usando generador del navegador:', e);
-      }
+      // FASE 1: Generando guion escrito («generando_guion»)
+      introItem.status = 'generando_guion';
+      introItem.jobId = jobId;
 
-      if (!audioDataUrl) {
-        const words = (introItem.summary || '').split(/\s+/).length;
-        const realWaitMs = Math.max(5000, Math.min(10000, words * 160));
-        await new Promise(r => setTimeout(r, realWaitMs));
-        audioDataUrl = createRadioWavDataUrl(introItem.summary);
-      }
+      const nextAngle = isRegen ? (((introItem.regenAngle || 1) % 3) + 1) : (introItem.regenAngle || 1);
+      introItem.regenAngle = nextAngle;
 
-      if (timerInterval) clearInterval(timerInterval);
-
-      introItem.audioUrl = audioDataUrl;
-      introItem.status = 'con_audio';
-      introItem.introSec = durationStr;
-      introItem.hasRealAudio = true;
+      // Produce the master rock anecdote script using the official template
+      const scriptText = buildEddieRadioScript(introItem.songTitle, introItem.bandName, introItem.albumName, introItem.year, nextAngle);
+      introItem.summary = scriptText;
 
       customTracks[introIdx] = introItem;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
-
       renderDjEddiePlaylistSongs();
-      showAppToast(`🔊 Locución de Eddie lista para "${introItem.songTitle}" (${elapsedSeconds || 6}s)`, 'success');
+
+      showAppToast(`📝 Creando guion para "${introItem.songTitle}"...`, 'info');
+
+      // Brief organic transition so user sees the written script immediately
+      await new Promise(r => setTimeout(r, 450));
+
+      // Cancellation check before proceeding to audio synthesis
+      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) {
+        return; // Aborted during script phase
+      }
+
+      // FASE 2: Sintetizando locución con DJ Eddie en Chatterbox / Edge-TTS («generando_audio»)
+      introItem.status = 'generando_audio';
+      customTracks[introIdx] = introItem;
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+      renderDjEddiePlaylistSongs();
+
+      startGenerationTimer(pairId);
+      showAppToast(`🎙️ Sintetizando locución de Eddie para "${introItem.songTitle}"...`, 'info');
+
+      let audioData = null;
+
+      try {
+        const res = await fetch('http://127.0.0.1:5055/api/generate_audio', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            job_id: jobId,
+            track_id: pairId,
+            song_title: introItem.songTitle,
+            band_name: introItem.bandName,
+            album: introItem.albumName || '',
+            year: introItem.year || '',
+            text: introItem.summary
+          }),
+          signal: abortController.signal
+        });
+
+        if (res.ok) {
+          const json = await res.json();
+          if (json.cancelled) {
+            console.log('Backend reportó trabajo cancelado para', jobId);
+            return;
+          }
+          if (json.audioUrl || json.fileUrl) {
+            audioData = json;
+          }
+        }
+      } catch (err) {
+        if (err.name === 'AbortError' || abortController.signal.aborted) {
+          console.log(`Petición abortada para job ${jobId}`);
+          return;
+        }
+        console.warn('Fallo en la API de síntesis de audio de DJ Eddie:', err);
+      }
+
+      // Race condition protection: ensure this job is still the active one
+      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) {
+        console.warn('Respuesta tardía descartada para trabajo cancelado:', jobId);
+        return;
+      }
+
+      stopGenerationTimer(pairId);
+      delete activeStoryGenerations[pairId];
+
+      if (audioData && (audioData.fileUrl || audioData.audioUrl)) {
+        // Validación rigurosa de audio reproducible
+        introItem.audioUrl = audioData.fileUrl || audioData.audioUrl;
+        introItem.fileUrl = audioData.fileUrl || audioData.audioUrl;
+        introItem.duration = Math.round(audioData.durationSec || 45);
+        introItem.introSec = audioData.duration || `${introItem.duration}s`;
+        introItem.hasRealAudio = true;
+        introItem.status = 'con_audio';
+        if (audioData.full_script) introItem.summary = audioData.full_script;
+        if (audioData.intro_timings) introItem.lyrics = audioData.intro_timings;
+
+        customTracks[introIdx] = introItem;
+        saveDjEddieCustomTracks(customTracks);
+        buildDjEddieCatalog();
+        renderDjEddiePlaylistSongs();
+
+        showAppToast(`✓ Historia de "${introItem.songTitle}" lista con la voz de Eddie`, 'success');
+      } else {
+        // Error handling with option to retry
+        introItem.status = 'error';
+        introItem.hasRealAudio = false;
+
+        customTracks[introIdx] = introItem;
+        saveDjEddieCustomTracks(customTracks);
+        buildDjEddieCatalog();
+        renderDjEddiePlaylistSongs();
+
+        showAppToast(`⚠️ No se pudo sintetizar el audio con DJ Eddie. Pulsa "Reintentar".`, 'warn');
+      }
+    }
+
+    // Cancellation handler: stops network call, aborts backend task, cleans up temp files, preserves track
+    function cancelStoryGeneration(targetId) {
+      const customTracks = getDjEddieCustomTracks();
+      const introIdx = customTracks.findIndex(t => t.id === targetId || t.pairId === targetId || t.relatedSongId === targetId);
+      if (introIdx === -1) return;
+
+      const introItem = customTracks[introIdx];
+      const pairId = introItem.pairId || introItem.id;
+      const active = activeStoryGenerations[pairId];
+
+      if (active) {
+        // Abort fetch immediately
+        try {
+          active.abortController.abort();
+        } catch (e) {}
+
+        stopGenerationTimer(pairId);
+
+        // Notify backend to cancel Chatterbox/Edge-TTS task and delete temp files
+        fetch('http://127.0.0.1:5055/api/cancel_generation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            job_id: active.jobId,
+            track_id: pairId
+          })
+        }).catch(() => {});
+
+        const isRegen = active.isRegen;
+        const previousState = active.previousState;
+        delete activeStoryGenerations[pairId];
+
+        if (isRegen && previousState && previousState.hasRealAudio) {
+          // Revert to previously valid audio
+          introItem.status = 'con_audio';
+          introItem.audioUrl = previousState.audioUrl;
+          introItem.fileUrl = previousState.fileUrl;
+          introItem.hasRealAudio = true;
+          introItem.summary = previousState.summary;
+          introItem.duration = previousState.duration;
+          introItem.introSec = previousState.introSec;
+          introItem.lyrics = previousState.lyrics;
+          showAppToast(`⏹️ Regeneración detenida. Se conservó la versión anterior.`, 'info');
+        } else {
+          // Initial generation cancelled: retain original song, reset status to 'cancelado'
+          introItem.status = 'cancelado';
+          introItem.hasRealAudio = false;
+          introItem.audioUrl = '';
+          showAppToast(`⏹️ Generación de historia detenida. Canción conservada en la lista.`, 'info');
+        }
+      } else {
+        introItem.status = 'cancelado';
+        introItem.hasRealAudio = false;
+        introItem.audioUrl = '';
+      }
+
+      customTracks[introIdx] = introItem;
+      saveDjEddieCustomTracks(customTracks);
+      buildDjEddieCatalog();
+      renderDjEddiePlaylistSongs();
     }
 
     function buildDjEddieCatalog() {
@@ -8275,7 +8451,7 @@
       djEddieQueue = list;
       const songCount = list.filter(x => !x.isIntro).length || (list.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${songCount} canciones con Intro de Eddie`;
+      if (countEl) countEl.textContent = `${songCount} canciones con Historia de Eddie`;
       const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
       if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${songCount})`;
       const shelfMoreBtn = document.querySelector('[data-filterjump="djeddie"]');
@@ -8383,27 +8559,53 @@
         row.setAttribute('data-track-id', item.id);
         if (item.pairId) row.setAttribute('data-pair-id', item.pairId);
 
-        // Actions cell HTML
+        // Actions cell HTML & Status Badges
         let actionsHtml = '';
+        let statusBadgeHtml = '';
+
         if (item.isIntro) {
           if (item.status === 'sin_historia') {
+            statusBadgeHtml = `<span class="dj-status-badge pending">Sin historia</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-action-btn gen-story" type="button" title="Generar historia con IA">✨ Generar historia</button>
+                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Eddie">✨ Generar historia</button>
                 ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
-          } else if (item.status === 'con_historia') {
+          } else if (item.status === 'generando_guion') {
+            statusBadgeHtml = `<span class="dj-status-badge running">📝 Creando guion...</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-action-btn gen-audio" type="button" title="Generar locución de Eddie">🎙️ Generar audio</button>
-                <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con otro ángulo">🔄 Guion</button>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+              </div>
+            `;
+          } else if (item.status === 'generando_audio') {
+            const elSec = (activeStoryGenerations[item.pairId]?.elapsed) || 0;
+            statusBadgeHtml = `<span class="dj-status-badge running dj-audio-timer" data-pair-id="${item.pairId}">🎙️ Sintetizando audio (${elSec}s)...</span>`;
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+              </div>
+            `;
+          } else if (item.status === 'cancelado') {
+            statusBadgeHtml = `<span class="dj-status-badge cancelled">Generación cancelada</span>`;
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Eddie">✨ Generar historia</button>
+                ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
+              </div>
+            `;
+          } else if (item.status === 'error') {
+            statusBadgeHtml = `<span class="dj-status-badge error">⚠️ Error de generación</span>`;
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <button class="dj-action-btn retry-gen" type="button" title="Reintentar generación de la historia">🔄 Reintentar</button>
                 ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
           } else {
+            // 'con_audio' (o historias estándar del catálogo)
+            statusBadgeHtml = `<span class="dj-intro-pill">Historia</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-dur-text">${formatTime(item.duration)}</span>
@@ -8412,13 +8614,13 @@
                     ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
                 </button>
-                ${item.isCustom ? '<button class="dj-action-btn regen-audio" type="button" title="Regenerar locución de audio">🔄 Audio</button>' : ''}
-                ${item.isCustom ? '<button class="dj-action-btn regen-story" type="button" title="Regenerar historia">🔄 Guion</button>' : ''}
+                ${item.isCustom ? '<button class="dj-action-btn regen-story" type="button" title="Regenerar historia con DJ Eddie">🔄 Regenerar historia</button>' : ''}
                 ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
           }
         } else {
+          // Canción original de Spotify sin modificaciones
           actionsHtml = `
             <div class="dj-col-actions">
               <span class="dj-dur-text">${formatTime(item.duration)}</span>
@@ -8432,8 +8634,8 @@
           `;
         }
 
-        const tagBadgeHtml = item.isIntro
-          ? `<span class="dj-intro-pill">Historia</span>${item.status === 'generando' ? ' <span style="font-size:0.68rem;color:#fbbf24;margin-left:4px;">⏳ Grabando...</span>' : ''}`
+        const scriptPreviewHtml = (item.isIntro && item.summary)
+          ? `<div class="dj-script-preview ${item.status === 'generando_audio' ? 'is-generating' : ''}" title="${escapeHtmlStr(item.summary)}">${escapeHtmlStr(item.summary)}</div>`
           : '';
 
         row.innerHTML = `
@@ -8446,8 +8648,9 @@
               <div class="dj-song-name" title="${escapeHtmlStr(item.songTitle)}">${escapeHtmlStr(item.songTitle)}</div>
               <div class="dj-song-band">
                 <span>${escapeHtmlStr(item.bandName)}</span>
-                ${tagBadgeHtml}
+                ${statusBadgeHtml}
               </div>
+              ${scriptPreviewHtml}
             </div>
           </div>
           <div class="dj-col-year">${escapeHtmlStr(String(item.year || ''))}</div>
@@ -8460,28 +8663,28 @@
         if (genStoryBtn) {
           genStoryBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            generateStoryForCustomTrack(item.id, false);
+            startStoryGeneration(item.pairId || item.id, false);
           });
         }
         const regenStoryBtn = row.querySelector('.regen-story');
         if (regenStoryBtn) {
           regenStoryBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            generateStoryForCustomTrack(item.id, true);
+            startStoryGeneration(item.pairId || item.id, true);
           });
         }
-        const genAudioBtn = row.querySelector('.gen-audio');
-        if (genAudioBtn) {
-          genAudioBtn.addEventListener('click', (e) => {
+        const retryGenBtn = row.querySelector('.retry-gen');
+        if (retryGenBtn) {
+          retryGenBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            generateAudioForCustomTrack(item.id, false, genAudioBtn);
+            startStoryGeneration(item.pairId || item.id, false);
           });
         }
-        const regenAudioBtn = row.querySelector('.regen-audio');
-        if (regenAudioBtn) {
-          regenAudioBtn.addEventListener('click', (e) => {
+        const cancelGenBtn = row.querySelector('.cancel-gen');
+        if (cancelGenBtn) {
+          cancelGenBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            generateAudioForCustomTrack(item.id, true, regenAudioBtn);
+            cancelStoryGeneration(item.pairId || item.id);
           });
         }
         const delBtn = row.querySelector('.del-track');
@@ -8564,6 +8767,18 @@
 
       // Audio Source Selection:
       if (item.isIntro) {
+        if (!item.hasRealAudio || !item.audioUrl) {
+          // Si la historia aún no ha sido generada, reproducir directamente la canción completa de Spotify
+          let songIdx = -1;
+          if (item.relatedSongId) {
+            songIdx = djEddieQueue.findIndex(x => x.id === item.relatedSongId);
+          }
+          if (songIdx !== -1) {
+            showAppToast(`Esta canción aún no tiene historia generada. Reproduciendo canción original de Spotify.`, 'info');
+            playDjEddieItem(songIdx, false);
+            return;
+          }
+        }
         // Pure voice intro narrated by Eddie (no background music)
         spotifyAudio.src = item.audioUrl;
         spotifyAudio.currentTime = 0;

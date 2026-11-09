@@ -21,7 +21,11 @@ import json
 import base64
 import re
 import time
-from http.server import HTTPServer, BaseHTTPRequestHandler
+import threading
+from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
+
+ACTIVE_JOBS = {}
+ACTIVE_JOBS_LOCK = threading.Lock()
 
 try:
     import edge_tts
@@ -297,7 +301,7 @@ def get_audio_duration(path):
     except Exception:
         return 45.0
 
-async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None):
+async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None):
     """
     Genera la locución oficial de DJ Eddie con todos los lineamientos maestros de producción:
     - Voz Eddie (es-US-AlonsoNeural)
@@ -306,10 +310,11 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     - Cierre institucional obligatorio con ganancia enérgica de cabina (2.4dB)
     - Master analógico radial (EQ cálido, presencia, compresión analógica 4:1, limitador -0.6dB)
     - Cálculo de timestamps exactos (intro_timings) para sincronizar la letra al 100%
+    - Soporte de cancelación en tiempo real y limpieza estricta de archivos temporales
     """
     pid = os.getpid()
     t_start = time.time()
-    print(f"\n🎙️ [DJ EDDIE SERVICE] Generando locución maestra para: '{song_title}' de {band_name}...", flush=True)
+    print(f"\n🎙️ [DJ EDDIE SERVICE] Generando locución maestra para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
 
     apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
     tmp_prefix = f"/tmp/dj_eddie_master_{pid}_{int(t_start*1000)}"
@@ -317,13 +322,45 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     voice = "es-US-AlonsoNeural"
     temp_files = []
 
+    def is_cancelled():
+        if not job_id:
+            return False
+        with ACTIVE_JOBS_LOCK:
+            return ACTIVE_JOBS.get(job_id, {}).get('cancelled', False)
+
+    def cleanup_on_cancel():
+        print(f"🛑 [DJ EDDIE SERVICE] Cancelación en curso para '{song_title}' (job: {job_id}). Limpiando archivos temporales...", flush=True)
+        for tmp_f in temp_files:
+            try:
+                if os.path.exists(tmp_f):
+                    os.remove(tmp_f)
+            except Exception:
+                pass
+        if out_mp3_path and os.path.exists(out_mp3_path):
+            try:
+                os.remove(out_mp3_path)
+            except Exception:
+                pass
+
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     # 1. Apertura
     ap_mp3 = f"{tmp_prefix}_ap.mp3"
     w_ap = f"{tmp_prefix}_ap.wav"
     w_sil_ap = f"{tmp_prefix}_sil_ap.wav"
     temp_files.extend([ap_mp3, w_ap, w_sil_ap])
+    if job_id:
+        with ACTIVE_JOBS_LOCK:
+            if job_id in ACTIVE_JOBS:
+                ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
 
     await save_tts_line_with_retry(apertura, voice, "+3%", "+1Hz", ap_mp3)
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     trim_and_boost_wav(ap_mp3, w_ap, "1.2dB")
     make_silence_wav(0.45, w_sil_ap)
     dur_ap = get_audio_duration(w_ap)
@@ -340,12 +377,24 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 
     # 2. Desarrollo (Oraciones de la historia con respiraciones naturales)
     for idx, sent in enumerate(dev_sentences):
+        if is_cancelled():
+            cleanup_on_cancel()
+            return None, 0, 0, [], 0, ""
+
         s_mp3 = f"{tmp_prefix}_dev_{idx}.mp3"
         w_s = f"{tmp_prefix}_dev_{idx}.wav"
         w_sil = f"{tmp_prefix}_dev_sil_{idx}.wav"
         temp_files.extend([s_mp3, w_s, w_sil])
+        if job_id:
+            with ACTIVE_JOBS_LOCK:
+                if job_id in ACTIVE_JOBS:
+                    ACTIVE_JOBS[job_id]['temp_files'].update([s_mp3, w_s, w_sil])
 
         await save_tts_line_with_retry(sent, voice, "+3%", "+1Hz", s_mp3)
+        if is_cancelled():
+            cleanup_on_cancel()
+            return None, 0, 0, [], 0, ""
+
         trim_and_boost_wav(s_mp3, w_s, "1.6dB")
         make_silence_wav(0.40, w_sil)
 
@@ -359,11 +408,23 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         concat_list.extend([w_s, w_sil])
 
     # 3. Cierre Institucional Obligatorio
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     ci_mp3 = f"{tmp_prefix}_ci.mp3"
     w_ci = f"{tmp_prefix}_ci.wav"
     temp_files.extend([ci_mp3, w_ci])
+    if job_id:
+        with ACTIVE_JOBS_LOCK:
+            if job_id in ACTIVE_JOBS:
+                ACTIVE_JOBS[job_id]['temp_files'].update([ci_mp3, w_ci])
 
     await save_tts_line_with_retry(cierre, voice, "+5%", "+2Hz", ci_mp3)
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     trim_and_boost_wav(ci_mp3, w_ci, "2.4dB")
     dur_ci = get_audio_duration(w_ci)
 
@@ -375,6 +436,10 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     concat_list.append(w_ci)
     intro_end = round(t_cursor + dur_ci, 2)
 
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     # Concatenar todos los segmentos
     concat_txt = f"{tmp_prefix}_concat.txt"
     temp_files.append(concat_txt)
@@ -385,6 +450,10 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     raw_voice_wav = f"{tmp_prefix}_raw.wav"
     temp_files.append(raw_voice_wav)
     subprocess.run([FFMPEG_BIN, "-y", "-f", "concat", "-safe", "0", "-i", concat_txt, raw_voice_wav], capture_output=True, check=True)
+
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
 
     # Cadena de procesamiento analógico radial de DJ Eddie:
     # 1. Pitch shift sutil (1.055)
@@ -421,6 +490,10 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         out_mp3_path
     ], capture_output=True, check=True)
 
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
     print(f"✓ [DJ EDDIE SERVICE] Locución maestra generada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
@@ -438,7 +511,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 def run_server(port=5055):
     """
     Servidor HTTP en puerto 5055 para la app web de Rock Radio.
-    Atiende solicitudes de generación de locuciones estandarizadas y sincronización de letras.
+    Atiende solicitudes de generación de locuciones estandarizadas, cancelación inmediata y sincronización de letras.
     """
     class DjEddieAudioHandler(BaseHTTPRequestHandler):
         def _set_cors(self):
@@ -465,6 +538,7 @@ def run_server(port=5055):
                     'engine': 'Edge-TTS + Master Radio Booth Analog Chain',
                     'lyricsSync': True,
                     'port': port,
+                    'activeJobsCount': len(ACTIVE_JOBS),
                     'timestamp': time.time()
                 }
                 self.wfile.write(json.dumps(status_payload).encode('utf-8'))
@@ -482,6 +556,7 @@ def run_server(port=5055):
                     song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
                     band_name = data.get('band_name') or data.get('bandName') or 'Banda'
                     track_id = str(data.get('track_id', 'custom_track')).replace(':', '_').replace('/', '_')
+                    job_id = data.get('job_id') or f"job_{int(time.time()*1000)}_{track_id}"
                     album_name = data.get('album', '')
                     year = data.get('year', '')
 
@@ -491,9 +566,37 @@ def run_server(port=5055):
                     safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
                     workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_intro_{safe_slug}_{track_id}.mp3")
 
+                    with ACTIVE_JOBS_LOCK:
+                        ACTIVE_JOBS[job_id] = {
+                            'cancelled': False,
+                            'track_id': track_id,
+                            'temp_files': set(),
+                            'out_mp3_path': workspace_mp3,
+                            'created_at': time.time()
+                        }
+
                     out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
-                        build_eddie_radio_narration(text, song_title, band_name, workspace_mp3)
+                        build_eddie_radio_narration(text, song_title, band_name, workspace_mp3, job_id=job_id)
                     )
+
+                    is_job_cancelled = False
+                    with ACTIVE_JOBS_LOCK:
+                        if job_id in ACTIVE_JOBS:
+                            is_job_cancelled = ACTIVE_JOBS[job_id].get('cancelled', False)
+                            del ACTIVE_JOBS[job_id]
+
+                    if is_job_cancelled or not out_path or not os.path.exists(out_path):
+                        self.send_response(200)
+                        self._set_cors()
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({
+                            'success': False,
+                            'cancelled': True,
+                            'message': 'Generación cancelada por el usuario',
+                            'jobId': job_id
+                        }).encode('utf-8'))
+                        return
 
                     with open(out_path, 'rb') as f:
                         b64_audio = base64.b64encode(f.read()).decode('utf-8')
@@ -515,6 +618,7 @@ def run_server(port=5055):
                         'elapsedSec': round(elapsed, 2),
                         'voice': 'Eddie (Alonso Neural Master)',
                         'trackId': track_id,
+                        'jobId': job_id,
                         'intro_timings': intro_timings,
                         'intro_end': intro_end,
                         'full_script': full_script
@@ -528,11 +632,139 @@ def run_server(port=5055):
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
                     self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+
+            elif self.path in ('/api/cancel_generation', '/api/cancel'):
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length) if length > 0 else b'{}'
+                try:
+                    data = json.loads(body.decode('utf-8')) if body else {}
+                    target_job_id = data.get('job_id')
+                    target_track_id = data.get('track_id')
+                    cancelled_count = 0
+                    with ACTIVE_JOBS_LOCK:
+                        for jid, job in list(ACTIVE_JOBS.items()):
+                            if (target_job_id and jid == target_job_id) or (target_track_id and job.get('track_id') == target_track_id):
+                                job['cancelled'] = True
+                                cancelled_count += 1
+                                for tf in list(job.get('temp_files', set())):
+                                    try:
+                                        if os.path.exists(tf):
+                                            os.remove(tf)
+                                    except Exception:
+                                        pass
+                                out_p = job.get('out_mp3_path')
+                                if out_p and os.path.exists(out_p):
+                                    try:
+                                        os.remove(out_p)
+                                    except Exception:
+                                        pass
+                    print(f"🛑 [DJ EDDIE SERVICE] Cancelación procesada para job: {target_job_id} / track: {target_track_id}. Total: {cancelled_count}", flush=True)
+                    self.send_response(200)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({
+                        'success': True,
+                        'cancelled': True,
+                        'count': cancelled_count,
+                        'job_id': target_job_id
+                    }).encode('utf-8'))
+                except Exception as e:
+                    self.send_response(500)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+
+            elif self.path in ('/api/generate_story_text', '/api/story_text'):
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length) if length > 0 else b'{}'
+                try:
+                    data = json.loads(body.decode('utf-8')) if body else {}
+                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
+                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
+                    album_name = data.get('album', '')
+                    year = data.get('year', '')
+                    angle = int(data.get('angle', 1))
+
+                    apertura, dev_story, cierre, full_script = get_master_eddie_script(song_title, band_name, album_name, year, angle)
+                    self.send_response(200)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({
+                        'success': True,
+                        'full_script': full_script,
+                        'apertura': apertura,
+                        'desarrollo': dev_story,
+                        'cierre': cierre,
+                        'angle': angle
+                    }).encode('utf-8'))
+                except Exception as e:
+                    self.send_response(500)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+
+            elif self.path in ('/api/resolve_full_song', '/api/full_song'):
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length) if length > 0 else b'{}'
+                try:
+                    data = json.loads(body.decode('utf-8')) if body else {}
+                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
+                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
+                    track_id = str(data.get('track_id', '')).replace(':', '_').replace('/', '_')
+
+                    safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
+                    target_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"full_{safe_slug}.mp3")
+
+                    if not os.path.exists(target_mp3) or os.path.getsize(target_mp3) < 500000:
+                        yt_bin = "/Library/Frameworks/Python.framework/Versions/3.14/bin/yt-dlp"
+                        if not os.path.exists(yt_bin):
+                            yt_bin = "yt-dlp"
+                        query = f"ytsearch1:{band_name} {song_title} official audio"
+                        cmd = [
+                            yt_bin,
+                            "-x", "--audio-format", "mp3",
+                            "--audio-quality", "0",
+                            "--default-search", "ytsearch1",
+                            "-o", target_mp3,
+                            query
+                        ]
+                        print(f"  🔍 [DJ EDDIE SERVICE] Obteniendo pista completa para '{song_title}' de {band_name}...", flush=True)
+                        subprocess.run(cmd, capture_output=True, timeout=90)
+
+                    if os.path.exists(target_mp3) and os.path.getsize(target_mp3) > 100000:
+                        dur = get_audio_duration(target_mp3)
+                        rel_url = f"audio/{os.path.basename(target_mp3)}"
+                        self.send_response(200)
+                        self._set_cors()
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({
+                            'success': True,
+                            'audioUrl': rel_url,
+                            'fileUrl': rel_url,
+                            'durationSec': dur
+                        }).encode('utf-8'))
+                    else:
+                        self.send_response(404)
+                        self._set_cors()
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({'error': 'No se pudo resolver el audio'}).encode('utf-8'))
+                except Exception as e:
+                    self.send_response(500)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
             else:
                 self.send_response(404)
                 self.end_headers()
 
-    server = HTTPServer(('127.0.0.1', port), DjEddieAudioHandler)
+    server = ThreadingHTTPServer(('127.0.0.1', port), DjEddieAudioHandler)
     print(f"🚀 [DJ EDDIE SERVICE] Servidor de locuciones maestras de Eddie en http://127.0.0.1:{port}/api/generate_audio", flush=True)
     print(f"   Voz: Eddie (es-US-AlonsoNeural) | Sincronización de letras activa", flush=True)
     try:
