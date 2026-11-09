@@ -6110,16 +6110,111 @@
       }, 3500);
     }
 
+    // Curated catalog of pre-loaded DJ Eddie Custom Tracks with master mixed radio intros
+    const DEFAULT_CUSTOM_DJ_TRACKS = [
+      {
+        id: 'sp_5XcZRgJv3zMhTqCyESjQrF',
+        spotifyId: '5XcZRgJv3zMhTqCyESjQrF',
+        bandName: 'Alice Cooper',
+        songTitle: 'Poison',
+        albumName: 'Trash',
+        year: '1989',
+        duration: 268,
+        introSec: '22s',
+        cover: 'https://i.scdn.co/image/ab67616d0000b273b41d24c0d8eb2c1e61ea4d38',
+        themeColor: '#e11d48',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_alice_cooper_poison_sp_5XcZRgJv3zMhTqCyESjQrF.mp3',
+        fileUrl: 'audio/eddie_alice_cooper_poison_sp_5XcZRgJv3zMhTqCyESjQrF.mp3',
+        summary: 'En 1989, para el álbum Trash, Alice Cooper compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Poison, de Alice Cooper!',
+        hasRealAudio: true,
+        isCustom: true
+      },
+      {
+        id: 'sp_2MuWTIM3b0YEAskbeeFE1i',
+        spotifyId: '2MuWTIM3b0YEAskbeeFE1i',
+        bandName: 'Metallica',
+        songTitle: 'Master Of Puppets',
+        albumName: 'Master of Puppets',
+        year: '1986',
+        duration: 515,
+        introSec: '25s',
+        cover: 'img/covers/cover_metallica.png',
+        themeColor: '#ef4444',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_metallica_master_of_puppets_sp_2MuWTIM3b0YEAskbeeFE1i.mp3',
+        fileUrl: 'audio/eddie_metallica_master_of_puppets_sp_2MuWTIM3b0YEAskbeeFE1i.mp3',
+        summary: 'En 1986, para el álbum Master of Puppets, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Master Of Puppets, de Metallica!',
+        hasRealAudio: true,
+        isCustom: true
+      },
+      {
+        id: 'eagles_hotel_california',
+        spotifyId: 'eagles_hotel_california',
+        bandName: 'Eagles',
+        songTitle: 'Hotel California',
+        albumName: 'Hotel California',
+        year: '1976',
+        duration: 391,
+        introSec: '21s',
+        cover: 'img/covers/cover_led_zeppelin.png',
+        themeColor: '#f59e0b',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_eagles_hotel_california_eagles_hotel_california.mp3',
+        fileUrl: 'audio/eddie_eagles_hotel_california_eagles_hotel_california.mp3',
+        summary: 'En 1976, para el álbum Hotel California, Eagles compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Hotel California, de Eagles!',
+        hasRealAudio: true,
+        isCustom: true
+      },
+      {
+        id: 'acdc_highway_to_hell',
+        spotifyId: 'acdc_highway_to_hell',
+        bandName: 'AC/DC',
+        songTitle: 'Highway to Hell',
+        albumName: 'Highway to Hell',
+        year: '1979',
+        duration: 207,
+        introSec: '25s',
+        cover: 'img/covers/cover_acdc.png',
+        themeColor: '#b91c1c',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_acdc_highway_to_hell_acdc_highway_to_hell.mp3',
+        fileUrl: 'audio/eddie_acdc_highway_to_hell_acdc_highway_to_hell.mp3',
+        summary: 'En 1979, para el álbum Highway to Hell, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Highway to Hell, de AC/DC!',
+        hasRealAudio: true,
+        isCustom: true
+      },
+      {
+        id: 'gnr_sweet_child',
+        spotifyId: 'gnr_sweet_child',
+        bandName: "Guns N' Roses",
+        songTitle: "Sweet Child O' Mine",
+        albumName: 'Appetite for Destruction',
+        year: '1987',
+        duration: 354,
+        introSec: '24s',
+        cover: 'img/covers/cover_kiss.png',
+        themeColor: '#f97316',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_guns_n_roses_sweet_child_o_mine_gnr_sweet_child.mp3',
+        fileUrl: 'audio/eddie_guns_n_roses_sweet_child_o_mine_gnr_sweet_child.mp3',
+        summary: "En 1987, para el álbum Appetite for Destruction, Guns N' Roses compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Sweet Child O' Mine, de Guns N' Roses!",
+        hasRealAudio: true,
+        isCustom: true
+      }
+    ];
+
     // DJ Eddie Custom Tracks Local Storage Persistence
     function getDjEddieCustomTracks() {
       try {
         const raw = localStorage.getItem('dj_eddie_custom_tracks');
-        if (!raw) return [];
+        if (!raw) return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
         const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : [];
+        if (!Array.isArray(parsed) || !parsed.length) return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
+        return parsed;
       } catch (e) {
         console.warn('Error reading dj_eddie_custom_tracks from localStorage:', e);
-        return [];
+        return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
       }
     }
 
@@ -6522,10 +6617,13 @@
         clearTimeout(tId);
         if (res.ok) {
           const json = await res.json();
-          if (json.audioUrl) {
-            audioDataUrl = json.audioUrl;
+          if (json.audioUrl || json.fileUrl) {
+            audioDataUrl = json.fileUrl || json.audioUrl;
             if (json.duration) durationStr = json.duration;
-            if (json.durationSec) realAudioDuration = json.durationSec;
+            if (json.durationSec) {
+              realAudioDuration = json.durationSec;
+              track.duration = Math.round(json.durationSec);
+            }
             if (json.fileUrl) track.fileUrl = json.fileUrl;
             if (json.full_script) {
               track.summary = json.full_script;

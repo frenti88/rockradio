@@ -32,6 +32,51 @@ os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffmpeg") else "ffmpeg"
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
+def find_or_download_bg(song_title, band_name):
+    """
+    Localiza o descarga la pista original/instrumental completa de la canción
+    para mezclarla en la cabina de DJ Eddie con ducking dinámico (música de fondo
+    al 40% durante la locución de Eddie, subiendo al 100% al terminar el intro).
+    """
+    slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
+    cached_tmp = f"/tmp/bg_{slug}.mp3"
+    if os.path.exists(cached_tmp) and os.path.getsize(cached_tmp) > 500000:
+        return cached_tmp
+
+    # Buscar en carpeta audio local pistas existentes que no sean narraciones previas de Eddie
+    clean_b = band_name.lower().replace(' ', '_')
+    clean_s = song_title.lower().replace(' ', '_')
+    if os.path.exists(WORKSPACE_AUDIO_DIR):
+        for fn in os.listdir(WORKSPACE_AUDIO_DIR):
+            if fn.endswith('.mp3') and not fn.startswith('eddie_') and not 'podcast' in fn:
+                if clean_b in fn.lower() and clean_s in fn.lower():
+                    return os.path.join(WORKSPACE_AUDIO_DIR, fn)
+
+    # Descargar pista con yt-dlp si está disponible
+    yt_bin = "/Library/Frameworks/Python.framework/Versions/3.14/bin/yt-dlp"
+    if not os.path.exists(yt_bin):
+        yt_bin = "yt-dlp"
+    try:
+        print(f"  🔍 Buscando pista de audio original para '{song_title}' de {band_name}...", flush=True)
+        query = f"ytsearch1:{band_name} {song_title} audio"
+        cmd = [
+            yt_bin,
+            "-x", "--audio-format", "mp3",
+            "--audio-quality", "0",
+            "--default-search", "ytsearch1",
+            "--no-playlist",
+            "-o", cached_tmp,
+            query
+        ]
+        subprocess.run(cmd, capture_output=True, timeout=30)
+        if os.path.exists(cached_tmp) and os.path.getsize(cached_tmp) > 500000:
+            print(f"  ✓ Pista de fondo obtenida exitosamente: {cached_tmp}", flush=True)
+            return cached_tmp
+    except Exception as e:
+        print(f"  [Aviso] No se pudo descargar pista con yt-dlp: {e}", flush=True)
+
+    return None
+
 def get_eddie_script(song_title, band_name, album_name="", year="", angle=1):
     """
     Construye el guion radial de DJ Eddie respetando la fórmula de 35-50 palabras y 3 oraciones estrictas:
@@ -260,7 +305,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     # 3. Ecualización de presencia vocal: cuerpo cálido en 135Hz, recorte de caja en 260Hz, brillo en 3400Hz y aire en 7500Hz
     # 4. Compresor de estudio (-16dB threshold, 4:1 ratio, 2.6dB makeup)
     # 5. Limitador estricto (-0.6dB peak)
-    vc_filter = (
+    vc_filter_base = (
         "aresample=44100,"
         "asetrate=44100*1.055,"
         "atempo=1/1.055,"
@@ -270,26 +315,75 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         "equalizer=f=260:width_type=o:width=1.0:g=-1.8,"
         "equalizer=f=3400:width_type=o:width=1.2:g=4.8,"
         "equalizer=f=7500:width_type=o:width=1.5:g=3.0,"
-        "acompressor=threshold=-16dB:ratio=4.0:attack=8:release=90:makeup=2.6,"
-        "alimiter=limit=-0.6dB:attack=5:release=50:asc=1"
+        "acompressor=threshold=-16dB:ratio=4.0:attack=8:release=90:makeup=2.6"
     )
 
     if not out_mp3_path:
         out_mp3_path = f"/tmp/dj_eddie_{pid}.mp3"
 
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
-    subprocess.run([
-        FFMPEG_BIN, "-y",
-        "-i", raw_voice_wav,
-        "-af", vc_filter,
-        "-codec:a", "libmp3lame",
-        "-b:a", "192k",
-        out_mp3_path
-    ], capture_output=True, check=True)
+
+    # Buscar pista musical original para la mezcla de radio con ducking
+    bg_music = find_or_download_bg(song_title, band_name)
+    
+    if bg_music and os.path.exists(bg_music):
+        print(f"  > Pista musical de fondo activa: {bg_music}", flush=True)
+        t_start = 3.0
+        v_dur = get_audio_duration(raw_voice_wav)
+        t_end = t_start + v_dur
+        fade_down = 0.35
+        fade_up = 1.0
+
+        # Especificación de ducking estricta:
+        # - 0:00 a 0:03: Música al 100% (1.0)
+        # - 0:03 a t_end: La música baja un 60% (quedando al 40% / 0.40) mientras Eddie narra
+        # - t_end a t_end + 1.0s: La música sube de forma suave al 100% (1.0) para seguir con la canción completa
+        # - t_end + 1.0s en adelante: Música al 100% hasta el final
+        vol_expr = (
+            f"if(isnan(t), 1.0, "
+            f"if(lt(t,{t_start:.2f}), 1.0, "
+            f"if(lt(t,{t_start+fade_down:.2f}), 1.0-(1.0-0.40)*(t-{t_start:.2f})/{fade_down}, "
+            f"if(lt(t,{t_end:.2f}), 0.40, "
+            f"if(lt(t,{t_end+fade_up:.2f}), 0.40+(1.0-0.40)*(t-{t_end:.2f})/{fade_up}, 1.0)))))"
+        )
+
+        vc_filter = (
+            f"{vc_filter_base},"
+            f"adelay={int(t_start*1000)}|{int(t_start*1000)}"
+        )
+
+        filter_complex = (
+            f"[0:a]volume=eval=frame:volume='{vol_expr}'[bg];"
+            f"[1:a]{vc_filter}[vc];"
+            f"[bg][vc]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mixed];"
+            f"[mixed]alimiter=limit=-0.6dB:attack=5:release=50:asc=1[master]"
+        )
+
+        subprocess.run([
+            FFMPEG_BIN, "-y",
+            "-i", bg_music,
+            "-i", raw_voice_wav,
+            "-filter_complex", filter_complex,
+            "-map", "[master]",
+            "-codec:a", "libmp3lame",
+            "-b:a", "192k",
+            out_mp3_path
+        ], capture_output=True, check=True)
+    else:
+        print(f"  [Info] Mezclando locución directa de Eddie (sin pista de fondo): {raw_voice_wav}", flush=True)
+        vc_filter_solo = f"{vc_filter_base},alimiter=limit=-0.6dB:attack=5:release=50:asc=1"
+        subprocess.run([
+            FFMPEG_BIN, "-y",
+            "-i", raw_voice_wav,
+            "-af", vc_filter_solo,
+            "-codec:a", "libmp3lame",
+            "-b:a", "192k",
+            out_mp3_path
+        ], capture_output=True, check=True)
 
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
-    print(f"✓ [DJ EDDIE SERVICE] Locución masterizada exitosamente en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
+    print(f"✓ [DJ EDDIE SERVICE] Masterización de Radio completada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
 
     # Limpieza de archivos temporales de paso
     for tmp_f in [s1_mp3, s2_mp3, s3_a_mp3, s3_b_mp3, w_s1, w_sil1, w_s2, w_sil2, w_s3a, w_sil3, w_s3b, c2_txt, w_line3, concat_txt, raw_voice_wav]:
@@ -366,6 +460,7 @@ def run_server(port=5055):
 
                     relative_url = f"audio/{os.path.basename(out_path)}"
                     data_url = f"data:audio/mp3;base64,{b64_audio}"
+                    duration_fmt = f"{int(duration // 60)}:{int(duration % 60):02d}" if duration >= 60 else f"{int(round(duration))}s"
 
                     self.send_response(200)
                     self._set_cors()
@@ -375,7 +470,7 @@ def run_server(port=5055):
                         'success': True,
                         'audioUrl': data_url,
                         'fileUrl': relative_url,
-                        'duration': f"{int(round(duration))}s",
+                        'duration': duration_fmt,
                         'durationSec': round(duration, 2),
                         'elapsedSec': round(elapsed, 2),
                         'voice': 'Eddie (Alonso Neural Master)',
