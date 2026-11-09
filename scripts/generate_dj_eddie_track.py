@@ -440,6 +440,60 @@ def run_server(port=5055):
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
                     self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+            elif self.path in ('/api/resolve_full_song', '/api/full_song'):
+                length = int(self.headers.get('Content-Length', 0))
+                body = self.rfile.read(length)
+                try:
+                    data = json.loads(body.decode('utf-8'))
+                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
+                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
+                    track_id = str(data.get('track_id', '')).replace(':', '_').replace('/', '_')
+
+                    safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
+                    target_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"full_{safe_slug}.mp3")
+
+                    if not os.path.exists(target_mp3) or os.path.getsize(target_mp3) < 1000000:
+                        print(f"  🔍 [DJ EDDIE SERVICE] Obteniendo pista completa para '{song_title}' de {band_name}...", flush=True)
+                        yt_bin = "/Library/Frameworks/Python.framework/Versions/3.14/bin/yt-dlp"
+                        query = f"ytsearch1:{band_name} {song_title} official audio"
+                        cmd = [
+                            yt_bin,
+                            "-x", "--audio-format", "mp3",
+                            "--audio-quality", "0",
+                            "--default-search", "ytsearch1",
+                            "--no-playlist",
+                            "-o", target_mp3,
+                            query
+                        ]
+                        subprocess.run(cmd, capture_output=True, timeout=40)
+
+                    if os.path.exists(target_mp3) and os.path.getsize(target_mp3) > 500000:
+                        dur = get_audio_duration(target_mp3)
+                        rel_url = f"audio/{os.path.basename(target_mp3)}"
+                        dur_fmt = f"{int(dur // 60)}:{int(dur % 60):02d}"
+                        self.send_response(200)
+                        self._set_cors()
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({
+                            'success': True,
+                            'audioUrl': rel_url,
+                            'fileUrl': rel_url,
+                            'duration': dur_fmt,
+                            'durationSec': round(dur, 2)
+                        }).encode('utf-8'))
+                    else:
+                        self.send_response(404)
+                        self._set_cors()
+                        self.send_header('Content-Type', 'application/json')
+                        self.end_headers()
+                        self.wfile.write(json.dumps({'error': 'No se pudo obtener la canción completa'}).encode('utf-8'))
+                except Exception as e:
+                    self.send_response(500)
+                    self._set_cors()
+                    self.send_header('Content-Type', 'application/json')
+                    self.end_headers()
+                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
             else:
                 self.send_response(404)
                 self.end_headers()
