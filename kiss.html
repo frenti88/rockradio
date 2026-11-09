@@ -4945,6 +4945,11 @@
     let activeVoice = "eddie"; // jorge, dalia, alonso
     let activeTrackFormat = "45s"; // "45s" | "full"
     let currentFilter = "all";
+    let spotifySearchDebounce = null;
+    let spotifySdkPlayer = null;
+    let spotifySdkDeviceId = null;
+    let spotifyIframeController = null;
+    let isSpotifyIframeReady = false;
 
     const spotifyAudio = document.getElementById('spotifyAudio');
     const heroBanner = document.getElementById('heroBanner');
@@ -6617,9 +6622,7 @@
     const spotifyEmbedIframeContainer = document.getElementById('spotifyEmbedIframeContainer');
     const btnClearSearch = document.getElementById('btnClearSearch');
 
-    let spotifySearchDebounce = null;
-    let spotifySdkPlayer = null;
-    let spotifySdkDeviceId = null;
+    // spotifySdkPlayer declared at top
 
     function getSpotifyRedirectUri() {
       // Normalize path so index.html resolves to root '/'
@@ -6922,8 +6925,7 @@
       `;
     }
 
-    let spotifyIframeController = null;
-    let isSpotifyIframeReady = false;
+    // spotifyIframeController declared at top
 
     // Spotify Iframe API callback for seamless controller integration
     window.onSpotifyIframeApiReady = (IFrameAPI) => {
