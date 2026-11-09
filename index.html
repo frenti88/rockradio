@@ -3826,6 +3826,12 @@
       }
 
       /* Base Layout on Mobile */
+      html, body {
+        width: 100vw;
+        max-width: 100vw;
+        overflow-x: hidden;
+      }
+
       body {
         height: 100vh;
         height: 100dvh;
@@ -3833,6 +3839,9 @@
       }
 
       .app-layout {
+        width: 100vw;
+        max-width: 100vw;
+        overflow-x: hidden;
         padding: 0 !important;
         gap: 0 !important;
         height: 100vh;
@@ -3844,22 +3853,29 @@
       }
 
       .spotify-main {
+        width: 100vw;
+        max-width: 100vw;
+        min-width: 0 !important;
+        overflow-x: hidden !important;
         border-radius: 0 !important;
-        padding-bottom: 150px !important; /* Clearance for mini player (56px) + bottom nav (56px) + spacing */
+        padding-bottom: 140px !important; /* Clearance for mini player (56px) + bottom nav (56px) + spacing */
         -webkit-overflow-scrolling: touch;
       }
 
       /* Mobile Sticky Top Header (Spotify Layout) */
       .main-top-nav {
         height: 56px !important;
-        padding: 0 14px !important;
-        background: rgba(18, 18, 18, 0.95) !important;
+        padding: 0 12px !important;
+        background: rgba(18, 18, 18, 0.96) !important;
         backdrop-filter: blur(20px) !important;
         -webkit-backdrop-filter: blur(20px) !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 10px !important;
+        gap: 8px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
       }
 
       .nav-arrows,
@@ -3869,18 +3885,43 @@
       }
 
       .topbar-avatar-btn {
-        width: 36px !important;
-        height: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        flex-shrink: 0 !important;
       }
 
       .top-bar-search-wrap {
-        padding: 8px 12px !important;
+        padding: 7px 12px !important;
         max-width: 100% !important;
-        gap: 8px !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        gap: 6px !important;
       }
 
       .top-bar-search-wrap input {
-        font-size: 0.84rem !important;
+        font-size: 0.82rem !important;
+        min-width: 0 !important;
+        width: 100% !important;
+      }
+
+      .btn-spotify-login-top {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        padding: 0 !important;
+        border-radius: 50% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        gap: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .btn-spotify-login-top #spAuthTopLabel,
+      .btn-spotify-login-top .sp-btn-label-desktop {
+        display: none !important;
       }
 
 
@@ -4234,6 +4275,248 @@
       }
 
       /* ========================================================
+         DJ EDDIE PLAYLIST VIEW - SPOTIFY MOBILE ADAPTATION
+         ======================================================== */
+      .dj-eddie-playlist-view {
+        padding: 10px 14px 140px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+      }
+
+      .dj-playlist-top-nav {
+        margin-bottom: 12px !important;
+      }
+
+      .btn-back-home {
+        padding: 6px 14px !important;
+        font-size: 0.78rem !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 9999px !important;
+      }
+
+      /* Spotify-style edge-to-edge gradient playlist hero */
+      .dj-playlist-hero {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 20px 14px 16px !important;
+        margin: 0 -14px 14px !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        background: linear-gradient(180deg, #1e3a8a 0%, #0f172a 70%, #121212 100%) !important;
+        box-shadow: none !important;
+        gap: 12px !important;
+      }
+
+      .dj-playlist-orb-cover {
+        width: 140px !important;
+        height: 140px !important;
+        border-radius: 8px !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75) !important;
+        margin: 0 auto 4px !important;
+      }
+
+      .dj-playlist-hero-info {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+      }
+
+      .dj-playlist-main-title {
+        font-size: 1.6rem !important;
+        font-weight: 800 !important;
+        margin: 4px 0 6px !important;
+        letter-spacing: -0.02em !important;
+        text-align: center !important;
+      }
+
+      .dj-playlist-main-desc {
+        font-size: 0.8rem !important;
+        color: rgba(255, 255, 255, 0.76) !important;
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+        text-align: center !important;
+        padding: 0 8px !important;
+      }
+
+      .dj-playlist-meta-line {
+        justify-content: center !important;
+        font-size: 0.74rem !important;
+        color: #94a3b8 !important;
+        gap: 6px !important;
+      }
+
+      /* Action Bar: Shuffle left, Big Green Play Right (Spotify Mobile style) */
+      .dj-playlist-action-bar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 4px 2px 14px !important;
+        margin-bottom: 4px !important;
+      }
+
+      .btn-dj-play-all {
+        width: 50px !important;
+        height: 50px !important;
+        order: 2 !important;
+        box-shadow: 0 6px 20px rgba(30, 215, 96, 0.45) !important;
+      }
+
+      .btn-dj-play-all svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .btn-dj-shuffle {
+        order: 1 !important;
+        padding: 8px 16px !important;
+        font-size: 0.8rem !important;
+      }
+
+      /* Spotify Mobile: Hide table header completely */
+      .dj-playlist-table-header {
+        display: none !important;
+      }
+
+      /* Borderless flowing list */
+      .dj-playlist-table-wrap {
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        overflow: visible !important;
+      }
+
+      /* Mobile Song Rows: Flex layout identical to Spotify mobile track rows */
+      .dj-song-row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 8px 4px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+        gap: 10px !important;
+        min-height: 54px !important;
+        border-radius: 6px !important;
+        grid-template-columns: none !important;
+      }
+
+      .dj-song-row:active {
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .dj-song-row .dj-col-num,
+      .dj-song-row .dj-col-year,
+      .dj-song-row .dj-col-story {
+        display: none !important;
+      }
+
+      .dj-song-row .dj-col-title-cell {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        overflow: hidden !important;
+      }
+
+      .dj-song-thumb {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        border-radius: 4px !important;
+        overflow: hidden !important;
+        flex-shrink: 0 !important;
+      }
+
+      .dj-song-meta {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .dj-song-name {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        margin-bottom: 2px !important;
+      }
+
+      .dj-song-band {
+        font-size: 0.76rem !important;
+        color: #b3b3b3 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .dj-song-band span {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      .dj-intro-pill {
+        flex-shrink: 0 !important;
+        font-size: 0.6rem !important;
+        padding: 1px 6px !important;
+        margin-left: 2px !important;
+        border-radius: 3px !important;
+      }
+
+      .dj-col-dur {
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+      }
+
+      .dj-col-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+
+      .dj-dur-text {
+        font-size: 0.76rem !important;
+        color: #9ca3af !important;
+        font-variant-numeric: tabular-nums !important;
+      }
+
+      .dj-row-play-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+      }
+
+      .dj-row-play-btn svg {
+        width: 14px !important;
+        height: 14px !important;
+      }
+
+      .dj-action-btn {
+        font-size: 0.7rem !important;
+        padding: 4px 8px !important;
+        white-space: nowrap !important;
+        border-radius: 9999px !important;
+      }
+
+      .dj-action-btn.regen-btn {
+        padding: 3px 6px !important;
+        min-width: 24px !important;
+        height: 26px !important;
+        font-size: 0.72rem !important;
+        border-radius: 50% !important;
+      }
+
+      /* ========================================================
          SPOTIFY FLOATING MINI PLAYER (Docked above bottom nav)
          ======================================================== */
       .spotify-player-bar {
@@ -4250,11 +4533,11 @@
         -webkit-backdrop-filter: blur(24px) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 8px !important;
-        padding: 0 12px !important;
+        padding: 0 10px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        z-index: 100 !important;
+        z-index: 990 !important;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7) !important;
         cursor: pointer !important;
         grid-template-columns: none !important;
@@ -4263,49 +4546,64 @@
       }
 
       .player-bar-left {
-        flex: 1 !important;
+        flex: 1 1 auto !important;
         min-width: 0 !important;
+        display: flex !important;
+        align-items: center !important;
         gap: 10px !important;
+        overflow: hidden !important;
       }
 
       .now-playing-thumb {
-        width: 40px !important;
-        height: 40px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
         border-radius: 4px;
+        flex-shrink: 0 !important;
+      }
+
+      .now-playing-info {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
       }
 
       .now-playing-title {
-        font-size: 0.85rem !important;
-        max-width: calc(100vw - 200px) !important;
+        font-size: 0.84rem !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: calc(100vw - 120px) !important;
       }
 
       .now-playing-artist {
         font-size: 0.72rem !important;
+        color: #b3b3b3 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
 
-      #barHeartBtn {
-        display: none !important;
-      }
-
-      .player-bar-center {
+      #barHeartBtn,
+      .player-bar-center,
+      #btnBarLyrics,
+      #btnMuteToggle,
+      .volume-control-box {
         display: none !important;
       }
 
       .player-bar-right {
         display: flex !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 8px !important;
         flex-shrink: 0 !important;
-      }
-
-      #btnBarLyrics,
-      .volume-control-box {
-        display: none !important;
       }
 
       .mini-play-btn {
         width: 36px !important;
         height: 36px !important;
+        min-width: 36px !important;
         border-radius: 50% !important;
         background: #ffffff !important;
         border: none !important;
@@ -4314,6 +4612,7 @@
         justify-content: center !important;
         color: #000000 !important;
         cursor: pointer !important;
+        flex-shrink: 0 !important;
       }
 
       .mini-play-btn svg {
@@ -4357,17 +4656,20 @@
          ======================================================== */
       .spotify-mobile-nav {
         display: flex !important;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: calc(56px + env(safe-area-inset-bottom, 0px));
-        background: #0f0f0f;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        align-items: center;
-        justify-content: space-around;
-        z-index: 95;
-        padding-bottom: env(safe-area-inset-bottom, 0px);
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        height: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+        background: #0f0f0f !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        z-index: 1000 !important;
+        padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+        box-sizing: border-box !important;
       }
 
       .mobile-nav-tab {
@@ -4639,7 +4941,7 @@
          SPOTIFY TU BIBLIOTECA BOTTOM SHEET DRAWER
          ======================================================== */
       .spotify-mobile-sheet-overlay {
-        display: flex !important;
+        display: none !important;
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.75);
@@ -4648,12 +4950,16 @@
         z-index: 1050;
         flex-direction: column;
         justify-content: flex-end;
+        width: 100vw;
+        max-width: 100vw;
+        box-sizing: border-box;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.3s ease;
       }
 
       .spotify-mobile-sheet-overlay.open {
+        display: flex !important;
         opacity: 1;
         pointer-events: auto;
       }
@@ -4664,7 +4970,11 @@
         border-top-right-radius: 20px;
         padding: 16px 20px max(24px, env(safe-area-inset-bottom, 24px));
         max-height: 80vh;
+        width: 100% !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
         overflow-y: auto;
+        overflow-x: hidden;
         transform: translateY(100%);
         transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
         border-top: 1px solid rgba(255, 255, 255, 0.12);
@@ -5040,7 +5350,7 @@
       </div>
 
       <!-- BIG HERO BANNER (Spotify Album Header) -->
-      <section class="hero-banner" id="heroBanner">
+      <section class="hero-banner" id="heroBanner" style="display: none;">
         <div class="hero-artwork" id="heroArtwork" style="background: #000; padding: 0;">
           <img id="heroArtImg" src="img/covers/cover_kiss.png" alt="Portada Oficial" style="width: 100%; height: 100%; object-fit: contain; background: #000;">
         </div>
@@ -5062,7 +5372,7 @@
       </section>
 
       <!-- ACTION BAR (Spotify Big Green Play Button, Voices, Download) -->
-      <section class="action-bar">
+      <section class="action-bar" id="actionBar" style="display: none;">
         <div class="action-bar-left">
           <!-- Big Green Play Button -->
           <button class="btn-spotify-play-big" id="btnBigPlay" title="Reproducir">
@@ -5093,7 +5403,7 @@
       </section>
 
       <!-- SPOTIFY TRACKLIST TABLE -->
-      <section class="table-section">
+      <section class="table-section" id="tableSection" style="display: none;">
         <table class="spotify-table">
           <thead>
             <tr>
@@ -10323,5 +10633,6 @@
       switchAppView('home');
     }
   </script>
+
 </body>
 </html>
