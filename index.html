@@ -3181,7 +3181,7 @@
     }
     .dj-playlist-table-header {
       display: grid;
-      grid-template-columns: 44px minmax(200px, 1.3fr) minmax(220px, 1.7fr) 70px minmax(130px, auto);
+      grid-template-columns: 44px 1fr 90px minmax(130px, auto);
       align-items: center;
       gap: 12px;
       padding: 12px 18px;
@@ -3198,7 +3198,7 @@
     }
     .dj-song-row {
       display: grid;
-      grid-template-columns: 44px minmax(200px, 1.3fr) minmax(220px, 1.7fr) 70px minmax(130px, auto);
+      grid-template-columns: 44px 1fr 90px minmax(130px, auto);
       align-items: center;
       gap: 12px;
       padding: 10px 18px;
@@ -3269,14 +3269,18 @@
       flex-wrap: wrap;
     }
     .dj-intro-pill {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       font-size: 0.65rem;
       font-weight: 800;
-      color: #6ee7b7;
-      background: rgba(16, 185, 129, 0.16);
-      border: 1px solid rgba(52, 211, 153, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #c084fc;
+      background: rgba(168, 85, 247, 0.18);
+      border: 1px solid rgba(168, 85, 247, 0.4);
       border-radius: 4px;
-      padding: 1px 6px;
+      padding: 1px 7px;
+      margin-left: 6px;
     }
     .dj-col-story {
       font-size: 0.78rem;
@@ -5018,7 +5022,6 @@
           <div class="dj-playlist-table-header">
             <div class="dj-col-num">#</div>
             <div>Canción y Banda</div>
-            <div class="dj-col-story">Historia Real (Intro narrada por Eddie)</div>
             <div class="dj-col-year">Año</div>
             <div class="dj-col-dur">Duración</div>
           </div>
@@ -6141,7 +6144,7 @@
         "duration": 21,
         "introSec": "21s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a2/d3/62/a2d3622d-eb35-c2cc-9c54-c7e05f56db8e/06UMGIM10660.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
         "fileUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
@@ -6179,7 +6182,7 @@
         "duration": 216,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a2/d3/62/a2d3622d-eb35-c2cc-9c54-c7e05f56db8e/06UMGIM10660.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_kiss_detroit_rock_city.mp3",
         "previewUrl": "audio/full_kiss_detroit_rock_city.mp3",
@@ -6201,7 +6204,7 @@
         "duration": 21,
         "introSec": "21s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/30/54/a33054b1-d501-b7ea-5eb3-3ed36201c4ba/06UMGIM15802.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_kiss_forever.mp3",
         "fileUrl": "audio/eddie_intro_kiss_forever.mp3",
@@ -6239,7 +6242,7 @@
         "duration": 229,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/30/54/a33054b1-d501-b7ea-5eb3-3ed36201c4ba/06UMGIM15802.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_kiss_forever.mp3",
         "previewUrl": "audio/full_kiss_forever.mp3",
@@ -6261,7 +6264,7 @@
         "duration": 20,
         "introSec": "20s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f2/96/d4f296b0-895c-5ebc-395f-51987332f11c/mzi.ndfnaqlu.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
         "fileUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
@@ -6299,7 +6302,7 @@
         "duration": 269,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f2/96/d4f296b0-895c-5ebc-395f-51987332f11c/mzi.ndfnaqlu.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_alice_cooper_poison.mp3",
         "previewUrl": "audio/full_alice_cooper_poison.mp3",
@@ -6321,7 +6324,7 @@
         "duration": 23,
         "introSec": "23s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
         "fileUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
@@ -6359,7 +6362,7 @@
         "duration": 515,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_metallica_master_of_puppets.mp3",
         "previewUrl": "audio/full_metallica_master_of_puppets.mp3",
@@ -6381,7 +6384,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
         "fileUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
@@ -6419,7 +6422,7 @@
         "duration": 331,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_metallica_enter_sandman.mp3",
         "previewUrl": "audio/full_metallica_enter_sandman.mp3",
@@ -6441,7 +6444,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_metallica_one.mp3",
         "fileUrl": "audio/eddie_intro_metallica_one.mp3",
@@ -6479,7 +6482,7 @@
         "duration": 446,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_metallica_one.mp3",
         "previewUrl": "audio/full_metallica_one.mp3",
@@ -6501,7 +6504,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
         "fileUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
@@ -6539,7 +6542,7 @@
         "duration": 391,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_eagles_hotel_california.mp3",
         "previewUrl": "audio/full_eagles_hotel_california.mp3",
@@ -6561,7 +6564,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
         "fileUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
@@ -6599,7 +6602,7 @@
         "duration": 208,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_acdc_highway_to_hell.mp3",
         "previewUrl": "audio/full_acdc_highway_to_hell.mp3",
@@ -6621,7 +6624,7 @@
         "duration": 25,
         "introSec": "25s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
         "fileUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
@@ -6659,7 +6662,7 @@
         "duration": 256,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_acdc_back_in_black.mp3",
         "previewUrl": "audio/full_acdc_back_in_black.mp3",
@@ -6681,7 +6684,7 @@
         "duration": 24,
         "introSec": "24s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
         "fileUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
@@ -6719,7 +6722,7 @@
         "duration": 356,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_guns_n_roses_sweet_child_o_mine.mp3",
         "previewUrl": "audio/full_guns_n_roses_sweet_child_o_mine.mp3",
@@ -6741,7 +6744,7 @@
         "duration": 20,
         "introSec": "20s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/69/ce/d2/69ced240-07a7-2a04-bbab-2afbacf30809/074643772822.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_toto_africa.mp3",
         "fileUrl": "audio/eddie_intro_toto_africa.mp3",
@@ -6779,7 +6782,7 @@
         "duration": 295,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/69/ce/d2/69ced240-07a7-2a04-bbab-2afbacf30809/074643772822.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_toto_africa.mp3",
         "previewUrl": "audio/full_toto_africa.mp3",
@@ -6801,7 +6804,7 @@
         "duration": 21,
         "introSec": "21s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d22/h05/s05.qwwmqauc.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
         "fileUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
@@ -6839,7 +6842,7 @@
         "duration": 226,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d22/h05/s05.qwwmqauc.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_alphaville_forever_young.mp3",
         "previewUrl": "audio/full_alphaville_forever_young.mp3",
@@ -6861,7 +6864,7 @@
         "duration": 19,
         "introSec": "19s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/05/ff/40/05ff4054-a7dc-f2a7-8abb-1a3fbc0cf34d/12UMGIM19536.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_rush_subdivisions.mp3",
         "fileUrl": "audio/eddie_intro_rush_subdivisions.mp3",
@@ -6899,7 +6902,7 @@
         "duration": 338,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/05/ff/40/05ff4054-a7dc-f2a7-8abb-1a3fbc0cf34d/12UMGIM19536.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_rush_subdivisions.mp3",
         "previewUrl": "audio/full_rush_subdivisions.mp3",
@@ -6921,7 +6924,7 @@
         "duration": 21,
         "introSec": "21s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/05/e6/37/05e6373f-6e30-21a8-9299-b09731e7b14b/00602527270548.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
         "fileUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
@@ -6959,7 +6962,7 @@
         "duration": 200,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/05/e6/37/05e6373f-6e30-21a8-9299-b09731e7b14b/00602527270548.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_mtley_cre_shout_at_the_devil.mp3",
         "previewUrl": "audio/full_mtley_cre_shout_at_the_devil.mp3",
@@ -6981,7 +6984,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
         "fileUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
@@ -7019,7 +7022,7 @@
         "duration": 482,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_led_zeppelin_stairway_to_heaven.mp3",
         "previewUrl": "audio/full_led_zeppelin_stairway_to_heaven.mp3",
@@ -7041,7 +7044,7 @@
         "duration": 21,
         "introSec": "21s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0f/76/fa/0f76fa8d-8341-c0af-84d8-543b9193c728/17UM1IM41552.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
         "fileUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
@@ -7079,7 +7082,7 @@
         "duration": 354,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0f/76/fa/0f76fa8d-8341-c0af-84d8-543b9193c728/17UM1IM41552.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_def_leppard_hysteria.mp3",
         "previewUrl": "audio/full_def_leppard_hysteria.mp3",
@@ -7101,7 +7104,7 @@
         "duration": 22,
         "introSec": "22s",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/640x640bb.jpg",
-        "tag": "Intro Canción",
+        "tag": "Historia",
         "status": "con_audio",
         "audioUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
         "fileUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
@@ -7139,7 +7142,7 @@
         "duration": 251,
         "introSec": "",
         "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/640x640bb.jpg",
-        "tag": "Spotify",
+        "tag": "",
         "status": "con_audio",
         "audioUrl": "audio/full_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
         "previewUrl": "audio/full_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
@@ -7441,7 +7444,7 @@
         albumName: albumName,
         year: year,
         cover: imgUrl,
-        tag: 'Intro Canción',
+        tag: 'Historia',
         duration: 22,
         introSec: '22s',
         summary: storyText,
@@ -7469,7 +7472,7 @@
         albumName: albumName,
         year: year,
         cover: imgUrl,
-        tag: 'Spotify',
+        tag: '',
         duration: durSec,
         introSec: '',
         summary: 'Canción original de Spotify sin modificaciones',
@@ -7738,7 +7741,7 @@
       const catalog = djEddieQueue.length ? djEddieQueue : buildDjEddieCatalog();
       const songCount = catalog.filter(x => !x.isIntro).length || (catalog.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${songCount} canciones con Intro de Eddie`;
+      if (countEl) countEl.textContent = `${songCount} canciones con Historia de Eddie`;
 
       listEl.innerHTML = '';
       catalog.forEach((item, idx) => {
@@ -7749,40 +7752,6 @@
         row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '') + (item.isIntro ? ' is-intro-row' : ' is-song-row');
         row.setAttribute('data-track-id', item.id);
         if (item.pairId) row.setAttribute('data-pair-id', item.pairId);
-
-        // Story cell HTML
-        let storyHtml = '';
-        if (item.isIntro) {
-          if (item.status === 'sin_historia') {
-            storyHtml = `
-              <div class="dj-col-story">
-                <span class="dj-status-badge sin-historia">📝 Sin historia</span>
-                <span class="dj-story-placeholder">Genera la historia con IA para que Eddie prepare la locución radial...</span>
-              </div>
-            `;
-          } else if (item.status === 'generando') {
-            storyHtml = `
-              <div class="dj-col-story">
-                <span class="dj-status-badge" style="background:rgba(234,179,8,0.2);color:#fbbf24;border:1px solid rgba(234,179,8,0.4);">⏳ Generando audio con IA...</span>
-                <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
-              </div>
-            `;
-          } else {
-            storyHtml = `
-              <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
-                <span class="dj-status-badge intro-tag">Intro Canción</span>
-                <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
-              </div>
-            `;
-          }
-        } else {
-          storyHtml = `
-            <div class="dj-col-story" title="Canción original de Spotify sin modificaciones">
-              <span class="dj-status-badge spotify-tag">Spotify</span>
-              <div class="dj-story-text" style="color:#94a3b8; font-style:italic;">Canción de Spotify sin modificaciones</div>
-            </div>
-          `;
-        }
 
         // Actions cell HTML
         let actionsHtml = '';
@@ -7808,7 +7777,7 @@
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar Intro Canción'}">
+                <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar Historia'}">
                   ${isPlayingNow
                     ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
@@ -7833,8 +7802,9 @@
           `;
         }
 
-        const tagBadge = item.isIntro ? 'Intro Canción' : 'Spotify';
-        const pillClass = item.isIntro ? 'dj-intro-pill' : 'dj-intro-pill spotify-pill';
+        const tagBadgeHtml = item.isIntro
+          ? `<span class="dj-intro-pill">Historia</span>${item.status === 'generando' ? ' <span style="font-size:0.68rem;color:#fbbf24;margin-left:4px;">⏳ Grabando...</span>' : ''}`
+          : '';
 
         row.innerHTML = `
           <div class="dj-col-num">${isPlayingNow ? '🔊' : (idx + 1)}</div>
@@ -7846,11 +7816,10 @@
               <div class="dj-song-name" title="${escapeHtmlStr(item.songTitle)}">${escapeHtmlStr(item.songTitle)}</div>
               <div class="dj-song-band">
                 <span>${escapeHtmlStr(item.bandName)}</span>
-                <span class="${pillClass}">${tagBadge}</span>
+                ${tagBadgeHtml}
               </div>
             </div>
           </div>
-          ${storyHtml}
           <div class="dj-col-year">${escapeHtmlStr(String(item.year || ''))}</div>
           <div class="dj-col-dur">
             ${actionsHtml}
@@ -7936,9 +7905,9 @@
       if (barTitle) barTitle.textContent = item.songTitle;
       if (barArtist) {
         if (item.isIntro) {
-          barArtist.innerHTML = `<span class="player-source-badge djeddie">🎙️ INTRO CANCIÓN</span> ${escapeHtmlStr(item.bandName)}`;
+          barArtist.innerHTML = `<span class="player-source-badge djeddie">🎙️ HISTORIA</span> ${escapeHtmlStr(item.bandName)}`;
         } else {
-          barArtist.innerHTML = `<span class="player-source-badge spotify">🟢 SPOTIFY</span> ${escapeHtmlStr(item.bandName)}`;
+          barArtist.textContent = item.bandName;
         }
       }
       if (barTimeCurrent) barTimeCurrent.textContent = '0:00';
@@ -7949,8 +7918,8 @@
       if (modalTrackTitle) modalTrackTitle.textContent = item.songTitle;
       if (modalTrackArtist) {
         modalTrackArtist.textContent = item.isIntro
-          ? `${item.bandName} • 🎙️ Intro Canción (DJ Eddie)`
-          : `${item.bandName} • Spotify`;
+          ? `${item.bandName} • 🎙️ Historia`
+          : item.bandName;
       }
       if (modalHeaderBand) modalHeaderBand.textContent = item.bandName;
       if (modalTimeCurrent) modalTimeCurrent.textContent = '0:00';
@@ -10329,7 +10298,7 @@
     if (btnDjPlaylistShuffle) {
       btnDjPlaylistShuffle.addEventListener('click', () => {
         isDjShuffleActive = true;
-        showAppToast('🔀 Modo Aleatorio activado: se reproducirá el Intro Canción primero', 'info');
+        showAppToast('🔀 Modo Aleatorio activado: se reproducirá la Historia primero', 'info');
         playDjEddieRandomIntro();
       });
     }
@@ -10339,13 +10308,16 @@
       btnBarShuffle.addEventListener('click', () => {
         isDjShuffleActive = !isDjShuffleActive;
         btnBarShuffle.style.color = isDjShuffleActive ? 'var(--sp-green)' : '';
-        showAppToast(isDjShuffleActive ? '🔀 Modo Aleatorio activado: Intro Canción primero' : '🔁 Reproducción en orden activada', 'info');
+        showAppToast(isDjShuffleActive ? '🔀 Modo Aleatorio activado: Historia primero' : '🔁 Reproducción en orden activada', 'info');
       });
     }
     // Initial render of quick banners, Spotify Home shelves & default view
     renderQuickBanners();
     renderSpotifyHomeShelves();
-    if (bandParam) {
+    const viewParam = urlParams.get('view');
+    if (viewParam === 'djeddie' || window.location.hash === '#djeddie') {
+      openDjEddiePlaylistView();
+    } else if (bandParam) {
       switchAppView('band');
     } else {
       switchAppView('home');
