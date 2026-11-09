@@ -271,9 +271,8 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     dur1 = get_audio_duration(w_s2)
     dur2 = get_audio_duration(w_line3)
 
-    t_cursor = 3.0
+    t_cursor = 0.0
     intro_timings = [
-        {'start': 0.0, 'end': 3.0, 'text': '🎹  🎸  🥁 (Sintonía Radio IA - Intro de Cabina)'},
         {'start': round(t_cursor, 2), 'end': round(t_cursor + dur0, 2), 'text': line1}
     ]
     t_cursor += dur0 + 0.40
@@ -315,7 +314,8 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         "equalizer=f=260:width_type=o:width=1.0:g=-1.8,"
         "equalizer=f=3400:width_type=o:width=1.2:g=4.8,"
         "equalizer=f=7500:width_type=o:width=1.5:g=3.0,"
-        "acompressor=threshold=-16dB:ratio=4.0:attack=8:release=90:makeup=2.6"
+        "acompressor=threshold=-16dB:ratio=4.0:attack=8:release=90:makeup=2.6,"
+        "alimiter=limit=-0.6dB:attack=5:release=50:asc=1"
     )
 
     if not out_mp3_path:
@@ -323,67 +323,19 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
 
-    # Buscar pista musical original para la mezcla de radio con ducking
-    bg_music = find_or_download_bg(song_title, band_name)
-    
-    if bg_music and os.path.exists(bg_music):
-        print(f"  > Pista musical de fondo activa: {bg_music}", flush=True)
-        t_start = 3.0
-        v_dur = get_audio_duration(raw_voice_wav)
-        t_end = t_start + v_dur
-        fade_down = 0.35
-        fade_up = 1.0
-
-        # Especificación de ducking estricta:
-        # - 0:00 a 0:03: Música al 100% (1.0)
-        # - 0:03 a t_end: La música baja un 60% (quedando al 40% / 0.40) mientras Eddie narra
-        # - t_end a t_end + 1.0s: La música sube de forma suave al 100% (1.0) para seguir con la canción completa
-        # - t_end + 1.0s en adelante: Música al 100% hasta el final
-        vol_expr = (
-            f"if(isnan(t), 1.0, "
-            f"if(lt(t,{t_start:.2f}), 1.0, "
-            f"if(lt(t,{t_start+fade_down:.2f}), 1.0-(1.0-0.40)*(t-{t_start:.2f})/{fade_down}, "
-            f"if(lt(t,{t_end:.2f}), 0.40, "
-            f"if(lt(t,{t_end+fade_up:.2f}), 0.40+(1.0-0.40)*(t-{t_end:.2f})/{fade_up}, 1.0)))))"
-        )
-
-        vc_filter = (
-            f"{vc_filter_base},"
-            f"adelay={int(t_start*1000)}|{int(t_start*1000)}"
-        )
-
-        filter_complex = (
-            f"[0:a]volume=eval=frame:volume='{vol_expr}'[bg];"
-            f"[1:a]{vc_filter}[vc];"
-            f"[bg][vc]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mixed];"
-            f"[mixed]alimiter=limit=-0.6dB:attack=5:release=50:asc=1[master]"
-        )
-
-        subprocess.run([
-            FFMPEG_BIN, "-y",
-            "-i", bg_music,
-            "-i", raw_voice_wav,
-            "-filter_complex", filter_complex,
-            "-map", "[master]",
-            "-codec:a", "libmp3lame",
-            "-b:a", "192k",
-            out_mp3_path
-        ], capture_output=True, check=True)
-    else:
-        print(f"  [Info] Mezclando locución directa de Eddie (sin pista de fondo): {raw_voice_wav}", flush=True)
-        vc_filter_solo = f"{vc_filter_base},alimiter=limit=-0.6dB:attack=5:release=50:asc=1"
-        subprocess.run([
-            FFMPEG_BIN, "-y",
-            "-i", raw_voice_wav,
-            "-af", vc_filter_solo,
-            "-codec:a", "libmp3lame",
-            "-b:a", "192k",
-            out_mp3_path
-        ], capture_output=True, check=True)
+    # Masterizar la historia de la canción como audio puro de locución radial SIN música de fondo
+    subprocess.run([
+        FFMPEG_BIN, "-y",
+        "-i", raw_voice_wav,
+        "-af", vc_filter_base,
+        "-codec:a", "libmp3lame",
+        "-b:a", "192k",
+        out_mp3_path
+    ], capture_output=True, check=True)
 
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
-    print(f"✓ [DJ EDDIE SERVICE] Masterización de Radio completada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
+    print(f"✓ [DJ EDDIE SERVICE] Historia limpia generada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
 
     # Limpieza de archivos temporales de paso
     for tmp_f in [s1_mp3, s2_mp3, s3_a_mp3, s3_b_mp3, w_s1, w_sil1, w_s2, w_sil2, w_s3a, w_sil3, w_s3b, c2_txt, w_line3, concat_txt, raw_voice_wav]:
@@ -449,7 +401,7 @@ def run_server(port=5055):
                         text = get_eddie_script(song_title, band_name, album_name, year)
 
                     safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
-                    workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_{safe_slug}_{track_id}.mp3")
+                    workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_intro_{safe_slug}_{track_id}.mp3")
 
                     out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
                         build_eddie_radio_narration(text, song_title, band_name, workspace_mp3)

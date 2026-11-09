@@ -3428,6 +3428,21 @@
       color: #1ed760;
       border: 1px solid rgba(30, 215, 96, 0.35);
     }
+    .dj-status-badge.intro-tag {
+      background: rgba(168, 85, 247, 0.18);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+    .dj-status-badge.spotify-tag {
+      background: rgba(30, 215, 96, 0.16);
+      color: #1ed760;
+      border: 1px solid rgba(30, 215, 96, 0.35);
+    }
+    .dj-intro-pill.spotify-pill {
+      background: rgba(30, 215, 96, 0.15);
+      color: #1ed760;
+      border-color: rgba(30, 215, 96, 0.3);
+    }
     .dj-story-placeholder {
       display: block;
       font-size: 0.78rem;
@@ -5188,7 +5203,7 @@
     <div class="player-bar-center">
       <div class="transport-buttons">
         <!-- Shuffle -->
-        <button class="btn-transport" title="Aleatorio">
+        <button class="btn-transport" id="btnBarShuffle" title="Aleatorio">
           <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
         </button>
 
@@ -5887,10 +5902,13 @@
 
       if (isDjEddieActive && djEddieQueue.length && djEddieIndex >= 0 && djEddieIndex < djEddieQueue.length) {
         const item = djEddieQueue[djEddieIndex];
-        if (item.isCustom && item.lyrics && item.lyrics.length) {
+        if (item.lyrics && item.lyrics.length) {
           lyricsList = item.lyrics;
           isFull = true;
           introEndStr = '0:' + (item.introSec ? String(item.introSec).replace('s', '') : '21');
+        } else if (item.summary) {
+          lyricsList = buildFullLyricsForTrack(item.songTitle, item.bandName, item.albumName, item.duration, null, item.summary);
+          isFull = true;
         } else if (item.fullTrackObj && item.fullTrackObj.lyrics) {
           lyricsList = item.fullTrackObj.lyrics;
           isFull = true;
@@ -6110,119 +6128,1034 @@
       }, 3500);
     }
 
-    // Curated catalog of pre-loaded DJ Eddie Custom Tracks with master mixed radio intros
-    const DEFAULT_CUSTOM_DJ_TRACKS = [
-      {
-        id: 'sp_5XcZRgJv3zMhTqCyESjQrF',
-        spotifyId: '5XcZRgJv3zMhTqCyESjQrF',
-        bandName: 'Alice Cooper',
-        songTitle: 'Poison',
-        albumName: 'Trash',
-        year: '1989',
-        duration: 268,
-        introSec: '22s',
-        cover: 'https://i.scdn.co/image/ab67616d0000b273b41d24c0d8eb2c1e61ea4d38',
-        themeColor: '#e11d48',
-        status: 'con_audio',
-        audioUrl: 'audio/eddie_alice_cooper_poison_sp_5XcZRgJv3zMhTqCyESjQrF.mp3',
-        fileUrl: 'audio/eddie_alice_cooper_poison_sp_5XcZRgJv3zMhTqCyESjQrF.mp3',
-        summary: 'En 1989, para el álbum Trash, Alice Cooper compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Poison, de Alice Cooper!',
-        hasRealAudio: true,
-        isCustom: true
-      },
-      {
-        id: 'sp_2MuWTIM3b0YEAskbeeFE1i',
-        spotifyId: '2MuWTIM3b0YEAskbeeFE1i',
-        bandName: 'Metallica',
-        songTitle: 'Master Of Puppets',
-        albumName: 'Master of Puppets',
-        year: '1986',
-        duration: 515,
-        introSec: '25s',
-        cover: 'img/covers/cover_metallica.png',
-        themeColor: '#ef4444',
-        status: 'con_audio',
-        audioUrl: 'audio/eddie_metallica_master_of_puppets_sp_2MuWTIM3b0YEAskbeeFE1i.mp3',
-        fileUrl: 'audio/eddie_metallica_master_of_puppets_sp_2MuWTIM3b0YEAskbeeFE1i.mp3',
-        summary: 'En 1986, para el álbum Master of Puppets, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Master Of Puppets, de Metallica!',
-        hasRealAudio: true,
-        isCustom: true
-      },
-      {
-        id: 'eagles_hotel_california',
-        spotifyId: 'eagles_hotel_california',
-        bandName: 'Eagles',
-        songTitle: 'Hotel California',
-        albumName: 'Hotel California',
-        year: '1976',
-        duration: 391,
-        introSec: '21s',
-        cover: 'img/covers/cover_led_zeppelin.png',
-        themeColor: '#f59e0b',
-        status: 'con_audio',
-        audioUrl: 'audio/eddie_eagles_hotel_california_eagles_hotel_california.mp3',
-        fileUrl: 'audio/eddie_eagles_hotel_california_eagles_hotel_california.mp3',
-        summary: 'En 1976, para el álbum Hotel California, Eagles compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Hotel California, de Eagles!',
-        hasRealAudio: true,
-        isCustom: true
-      },
-      {
-        id: 'acdc_highway_to_hell',
-        spotifyId: 'acdc_highway_to_hell',
-        bandName: 'AC/DC',
-        songTitle: 'Highway to Hell',
-        albumName: 'Highway to Hell',
-        year: '1979',
-        duration: 207,
-        introSec: '25s',
-        cover: 'img/covers/cover_acdc.png',
-        themeColor: '#b91c1c',
-        status: 'con_audio',
-        audioUrl: 'audio/eddie_acdc_highway_to_hell_acdc_highway_to_hell.mp3',
-        fileUrl: 'audio/eddie_acdc_highway_to_hell_acdc_highway_to_hell.mp3',
-        summary: 'En 1979, para el álbum Highway to Hell, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Highway to Hell, de AC/DC!',
-        hasRealAudio: true,
-        isCustom: true
-      },
-      {
-        id: 'gnr_sweet_child',
-        spotifyId: 'gnr_sweet_child',
-        bandName: "Guns N' Roses",
-        songTitle: "Sweet Child O' Mine",
-        albumName: 'Appetite for Destruction',
-        year: '1987',
-        duration: 354,
-        introSec: '24s',
-        cover: 'img/covers/cover_kiss.png',
-        themeColor: '#f97316',
-        status: 'con_audio',
-        audioUrl: 'audio/eddie_guns_n_roses_sweet_child_o_mine_gnr_sweet_child.mp3',
-        fileUrl: 'audio/eddie_guns_n_roses_sweet_child_o_mine_gnr_sweet_child.mp3',
-        summary: "En 1987, para el álbum Appetite for Destruction, Guns N' Roses compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es Sweet Child O' Mine, de Guns N' Roses!",
-        hasRealAudio: true,
-        isCustom: true
-      }
-    ];
+    const BASE_DJ_EDDIE_TRACKS = [
+    {
+        "id": "intro_kiss_detroit_rock_city",
+        "pairId": "kiss_detroit_rock_city",
+        "isIntro": true,
+        "bandName": "KISS",
+        "songTitle": "Detroit Rock City",
+        "title": "Intro: Detroit Rock City",
+        "albumName": "Destroyer",
+        "year": "1976",
+        "duration": 21,
+        "introSec": "21s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a2/d3/62/a2d3622d-eb35-c2cc-9c54-c7e05f56db8e/06UMGIM10660.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+        "fileUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+        "summary": "En 1976, para el álbum Destroyer, KISS compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Para el mítico Destroyer, Paul Stanley y Bob Ezrin compusieron esta trepidante historia urbana abriendo el álbum con pura adrenalina y guitarras gemelas inolvidables. Sube el volumen... — ¡esto es Detroit Rock City, de KISS!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.89,
+                "text": "En 1976, para el álbum Destroyer, KISS compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.89,
+                "end": 16.93,
+                "text": "Para el mítico Destroyer, Paul Stanley y Bob Ezrin compusieron esta trepidante historia urbana abriendo el álbum con pura adrenalina y guitarras gemelas inolvidables."
+            },
+            {
+                "start": 16.93,
+                "end": 21.16,
+                "text": "Sube el volumen... — ¡esto es Detroit Rock City, de KISS!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_kiss_detroit_rock_city"
+    },
+    {
+        "id": "song_kiss_detroit_rock_city",
+        "pairId": "kiss_detroit_rock_city",
+        "isIntro": false,
+        "bandName": "KISS",
+        "songTitle": "Detroit Rock City",
+        "title": "Detroit Rock City",
+        "albumName": "Destroyer",
+        "year": "1976",
+        "duration": 216,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a2/d3/62/a2d3622d-eb35-c2cc-9c54-c7e05f56db8e/06UMGIM10660.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/97/84/d7/9784d7c3-28ba-54af-9bd7-dd51cb8e952b/mzaf_4502003520750891556.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/97/84/d7/9784d7c3-28ba-54af-9bd7-dd51cb8e952b/mzaf_4502003520750891556.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_kiss_detroit_rock_city"
+    },
+    {
+        "id": "intro_kiss_forever",
+        "pairId": "kiss_forever",
+        "isIntro": true,
+        "bandName": "KISS",
+        "songTitle": "Forever",
+        "title": "Intro: Forever",
+        "albumName": "Hot in the Shade",
+        "year": "1989",
+        "duration": 21,
+        "introSec": "21s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/30/54/a33054b1-d501-b7ea-5eb3-3ed36201c4ba/06UMGIM15802.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_kiss_forever.mp3",
+        "fileUrl": "audio/eddie_intro_kiss_forever.mp3",
+        "summary": "En 1989, para el álbum Hot in the Shade, KISS compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Para el álbum Hot in the Shade, Paul Stanley se unió a Michael Bolton para crear esta poderosa balada acústica que devolvió a KISS a los primeros puestos de los rankings mundiales. Sube el volumen... — ¡esto es Forever, de KISS!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.82,
+                "text": "En 1989, para el álbum Hot in the Shade, KISS compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.82,
+                "end": 16.8,
+                "text": "Para el álbum Hot in the Shade, Paul Stanley se unió a Michael Bolton para crear esta poderosa balada acústica que devolvió a KISS a los primeros puestos de los rankings mundiales."
+            },
+            {
+                "start": 16.8,
+                "end": 21.01,
+                "text": "Sube el volumen... — ¡esto es Forever, de KISS!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_kiss_forever"
+    },
+    {
+        "id": "song_kiss_forever",
+        "pairId": "kiss_forever",
+        "isIntro": false,
+        "bandName": "KISS",
+        "songTitle": "Forever",
+        "title": "Forever",
+        "albumName": "Hot in the Shade",
+        "year": "1989",
+        "duration": 229,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/30/54/a33054b1-d501-b7ea-5eb3-3ed36201c4ba/06UMGIM15802.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/98/d7/9c/98d79cf4-e707-1d8a-3219-39892e0b40ff/mzaf_14341948778690257901.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/98/d7/9c/98d79cf4-e707-1d8a-3219-39892e0b40ff/mzaf_14341948778690257901.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_kiss_forever"
+    },
+    {
+        "id": "intro_alice_cooper_poison",
+        "pairId": "alice_cooper_poison",
+        "isIntro": true,
+        "bandName": "Alice Cooper",
+        "songTitle": "Poison",
+        "title": "Intro: Poison",
+        "albumName": "Trash",
+        "year": "1989",
+        "duration": 20,
+        "introSec": "20s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f2/96/d4f296b0-895c-5ebc-395f-51987332f11c/mzi.ndfnaqlu.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
+        "fileUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
+        "summary": "En 1989, para el álbum Trash, Alice Cooper compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Producida por Desmond Child para el álbum Trash, Alice Cooper renació como un titán del hard rock con este himno pegadizo y un estribillo inmortal. Sube el volumen... — ¡esto es Poison, de Alice Cooper!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.46,
+                "text": "En 1989, para el álbum Trash, Alice Cooper compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.46,
+                "end": 16.11,
+                "text": "Producida por Desmond Child para el álbum Trash, Alice Cooper renació como un titán del hard rock con este himno pegadizo y un estribillo inmortal."
+            },
+            {
+                "start": 16.11,
+                "end": 20.14,
+                "text": "Sube el volumen... — ¡esto es Poison, de Alice Cooper!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_alice_cooper_poison"
+    },
+    {
+        "id": "song_alice_cooper_poison",
+        "pairId": "alice_cooper_poison",
+        "isIntro": false,
+        "bandName": "Alice Cooper",
+        "songTitle": "Poison",
+        "title": "Poison",
+        "albumName": "Trash",
+        "year": "1989",
+        "duration": 269,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f2/96/d4f296b0-895c-5ebc-395f-51987332f11c/mzi.ndfnaqlu.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/f3/15/2ff315f1-be02-7ca3-953f-4c173c8a88de/mzaf_2036093279480621938.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/2f/f3/15/2ff315f1-be02-7ca3-953f-4c173c8a88de/mzaf_2036093279480621938.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_alice_cooper_poison"
+    },
+    {
+        "id": "intro_metallica_master_of_puppets",
+        "pairId": "metallica_master_of_puppets",
+        "isIntro": true,
+        "bandName": "Metallica",
+        "songTitle": "Master of Puppets",
+        "title": "Intro: Master of Puppets",
+        "albumName": "Master of Puppets",
+        "year": "1986",
+        "duration": 23,
+        "introSec": "23s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
+        "fileUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
+        "summary": "En 1986, para el álbum Master of Puppets, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo. La obra cumbre del thrash metal. Grabada en Dinamarca, James Hetfield y Cliff Burton tejieron una sinfonía de velocidad, precisión quirúrgica y furia que definió una era. Sube el volumen... — ¡esto es Master of Puppets, de Metallica!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.85,
+                "text": "En 1986, para el álbum Master of Puppets, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.85,
+                "end": 18.76,
+                "text": "La obra cumbre del thrash metal. Grabada en Dinamarca, James Hetfield y Cliff Burton tejieron una sinfonía de velocidad, precisión quirúrgica y furia que definió una era."
+            },
+            {
+                "start": 18.76,
+                "end": 23.46,
+                "text": "Sube el volumen... — ¡esto es Master of Puppets, de Metallica!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_metallica_master_of_puppets"
+    },
+    {
+        "id": "song_metallica_master_of_puppets",
+        "pairId": "metallica_master_of_puppets",
+        "isIntro": false,
+        "bandName": "Metallica",
+        "songTitle": "Master of Puppets",
+        "title": "Master of Puppets",
+        "albumName": "Master of Puppets",
+        "year": "1986",
+        "duration": 515,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/41/b8/fc41b8d9-1946-643c-34b8-d48d99adb93a/mzaf_11376883454063654277.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/fc/41/b8/fc41b8d9-1946-643c-34b8-d48d99adb93a/mzaf_11376883454063654277.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_metallica_master_of_puppets"
+    },
+    {
+        "id": "intro_metallica_enter_sandman",
+        "pairId": "metallica_enter_sandman",
+        "isIntro": true,
+        "bandName": "Metallica",
+        "songTitle": "Enter Sandman",
+        "title": "Intro: Enter Sandman",
+        "albumName": "Metallica (The Black Album)",
+        "year": "1991",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
+        "fileUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
+        "summary": "En 1991, para el álbum Metallica (The Black Album), Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Con un riff construido por Kirk Hammett en plena madrugada, este tema lideró el legendario Álbum Negro y convirtió a Metallica en el fenómeno de estadios definitivo. Sube el volumen... — ¡esto es Enter Sandman, de Metallica!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.32,
+                "text": "En 1991, para el álbum Metallica (The Black Album), Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.32,
+                "end": 17.75,
+                "text": "Con un riff construido por Kirk Hammett en plena madrugada, este tema lideró el legendario Álbum Negro y convirtió a Metallica en el fenómeno de estadios definitivo."
+            },
+            {
+                "start": 17.75,
+                "end": 22.19,
+                "text": "Sube el volumen... — ¡esto es Enter Sandman, de Metallica!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_metallica_enter_sandman"
+    },
+    {
+        "id": "song_metallica_enter_sandman",
+        "pairId": "metallica_enter_sandman",
+        "isIntro": false,
+        "bandName": "Metallica",
+        "songTitle": "Enter Sandman",
+        "title": "Enter Sandman",
+        "albumName": "Metallica (The Black Album)",
+        "year": "1991",
+        "duration": 331,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/8a/fc/538afc1c-b9cd-24ab-b401-2fa8c81abc46/mzaf_3160131754964321707.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/53/8a/fc/538afc1c-b9cd-24ab-b401-2fa8c81abc46/mzaf_3160131754964321707.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_metallica_enter_sandman"
+    },
+    {
+        "id": "intro_metallica_one",
+        "pairId": "metallica_one",
+        "isIntro": true,
+        "bandName": "Metallica",
+        "songTitle": "One",
+        "title": "Intro: One",
+        "albumName": "...And Justice for All",
+        "year": "1988",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_metallica_one.mp3",
+        "fileUrl": "audio/eddie_intro_metallica_one.mp3",
+        "summary": "En 1988, para el álbum ...And Justice for All, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Inspirada en la novela de Dalton Trumbo, Metallica construyó una pieza antibélica estremecedora que transita de la acústica más sombría a la ametralladora rítmica de Lars y Kirk. Sube el volumen... — ¡esto es One, de Metallica!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.45,
+                "text": "En 1988, para el álbum ...And Justice for All, Metallica compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.45,
+                "end": 18.0,
+                "text": "Inspirada en la novela de Dalton Trumbo, Metallica construyó una pieza antibélica estremecedora que transita de la acústica más sombría a la ametralladora rítmica de Lars y Kirk."
+            },
+            {
+                "start": 18.0,
+                "end": 22.49,
+                "text": "Sube el volumen... — ¡esto es One, de Metallica!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_metallica_one"
+    },
+    {
+        "id": "song_metallica_one",
+        "pairId": "metallica_one",
+        "isIntro": false,
+        "bandName": "Metallica",
+        "songTitle": "One",
+        "title": "One",
+        "albumName": "...And Justice for All",
+        "year": "1988",
+        "duration": 446,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b6/24/6c/b6246c87-4c3c-aa37-902f-4153686d6e87/mzaf_16427326332216106406.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b6/24/6c/b6246c87-4c3c-aa37-902f-4153686d6e87/mzaf_16427326332216106406.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_metallica_one"
+    },
+    {
+        "id": "intro_eagles_hotel_california",
+        "pairId": "eagles_hotel_california",
+        "isIntro": true,
+        "bandName": "Eagles",
+        "songTitle": "Hotel California",
+        "title": "Intro: Hotel California",
+        "albumName": "Hotel California",
+        "year": "1976",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
+        "fileUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
+        "summary": "En 1976, para el álbum Hotel California, Eagles compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Grabada en Miami y Los Ángeles, Don Henley, Glenn Frey y Don Felder esculpieron este misterio sonoro de guitarras de doce cuerdas y un solo doble legendario. Sube el volumen... — ¡esto es Hotel California, de Eagles!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.17,
+                "text": "En 1976, para el álbum Hotel California, Eagles compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.17,
+                "end": 17.47,
+                "text": "Grabada en Miami y Los Ángeles, Don Henley, Glenn Frey y Don Felder esculpieron este misterio sonoro de guitarras de doce cuerdas y un solo doble legendario."
+            },
+            {
+                "start": 17.47,
+                "end": 21.83,
+                "text": "Sube el volumen... — ¡esto es Hotel California, de Eagles!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_eagles_hotel_california"
+    },
+    {
+        "id": "song_eagles_hotel_california",
+        "pairId": "eagles_hotel_california",
+        "isIntro": false,
+        "bandName": "Eagles",
+        "songTitle": "Hotel California",
+        "title": "Hotel California",
+        "albumName": "Hotel California",
+        "year": "1976",
+        "duration": 391,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/17/30/06/1730066d-13fb-6803-0e52-46d4762b94e0/mzaf_8068080726527063383.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/17/30/06/1730066d-13fb-6803-0e52-46d4762b94e0/mzaf_8068080726527063383.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_eagles_hotel_california"
+    },
+    {
+        "id": "intro_acdc_highway_to_hell",
+        "pairId": "acdc_highway_to_hell",
+        "isIntro": true,
+        "bandName": "AC/DC",
+        "songTitle": "Highway to Hell",
+        "title": "Intro: Highway to Hell",
+        "albumName": "Highway to Hell",
+        "year": "1979",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
+        "fileUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
+        "summary": "En 1979, para el álbum Highway to Hell, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Producido por Mutt Lange, este tema consagró a Bon Scott y Angus Young con uno de los riffs más reconocibles y viscerales de la historia del rock. Sube el volumen... — ¡esto es Highway to Hell, de AC/DC!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.19,
+                "text": "En 1979, para el álbum Highway to Hell, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.19,
+                "end": 17.5,
+                "text": "Producido por Mutt Lange, este tema consagró a Bon Scott y Angus Young con uno de los riffs más reconocibles y viscerales de la historia del rock."
+            },
+            {
+                "start": 17.5,
+                "end": 21.88,
+                "text": "Sube el volumen... — ¡esto es Highway to Hell, de AC/DC!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_acdc_highway_to_hell"
+    },
+    {
+        "id": "song_acdc_highway_to_hell",
+        "pairId": "acdc_highway_to_hell",
+        "isIntro": false,
+        "bandName": "AC/DC",
+        "songTitle": "Highway to Hell",
+        "title": "Highway to Hell",
+        "albumName": "Highway to Hell",
+        "year": "1979",
+        "duration": 208,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d0/54/a9/d054a909-fe00-757a-b5fb-3760ea7cdf13/mzaf_15087080229874880055.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d0/54/a9/d054a909-fe00-757a-b5fb-3760ea7cdf13/mzaf_15087080229874880055.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_acdc_highway_to_hell"
+    },
+    {
+        "id": "intro_acdc_back_in_black",
+        "pairId": "acdc_back_in_black",
+        "isIntro": true,
+        "bandName": "AC/DC",
+        "songTitle": "Back in Black",
+        "title": "Intro: Back in Black",
+        "albumName": "Back in Black",
+        "year": "1980",
+        "duration": 25,
+        "introSec": "25s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
+        "fileUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
+        "summary": "En 1980, para el álbum Back in Black, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo. El homenaje definitivo a Bon Scott. Con Brian Johnson al frente y las campanas de luto sonando en las Bahamas, AC/DC grabó el álbum de rock más vendido de todos los tiempos. Sube el volumen... — ¡esto es Back in Black, de AC/DC!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 10.55,
+                "text": "En 1980, para el álbum Back in Black, AC/DC compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 10.55,
+                "end": 20.09,
+                "text": "El homenaje definitivo a Bon Scott. Con Brian Johnson al frente y las campanas de luto sonando en las Bahamas, AC/DC grabó el álbum de rock más vendido de todos los tiempos."
+            },
+            {
+                "start": 20.09,
+                "end": 25.11,
+                "text": "Sube el volumen... — ¡esto es Back in Black, de AC/DC!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_acdc_back_in_black"
+    },
+    {
+        "id": "song_acdc_back_in_black",
+        "pairId": "acdc_back_in_black",
+        "isIntro": false,
+        "bandName": "AC/DC",
+        "songTitle": "Back in Black",
+        "title": "Back in Black",
+        "albumName": "Back in Black",
+        "year": "1980",
+        "duration": 256,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/08/2e/ac/082eac8c-1d0e-f72f-7b37-b8e037ff1579/mzaf_7587164327744022409.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/08/2e/ac/082eac8c-1d0e-f72f-7b37-b8e037ff1579/mzaf_7587164327744022409.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_acdc_back_in_black"
+    },
+    {
+        "id": "intro_guns_n_roses_sweet_child_o_mine",
+        "pairId": "guns_n_roses_sweet_child_o_mine",
+        "isIntro": true,
+        "bandName": "Guns N' Roses",
+        "songTitle": "Sweet Child O' Mine",
+        "title": "Intro: Sweet Child O' Mine",
+        "albumName": "Appetite for Destruction",
+        "year": "1987",
+        "duration": 24,
+        "introSec": "24s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
+        "fileUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
+        "summary": "En 1987, para el álbum Appetite for Destruction, Guns N' Roses compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Un ejercicio de calentamiento con guitarra de Slash se transformó en la balada de hard rock más icónica de los ochenta, impulsada por la voz desgarradora de Axl Rose. Sube el volumen... — ¡esto es Sweet Child O' Mine, de Guns N' Roses!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.91,
+                "text": "En 1987, para el álbum Appetite for Destruction, Guns N' Roses compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.91,
+                "end": 18.88,
+                "text": "Un ejercicio de calentamiento con guitarra de Slash se transformó en la balada de hard rock más icónica de los ochenta, impulsada por la voz desgarradora de Axl Rose."
+            },
+            {
+                "start": 18.88,
+                "end": 23.6,
+                "text": "Sube el volumen... — ¡esto es Sweet Child O' Mine, de Guns N' Roses!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_guns_n_roses_sweet_child_o_mine"
+    },
+    {
+        "id": "song_guns_n_roses_sweet_child_o_mine",
+        "pairId": "guns_n_roses_sweet_child_o_mine",
+        "isIntro": false,
+        "bandName": "Guns N' Roses",
+        "songTitle": "Sweet Child O' Mine",
+        "title": "Sweet Child O' Mine",
+        "albumName": "Appetite for Destruction",
+        "year": "1987",
+        "duration": 356,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a5/82/2d/a5822d67-2e65-fe95-511e-1f785d23e5cc/mzaf_8619467974951398014.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a5/82/2d/a5822d67-2e65-fe95-511e-1f785d23e5cc/mzaf_8619467974951398014.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_guns_n_roses_sweet_child_o_mine"
+    },
+    {
+        "id": "intro_toto_africa",
+        "pairId": "toto_africa",
+        "isIntro": true,
+        "bandName": "Toto",
+        "songTitle": "Africa",
+        "title": "Intro: Africa",
+        "albumName": "Toto IV",
+        "year": "1982",
+        "duration": 20,
+        "introSec": "20s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/69/ce/d2/69ced240-07a7-2a04-bbab-2afbacf30809/074643772822.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_toto_africa.mp3",
+        "fileUrl": "audio/eddie_intro_toto_africa.mp3",
+        "summary": "En 1982, para el álbum Toto IV, Toto compuso este himno grabando en cinta analógica con guitarras al rojo vivo. David Paich y Jeff Porcaro ensamblaron sintetizadores polifónicos, kalimbas y un groove de estudio irrepetible para crear el himno más universal de Toto. Sube el volumen... — ¡esto es Africa, de Toto!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.57,
+                "text": "En 1982, para el álbum Toto IV, Toto compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.57,
+                "end": 16.33,
+                "text": "David Paich y Jeff Porcaro ensamblaron sintetizadores polifónicos, kalimbas y un groove de estudio irrepetible para crear el himno más universal de Toto."
+            },
+            {
+                "start": 16.33,
+                "end": 20.41,
+                "text": "Sube el volumen... — ¡esto es Africa, de Toto!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_toto_africa"
+    },
+    {
+        "id": "song_toto_africa",
+        "pairId": "toto_africa",
+        "isIntro": false,
+        "bandName": "Toto",
+        "songTitle": "Africa",
+        "title": "Africa",
+        "albumName": "Toto IV",
+        "year": "1982",
+        "duration": 295,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/69/ce/d2/69ced240-07a7-2a04-bbab-2afbacf30809/074643772822.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bb/3d/07/bb3d07a3-b3af-2c99-5c9f-eb72796268c2/mzaf_11871467005041854011.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bb/3d/07/bb3d07a3-b3af-2c99-5c9f-eb72796268c2/mzaf_11871467005041854011.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_toto_africa"
+    },
+    {
+        "id": "intro_alphaville_forever_young",
+        "pairId": "alphaville_forever_young",
+        "isIntro": true,
+        "bandName": "Alphaville",
+        "songTitle": "Forever Young",
+        "title": "Intro: Forever Young",
+        "albumName": "Forever Young",
+        "year": "1984",
+        "duration": 21,
+        "introSec": "21s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d22/h05/s05.qwwmqauc.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
+        "fileUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
+        "summary": "En 1984, para el álbum Forever Young, Alphaville compuso este himno grabando en cinta analógica con guitarras al rojo vivo. En plena Guerra Fría, Marian Gold compuso este canto a la juventud eterna y la fragilidad humana, convirtiéndose en una joya inmortal del synth-rock. Sube el volumen... — ¡esto es Forever Young, de Alphaville!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.72,
+                "text": "En 1984, para el álbum Forever Young, Alphaville compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.72,
+                "end": 16.61,
+                "text": "En plena Guerra Fría, Marian Gold compuso este canto a la juventud eterna y la fragilidad humana, convirtiéndose en una joya inmortal del synth-rock."
+            },
+            {
+                "start": 16.61,
+                "end": 20.77,
+                "text": "Sube el volumen... — ¡esto es Forever Young, de Alphaville!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_alphaville_forever_young"
+    },
+    {
+        "id": "song_alphaville_forever_young",
+        "pairId": "alphaville_forever_young",
+        "isIntro": false,
+        "bandName": "Alphaville",
+        "songTitle": "Forever Young",
+        "title": "Forever Young",
+        "albumName": "Forever Young",
+        "year": "1984",
+        "duration": 226,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d22/h05/s05.qwwmqauc.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/da/f4/b2/daf4b26a-83da-1e34-bbba-546e253798c7/mzaf_14148949332076372597.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/da/f4/b2/daf4b26a-83da-1e34-bbba-546e253798c7/mzaf_14148949332076372597.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_alphaville_forever_young"
+    },
+    {
+        "id": "intro_rush_subdivisions",
+        "pairId": "rush_subdivisions",
+        "isIntro": true,
+        "bandName": "Rush",
+        "songTitle": "Subdivisions",
+        "title": "Intro: Subdivisions",
+        "albumName": "Signals",
+        "year": "1982",
+        "duration": 19,
+        "introSec": "19s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/05/ff/40/05ff4054-a7dc-f2a7-8abb-1a3fbc0cf34d/12UMGIM19536.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_rush_subdivisions.mp3",
+        "fileUrl": "audio/eddie_intro_rush_subdivisions.mp3",
+        "summary": "En 1982, para el álbum Signals, Rush compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Neil Peart retrató la alienación de los suburbios con sintetizadores envolventes y una métrica milimétrica de Geddy Lee y Alex Lifeson. Sube el volumen... — ¡esto es Subdivisions, de Rush!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.09,
+                "text": "En 1982, para el álbum Signals, Rush compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.09,
+                "end": 15.41,
+                "text": "Neil Peart retrató la alienación de los suburbios con sintetizadores envolventes y una métrica milimétrica de Geddy Lee y Alex Lifeson."
+            },
+            {
+                "start": 15.41,
+                "end": 19.27,
+                "text": "Sube el volumen... — ¡esto es Subdivisions, de Rush!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_rush_subdivisions"
+    },
+    {
+        "id": "song_rush_subdivisions",
+        "pairId": "rush_subdivisions",
+        "isIntro": false,
+        "bandName": "Rush",
+        "songTitle": "Subdivisions",
+        "title": "Subdivisions",
+        "albumName": "Signals",
+        "year": "1982",
+        "duration": 338,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/05/ff/40/05ff4054-a7dc-f2a7-8abb-1a3fbc0cf34d/12UMGIM19536.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4f/f8/62/4ff86208-c6a1-880f-0b4e-b16fbd663e3d/mzaf_4079821062010887973.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4f/f8/62/4ff86208-c6a1-880f-0b4e-b16fbd663e3d/mzaf_4079821062010887973.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_rush_subdivisions"
+    },
+    {
+        "id": "intro_mtley_cre_shout_at_the_devil",
+        "pairId": "mtley_cre_shout_at_the_devil",
+        "isIntro": true,
+        "bandName": "Mötley Crüe",
+        "songTitle": "Shout at the Devil",
+        "title": "Intro: Shout at the Devil",
+        "albumName": "Shout at the Devil",
+        "year": "1983",
+        "duration": 21,
+        "introSec": "21s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/05/e6/37/05e6373f-6e30-21a8-9299-b09731e7b14b/00602527270548.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
+        "fileUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
+        "summary": "En 1983, para el álbum Shout at the Devil, Mötley Crüe compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Desde el Sunset Strip de Los Ángeles, Nikki Sixx desató la teatralidad oscura del glam metal con cuero, pentagramas y un poder arrollador. Sube el volumen... — ¡esto es Shout at the Devil, de Mötley Crüe!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.61,
+                "text": "En 1983, para el álbum Shout at the Devil, Mötley Crüe compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.61,
+                "end": 16.4,
+                "text": "Desde el Sunset Strip de Los Ángeles, Nikki Sixx desató la teatralidad oscura del glam metal con cuero, pentagramas y un poder arrollador."
+            },
+            {
+                "start": 16.4,
+                "end": 20.51,
+                "text": "Sube el volumen... — ¡esto es Shout at the Devil, de Mötley Crüe!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_mtley_cre_shout_at_the_devil"
+    },
+    {
+        "id": "song_mtley_cre_shout_at_the_devil",
+        "pairId": "mtley_cre_shout_at_the_devil",
+        "isIntro": false,
+        "bandName": "Mötley Crüe",
+        "songTitle": "Shout at the Devil",
+        "title": "Shout at the Devil",
+        "albumName": "Shout at the Devil",
+        "year": "1983",
+        "duration": 200,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/05/e6/37/05e6373f-6e30-21a8-9299-b09731e7b14b/00602527270548.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ea/24/4a/ea244acd-91ca-9a98-78d5-c0b934c53e30/mzaf_3787210579399733667.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ea/24/4a/ea244acd-91ca-9a98-78d5-c0b934c53e30/mzaf_3787210579399733667.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_mtley_cre_shout_at_the_devil"
+    },
+    {
+        "id": "intro_led_zeppelin_stairway_to_heaven",
+        "pairId": "led_zeppelin_stairway_to_heaven",
+        "isIntro": true,
+        "bandName": "Led Zeppelin",
+        "songTitle": "Stairway to Heaven",
+        "title": "Intro: Stairway to Heaven",
+        "albumName": "Led Zeppelin IV",
+        "year": "1971",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
+        "fileUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
+        "summary": "En 1971, para el álbum Led Zeppelin IV, Led Zeppelin compuso este himno grabando en cinta analógica con guitarras al rojo vivo. En Headley Grange, Jimmy Page y Robert Plant construyeron la escalera hacia la leyenda, desde el laúd renacentista hasta el solo más aclamado del siglo veinte. Sube el volumen... — ¡esto es Stairway to Heaven, de Led Zeppelin!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.21,
+                "text": "En 1971, para el álbum Led Zeppelin IV, Led Zeppelin compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.21,
+                "end": 17.54,
+                "text": "En Headley Grange, Jimmy Page y Robert Plant construyeron la escalera hacia la leyenda, desde el laúd renacentista hasta el solo más aclamado del siglo veinte."
+            },
+            {
+                "start": 17.54,
+                "end": 21.92,
+                "text": "Sube el volumen... — ¡esto es Stairway to Heaven, de Led Zeppelin!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_led_zeppelin_stairway_to_heaven"
+    },
+    {
+        "id": "song_led_zeppelin_stairway_to_heaven",
+        "pairId": "led_zeppelin_stairway_to_heaven",
+        "isIntro": false,
+        "bandName": "Led Zeppelin",
+        "songTitle": "Stairway to Heaven",
+        "title": "Stairway to Heaven",
+        "albumName": "Led Zeppelin IV",
+        "year": "1971",
+        "duration": 482,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a2/e9/c8/a2e9c8fb-e282-9e9d-b5f9-d44fadb07e1e/mzaf_13939222705716798166.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a2/e9/c8/a2e9c8fb-e282-9e9d-b5f9-d44fadb07e1e/mzaf_13939222705716798166.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_led_zeppelin_stairway_to_heaven"
+    },
+    {
+        "id": "intro_def_leppard_hysteria",
+        "pairId": "def_leppard_hysteria",
+        "isIntro": true,
+        "bandName": "Def Leppard",
+        "songTitle": "Hysteria",
+        "title": "Intro: Hysteria",
+        "albumName": "Hysteria",
+        "year": "1987",
+        "duration": 21,
+        "introSec": "21s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0f/76/fa/0f76fa8d-8341-c0af-84d8-543b9193c728/17UM1IM41552.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
+        "fileUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
+        "summary": "En 1987, para el álbum Hysteria, Def Leppard compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Tras el accidente de Rick Allen, la banda y Mutt Lange tardaron más de tres años en perfeccionar este monumento sonoro de guitarras limpias y coros gigantescos. Sube el volumen... — ¡esto es Hysteria, de Def Leppard!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 8.81,
+                "text": "En 1987, para el álbum Hysteria, Def Leppard compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 8.81,
+                "end": 16.78,
+                "text": "Tras el accidente de Rick Allen, la banda y Mutt Lange tardaron más de tres años en perfeccionar este monumento sonoro de guitarras limpias y coros gigantescos."
+            },
+            {
+                "start": 16.78,
+                "end": 20.98,
+                "text": "Sube el volumen... — ¡esto es Hysteria, de Def Leppard!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_def_leppard_hysteria"
+    },
+    {
+        "id": "song_def_leppard_hysteria",
+        "pairId": "def_leppard_hysteria",
+        "isIntro": false,
+        "bandName": "Def Leppard",
+        "songTitle": "Hysteria",
+        "title": "Hysteria",
+        "albumName": "Hysteria",
+        "year": "1987",
+        "duration": 354,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0f/76/fa/0f76fa8d-8341-c0af-84d8-543b9193c728/17UM1IM41552.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4c/f2/e1/4cf2e191-0cd8-d17a-4197-89895ea540cc/mzaf_14556898163787434188.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/4c/f2/e1/4cf2e191-0cd8-d17a-4197-89895ea540cc/mzaf_14556898163787434188.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_def_leppard_hysteria"
+    },
+    {
+        "id": "intro_tears_for_fears_everybody_wants_to_rule_the_w",
+        "pairId": "tears_for_fears_everybody_wants_to_rule_the_w",
+        "isIntro": true,
+        "bandName": "Tears for Fears",
+        "songTitle": "Everybody Wants to Rule the World",
+        "title": "Intro: Everybody Wants to Rule the World",
+        "albumName": "Songs from the Big Chair",
+        "year": "1985",
+        "duration": 22,
+        "introSec": "22s",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/640x640bb.jpg",
+        "tag": "Intro Canción",
+        "status": "con_audio",
+        "audioUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
+        "fileUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
+        "summary": "En 1985, para el álbum Songs from the Big Chair, Tears for Fears compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Roland Orzabal y Curt Smith capturaron la tensión geopolítica y el deseo humano de poder con un ritmo de shuffle inolvidable que dominó las radios del mundo. Sube el volumen... — ¡esto es Everybody Wants to Rule the World, de Tears for Fears!",
+        "lyrics": [
+            {
+                "start": 0.0,
+                "end": 9.41,
+                "text": "En 1985, para el álbum Songs from the Big Chair, Tears for Fears compuso este himno grabando en cinta analógica con guitarras al rojo vivo."
+            },
+            {
+                "start": 9.41,
+                "end": 17.93,
+                "text": "Roland Orzabal y Curt Smith capturaron la tensión geopolítica y el deseo humano de poder con un ritmo de shuffle inolvidable que dominó las radios del mundo."
+            },
+            {
+                "start": 17.93,
+                "end": 22.41,
+                "text": "Sube el volumen... — ¡esto es Everybody Wants to Rule the World, de Tears for Fears!"
+            }
+        ],
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedSongId": "song_tears_for_fears_everybody_wants_to_rule_the_w"
+    },
+    {
+        "id": "song_tears_for_fears_everybody_wants_to_rule_the_w",
+        "pairId": "tears_for_fears_everybody_wants_to_rule_the_w",
+        "isIntro": false,
+        "bandName": "Tears for Fears",
+        "songTitle": "Everybody Wants to Rule the World",
+        "title": "Everybody Wants to Rule the World",
+        "albumName": "Songs from the Big Chair",
+        "year": "1985",
+        "duration": 251,
+        "introSec": "",
+        "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/640x640bb.jpg",
+        "tag": "Spotify",
+        "status": "con_audio",
+        "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/23/1f/ed231f7c-78cb-3b4d-f312-fc6b7ec09063/mzaf_14579022326895349191.plus.aac.p.m4a",
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/ed/23/1f/ed231f7c-78cb-3b4d-f312-fc6b7ec09063/mzaf_14579022326895349191.plus.aac.p.m4a",
+        "summary": "Canción original de Spotify sin modificaciones",
+        "hasRealAudio": true,
+        "isCustom": false,
+        "relatedIntroId": "intro_tears_for_fears_everybody_wants_to_rule_the_w"
+    }
+];
 
-    // DJ Eddie Custom Tracks Local Storage Persistence
+    // Flag for DJ Eddie broadcast shuffle mode
+    let isDjShuffleActive = false;
+
+    // DJ Eddie Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjEddieCustomTracks() {
       try {
-        const raw = localStorage.getItem('dj_eddie_custom_tracks');
-        if (!raw) return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
+        const raw = localStorage.getItem('dj_eddie_custom_tracks_v2');
+        if (!raw) return [];
         const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed) || !parsed.length) return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
+        if (!Array.isArray(parsed)) return [];
         return parsed;
       } catch (e) {
-        console.warn('Error reading dj_eddie_custom_tracks from localStorage:', e);
-        return DEFAULT_CUSTOM_DJ_TRACKS.map(t => ({ ...t }));
+        console.warn('Error reading dj_eddie_custom_tracks_v2 from localStorage:', e);
+        return [];
       }
     }
 
     function saveDjEddieCustomTracks(tracks) {
       try {
-        localStorage.setItem('dj_eddie_custom_tracks', JSON.stringify(tracks));
+        localStorage.setItem('dj_eddie_custom_tracks_v2', JSON.stringify(tracks));
       } catch (e) {
-        console.warn('Error saving dj_eddie_custom_tracks to localStorage:', e);
+        console.warn('Error saving dj_eddie_custom_tracks_v2 to localStorage:', e);
       }
     }
 
@@ -6231,20 +7164,27 @@
       const yearPrefix = year ? `En ${year}, ` : '';
       const albumRef = albumName ? `para el álbum ${albumName}` : 'en uno de sus momentos cumbre de estudio';
 
-      // Angle 1: Estudio, grabación analógica y mística
       if (angle === 1) {
         return `${yearPrefix}${albumRef}, ${bandName} compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
       }
-      // Angle 2: Riff, técnica y energía visceral
       if (angle === 2) {
         return `${yearPrefix}con un riff demoledor y la energía visceral que define a ${bandName}, '${songTitle}' nació ${albumRef}. La química de la banda en el estudio convirtió esta toma en una de las grabaciones más potentes de su carrera. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
       }
-      // Angle 3: Legado radial, diales y fenómeno mundial
       return `${yearPrefix}lanzada como parte del aclamado trabajo ${albumRef}, esta obra maestra de ${bandName} conquistó los diales del planeta. Su impacto en las listas de rock fue rotundo, convirtiéndose en un clásico eterno e infaltable de la radio. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
     }
 
     // Curated catalog of authentic rock lyrics with relative time-offsets for full synchronization
     const ROCK_CLASSIC_LYRICS = {
+      'detroit rock city': [
+        { d: 11.0, text: "🎸  ⚡  🎸 (Arranque con Guitarras Gemelas de Paul Stanley & Ace Frehley)" },
+        { d: 13.0, text: "I feel uptight on a Saturday night... Nine o'clock, the radio's the only light" },
+        { d: 13.0, text: "I hear my song and it pulls me through... Comes on strong, tells me what I got to do" },
+        { d: 14.0, text: "I got to get up! Everybody's gonna move their feet... Get down, everybody's gonna leave their seat" },
+        { d: 13.0, text: "You gotta lose your mind in Detroit Rock City! Detroit Rock City!" },
+        { d: 24.0, text: "🎸  🔥  🎸 (Solo Doblado Inmortal de Ace Frehley & Paul Stanley)" },
+        { d: 14.0, text: "Twelve o'clock, I gotta rock... There's a truck ahead, lights starin' at my eyes" },
+        { d: 14.0, text: "Oh my God, no time to turn... I know I've gotta laugh, 'cause I know I'm gonna die!" }
+      ],
       'hotel california': [
         { d: 13.0, text: "🎸  🎶  🎸 (Arranque de Guitarras de 12 Cuerdas - Don Felder & Joe Walsh)" },
         { d: 14.0, text: "On a dark desert highway, cool wind in my hair... Warm smell of colitas, rising up through the air" },
@@ -6253,16 +7193,6 @@
         { d: 14.0, text: "Then she lit up a candle and she showed me the way... There were voices down the corridor, I thought I heard them say:" },
         { d: 14.0, text: "Welcome to the Hotel California! Such a lovely place, such a lovely face" },
         { d: 14.0, text: "Plenty of room at the Hotel California... Any time of year, you can find it here" },
-        { d: 14.0, text: "Her mind is Tiffany-twisted, she got the Mercedes-Benz... She got a lot of pretty, pretty boys she calls friends" },
-        { d: 14.0, text: "How they dance in the courtyard, sweet summer sweat... Some dance to remember, some dance to forget" },
-        { d: 14.0, text: "So I called up the Captain: Please bring me my wine... He said: We haven't had that spirit here since nineteen sixty-nine" },
-        { d: 14.0, text: "And still those voices are calling from far away... Wake you up in the middle of the night just to hear them say:" },
-        { d: 14.0, text: "Welcome to the Hotel California! Such a lovely place, such a lovely face" },
-        { d: 14.0, text: "They livin' it up at the Hotel California... What a nice surprise, bring your alibis" },
-        { d: 14.0, text: "Mirrors on the ceiling, the pink champagne on ice... And she said: We are all just prisoners here of our own device" },
-        { d: 14.0, text: "And in the master's chambers, they gathered for the feast... They stab it with their steely knives, but they just can't kill the beast" },
-        { d: 14.0, text: "Last thing I remember, I was running for the door... I had to find the passage back to the place I was before" },
-        { d: 14.0, text: "Relax, said the night man: We are programmed to receive... You can check out any time you like, but you can never leave!" },
         { d: 65.0, text: "🎸  🔥  🎸 (Solo Legendario de Guitarras Dobles - Don Felder & Joe Walsh)" },
         { d: 12.0, text: "🎸  ✨  🎸 (Outro & Fade Out)" }
       ],
@@ -6273,15 +7203,9 @@
         { d: 13.0, text: "Now and then when I see her face, she takes me away to that special place..." },
         { d: 13.0, text: "And if I stared too long, I'd probably break down and cry" },
         { d: 13.0, text: "Whoa, oh, oh... Sweet child o' mine! Whoa, oh, oh, oh... Sweet love of mine" },
-        { d: 13.0, text: "She's got eyes of the bluest skies, as if they thought of rain..." },
-        { d: 13.0, text: "I'd hate to look into those eyes and see an ounce of pain" },
-        { d: 13.0, text: "Her hair reminds me of a warm safe place, where as a child I'd hide..." },
-        { d: 13.0, text: "And pray for the thunder and the rain to quietly pass me by" },
-        { d: 13.0, text: "Whoa, oh, oh... Sweet child o' mine! Whoa, oh, oh, oh... Sweet love of mine" },
         { d: 29.0, text: "🎸  🔥  🎸 (Solo de Guitarra con Wah-Wah - Slash)" },
         { d: 14.0, text: "Where do we go? Where do we go now? Where do we go?" },
-        { d: 14.0, text: "Where do we go now? Where do we go? Sweet child o' mine!" },
-        { d: 12.0, text: "🎸  ⚡  🎸 (Outro & Clímax Final de Slash y Axl Rose)" }
+        { d: 14.0, text: "Where do we go now? Where do we go? Sweet child o' mine!" }
       ],
       'highway to hell': [
         { d: 11.0, text: "🎸  🥁  🎸 (Riff Inmortal de Tres Acordes - Malcolm & Angus Young)" },
@@ -6290,43 +7214,24 @@
         { d: 12.0, text: "Don't need reason, don't need rhyme... Ain't nothin' I would rather do" },
         { d: 12.0, text: "Goin' down, party time... My friends are gonna be there too!" },
         { d: 13.0, text: "I'm on the highway to hell! On the highway to hell!" },
-        { d: 12.0, text: "Highway to hell! I'm on the highway to hell!" },
-        { d: 12.0, text: "No stop signs, speed limit... Nobody's gonna slow me down" },
-        { d: 12.0, text: "Like a wheel, gonna spin it... Nobody's gonna mess me 'round" },
-        { d: 12.0, text: "Hey Satan, payin' my dues... Playin' in a rockin' band!" },
-        { d: 12.0, text: "Hey momma, look at me... I'm on my way to the promised land, whoo!" },
-        { d: 13.0, text: "I'm on the highway to hell! Highway to hell!" },
         { d: 24.0, text: "🎸  🔥  🎸 (Solo Demoledor de Angus Young en Gibson SG)" },
         { d: 16.0, text: "Highway to hell! Don't stop me! Highway to hell!" }
       ],
-      'bohemian rhapsody': [
-        { d: 14.0, text: "Is this the real life? Is this just fantasy? Caught in a landslide, no escape from reality..." },
-        { d: 14.0, text: "Open your eyes, look up to the skies and see... I'm just a poor boy, I need no sympathy" },
-        { d: 14.0, text: "Because I'm easy come, easy go, little high, little low... Any way the wind blows doesn't really matter to me, to me" },
-        { d: 16.0, text: "🎹  🎶  🎹 (Balada de Piano - Freddie Mercury)" },
-        { d: 16.0, text: "Mama, just killed a man... Put a gun against his head, pulled my trigger, now he's dead" },
-        { d: 15.0, text: "Mama, life had just begun... But now I've gone and thrown it all away" },
-        { d: 18.0, text: "Mama, ooh, didn't mean to make you cry... If I'm not back again this time tomorrow, carry on, carry on" },
-        { d: 16.0, text: "Too late, my time has come... Sends shivers down my spine, body's aching all the time" },
-        { d: 15.0, text: "Goodbye, everybody, I've got to go... Gotta leave you all behind and face the truth" },
-        { d: 16.0, text: "Mama, ooh, I don't wanna die... I sometimes wish I'd never been born at all" },
-        { d: 24.0, text: "🎸  🎸  🎸 (Solo de Guitarra Legendario de Red Special - Brian May)" },
-        { d: 38.0, text: "🎭  ✨  🎭 (Sección Operística: Scaramouche, Figaro, Magnifico & Galileo!)" },
-        { d: 38.0, text: "🎸  ⚡  🎸 (Sección Hard Rock: So you think you can stone me and spit in my eye?!)" },
-        { d: 28.0, text: "Nothing really matters, anyone can see... Any way the wind blows 🔔 (Gong Final)" }
+      'master of puppets': [
+        { d: 14.0, text: "🎸  ⚡  🎸 (Riff a Doble Velocidad - James Hetfield & Kirk Hammett)" },
+        { d: 14.0, text: "End of passion play, crumbling away... I'm your source of self-destruction" },
+        { d: 14.0, text: "Veins that pump with fear, sucking darkest clear... Feeding on your death's construction" },
+        { d: 14.0, text: "Taste me you will see, more is all you need... Dedicated to how I'm killing you" },
+        { d: 16.0, text: "Come crawling faster! Obey your master! Your life burns faster! Obey your master, master!" },
+        { d: 16.0, text: "Master of puppets, I'm pulling your strings... Twisting your mind and smashing your dreams!" },
+        { d: 35.0, text: "🎸  🔥  🎸 (Solo Melódico Intermedio & Clímax de James y Kirk)" }
       ],
-      'smells like teen spirit': [
-        { d: 12.0, text: "🎸  ⚡  🎸 (Riff de Cuatro Acordes - Kurt Cobain)" },
-        { d: 14.0, text: "Load up on guns, bring your friends... It's fun to lose and to pretend" },
-        { d: 14.0, text: "She's over-bored and self-assured... Oh no, I know a dirty word" },
-        { d: 12.0, text: "Hello, hello, hello, how low? Hello, hello, hello, how low?" },
-        { d: 16.0, text: "With the lights out, it's less dangerous! Here we are now, entertain us!" },
-        { d: 16.0, text: "I feel stupid and contagious... Here we are now, entertain us!" },
-        { d: 14.0, text: "A mulatto, an albino, a mosquito, my libido... Yeah, hey!" },
-        { d: 14.0, text: "I'm worse at what I do best... And for this gift I feel blessed" },
-        { d: 14.0, text: "Our little group has always been... And always will until the end" },
-        { d: 24.0, text: "🎸  🔥  🎸 (Solo de Guitarra de Grunge Distorsionado - Kurt Cobain)" },
-        { d: 20.0, text: "A denial, a denial, a denial... A denial!" }
+      'poison': [
+        { d: 12.0, text: "🎸  ⚡  🎸 (Riff de Guitarra Glam & Batería Pesada)" },
+        { d: 13.0, text: "Your cruel device, your blood like ice... One look could kill, my pain, your thrill" },
+        { d: 13.0, text: "I wanna love you, but I better not touch... I wanna hold you, but my senses tell me to stop" },
+        { d: 14.0, text: "I wanna kiss you, but I want it too much... I wanna taste you, but your lips are venomous poison!" },
+        { d: 16.0, text: "You're poison running through my veins... You're poison, I don't wanna break these chains!" }
       ]
     };
 
@@ -6349,10 +7254,9 @@
         const l3 = tail.trim();
 
         timings = [
-          { start: 0.0, end: 3.0, text: '🎹  🎸  🥁 (Sintonía Radio IA - Intro de Cabina)' },
-          { start: 3.0, end: 11.5, text: l1 },
-          { start: 11.9, end: 16.8, text: l2 },
-          { start: 17.4, end: 20.8, text: l3 }
+          { start: 0.0, end: 8.5, text: l1 },
+          { start: 8.9, end: 16.8, text: l2 },
+          { start: 17.2, end: 20.8, text: l3 }
         ];
         introEnd = 20.8;
       }
@@ -6364,7 +7268,7 @@
       let songLines = [];
 
       if (matchedKey && ROCK_CLASSIC_LYRICS[matchedKey]) {
-        let cursor = introEnd;
+        let cursor = 0.0;
         ROCK_CLASSIC_LYRICS[matchedKey].forEach(item => {
           const start = Math.round(cursor * 100) / 100;
           const end = Math.min(totalDur, Math.round((cursor + item.d) * 100) / 100);
@@ -6372,9 +7276,9 @@
           cursor = end;
         });
       } else {
-        const remainTime = Math.max(80, totalDur - introEnd);
-        const step = remainTime / 10;
-        let c = introEnd;
+        const remainTime = totalDur;
+        const step = remainTime / 8;
+        let c = 0.0;
 
         const dynSections = [
           { d: step * 0.9, text: `🎸  ⚡  🎸 (Arranque de Riff Principal & Batería - ${bandName})`, inst: true },
@@ -6382,11 +7286,9 @@
           { d: step * 0.9, text: `(Puente & Tensión armónica antes del estribillo)`, inst: false },
           { d: step * 1.2, text: `(Coro Principal: "${songTitle}" a plena potencia vocal)`, inst: false },
           { d: step * 1.1, text: `(Verso 2 con guitarras distorsionadas y bajo potente)`, inst: false },
-          { d: step * 1.1, text: `(Coro de "${songTitle}" con fuerza de estadio)`, inst: false },
           { d: step * 1.5, text: `🎸  🔥  🎸 (Solo de Guitarra Líder & Virtuosismo - ${bandName})`, inst: true },
           { d: step * 1.2, text: `(Coro Clímax: Voces en armonía y clímax de ${songTitle})`, inst: false },
-          { d: step * 0.6, text: `🎸  🥁  🎶 (Puente instrumental final & solo de batería)`, inst: true },
-          { d: step * 0.4, text: `🎸  ✨  🎸 (Outro & Fade Out)`, inst: true }
+          { d: step * 0.6, text: `🎸  ✨  🎸 (Outro & Fade Out)`, inst: true }
         ];
 
         dynSections.forEach(sec => {
@@ -6397,10 +7299,10 @@
         });
       }
 
-      return [...timings, ...songLines];
+      return songLines;
     }
 
-    // Reusable Broadcast Audio WAV Data URL Generator (44.1kHz 16-bit PCM Mono)
+    // Reusable Broadcast Audio WAV Data URL Generator
     function createRadioWavDataUrl(text) {
       const seconds = 4.0;
       const sampleRate = 44100;
@@ -6417,8 +7319,8 @@
       writeStr(8, 'WAVE');
       writeStr(12, 'fmt ');
       view.setUint32(16, 16, true);
-      view.setUint16(20, 1, true); // PCM
-      view.setUint16(22, 1, true); // Mono
+      view.setUint16(20, 1, true);
+      view.setUint16(22, 1, true);
       view.setUint32(24, sampleRate, true);
       view.setUint32(28, sampleRate * 2, true);
       view.setUint16(32, 2, true);
@@ -6443,7 +7345,7 @@
       return 'data:audio/wav;base64,' + btoa(binary);
     }
 
-    // Add Track from Spotify to DJ Eddie
+    // Add Track from Spotify to DJ Eddie (Creates Intro Canción + Normal Song Pair)
     function addSpotifyTrackToDjEddie(track) {
       if (!track || !track.id) return;
       const artistNames = (track.artists || []).map(a => a.name).join(', ') || 'Artista de Rock';
@@ -6454,10 +7356,12 @@
         ? (track.album.images[0].url || track.album.images[track.album.images.length - 1].url)
         : 'img/covers/cover_kiss.png';
       const durSec = Math.floor((track.duration_ms || 0) / 1000) || 180;
+      const pairId = 'sp_' + track.id;
 
-      // Duplicate check against current catalog (both built-in and custom)
+      // Duplicate check against current catalog
       const currentCatalog = buildDjEddieCatalog();
       const isDuplicate = currentCatalog.some(item => {
+        if (item.pairId && item.pairId === pairId) return true;
         if (item.spotifyId && item.spotifyId === track.id) return true;
         const sameTitle = item.songTitle.trim().toLowerCase() === songTitle.trim().toLowerCase();
         const sameBand = item.bandName.trim().toLowerCase() === artistNames.trim().toLowerCase();
@@ -6469,65 +7373,95 @@
         return;
       }
 
-      const customTracks = getDjEddieCustomTracks();
-      const newCustomTrack = {
-        id: 'sp_' + track.id,
+      const storyText = buildEddieRadioScript(songTitle, artistNames, albumName, year, 1);
+      const sents = storyText.split('. ').filter(Boolean);
+      const l1 = (sents[0] || '').trim() + '.';
+      const l2 = (sents[1] || '').trim() + '.';
+      const l3 = `Sube el volumen... — ¡esto es ${songTitle}, de ${artistNames}!`;
+
+      const introItem = {
+        id: 'intro_' + pairId,
+        pairId: pairId,
         spotifyId: track.id,
-        bandId: 'custom_' + track.id,
+        isIntro: true,
         bandName: artistNames,
         songTitle: songTitle,
-        title: `${songTitle} (Radio IA)`,
+        title: `Intro: ${songTitle}`,
         albumName: albumName,
         year: year,
         cover: imgUrl,
-        duration: durSec,
-        introSec: '19s',
-        summary: '',
-        status: 'sin_historia',
+        tag: 'Intro Canción',
+        duration: 22,
+        introSec: '22s',
+        summary: storyText,
+        status: 'generando',
         audioUrl: '',
-        previewUrl: track.preview_url || '',
-        uri: track.uri || '',
-        lyrics: [],
+        hasRealAudio: false,
         isCustom: true,
+        relatedSongId: 'song_' + pairId,
+        lyrics: [
+          { start: 0.0, end: 8.5, text: l1 },
+          { start: 8.9, end: 17.0, text: l2 },
+          { start: 17.4, end: 21.8, text: l3 }
+        ],
         createdAt: Date.now()
       };
 
-      customTracks.push(newCustomTrack);
+      const songItem = {
+        id: 'song_' + pairId,
+        pairId: pairId,
+        spotifyId: track.id,
+        isIntro: false,
+        bandName: artistNames,
+        songTitle: songTitle,
+        title: songTitle,
+        albumName: albumName,
+        year: year,
+        cover: imgUrl,
+        tag: 'Spotify',
+        duration: durSec,
+        introSec: '',
+        summary: 'Canción original de Spotify sin modificaciones',
+        status: 'con_audio',
+        audioUrl: track.preview_url || '',
+        previewUrl: track.preview_url || '',
+        uri: track.uri || '',
+        hasRealAudio: true,
+        isCustom: true,
+        relatedIntroId: 'intro_' + pairId,
+        lyrics: buildFullLyricsForTrack(songTitle, artistNames, albumName, durSec, null, storyText),
+        createdAt: Date.now()
+      };
+
+      const customTracks = getDjEddieCustomTracks();
+      customTracks.push(introItem);
+      customTracks.push(songItem);
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
-      showAppToast(`✓ "${songTitle}" añadida a DJ Eddie • Radio IA`, 'success');
-
-      // Update counters & UI
-      const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${djEddieQueue.length} canciones completas`;
-      const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
-      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${djEddieQueue.length})`;
+      showAppToast(`✓ "${songTitle}" añadida a DJ Eddie • Generando locución con IA...`, 'success');
 
       if (currentAppView === 'djeddie') {
         renderDjEddiePlaylistSongs();
       } else if (currentAppView === 'home') {
         renderSpotifyHomeShelves();
       }
+
+      // Start real voice synthesis via background DJ Eddie audio daemon
+      generateAudioForCustomTrack(introItem.id, false);
     }
 
-    // Remove Custom Track from DJ Eddie
-    function removeCustomTrackFromDjEddie(trackId) {
+    // Remove Custom Track Pair from DJ Eddie
+    function removeCustomTrackFromDjEddie(pairId) {
       let customTracks = getDjEddieCustomTracks();
-      const trackToRemove = customTracks.find(t => t.id === trackId || t.spotifyId === trackId);
-      const title = trackToRemove ? trackToRemove.songTitle : 'canción';
+      const itemToRemove = customTracks.find(t => t.pairId === pairId || t.id === pairId);
+      const title = itemToRemove ? itemToRemove.songTitle : 'canción';
 
-      customTracks = customTracks.filter(t => t.id !== trackId && t.spotifyId !== trackId);
+      customTracks = customTracks.filter(t => t.pairId !== pairId && t.id !== pairId && t.relatedSongId !== pairId && t.relatedIntroId !== pairId);
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
       showAppToast(`🗑️ "${title}" eliminada de DJ Eddie`, 'info');
-
-      const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${djEddieQueue.length} canciones completas`;
-      const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
-      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${djEddieQueue.length})`;
-
       renderDjEddiePlaylistSongs();
       if (currentAppView === 'home') {
         renderSpotifyHomeShelves();
@@ -6535,45 +7469,43 @@
     }
 
     // Story Generation and Regeneration Engine
-    async function generateStoryForCustomTrack(trackId, isRegen = false) {
+    function generateStoryForCustomTrack(pairId, isRegen = false) {
       const customTracks = getDjEddieCustomTracks();
-      const idx = customTracks.findIndex(t => t.id === trackId || t.spotifyId === trackId);
+      const idx = customTracks.findIndex(t => t.id === pairId || t.pairId === pairId);
       if (idx === -1) return;
 
-      const track = customTracks[idx];
-      const nextAngle = isRegen ? (((track.regenAngle || 1) % 3) + 1) : 1;
-      track.regenAngle = nextAngle;
+      const introItem = customTracks[idx];
+      const nextAngle = isRegen ? (((introItem.regenAngle || 1) % 3) + 1) : 1;
+      introItem.regenAngle = nextAngle;
 
-      const newStory = buildEddieRadioScript(track.songTitle, track.bandName, track.albumName, track.year, nextAngle);
-      track.summary = newStory;
-      track.speechText = newStory;
-      track.status = 'con_historia';
-      track.introSec = '21s';
-      track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, null, newStory);
+      const newStory = buildEddieRadioScript(introItem.songTitle, introItem.bandName, introItem.albumName, introItem.year, nextAngle);
+      introItem.summary = newStory;
+      introItem.status = 'con_historia';
+      introItem.introSec = '21s';
 
-      customTracks[idx] = track;
+      customTracks[idx] = introItem;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
       renderDjEddiePlaylistSongs();
-      showAppToast(isRegen ? `✓ Guion de "${track.songTitle}" regenerado (Ángulo ${nextAngle})` : `✓ Historia de "${track.songTitle}" creada con éxito`, 'success');
+      showAppToast(isRegen ? `✓ Guion de "${introItem.songTitle}" regenerado (Ángulo ${nextAngle})` : `✓ Historia de "${introItem.songTitle}" creada con éxito`, 'success');
     }
 
     // Audio Narration Generation and Regeneration Engine with DJ Eddie IA Service
     async function generateAudioForCustomTrack(trackId, isRegen = false, btnEl = null) {
       const customTracks = getDjEddieCustomTracks();
-      const idx = customTracks.findIndex(t => t.id === trackId || t.spotifyId === trackId);
-      if (idx === -1) return;
+      const introIdx = customTracks.findIndex(t => t.id === trackId || t.pairId === trackId);
+      if (introIdx === -1) return;
 
-      const track = customTracks[idx];
-      if (!track.summary) {
+      const introItem = customTracks[introIdx];
+      if (!introItem.summary) {
         showAppToast('Genera primero la historia antes de generar el audio', 'warn');
         return;
       }
 
       let elapsedSeconds = 0;
       let timerInterval = null;
-      const rowEl = document.querySelector(`.dj-song-row[data-track-id="${track.id}"]`);
+      const rowEl = document.querySelector(`.dj-song-row[data-track-id="${introItem.id}"]`);
       const badgeEl = rowEl ? rowEl.querySelector('.dj-status-badge') : null;
       if (badgeEl) {
         badgeEl.style.background = 'rgba(234, 179, 8, 0.2)';
@@ -6584,20 +7516,16 @@
       if (btnEl) {
         btnEl.classList.add('loading');
         btnEl.disabled = true;
-        btnEl.textContent = '🎙️ Grabando locución con IA... (0s)';
+        btnEl.textContent = '🎙️ Grabando... (0s)';
         timerInterval = setInterval(() => {
           elapsedSeconds++;
-          if (btnEl) btnEl.textContent = `🎙️ Grabando locución con IA... (${elapsedSeconds}s)`;
+          if (btnEl) btnEl.textContent = `🎙️ Grabando... (${elapsedSeconds}s)`;
         }, 1000);
       }
 
-      showAppToast(isRegen ? `🎙️ Regenerando locución oficial de Eddie (IA real)...` : `🎙️ Generando locución oficial de Eddie (IA real)...`, 'info');
-
       let audioDataUrl = null;
       let durationStr = '22s';
-      let realAudioDuration = 20;
 
-      // 1. Conectar con el servicio activo de locución de DJ Eddie (Edge-TTS Alonso + FFmpeg Master Radio EQ/Compressor)
       try {
         const ctrl = new AbortController();
         const tId = setTimeout(() => ctrl.abort(), 60000);
@@ -6605,12 +7533,12 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            text: track.summary,
-            track_id: track.id,
-            song_title: track.songTitle,
-            band_name: track.bandName,
-            album: track.albumName || '',
-            year: track.year || ''
+            text: introItem.summary,
+            track_id: introItem.pairId,
+            song_title: introItem.songTitle,
+            band_name: introItem.bandName,
+            album: introItem.albumName || '',
+            year: introItem.year || ''
           }),
           signal: ctrl.signal
         });
@@ -6621,17 +7549,13 @@
             audioDataUrl = json.fileUrl || json.audioUrl;
             if (json.duration) durationStr = json.duration;
             if (json.durationSec) {
-              realAudioDuration = json.durationSec;
-              track.duration = Math.round(json.durationSec);
+              introItem.duration = Math.round(json.durationSec);
             }
-            if (json.fileUrl) track.fileUrl = json.fileUrl;
-            if (json.full_script) {
-              track.summary = json.full_script;
-              track.speechText = json.full_script;
-            }
+            if (json.fileUrl) introItem.fileUrl = json.fileUrl;
+            if (json.full_script) introItem.summary = json.full_script;
             if (json.intro_timings) {
-              track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, json.intro_timings);
-              track.introSec = `${Math.round(json.intro_end || 21)}s`;
+              introItem.lyrics = json.intro_timings;
+              introItem.introSec = `${Math.round(json.intro_end || 21)}s`;
             }
           }
         }
@@ -6639,119 +7563,43 @@
         console.warn('Servicio de audio local no respondió, usando generador del navegador:', e);
       }
 
-      // 2. Fallback del navegador con temporización real si el servicio backend no está disponible
       if (!audioDataUrl) {
-        const words = (track.summary || '').split(/\s+/).length;
+        const words = (introItem.summary || '').split(/\s+/).length;
         const realWaitMs = Math.max(5000, Math.min(10000, words * 160));
         await new Promise(r => setTimeout(r, realWaitMs));
-        audioDataUrl = createRadioWavDataUrl(track.summary);
-        if (!track.lyrics || !track.lyrics.length) {
-          track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, null, track.summary);
-        }
+        audioDataUrl = createRadioWavDataUrl(introItem.summary);
       }
 
       if (timerInterval) clearInterval(timerInterval);
 
-      track.audioUrl = audioDataUrl;
-      track.speechText = track.summary;
-      track.status = 'con_audio';
-      track.introSec = durationStr;
-      track.hasRealAudio = true;
+      introItem.audioUrl = audioDataUrl;
+      introItem.status = 'con_audio';
+      introItem.introSec = durationStr;
+      introItem.hasRealAudio = true;
 
-      customTracks[idx] = track;
+      customTracks[introIdx] = introItem;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
       renderDjEddiePlaylistSongs();
-      if (isDjEddieActive && djEddieQueue.length && djEddieIndex >= 0 && djEddieIndex < djEddieQueue.length) {
-        const curItem = djEddieQueue[djEddieIndex];
-        if (curItem.id === track.id || curItem.spotifyId === track.spotifyId) {
-          renderLyrics();
-        }
-      }
-      showAppToast(`🔊 Locución de Eddie lista para "${track.songTitle}" (${elapsedSeconds || 6}s)`, 'success');
+      showAppToast(`🔊 Locución de Eddie lista para "${introItem.songTitle}" (${elapsedSeconds || 6}s)`, 'success');
     }
 
     function buildDjEddieCatalog() {
-      // Ordered with newest full radio productions first
-      const preferredOrder = [
-        'toto', 'alphaville', 'rush', 'motley_crue', 'metallica',
-        'acdc', 'led_zeppelin', 'kiss', 'def_leppard', 'tears_for_fears'
-      ];
-      const list = [];
-      preferredOrder.forEach(bandId => {
-        const b = bands[bandId];
-        if (!b || !b.hasFullTrack) return;
-        const tracks = (b.fullTracks && b.fullTracks.length) ? b.fullTracks : (b.fullTrack ? [b.fullTrack] : []);
-        tracks.forEach(ft => {
-          list.push({
-            id: 'builtin_' + b.id + '_' + (ft.songTitle || '').replace(/\s+/g, '_').toLowerCase(),
-            bandId: b.id,
-            bandName: b.name,
-            cover: b.cover,
-            themeColor: b.themeColor,
-            songTitle: ft.songTitle,
-            title: ft.title,
-            year: ft.year || b.era,
-            duration: ft.duration,
-            introSec: ft.introSec || '20s',
-            summary: ft.summary,
-            fullTrackObj: ft,
-            status: 'con_audio',
-            isCustom: false
-          });
-        });
-      });
-
-      // Merge user custom tracks added from Spotify
-      const customTracks = getDjEddieCustomTracks();
-      let hadMissingLyrics = false;
-      customTracks.forEach(ct => {
-        let lyrics = ct.lyrics;
-        if ((!lyrics || !lyrics.length) && ct.summary) {
-          lyrics = buildFullLyricsForTrack(ct.songTitle, ct.bandName, ct.albumName, ct.duration, null, ct.summary);
-          ct.lyrics = lyrics;
-          hadMissingLyrics = true;
-        }
-        list.push({
-          id: ct.id || ('sp_' + (ct.spotifyId || Date.now())),
-          spotifyId: ct.spotifyId,
-          bandId: ct.bandId || ('custom_' + ct.spotifyId),
-          bandName: ct.bandName || 'Artista de Rock',
-          cover: ct.cover || 'img/covers/cover_kiss.png',
-          themeColor: ct.themeColor || '#10b981',
-          songTitle: ct.songTitle,
-          title: ct.title || `${ct.songTitle} (Radio IA)`,
-          albumName: ct.albumName || '',
-          year: ct.year || '',
-          duration: ct.duration || 180,
-          introSec: ct.introSec || '21s',
-          summary: ct.summary || '',
-          status: ct.status || 'sin_historia', // 'sin_historia' | 'con_historia' | 'con_audio'
-          audioUrl: ct.audioUrl || '',
-          previewUrl: ct.previewUrl || '',
-          uri: ct.uri || '',
-          speechText: ct.speechText || ct.summary || '',
-          hasRealAudio: ct.hasRealAudio || false,
-          lyrics: lyrics || [],
-          isCustom: true,
-          fullTrackObj: null
-        });
-      });
-      if (hadMissingLyrics) {
-        saveDjEddieCustomTracks(customTracks);
-      }
+      const base = BASE_DJ_EDDIE_TRACKS.map(t => ({ ...t }));
+      const custom = getDjEddieCustomTracks();
+      const list = [...base, ...custom];
 
       djEddieQueue = list;
+      const songCount = list.filter(x => !x.isIntro).length || (list.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${list.length} canciones completas`;
+      if (countEl) countEl.textContent = `${songCount} canciones con Intro de Eddie`;
       const btnStartLabel = document.getElementById('btnStartDjEddieLabel');
-      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${list.length})`;
+      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${songCount})`;
       const shelfMoreBtn = document.querySelector('[data-filterjump="djeddie"]');
-      if (shelfMoreBtn) shelfMoreBtn.textContent = `Mostrar todo (${list.length})`;
+      if (shelfMoreBtn) shelfMoreBtn.textContent = `Mostrar todo (${songCount})`;
       return list;
     }
-
     function switchAppView(mode) {
       currentAppView = mode;
       const quickSec = document.getElementById('spotifyQuickBannersSection');
@@ -6835,34 +7683,23 @@
       const listEl = document.getElementById('djEddiePlaylistSongsList');
       if (!listEl) return;
       const catalog = djEddieQueue.length ? djEddieQueue : buildDjEddieCatalog();
+      const songCount = catalog.filter(x => !x.isIntro).length || (catalog.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${catalog.length} canciones completas`;
+      if (countEl) countEl.textContent = `${songCount} canciones con Intro de Eddie`;
 
       listEl.innerHTML = '';
       catalog.forEach((item, idx) => {
-        let isCurrentTrack = false;
-        if (GlobalAudioPlayer.source === 'djeddie') {
-          if (item.isCustom) {
-            isCurrentTrack = (djEddieIndex === idx);
-          } else {
-            isCurrentTrack = (
-              activeBandId === item.bandId &&
-              activeTrackFormat === 'full' &&
-              bands[item.bandId] &&
-              bands[item.bandId].fullTrack &&
-              bands[item.bandId].fullTrack.songTitle === item.songTitle
-            );
-          }
-        }
+        const isCurrentTrack = (GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive && djEddieIndex === idx);
         const isPlayingNow = isCurrentTrack && !spotifyAudio.paused;
 
         const row = document.createElement('div');
-        row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '');
+        row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '') + (item.isIntro ? ' is-intro-row' : ' is-song-row');
         row.setAttribute('data-track-id', item.id);
+        if (item.pairId) row.setAttribute('data-pair-id', item.pairId);
 
         // Story cell HTML
         let storyHtml = '';
-        if (item.isCustom) {
+        if (item.isIntro) {
           if (item.status === 'sin_historia') {
             storyHtml = `
               <div class="dj-col-story">
@@ -6870,62 +7707,62 @@
                 <span class="dj-story-placeholder">Genera la historia con IA para que Eddie prepare la locución radial...</span>
               </div>
             `;
-          } else if (item.status === 'con_historia') {
+          } else if (item.status === 'generando') {
             storyHtml = `
-              <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
-                <span class="dj-status-badge con-historia">✓ Historia lista</span>
+              <div class="dj-col-story">
+                <span class="dj-status-badge" style="background:rgba(234,179,8,0.2);color:#fbbf24;border:1px solid rgba(234,179,8,0.4);">⏳ Generando audio con IA...</span>
                 <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
               </div>
             `;
           } else {
             storyHtml = `
               <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
-                <span class="dj-status-badge con-audio">🔊 Audio disponible</span>
+                <span class="dj-status-badge intro-tag">Intro Canción</span>
                 <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
               </div>
             `;
           }
         } else {
           storyHtml = `
-            <div class="dj-col-story" title="${escapeHtmlStr(item.summary || '')}">
-              <span class="dj-status-badge con-audio">🔊 Radio FM Master</span>
-              <div class="dj-story-text">${escapeHtmlStr(item.summary || '')}</div>
+            <div class="dj-col-story" title="Canción original de Spotify sin modificaciones">
+              <span class="dj-status-badge spotify-tag">Spotify</span>
+              <div class="dj-story-text" style="color:#94a3b8; font-style:italic;">Canción de Spotify sin modificaciones</div>
             </div>
           `;
         }
 
         // Actions cell HTML
         let actionsHtml = '';
-        if (item.isCustom) {
+        if (item.isIntro) {
           if (item.status === 'sin_historia') {
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-action-btn gen-story" type="button" title="Generar historia con IA para esta canción">✨ Generar historia</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+                <button class="dj-action-btn gen-story" type="button" title="Generar historia con IA">✨ Generar historia</button>
+                ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
           } else if (item.status === 'con_historia') {
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-action-btn gen-audio" type="button" title="Generar locución de Eddie con Chatterbox">🎙️ Generar audio</button>
+                <button class="dj-action-btn gen-audio" type="button" title="Generar locución de Eddie">🎙️ Generar audio</button>
                 <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con otro ángulo">🔄 Guion</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+                ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
           } else {
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-dur-text">${formatTime(item.duration)}</span>
-                <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar audio'} de ${escapeHtmlStr(item.songTitle)}">
+                <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar Intro Canción'}">
                   ${isPlayingNow
                     ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
                 </button>
-                <button class="dj-action-btn regen-audio" type="button" title="Regenerar locución de audio con Chatterbox">🔄 Audio</button>
-                <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con otro ángulo">🔄 Guion</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>
+                ${item.isCustom ? '<button class="dj-action-btn regen-audio" type="button" title="Regenerar locución de audio">🔄 Audio</button>' : ''}
+                ${item.isCustom ? '<button class="dj-action-btn regen-story" type="button" title="Regenerar historia">🔄 Guion</button>' : ''}
+                ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
           }
@@ -6938,9 +7775,13 @@
                   ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                   : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
               </button>
+              ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
             </div>
           `;
         }
+
+        const tagBadge = item.isIntro ? 'Intro Canción' : 'Spotify';
+        const pillClass = item.isIntro ? 'dj-intro-pill' : 'dj-intro-pill spotify-pill';
 
         row.innerHTML = `
           <div class="dj-col-num">${isPlayingNow ? '🔊' : (idx + 1)}</div>
@@ -6952,7 +7793,7 @@
               <div class="dj-song-name" title="${escapeHtmlStr(item.songTitle)}">${escapeHtmlStr(item.songTitle)}</div>
               <div class="dj-song-band">
                 <span>${escapeHtmlStr(item.bandName)}</span>
-                <span class="dj-intro-pill">${item.isCustom ? (item.status === 'con_audio' ? '🎙️ Locución Eddie' : (item.status === 'con_historia' ? '📝 Guion listo' : '⚡ Nuevo')) : '🎙️ Intro Eddie (' + item.introSec + ')'}</span>
+                <span class="${pillClass}">${tagBadge}</span>
               </div>
             </div>
           </div>
@@ -6995,7 +7836,7 @@
         if (delBtn) {
           delBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            removeCustomTrackFromDjEddie(item.id);
+            removeCustomTrackFromDjEddie(item.pairId || item.id);
           });
         }
         const playBtn = row.querySelector('.dj-row-play-btn');
@@ -7023,7 +7864,6 @@
         listEl.appendChild(row);
       });
     }
-
     function playDjEddieItem(index, scrollToLyrics = false) {
       if (!djEddieQueue.length) buildDjEddieCatalog();
       if (index < 0 || index >= djEddieQueue.length) index = 0;
@@ -7032,85 +7872,91 @@
 
       const item = djEddieQueue[djEddieIndex];
 
-      if (item.isCustom) {
-        if (item.status !== 'con_audio' || !item.audioUrl) {
-          if (item.status === 'sin_historia') {
-            showAppToast(`✨ Haz clic en "Generar historia" para crear la historia radial con IA.`, 'warn');
-          } else {
-            showAppToast(`🎙️ Haz clic en "Generar audio" para que Eddie grabe la locución de esta canción.`, 'warn');
-          }
-          return;
+      GlobalAudioPlayer.source = 'djeddie';
+      GlobalAudioPlayer.spotifyIsPlaying = false;
+      stopSpotifyProgressSimulation();
+      if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
+
+      // Update Player Footer Bar
+      const barThumbImg = document.getElementById('barThumbImg');
+      if (barThumbImg && item.cover) barThumbImg.src = item.cover;
+      if (barTitle) barTitle.textContent = item.songTitle;
+      if (barArtist) {
+        if (item.isIntro) {
+          barArtist.innerHTML = `<span class="player-source-badge djeddie">🎙️ INTRO CANCIÓN</span> ${escapeHtmlStr(item.bandName)}`;
+        } else {
+          barArtist.innerHTML = `<span class="player-source-badge spotify">🟢 SPOTIFY</span> ${escapeHtmlStr(item.bandName)}`;
         }
-
-        GlobalAudioPlayer.source = 'djeddie';
-        GlobalAudioPlayer.spotifyIsPlaying = false;
-        stopSpotifyProgressSimulation();
-        if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
-
-        const barThumbImg = document.getElementById('barThumbImg');
-        if (barThumbImg && item.cover) barThumbImg.src = item.cover;
-        if (barTitle) barTitle.textContent = item.title || item.songTitle;
-        if (barArtist) {
-          barArtist.innerHTML = `<span class="player-source-badge djeddie">🤖 RADIO IA</span> ${escapeHtmlStr(item.bandName)}`;
-        }
-        if (barTimeCurrent) barTimeCurrent.textContent = '0:00';
-        if (barTimeTotal) barTimeTotal.textContent = formatTime(item.duration);
-
-        if (modalArtImg && item.cover) modalArtImg.src = item.cover;
-        if (modalTrackTitle) modalTrackTitle.textContent = item.title || item.songTitle;
-        if (modalTrackArtist) modalTrackArtist.textContent = `${item.bandName} • 🤖 DJ Eddie (Radio IA)`;
-        if (modalHeaderBand) modalHeaderBand.textContent = item.bandName;
-        if (modalTimeCurrent) modalTimeCurrent.textContent = '0:00';
-        if (modalTimeTotal) modalTimeTotal.textContent = formatTime(item.duration);
-
-        const statusEl = document.getElementById('djEddieCurrentStatus');
-        if (statusEl) {
-          statusEl.textContent = `Sonando: ${item.songTitle} — ${item.bandName} (Locución: Eddie)`;
-        }
-
-        spotifyAudio.src = item.audioUrl;
-        spotifyAudio.currentTime = 0;
-        spotifyAudio.play().then(() => {
-          updatePlayUI(true);
-          // Only fallback to browser speech synthesis if there is no real audio recording in audioUrl
-          const isRealAudioFile = item.hasRealAudio || (item.audioUrl && (item.audioUrl.startsWith('data:audio/mp3') || item.audioUrl.endsWith('.mp3')));
-          if (!isRealAudioFile && item.speechText && 'speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(item.speechText);
-            u.lang = 'es-ES';
-            u.rate = 1.05;
-            u.pitch = 0.95;
-            const voices = window.speechSynthesis.getVoices();
-            const esVoice = voices.find(v => (v.lang.startsWith('es') && (v.name.includes('Alonso') || v.name.includes('Jorge') || v.name.includes('Male')))) || voices.find(v => v.lang.startsWith('es'));
-            if (esVoice) u.voice = esVoice;
-            window.speechSynthesis.speak(u);
-          }
-        }).catch(e => console.warn(e));
-
-        renderSpotifyHomeShelves();
-        renderDjEddiePlaylistSongs();
-        renderLyrics();
-        if (scrollToLyrics) {
-          const lyr = document.getElementById('lyricsSection');
-          if (lyr) lyr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
       }
+      if (barTimeCurrent) barTimeCurrent.textContent = '0:00';
+      if (barTimeTotal) barTimeTotal.textContent = formatTime(item.duration);
 
-      const b = bands[item.bandId];
-      if (b) {
-        b.fullTrack = item.fullTrackObj;
+      // Update Modal
+      if (modalArtImg && item.cover) modalArtImg.src = item.cover;
+      if (modalTrackTitle) modalTrackTitle.textContent = item.songTitle;
+      if (modalTrackArtist) {
+        modalTrackArtist.textContent = item.isIntro
+          ? `${item.bandName} • 🎙️ Intro Canción (DJ Eddie)`
+          : `${item.bandName} • Spotify`;
       }
-
-      loadBand(item.bandId, true, 'full');
+      if (modalHeaderBand) modalHeaderBand.textContent = item.bandName;
+      if (modalTimeCurrent) modalTimeCurrent.textContent = '0:00';
+      if (modalTimeTotal) modalTimeTotal.textContent = formatTime(item.duration);
 
       const statusEl = document.getElementById('djEddieCurrentStatus');
       if (statusEl) {
-        statusEl.textContent = `Sonando: ${item.songTitle} — ${item.bandName} (Locución: Eddie)`;
+        statusEl.textContent = item.isIntro
+          ? `Sonando: Intro de ${item.songTitle} — ${item.bandName} (Locución: Eddie)`
+          : `Sonando: ${item.songTitle} — ${item.bandName} (Versión de estudio)`;
+      }
+
+      // Audio Source Selection:
+      if (item.isIntro) {
+        // Pure voice intro narrated by Eddie (no background music)
+        spotifyAudio.src = item.audioUrl;
+        spotifyAudio.currentTime = 0;
+        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+      } else {
+        // Normal song unmodified from Spotify / Preview
+        const directAudioUrl = item.audioUrl || item.previewUrl || item._resolvedAudioUrl || null;
+        if (directAudioUrl) {
+          spotifyAudio.src = directAudioUrl;
+          spotifyAudio.currentTime = 0;
+          spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Preview notice:', e));
+        } else {
+          try { spotifyAudio.removeAttribute('src'); } catch(e){}
+          const searchQ = `${item.songTitle} ${item.bandName}`.trim();
+          fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchQ)}&entity=song&limit=1`)
+            .then(r => r.ok ? r.json() : null)
+            .then(d => {
+              if (d && d.results && d.results[0] && d.results[0].previewUrl) {
+                item._resolvedAudioUrl = d.results[0].previewUrl;
+                if (isDjEddieActive && djEddieIndex === index) {
+                  spotifyAudio.src = d.results[0].previewUrl;
+                  spotifyAudio.currentTime = 0;
+                  spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+                }
+              }
+            }).catch(() => {});
+        }
+
+        // Spotify Web Playback SDK integration
+        if (spotifySdkDeviceId && item.uri) {
+          getValidSpotifyToken().then(t => {
+            if (t) {
+              fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uris: [item.uri] })
+              }).catch(() => {});
+            }
+          });
+        }
       }
 
       renderSpotifyHomeShelves();
       renderDjEddiePlaylistSongs();
+      renderLyrics();
 
       if (scrollToLyrics) {
         const lyr = document.getElementById('lyricsSection');
@@ -7118,12 +7964,91 @@
       }
     }
 
-    function nextDjEddieTrack() {
+    function playDjEddieNextIntro() {
       if (!djEddieQueue.length) buildDjEddieCatalog();
-      const nextIdx = (djEddieIndex + 1) % djEddieQueue.length;
-      playDjEddieItem(nextIdx, false);
+      const introIndices = [];
+      djEddieQueue.forEach((it, idx) => {
+        if (it.isIntro) introIndices.push(idx);
+      });
+      if (!introIndices.length) {
+        playDjEddieItem((djEddieIndex + 1) % djEddieQueue.length, false);
+        return;
+      }
+      const nextIntro = introIndices.find(idx => idx > djEddieIndex);
+      if (nextIntro !== undefined) {
+        playDjEddieItem(nextIntro, false);
+      } else {
+        playDjEddieItem(introIndices[0], false);
+      }
     }
 
+    function playDjEddieRandomIntro() {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      const introIndices = [];
+      djEddieQueue.forEach((it, idx) => {
+        if (it.isIntro) introIndices.push(idx);
+      });
+      if (!introIndices.length) {
+        const rand = Math.floor(Math.random() * djEddieQueue.length);
+        playDjEddieItem(rand, false);
+        return;
+      }
+      const otherIntros = introIndices.filter(idx => idx !== djEddieIndex && idx !== (djEddieIndex - 1));
+      const pool = otherIntros.length ? otherIntros : introIndices;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+      playDjEddieItem(chosen, false);
+    }
+
+    function playDjEddiePrevIntro() {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      const introIndices = [];
+      djEddieQueue.forEach((it, idx) => {
+        if (it.isIntro) introIndices.push(idx);
+      });
+      if (!introIndices.length) return;
+      const prevIntros = introIndices.filter(idx => idx < djEddieIndex);
+      if (prevIntros.length) {
+        playDjEddieItem(prevIntros[prevIntros.length - 1], false);
+      } else {
+        playDjEddieItem(introIndices[introIndices.length - 1], false);
+      }
+    }
+
+    function nextDjEddieTrack() {
+      if (isDjShuffleActive) {
+        playDjEddieRandomIntro();
+      } else {
+        const curItem = djEddieQueue[djEddieIndex];
+        if (curItem && curItem.isIntro) {
+          let songIdx = -1;
+          if (curItem.relatedSongId) {
+            songIdx = djEddieQueue.findIndex(x => x.id === curItem.relatedSongId);
+          }
+          if (songIdx === -1) {
+            songIdx = (djEddieIndex + 1) % djEddieQueue.length;
+          }
+          playDjEddieItem(songIdx, false);
+          return;
+        }
+        playDjEddieNextIntro();
+      }
+    }
+
+    function prevDjEddieTrack() {
+      const curItem = djEddieQueue[djEddieIndex];
+      if (curItem && !curItem.isIntro) {
+        let introIdx = -1;
+        if (curItem.relatedIntroId) {
+          introIdx = djEddieQueue.findIndex(x => x.id === curItem.relatedIntroId);
+        }
+        if (introIdx === -1) {
+          introIdx = (djEddieIndex - 1 + djEddieQueue.length) % djEddieQueue.length;
+        }
+        playDjEddieItem(introIdx, false);
+        return;
+      }
+      playDjEddiePrevIntro();
+    }
     function renderQuickBanners() {
       const container = document.getElementById('spotifyQuickBannersGrid');
       if (!container) return;
@@ -7795,15 +8720,34 @@
         GlobalAudioPlayer.next();
         return;
       }
-      if (isDjEddieActive || activeTrackFormat === 'full') {
-        nextDjEddieTrack();
+      if (isDjEddieActive) {
+        const curItem = djEddieQueue[djEddieIndex];
+        if (curItem && curItem.isIntro) {
+          // Intro Canción just completed! Immediately play the related normal song!
+          let songIdx = -1;
+          if (curItem.relatedSongId) {
+            songIdx = djEddieQueue.findIndex(x => x.id === curItem.relatedSongId);
+          }
+          if (songIdx === -1) {
+            songIdx = (djEddieIndex + 1) % djEddieQueue.length;
+          }
+          playDjEddieItem(songIdx, false);
+          return;
+        }
+
+        // Normal song completed! Advance to next song:
+        // Always starts with the Intro Canción first!
+        if (isDjShuffleActive) {
+          playDjEddieRandomIntro();
+        } else {
+          playDjEddieNextIntro();
+        }
         return;
       }
       updatePlayUI(false);
       spotifyAudio.currentTime = 0;
       spotifyProgressFill.style.width = '0%';
     });
-
     // Timeline Scrubbing for Desktop Player Bar
     spotifyProgressBar.addEventListener('click', (e) => {
       const rect = spotifyProgressBar.getBoundingClientRect();
@@ -9316,10 +10260,13 @@
     const btnDjPlaylistPlayAll = document.getElementById('btnDjPlaylistPlayAll');
     if (btnDjPlaylistPlayAll) {
       btnDjPlaylistPlayAll.addEventListener('click', () => {
+        isDjShuffleActive = false;
         if (GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive) {
           GlobalAudioPlayer.togglePlay();
         } else {
-          playDjEddieItem(djEddieIndex, false);
+          // Play the first song's Intro Canción!
+          const firstIntro = djEddieQueue.findIndex(x => x.isIntro);
+          playDjEddieItem(firstIntro >= 0 ? firstIntro : 0, false);
         }
       });
     }
@@ -9327,12 +10274,20 @@
     const btnDjPlaylistShuffle = document.getElementById('btnDjPlaylistShuffle');
     if (btnDjPlaylistShuffle) {
       btnDjPlaylistShuffle.addEventListener('click', () => {
-        if (!djEddieQueue.length) buildDjEddieCatalog();
-        const randIdx = Math.floor(Math.random() * djEddieQueue.length);
-        playDjEddieItem(randIdx, false);
+        isDjShuffleActive = true;
+        showAppToast('🔀 Modo Aleatorio activado: se reproducirá el Intro Canción primero', 'info');
+        playDjEddieRandomIntro();
       });
     }
 
+    const btnBarShuffle = document.getElementById('btnBarShuffle');
+    if (btnBarShuffle) {
+      btnBarShuffle.addEventListener('click', () => {
+        isDjShuffleActive = !isDjShuffleActive;
+        btnBarShuffle.style.color = isDjShuffleActive ? 'var(--sp-green)' : '';
+        showAppToast(isDjShuffleActive ? '🔀 Modo Aleatorio activado: Intro Canción primero' : '🔁 Reproducción en orden activada', 'info');
+      });
+    }
     // Initial render of quick banners, Spotify Home shelves & default view
     renderQuickBanners();
     renderSpotifyHomeShelves();
