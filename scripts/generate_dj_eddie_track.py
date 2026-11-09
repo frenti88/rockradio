@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
 ROCK RADIO — Generador Oficial de Locuciones de DJ Eddie con IA
-Implementa los lineamientos de audio establecidos para DJ Eddie:
+Implementa los lineamientos de audio y sincronización de letras para DJ Eddie:
 - Locutor: Eddie (Voz oficial Alonso: es-US-AlonsoNeural)
 - Cadencia de radio: 3 segmentos con pausas calculadas (400ms tras S1, 600ms tras S2, 400ms antes del cierre)
 - Procesamiento de cabina radial con FFmpeg: silenceremove (-45dB), pitch shift (1.055), ecualización radial y compresor
 - Generación de audio real con duración real (5 a 10s de procesamiento)
+- Retorno de marcas de tiempo exactas (intro_timings) para sincronizar la letra del intro y la canción al 100%
 - Servidor HTTP local en puerto 5055 para la app web
 """
 
@@ -33,8 +34,10 @@ FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/f
 
 def get_eddie_script(song_title, band_name, album_name="", year="", angle=1):
     """
-    Construye el guion radial de DJ Eddie respetando la fórmula de 35-50 palabras:
-    [Año]. Para el álbum [Álbum], [Banda] [anécdota]... Sube el volumen... — esto es [Canción], de [Banda].
+    Construye el guion radial de DJ Eddie respetando la fórmula de 35-50 palabras y 3 oraciones estrictas:
+    1. Contexto histórico y álbum
+    2. Anécdota de grabación o impacto musical
+    3. Punchline: 'Sube el volumen... — ¡esto es [Canción], de [Banda]!'
     """
     year_prefix = f"En {year}, " if year else ""
     album_ref = f"para el álbum {album_name}" if album_name else "en una de sus mejores etapas de estudio"
@@ -42,21 +45,66 @@ def get_eddie_script(song_title, band_name, album_name="", year="", angle=1):
     if angle == 1:
         return (
             f"{year_prefix}{album_ref}, {band_name} compuso este himno grabando en cinta analógica "
-            f"con guitarras al rojo vivo y una producción impecable que marcó a toda una generación. "
-            f"Sube el volumen... — esto es {song_title}, de {band_name}."
+            f"con guitarras al rojo vivo. "
+            f"Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. "
+            f"Sube el volumen... — ¡esto es {song_title}, de {band_name}!"
         )
     elif angle == 2:
         return (
             f"{year_prefix}con un riff demoledor y la energía pura que solo {band_name} sabe transmitir, "
-            f"'{song_title}' se convirtió en una pieza imprescindible de su discografía {album_ref}. "
-            f"Sube el volumen... — esto es {song_title}, de {band_name}."
+            f"'{song_title}' nació {album_ref}. "
+            f"La química de la banda en el estudio convirtió esta toma en una de las grabaciones más potentes de su carrera. "
+            f"Sube el volumen... — ¡esto es {song_title}, de {band_name}!"
         )
     else:
         return (
             f"{year_prefix}lanzada como parte del aclamado trabajo {album_ref}, esta obra cumbre "
-            f"de {band_name} conquistó los diales de rock del mundo entero por su potencia melódica. "
-            f"Sube el volumen... — esto es {song_title}, de {band_name}."
+            f"de {band_name} conquistó los diales del planeta. "
+            f"Su impacto en las listas de rock fue rotundo, convirtiéndose en un clásico eterno e infaltable de la radio. "
+            f"Sube el volumen... — ¡esto es {song_title}, de {band_name}!"
         )
+
+def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
+    """
+    Parsea el guion en las 3 oraciones exactas para que el audio generado y la letra coincidan palabra por palabra.
+    """
+    norm_text = text.replace('—', ' - ').replace('–', ' - ')
+    punchline_match = re.search(r'(Sube el volumen.*)', norm_text, re.IGNORECASE)
+    if punchline_match:
+        punchline_full = punchline_match.group(1).strip()
+        body = norm_text[:punchline_match.start()].strip()
+    else:
+        punchline_full = f"Sube el volumen... - ¡esto es {song_title}, de {band_name}!"
+        body = norm_text
+
+    raw_sentences = [s.strip() for s in re.split(r'\.\s+', body) if s.strip()]
+    if len(raw_sentences) >= 2:
+        line1 = raw_sentences[0] + ('.' if not raw_sentences[0].endswith('.') else '')
+        line2 = '. '.join(raw_sentences[1:])
+        if not line2.endswith('.'):
+            line2 += '.'
+    elif len(raw_sentences) == 1:
+        line1 = raw_sentences[0] + ('.' if not raw_sentences[0].endswith('.') else '')
+        line2 = "Una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación."
+    else:
+        line1 = f"Para {song_title}, {band_name} compuso este himno grabando con guitarras al rojo vivo y una producción impecable."
+        line2 = "Una pieza imprescindible que marcó a toda una generación."
+
+    line3_a = "Sube el volumen..."
+    if ' - ' in punchline_full:
+        line3_b = punchline_full.split(' - ', 1)[1].strip()
+    elif '...' in punchline_full:
+        line3_b = punchline_full.split('...', 1)[1].strip()
+    else:
+        line3_b = f"¡esto es {song_title}, de {band_name}!"
+
+    if not line3_b.startswith('¡') and not line3_b.startswith('!'):
+        line3_b = '¡' + line3_b
+    if not line3_b.endswith('!'):
+        line3_b = line3_b.rstrip('.') + '!'
+
+    full_script = f"{line1} {line2} {line3_a} — {line3_b}"
+    return line1, line2, line3_a, line3_b, full_script
 
 async def save_tts_line_with_retry(text, voice, rate, pitch, output_file, max_retries=5):
     """
@@ -120,34 +168,18 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     """
     Genera la locución oficial de Eddie con todos los lineamientos de producción:
     - Voz Alonso (es-US-AlonsoNeural)
-    - 3 secciones con pausas dramáticas
+    - 3 secciones con pausas dramáticas exactas
     - Cadena de compresión y ecualización radial analógica
+    - Cálculo de timestamps exactos (intro_timings) para sincronizar la letra al 100%
     """
     pid = os.getpid()
     t_start = time.time()
     print(f"\n🎙️ [DJ EDDIE SERVICE] Iniciando generación de locución para: '{song_title}' de {band_name}...", flush=True)
 
-    punchline_marker = 'Sube el volumen'
-    if punchline_marker in text:
-        body, _ = text.split(punchline_marker, 1)
-    else:
-        body = text
-
-    sentences = [s.strip() for s in re.split(r'\.\s+', body) if s.strip()]
-    if len(sentences) >= 2:
-        line1 = sentences[0] + '.'
-        line2 = '. '.join(sentences[1:])
-        if not line2.endswith('.'):
-            line2 += '.'
-    elif len(sentences) == 1:
-        line1 = sentences[0] + '.'
-        line2 = f"Una obra imprescindible de {band_name} que conquistó los diales del mundo."
-    else:
-        line1 = f"Para {song_title}, {band_name} compuso este himno grabando con guitarras al rojo vivo y una producción impecable."
-        line2 = "Una pieza imprescindible que marcó a toda una generación."
-
-    line3_a = "Sube el volumen..."
-    line3_b = f"¡esto es {song_title}, de {band_name}!"
+    line1, line2, line3_a, line3_b, full_script = parse_radio_script(text, song_title, band_name)
+    print(f"  > Oración 1: {line1}")
+    print(f"  > Oración 2: {line2}")
+    print(f"  > Oración 3: {line3_a} — {line3_b}")
 
     tmp_prefix = f"/tmp/dj_eddie_prod_{pid}_{int(t_start*1000)}"
 
@@ -188,6 +220,30 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         f.write(f"file '{w_s3a}'\nfile '{w_sil3}'\nfile '{w_s3b}'\n")
     w_line3 = f"{tmp_prefix}_line3.wav"
     subprocess.run([FFMPEG_BIN, "-y", "-f", "concat", "-safe", "0", "-i", c2_txt, w_line3], capture_output=True, check=True)
+
+    # Medir duraciones de audio reales para sincronización exacta de la letra
+    dur0 = get_audio_duration(w_s1)
+    dur1 = get_audio_duration(w_s2)
+    dur2 = get_audio_duration(w_line3)
+
+    t_cursor = 3.0
+    intro_timings = [
+        {'start': 0.0, 'end': 3.0, 'text': '🎹  🎸  🥁 (Sintonía Radio IA - Intro de Cabina)'},
+        {'start': round(t_cursor, 2), 'end': round(t_cursor + dur0, 2), 'text': line1}
+    ]
+    t_cursor += dur0 + 0.40
+    intro_timings.append({
+        'start': round(t_cursor, 2),
+        'end': round(t_cursor + dur1, 2),
+        'text': line2
+    })
+    t_cursor += dur1 + 0.60
+    intro_timings.append({
+        'start': round(t_cursor, 2),
+        'end': round(t_cursor + dur2, 2),
+        'text': f"{line3_a} — {line3_b}"
+    })
+    intro_end = round(t_cursor + dur2, 2)
 
     # Concatenar pista completa de voz
     concat_txt = f"{tmp_prefix}_concat.txt"
@@ -233,7 +289,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
-    print(f"✓ [DJ EDDIE SERVICE] Locución masterizada exitosamente en {elapsed:.2f}s (duración audio: {duration:.2f}s): {out_mp3_path}", flush=True)
+    print(f"✓ [DJ EDDIE SERVICE] Locución masterizada exitosamente en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
 
     # Limpieza de archivos temporales de paso
     for tmp_f in [s1_mp3, s2_mp3, s3_a_mp3, s3_b_mp3, w_s1, w_sil1, w_s2, w_sil2, w_s3a, w_sil3, w_s3b, c2_txt, w_line3, concat_txt, raw_voice_wav]:
@@ -243,12 +299,12 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         except Exception:
             pass
 
-    return out_mp3_path, duration, elapsed
+    return out_mp3_path, duration, elapsed, intro_timings, intro_end, full_script
 
 def run_server(port=5055):
     """
     Servidor HTTP en puerto 5055 para la app web de Rock Radio.
-    Atiende solicitudes de generación real de locuciones con DJ Eddie.
+    Atiende solicitudes de generación real de locuciones y sincronización de letras.
     """
     class DjEddieAudioHandler(BaseHTTPRequestHandler):
         def _set_cors(self):
@@ -273,6 +329,7 @@ def run_server(port=5055):
                     'voice': 'Eddie',
                     'voiceModel': 'es-US-AlonsoNeural',
                     'engine': 'Edge-TTS + FFmpeg Master Radio EQ/Compressor',
+                    'lyricsSync': True,
                     'port': port,
                     'timestamp': time.time()
                 }
@@ -300,7 +357,7 @@ def run_server(port=5055):
                     safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
                     workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_{safe_slug}_{track_id}.mp3")
 
-                    out_path, duration, elapsed = asyncio.run(
+                    out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
                         build_eddie_radio_narration(text, song_title, band_name, workspace_mp3)
                     )
 
@@ -322,7 +379,10 @@ def run_server(port=5055):
                         'durationSec': round(duration, 2),
                         'elapsedSec': round(elapsed, 2),
                         'voice': 'Eddie (Alonso Neural Master)',
-                        'trackId': track_id
+                        'trackId': track_id,
+                        'intro_timings': intro_timings,
+                        'intro_end': intro_end,
+                        'full_script': full_script
                     })
                     self.wfile.write(resp.encode('utf-8'))
                 except Exception as e:
@@ -339,14 +399,14 @@ def run_server(port=5055):
 
     server = HTTPServer(('127.0.0.1', port), DjEddieAudioHandler)
     print(f"🚀 [DJ EDDIE SERVICE] Servidor de locuciones de Eddie escuchando en http://127.0.0.1:{port}/api/generate_audio", flush=True)
-    print(f"   Voz: Eddie (es-US-AlonsoNeural) | EQ/Compressor radial activo", flush=True)
+    print(f"   Voz: Eddie (es-US-AlonsoNeural) | Sincronización de letras activa", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         print("\nDeteniendo servidor de audio.")
 
 def main():
-    parser = argparse.ArgumentParser(description="Generador Oficial de Locuciones de DJ Eddie")
+    parser = argparse.ArgumentParser(description="Generador Oficial de Locuciones de DJ Eddie con Sincronización de Letras")
     parser.add_argument("--song", help="Nombre de la canción")
     parser.add_argument("--band", help="Nombre de la banda o artista")
     parser.add_argument("--album", default="", help="Nombre del álbum")
@@ -374,14 +434,16 @@ def main():
     out_file = args.out or f"/tmp/eddie_{band_name}_{song_name}.mp3".replace(" ", "_").lower()
 
     print(f"=======================================================")
-    print(f"🎸 DJ EDDIE • ROCK RADIO — GENERACIÓN DE AUDIO REAL")
+    print(f"🎸 DJ EDDIE • ROCK RADIO — GENERACIÓN DE AUDIO & LETRAS")
     print(f"=======================================================")
-    print(f"Guion:\n{script_text}\n")
 
-    out_path, duration, elapsed = asyncio.run(
+    out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
         build_eddie_radio_narration(script_text, song_name, band_name, out_file)
     )
-    print(f"✓ Archivo generado: {out_path} ({duration:.2f}s en {elapsed:.2f}s)")
+    print(f"\n✓ Archivo generado: {out_path} ({duration:.2f}s en {elapsed:.2f}s, intro_end: {intro_end}s)")
+    print("\nMarcas de tiempo de la letra del Intro:")
+    for it in intro_timings:
+        print(f"  [{it['start']}s - {it['end']}s] {it['text']}")
 
 if __name__ == "__main__":
     main()

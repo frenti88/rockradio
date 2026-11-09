@@ -5867,6 +5867,7 @@
 
     if (btnBarLyrics) {
       btnBarLyrics.addEventListener('click', () => {
+        renderLyrics();
         const target = document.getElementById('lyricsSection');
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -5875,23 +5876,42 @@
     }
 
     function renderLyrics() {
-      const b = bands[activeBandId];
       if (!lyricsScrollViewport) return;
       lyricsScrollViewport.innerHTML = '';
       if (modalLyricsBody) modalLyricsBody.innerHTML = '';
       lastActiveLyricIndex = -1;
 
-      const isFull = (activeTrackFormat === 'full' && b && b.hasFullTrack && b.fullTrack);
-      const lyricsList = isFull ? b.fullTrack.lyrics : (b.lyrics || []);
+      let lyricsList = [];
+      let isFull = false;
+      let introEndStr = '0:21';
+
+      if (isDjEddieActive && djEddieQueue.length && djEddieIndex >= 0 && djEddieIndex < djEddieQueue.length) {
+        const item = djEddieQueue[djEddieIndex];
+        if (item.isCustom && item.lyrics && item.lyrics.length) {
+          lyricsList = item.lyrics;
+          isFull = true;
+          introEndStr = '0:' + (item.introSec ? String(item.introSec).replace('s', '') : '21');
+        } else if (item.fullTrackObj && item.fullTrackObj.lyrics) {
+          lyricsList = item.fullTrackObj.lyrics;
+          isFull = true;
+          introEndStr = '0:' + (item.introSec ? String(item.introSec).replace('s', '') : '21');
+        }
+      }
+
+      if (!lyricsList.length) {
+        const b = bands[activeBandId];
+        isFull = (activeTrackFormat === 'full' && b && b.hasFullTrack && b.fullTrack);
+        lyricsList = isFull ? b.fullTrack.lyrics : (b ? (b.lyrics || []) : []);
+        introEndStr = (b && b.fullTrack && b.fullTrack.introSec) ? ('0:' + b.fullTrack.introSec.replace('s', '')) : '0:21';
+      }
 
       const lyricsBadge = document.querySelector('.lyrics-pill-title');
       const lyricsSync = document.querySelector('.lyrics-sync-indicator span:last-child');
       if (lyricsBadge) {
-        lyricsBadge.textContent = isFull ? 'Radio FM + Letra Oficial' : 'Historia';
+        lyricsBadge.textContent = isFull ? 'Radio IA + Letra Oficial' : 'Historia';
       }
       if (lyricsSync) {
-        let introEnd = (b.fullTrack && b.fullTrack.introSec) ? ('0:' + b.fullTrack.introSec.replace('s', '')) : '0:28';
-        lyricsSync.textContent = isFull ? `Intro radial (0:00 - ${introEnd}) + Canción completa sincronizada` : 'Historia narrada en vivo • Sincronización exacta';
+        lyricsSync.textContent = isFull ? `Intro radial (0:00 - ${introEndStr}) + Canción completa sincronizada` : 'Historia narrada en vivo • Sincronización exacta';
       }
       lyricsList.forEach((item, idx) => {
         const line = document.createElement('div');
@@ -6111,21 +6131,178 @@
       }
     }
 
-    // Reusable Story Construction Formula (35-50 words, authentic Eddie cadence)
+    // Reusable Story Construction Formula (35-50 words, authentic Eddie cadence: 3 exact sentences)
     function buildEddieRadioScript(songTitle, bandName, albumName = '', year = '', angle = 1) {
       const yearPrefix = year ? `En ${year}, ` : '';
       const albumRef = albumName ? `para el álbum ${albumName}` : 'en uno de sus momentos cumbre de estudio';
 
       // Angle 1: Estudio, grabación analógica y mística
       if (angle === 1) {
-        return `${yearPrefix}${albumRef}, ${bandName} compuso este himno grabando en cinta analógica con guitarras al rojo vivo y una producción impecable que marcó a toda una generación. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+        return `${yearPrefix}${albumRef}, ${bandName} compuso este himno grabando en cinta analógica con guitarras al rojo vivo. Fue una sesión legendaria de estudio que capturó pura magia y marcó a toda una generación. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
       }
       // Angle 2: Riff, técnica y energía visceral
       if (angle === 2) {
-        return `${yearPrefix}con un riff demoledor y la energía visceral que solo ${bandName} sabe transmitir, '${songTitle}' se convirtió en una pieza insustituible de su discografía ${albumRef}. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+        return `${yearPrefix}con un riff demoledor y la energía visceral que define a ${bandName}, '${songTitle}' nació ${albumRef}. La química de la banda en el estudio convirtió esta toma en una de las grabaciones más potentes de su carrera. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
       }
       // Angle 3: Legado radial, diales y fenómeno mundial
-      return `${yearPrefix}lanzada como parte del aclamado trabajo ${albumRef}, esta obra maestra de ${bandName} conquistó los diales de rock del mundo entero por su potencia melódica y fuerza escénica. Sube el volumen... — esto es ${songTitle}, de ${bandName}.`;
+      return `${yearPrefix}lanzada como parte del aclamado trabajo ${albumRef}, esta obra maestra de ${bandName} conquistó los diales del planeta. Su impacto en las listas de rock fue rotundo, convirtiéndose en un clásico eterno e infaltable de la radio. Sube el volumen... — ¡esto es ${songTitle}, de ${bandName}!`;
+    }
+
+    // Curated catalog of authentic rock lyrics with relative time-offsets for full synchronization
+    const ROCK_CLASSIC_LYRICS = {
+      'hotel california': [
+        { d: 13.0, text: "🎸  🎶  🎸 (Arranque de Guitarras de 12 Cuerdas - Don Felder & Joe Walsh)" },
+        { d: 14.0, text: "On a dark desert highway, cool wind in my hair... Warm smell of colitas, rising up through the air" },
+        { d: 14.0, text: "Up ahead in the distance, I saw a shimmering light... My head grew heavy and my sight grew dim, I had to stop for the night" },
+        { d: 14.0, text: "There she stood in the doorway, I heard the mission bell... And I was thinkin' to myself: This could be heaven or this could be hell" },
+        { d: 14.0, text: "Then she lit up a candle and she showed me the way... There were voices down the corridor, I thought I heard them say:" },
+        { d: 14.0, text: "Welcome to the Hotel California! Such a lovely place, such a lovely face" },
+        { d: 14.0, text: "Plenty of room at the Hotel California... Any time of year, you can find it here" },
+        { d: 14.0, text: "Her mind is Tiffany-twisted, she got the Mercedes-Benz... She got a lot of pretty, pretty boys she calls friends" },
+        { d: 14.0, text: "How they dance in the courtyard, sweet summer sweat... Some dance to remember, some dance to forget" },
+        { d: 14.0, text: "So I called up the Captain: Please bring me my wine... He said: We haven't had that spirit here since nineteen sixty-nine" },
+        { d: 14.0, text: "And still those voices are calling from far away... Wake you up in the middle of the night just to hear them say:" },
+        { d: 14.0, text: "Welcome to the Hotel California! Such a lovely place, such a lovely face" },
+        { d: 14.0, text: "They livin' it up at the Hotel California... What a nice surprise, bring your alibis" },
+        { d: 14.0, text: "Mirrors on the ceiling, the pink champagne on ice... And she said: We are all just prisoners here of our own device" },
+        { d: 14.0, text: "And in the master's chambers, they gathered for the feast... They stab it with their steely knives, but they just can't kill the beast" },
+        { d: 14.0, text: "Last thing I remember, I was running for the door... I had to find the passage back to the place I was before" },
+        { d: 14.0, text: "Relax, said the night man: We are programmed to receive... You can check out any time you like, but you can never leave!" },
+        { d: 65.0, text: "🎸  🔥  🎸 (Solo Legendario de Guitarras Dobles - Don Felder & Joe Walsh)" },
+        { d: 12.0, text: "🎸  ✨  🎸 (Outro & Fade Out)" }
+      ],
+      'sweet child o mine': [
+        { d: 13.0, text: "🎸  ⚡  🎸 (Riff Inmortal de Slash en Re Bemol)" },
+        { d: 13.0, text: "She's got a smile that it seems to me, reminds me of childhood memories..." },
+        { d: 13.0, text: "Where everything was as fresh as the bright blue sky..." },
+        { d: 13.0, text: "Now and then when I see her face, she takes me away to that special place..." },
+        { d: 13.0, text: "And if I stared too long, I'd probably break down and cry" },
+        { d: 13.0, text: "Whoa, oh, oh... Sweet child o' mine! Whoa, oh, oh, oh... Sweet love of mine" },
+        { d: 13.0, text: "She's got eyes of the bluest skies, as if they thought of rain..." },
+        { d: 13.0, text: "I'd hate to look into those eyes and see an ounce of pain" },
+        { d: 13.0, text: "Her hair reminds me of a warm safe place, where as a child I'd hide..." },
+        { d: 13.0, text: "And pray for the thunder and the rain to quietly pass me by" },
+        { d: 13.0, text: "Whoa, oh, oh... Sweet child o' mine! Whoa, oh, oh, oh... Sweet love of mine" },
+        { d: 29.0, text: "🎸  🔥  🎸 (Solo de Guitarra con Wah-Wah - Slash)" },
+        { d: 14.0, text: "Where do we go? Where do we go now? Where do we go?" },
+        { d: 14.0, text: "Where do we go now? Where do we go? Sweet child o' mine!" },
+        { d: 12.0, text: "🎸  ⚡  🎸 (Outro & Clímax Final de Slash y Axl Rose)" }
+      ],
+      'highway to hell': [
+        { d: 11.0, text: "🎸  🥁  🎸 (Riff Inmortal de Tres Acordes - Malcolm & Angus Young)" },
+        { d: 12.0, text: "Livin' easy, livin' free... Season ticket on a one-way ride" },
+        { d: 12.0, text: "Askin' nothin', leave me be... Takin' everythin' in my stride" },
+        { d: 12.0, text: "Don't need reason, don't need rhyme... Ain't nothin' I would rather do" },
+        { d: 12.0, text: "Goin' down, party time... My friends are gonna be there too!" },
+        { d: 13.0, text: "I'm on the highway to hell! On the highway to hell!" },
+        { d: 12.0, text: "Highway to hell! I'm on the highway to hell!" },
+        { d: 12.0, text: "No stop signs, speed limit... Nobody's gonna slow me down" },
+        { d: 12.0, text: "Like a wheel, gonna spin it... Nobody's gonna mess me 'round" },
+        { d: 12.0, text: "Hey Satan, payin' my dues... Playin' in a rockin' band!" },
+        { d: 12.0, text: "Hey momma, look at me... I'm on my way to the promised land, whoo!" },
+        { d: 13.0, text: "I'm on the highway to hell! Highway to hell!" },
+        { d: 24.0, text: "🎸  🔥  🎸 (Solo Demoledor de Angus Young en Gibson SG)" },
+        { d: 16.0, text: "Highway to hell! Don't stop me! Highway to hell!" }
+      ],
+      'bohemian rhapsody': [
+        { d: 14.0, text: "Is this the real life? Is this just fantasy? Caught in a landslide, no escape from reality..." },
+        { d: 14.0, text: "Open your eyes, look up to the skies and see... I'm just a poor boy, I need no sympathy" },
+        { d: 14.0, text: "Because I'm easy come, easy go, little high, little low... Any way the wind blows doesn't really matter to me, to me" },
+        { d: 16.0, text: "🎹  🎶  🎹 (Balada de Piano - Freddie Mercury)" },
+        { d: 16.0, text: "Mama, just killed a man... Put a gun against his head, pulled my trigger, now he's dead" },
+        { d: 15.0, text: "Mama, life had just begun... But now I've gone and thrown it all away" },
+        { d: 18.0, text: "Mama, ooh, didn't mean to make you cry... If I'm not back again this time tomorrow, carry on, carry on" },
+        { d: 16.0, text: "Too late, my time has come... Sends shivers down my spine, body's aching all the time" },
+        { d: 15.0, text: "Goodbye, everybody, I've got to go... Gotta leave you all behind and face the truth" },
+        { d: 16.0, text: "Mama, ooh, I don't wanna die... I sometimes wish I'd never been born at all" },
+        { d: 24.0, text: "🎸  🎸  🎸 (Solo de Guitarra Legendario de Red Special - Brian May)" },
+        { d: 38.0, text: "🎭  ✨  🎭 (Sección Operística: Scaramouche, Figaro, Magnifico & Galileo!)" },
+        { d: 38.0, text: "🎸  ⚡  🎸 (Sección Hard Rock: So you think you can stone me and spit in my eye?!)" },
+        { d: 28.0, text: "Nothing really matters, anyone can see... Any way the wind blows 🔔 (Gong Final)" }
+      ],
+      'smells like teen spirit': [
+        { d: 12.0, text: "🎸  ⚡  🎸 (Riff de Cuatro Acordes - Kurt Cobain)" },
+        { d: 14.0, text: "Load up on guns, bring your friends... It's fun to lose and to pretend" },
+        { d: 14.0, text: "She's over-bored and self-assured... Oh no, I know a dirty word" },
+        { d: 12.0, text: "Hello, hello, hello, how low? Hello, hello, hello, how low?" },
+        { d: 16.0, text: "With the lights out, it's less dangerous! Here we are now, entertain us!" },
+        { d: 16.0, text: "I feel stupid and contagious... Here we are now, entertain us!" },
+        { d: 14.0, text: "A mulatto, an albino, a mosquito, my libido... Yeah, hey!" },
+        { d: 14.0, text: "I'm worse at what I do best... And for this gift I feel blessed" },
+        { d: 14.0, text: "Our little group has always been... And always will until the end" },
+        { d: 24.0, text: "🎸  🔥  🎸 (Solo de Guitarra de Grunge Distorsionado - Kurt Cobain)" },
+        { d: 20.0, text: "A denial, a denial, a denial... A denial!" }
+      ]
+    };
+
+    function buildFullLyricsForTrack(songTitle, bandName, albumName, durationSec, introTimings = null, customScript = '') {
+      let timings = [];
+      let introEnd = 21.0;
+
+      if (introTimings && introTimings.length) {
+        timings = introTimings.map(it => ({ ...it }));
+        introEnd = timings[timings.length - 1].end || 21.0;
+      } else {
+        const script = customScript || buildEddieRadioScript(songTitle, bandName, albumName);
+        const norm = script.replace('—', ' - ').replace('–', ' - ');
+        const parts = norm.split('Sube el volumen');
+        const body = parts[0].trim();
+        const tail = 'Sube el volumen' + (parts[1] || `... — ¡esto es ${songTitle}, de ${bandName}!`);
+        const sents = body.split(/\.\s+/).filter(Boolean);
+        const l1 = (sents[0] || `Para el álbum ${albumName || 'clásico'}, ${bandName} compuso este himno`).trim() + '.';
+        const l2 = (sents.slice(1).join('. ') || 'Una sesión de grabación legendaria que marcó a toda una generación').trim() + '.';
+        const l3 = tail.trim();
+
+        timings = [
+          { start: 0.0, end: 3.0, text: '🎹  🎸  🥁 (Sintonía Radio IA - Intro de Cabina)' },
+          { start: 3.0, end: 11.5, text: l1 },
+          { start: 11.9, end: 16.8, text: l2 },
+          { start: 17.4, end: 20.8, text: l3 }
+        ];
+        introEnd = 20.8;
+      }
+
+      const cleanKey = songTitle.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+      let matchedKey = Object.keys(ROCK_CLASSIC_LYRICS).find(k => cleanKey.includes(k) || k.includes(cleanKey));
+
+      const totalDur = (durationSec && durationSec > 60) ? durationSec : 240.0;
+      let songLines = [];
+
+      if (matchedKey && ROCK_CLASSIC_LYRICS[matchedKey]) {
+        let cursor = introEnd;
+        ROCK_CLASSIC_LYRICS[matchedKey].forEach(item => {
+          const start = Math.round(cursor * 100) / 100;
+          const end = Math.min(totalDur, Math.round((cursor + item.d) * 100) / 100);
+          songLines.push({ start, end, text: item.text, instrumental: item.text.includes('🎸') || item.text.includes('🎹') });
+          cursor = end;
+        });
+      } else {
+        const remainTime = Math.max(80, totalDur - introEnd);
+        const step = remainTime / 10;
+        let c = introEnd;
+
+        const dynSections = [
+          { d: step * 0.9, text: `🎸  ⚡  🎸 (Arranque de Riff Principal & Batería - ${bandName})`, inst: true },
+          { d: step * 1.1, text: `(Verso 1: Introducción melódica y primera estrofa de ${songTitle})`, inst: false },
+          { d: step * 0.9, text: `(Puente & Tensión armónica antes del estribillo)`, inst: false },
+          { d: step * 1.2, text: `(Coro Principal: "${songTitle}" a plena potencia vocal)`, inst: false },
+          { d: step * 1.1, text: `(Verso 2 con guitarras distorsionadas y bajo potente)`, inst: false },
+          { d: step * 1.1, text: `(Coro de "${songTitle}" con fuerza de estadio)`, inst: false },
+          { d: step * 1.5, text: `🎸  🔥  🎸 (Solo de Guitarra Líder & Virtuosismo - ${bandName})`, inst: true },
+          { d: step * 1.2, text: `(Coro Clímax: Voces en armonía y clímax de ${songTitle})`, inst: false },
+          { d: step * 0.6, text: `🎸  🥁  🎶 (Puente instrumental final & solo de batería)`, inst: true },
+          { d: step * 0.4, text: `🎸  ✨  🎸 (Outro & Fade Out)`, inst: true }
+        ];
+
+        dynSections.forEach(sec => {
+          const start = Math.round(c * 100) / 100;
+          const end = Math.min(totalDur, Math.round((c + sec.d) * 100) / 100);
+          songLines.push({ start, end, text: sec.text, instrumental: sec.inst });
+          c = end;
+        });
+      }
+
+      return [...timings, ...songLines];
     }
 
     // Reusable Broadcast Audio WAV Data URL Generator (44.1kHz 16-bit PCM Mono)
@@ -6215,6 +6392,7 @@
         audioUrl: '',
         previewUrl: track.preview_url || '',
         uri: track.uri || '',
+        lyrics: [],
         isCustom: true,
         createdAt: Date.now()
       };
@@ -6273,7 +6451,10 @@
 
       const newStory = buildEddieRadioScript(track.songTitle, track.bandName, track.albumName, track.year, nextAngle);
       track.summary = newStory;
+      track.speechText = newStory;
       track.status = 'con_historia';
+      track.introSec = '21s';
+      track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, null, newStory);
 
       customTracks[idx] = track;
       saveDjEddieCustomTracks(customTracks);
@@ -6346,6 +6527,14 @@
             if (json.duration) durationStr = json.duration;
             if (json.durationSec) realAudioDuration = json.durationSec;
             if (json.fileUrl) track.fileUrl = json.fileUrl;
+            if (json.full_script) {
+              track.summary = json.full_script;
+              track.speechText = json.full_script;
+            }
+            if (json.intro_timings) {
+              track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, json.intro_timings);
+              track.introSec = `${Math.round(json.intro_end || 21)}s`;
+            }
           }
         }
       } catch (e) {
@@ -6358,6 +6547,9 @@
         const realWaitMs = Math.max(5000, Math.min(10000, words * 160));
         await new Promise(r => setTimeout(r, realWaitMs));
         audioDataUrl = createRadioWavDataUrl(track.summary);
+        if (!track.lyrics || !track.lyrics.length) {
+          track.lyrics = buildFullLyricsForTrack(track.songTitle, track.bandName, track.albumName, track.duration, null, track.summary);
+        }
       }
 
       if (timerInterval) clearInterval(timerInterval);
@@ -6373,6 +6565,12 @@
       buildDjEddieCatalog();
 
       renderDjEddiePlaylistSongs();
+      if (isDjEddieActive && djEddieQueue.length && djEddieIndex >= 0 && djEddieIndex < djEddieQueue.length) {
+        const curItem = djEddieQueue[djEddieIndex];
+        if (curItem.id === track.id || curItem.spotifyId === track.spotifyId) {
+          renderLyrics();
+        }
+      }
       showAppToast(`🔊 Locución de Eddie lista para "${track.songTitle}" (${elapsedSeconds || 6}s)`, 'success');
     }
 
@@ -6409,7 +6607,14 @@
 
       // Merge user custom tracks added from Spotify
       const customTracks = getDjEddieCustomTracks();
+      let hadMissingLyrics = false;
       customTracks.forEach(ct => {
+        let lyrics = ct.lyrics;
+        if ((!lyrics || !lyrics.length) && ct.summary) {
+          lyrics = buildFullLyricsForTrack(ct.songTitle, ct.bandName, ct.albumName, ct.duration, null, ct.summary);
+          ct.lyrics = lyrics;
+          hadMissingLyrics = true;
+        }
         list.push({
           id: ct.id || ('sp_' + (ct.spotifyId || Date.now())),
           spotifyId: ct.spotifyId,
@@ -6422,7 +6627,7 @@
           albumName: ct.albumName || '',
           year: ct.year || '',
           duration: ct.duration || 180,
-          introSec: ct.introSec || '19s',
+          introSec: ct.introSec || '21s',
           summary: ct.summary || '',
           status: ct.status || 'sin_historia', // 'sin_historia' | 'con_historia' | 'con_audio'
           audioUrl: ct.audioUrl || '',
@@ -6430,10 +6635,14 @@
           uri: ct.uri || '',
           speechText: ct.speechText || ct.summary || '',
           hasRealAudio: ct.hasRealAudio || false,
+          lyrics: lyrics || [],
           isCustom: true,
           fullTrackObj: null
         });
       });
+      if (hadMissingLyrics) {
+        saveDjEddieCustomTracks(customTracks);
+      }
 
       djEddieQueue = list;
       const countEl = document.getElementById('djPlaylistTrackCount');
@@ -6782,6 +6991,11 @@
 
         renderSpotifyHomeShelves();
         renderDjEddiePlaylistSongs();
+        renderLyrics();
+        if (scrollToLyrics) {
+          const lyr = document.getElementById('lyricsSection');
+          if (lyr) lyr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 
