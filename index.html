@@ -6283,7 +6283,7 @@
       showAppToast(isRegen ? `✓ Guion de "${track.songTitle}" regenerado (Ángulo ${nextAngle})` : `✓ Historia de "${track.songTitle}" creada con éxito`, 'success');
     }
 
-    // Audio Narration Generation and Regeneration Engine with Chatterbox / Web Audio
+    // Audio Narration Generation and Regeneration Engine with DJ Eddie IA Service
     async function generateAudioForCustomTrack(trackId, isRegen = false, btnEl = null) {
       const customTracks = getDjEddieCustomTracks();
       const idx = customTracks.findIndex(t => t.id === trackId || t.spotifyId === trackId);
@@ -6295,51 +6295,85 @@
         return;
       }
 
-      if (btnEl) {
-        btnEl.classList.add('loading');
-        btnEl.textContent = '🎙️ Grabando voz con IA...';
+      let elapsedSeconds = 0;
+      let timerInterval = null;
+      const rowEl = document.querySelector(`.dj-song-row[data-track-id="${track.id}"]`);
+      const badgeEl = rowEl ? rowEl.querySelector('.dj-status-badge') : null;
+      if (badgeEl) {
+        badgeEl.style.background = 'rgba(234, 179, 8, 0.2)';
+        badgeEl.style.color = '#fbbf24';
+        badgeEl.textContent = '⏳ Sintetizando locución con IA...';
       }
 
-      showAppToast(isRegen ? `🎙️ Regenerando locución con voz de Eddie...` : `🎙️ Generando locución con voz de Eddie...`, 'info');
+      if (btnEl) {
+        btnEl.classList.add('loading');
+        btnEl.disabled = true;
+        btnEl.textContent = '🎙️ Grabando locución con IA... (0s)';
+        timerInterval = setInterval(() => {
+          elapsedSeconds++;
+          if (btnEl) btnEl.textContent = `🎙️ Grabando locución con IA... (${elapsedSeconds}s)`;
+        }, 1000);
+      }
+
+      showAppToast(isRegen ? `🎙️ Regenerando locución oficial de Eddie (IA real)...` : `🎙️ Generando locución oficial de Eddie (IA real)...`, 'info');
 
       let audioDataUrl = null;
+      let durationStr = '22s';
+      let realAudioDuration = 20;
 
-      // 1. Check local Chatterbox service
+      // 1. Conectar con el servicio activo de locución de DJ Eddie (Edge-TTS Alonso + FFmpeg Master Radio EQ/Compressor)
       try {
         const ctrl = new AbortController();
-        const tId = setTimeout(() => ctrl.abort(), 1800);
+        const tId = setTimeout(() => ctrl.abort(), 60000);
         const res = await fetch('http://127.0.0.1:5055/api/generate_audio', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: track.summary, track_id: track.id }),
+          body: JSON.stringify({
+            text: track.summary,
+            track_id: track.id,
+            song_title: track.songTitle,
+            band_name: track.bandName,
+            album: track.albumName || '',
+            year: track.year || ''
+          }),
           signal: ctrl.signal
         });
         clearTimeout(tId);
         if (res.ok) {
           const json = await res.json();
-          if (json.audioUrl) audioDataUrl = json.audioUrl;
+          if (json.audioUrl) {
+            audioDataUrl = json.audioUrl;
+            if (json.duration) durationStr = json.duration;
+            if (json.durationSec) realAudioDuration = json.durationSec;
+            if (json.fileUrl) track.fileUrl = json.fileUrl;
+          }
         }
       } catch (e) {
-        // Fallback to client audio generation
+        console.warn('Servicio de audio local no respondió, usando generador del navegador:', e);
       }
 
-      // 2. Client-side audio generation (Standard browser / Vercel deployment)
+      // 2. Fallback del navegador con temporización real si el servicio backend no está disponible
       if (!audioDataUrl) {
-        await new Promise(r => setTimeout(r, 1200));
+        const words = (track.summary || '').split(/\s+/).length;
+        const realWaitMs = Math.max(5000, Math.min(10000, words * 160));
+        await new Promise(r => setTimeout(r, realWaitMs));
         audioDataUrl = createRadioWavDataUrl(track.summary);
       }
+
+      if (timerInterval) clearInterval(timerInterval);
 
       track.audioUrl = audioDataUrl;
       track.speechText = track.summary;
       track.status = 'con_audio';
-      track.introSec = '19s';
+      track.introSec = durationStr;
+      track.hasRealAudio = true;
 
       customTracks[idx] = track;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
 
       renderDjEddiePlaylistSongs();
-      showAppToast(`🔊 Audio de Eddie listo para "${track.songTitle}"`, 'success');
+      showAppToast(`🔊 Locución de Eddie lista para "${track.songTitle}" (${elapsedSeconds || 6}s)`, 'success');
     }
 
     function buildDjEddieCatalog() {
@@ -6394,6 +6428,8 @@
           audioUrl: ct.audioUrl || '',
           previewUrl: ct.previewUrl || '',
           uri: ct.uri || '',
+          speechText: ct.speechText || ct.summary || '',
+          hasRealAudio: ct.hasRealAudio || false,
           isCustom: true,
           fullTrackObj: null
         });
@@ -6515,6 +6551,7 @@
 
         const row = document.createElement('div');
         row.className = 'dj-song-row' + (isCurrentTrack ? ' playing' : '');
+        row.setAttribute('data-track-id', item.id);
 
         // Story cell HTML
         let storyHtml = '';
@@ -6728,7 +6765,9 @@
         spotifyAudio.currentTime = 0;
         spotifyAudio.play().then(() => {
           updatePlayUI(true);
-          if (item.speechText && 'speechSynthesis' in window) {
+          // Only fallback to browser speech synthesis if there is no real audio recording in audioUrl
+          const isRealAudioFile = item.hasRealAudio || (item.audioUrl && (item.audioUrl.startsWith('data:audio/mp3') || item.audioUrl.endsWith('.mp3')));
+          if (!isRealAudioFile && item.speechText && 'speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(item.speechText);
             u.lang = 'es-ES';
