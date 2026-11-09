@@ -1,0 +1,758 @@
+[
+  {
+    "id": "intro_kiss_detroit_rock_city",
+    "pairId": "kiss_detroit_rock_city",
+    "songTitle": "Detroit Rock City",
+    "bandName": "KISS",
+    "albumName": "Destroyer",
+    "year": "1976",
+    "audioUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+    "fileUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+    "duration": 49,
+    "durationSec": 49.05,
+    "introSec": "49s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock. El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento. La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor. ¡Sube el volumen y escuchemos a Detroit Rock City aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 12.99,
+        "text": "Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock."
+      },
+      {
+        "start": 13.39,
+        "end": 24.71,
+        "text": "El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento."
+      },
+      {
+        "start": 25.11,
+        "end": 35.32,
+        "text": "La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos."
+      },
+      {
+        "start": 35.72,
+        "end": 43.76,
+        "text": "Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor."
+      },
+      {
+        "start": 44.16,
+        "end": 49.06,
+        "text": "¡Sube el volumen y escuchemos a Detroit Rock City aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1178688
+  },
+  {
+    "id": "intro_kiss_forever",
+    "pairId": "kiss_forever",
+    "songTitle": "Forever",
+    "bandName": "KISS",
+    "albumName": "Hot in the Shade",
+    "year": "1989",
+    "audioUrl": "audio/eddie_intro_kiss_forever.mp3",
+    "fileUrl": "audio/eddie_intro_kiss_forever.mp3",
+    "duration": 46,
+    "durationSec": 46.36,
+    "introSec": "46s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales. ¡Sube el volumen y escuchemos a Forever aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 16.84,
+        "text": "En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS."
+      },
+      {
+        "start": 17.24,
+        "end": 27.15,
+        "text": "Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión."
+      },
+      {
+        "start": 27.55,
+        "end": 41.57,
+        "text": "En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales."
+      },
+      {
+        "start": 41.97,
+        "end": 46.36,
+        "text": "¡Sube el volumen y escuchemos a Forever aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1114113
+  },
+  {
+    "id": "intro_alice_cooper_poison",
+    "pairId": "alice_cooper_poison",
+    "songTitle": "Poison",
+    "bandName": "Alice Cooper",
+    "albumName": "Trash",
+    "year": "1989",
+    "audioUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
+    "fileUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
+    "duration": 46,
+    "durationSec": 45.81,
+    "introSec": "46s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible de los éxitos radiales, Desmond Child, para dar vida al álbum Trash. El resultado fue una resurrección espectacular para el pionero del shock rock. Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química en el estudio fue arrolladora. Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial. ¡Sube el volumen y escuchemos a Poison aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 17.1,
+        "text": "A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible de los éxitos radiales, Desmond Child, para dar vida al álbum Trash."
+      },
+      {
+        "start": 17.5,
+        "end": 21.55,
+        "text": "El resultado fue una resurrección espectacular para el pionero del shock rock."
+      },
+      {
+        "start": 21.95,
+        "end": 30.16,
+        "text": "Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química en el estudio fue arrolladora."
+      },
+      {
+        "start": 30.56,
+        "end": 41.02,
+        "text": "Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial."
+      },
+      {
+        "start": 41.42,
+        "end": 45.82,
+        "text": "¡Sube el volumen y escuchemos a Poison aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1100947
+  },
+  {
+    "id": "intro_metallica_master_of_puppets",
+    "pairId": "metallica_master_of_puppets",
+    "songTitle": "Master of Puppets",
+    "bandName": "Metallica",
+    "albumName": "Master of Puppets",
+    "year": "1986",
+    "audioUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
+    "fileUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
+    "duration": 49,
+    "durationSec": 49.34,
+    "introSec": "49s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1986, desde los legendarios estudios Sweet Silence en la fría Copenhague, Metallica forjó la obra cumbre del thrash metal. James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, personificadas en un titiritero invisible que manipula a sus víctimas. Para alcanzar una precisión rítmica quirúrgica e implacable, todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo. Además, el virtuoso bajista Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia. ¡Sube el volumen y escuchemos a Master of Puppets aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 13.64,
+        "text": "En 1986, desde los legendarios estudios Sweet Silence en la fría Copenhague, Metallica forjó la obra cumbre del thrash metal."
+      },
+      {
+        "start": 14.04,
+        "end": 24.61,
+        "text": "James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, personificadas en un titiritero invisible que manipula a sus víctimas."
+      },
+      {
+        "start": 25.01,
+        "end": 34.45,
+        "text": "Para alcanzar una precisión rítmica quirúrgica e implacable, todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo."
+      },
+      {
+        "start": 34.85,
+        "end": 44.02,
+        "text": "Además, el virtuoso bajista Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia."
+      },
+      {
+        "start": 44.42,
+        "end": 49.36,
+        "text": "¡Sube el volumen y escuchemos a Master of Puppets aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1185584
+  },
+  {
+    "id": "intro_metallica_enter_sandman",
+    "pairId": "metallica_enter_sandman",
+    "songTitle": "Enter Sandman",
+    "bandName": "Metallica",
+    "albumName": "Metallica (The Black Album)",
+    "year": "1991",
+    "audioUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
+    "fileUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
+    "duration": 44,
+    "durationSec": 43.73,
+    "introSec": "44s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba en su habitación inspirado por la densidad del rock pesado. Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad. La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario. ¡Sube el volumen y escuchemos a Enter Sandman aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 14.9,
+        "text": "El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba en su habitación inspirado por la densidad del rock pesado."
+      },
+      {
+        "start": 15.3,
+        "end": 26.35,
+        "text": "Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad."
+      },
+      {
+        "start": 26.75,
+        "end": 38.57,
+        "text": "La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario."
+      },
+      {
+        "start": 38.97,
+        "end": 43.73,
+        "text": "¡Sube el volumen y escuchemos a Enter Sandman aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1050792
+  },
+  {
+    "id": "intro_metallica_one",
+    "pairId": "metallica_one",
+    "songTitle": "One",
+    "bandName": "Metallica",
+    "albumName": "...And Justice for All",
+    "year": "1988",
+    "audioUrl": "audio/eddie_intro_metallica_one.mp3",
+    "fileUrl": "audio/eddie_intro_metallica_one.mp3",
+    "duration": 48,
+    "durationSec": 48.4,
+    "introSec": "48s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Inspirada en la desgarradora novela pacifista de 1939 Johnny Got His Gun, Metallica compuso en 1988 su himno más complejo y dramático. La pieza describe el aislamiento absoluto de un soldado que pierde sus extremidades y sentidos en la guerra, atrapado en su propia conciencia. La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica. La sincronía descomunal entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial. ¡Sube el volumen y escuchemos a One aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 15.5,
+        "text": "Inspirada en la desgarradora novela pacifista de 1939 Johnny Got His Gun, Metallica compuso en 1988 su himno más complejo y dramático."
+      },
+      {
+        "start": 15.9,
+        "end": 23.54,
+        "text": "La pieza describe el aislamiento absoluto de un soldado que pierde sus extremidades y sentidos en la guerra, atrapado en su propia conciencia."
+      },
+      {
+        "start": 23.94,
+        "end": 30.29,
+        "text": "La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica."
+      },
+      {
+        "start": 30.69,
+        "end": 43.82,
+        "text": "La sincronía descomunal entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial."
+      },
+      {
+        "start": 44.22,
+        "end": 48.4,
+        "text": "¡Sube el volumen y escuchemos a One aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1163014
+  },
+  {
+    "id": "intro_eagles_hotel_california",
+    "pairId": "eagles_hotel_california",
+    "songTitle": "Hotel California",
+    "bandName": "Eagles",
+    "albumName": "Hotel California",
+    "year": "1976",
+    "audioUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
+    "fileUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
+    "duration": 47,
+    "durationSec": 47.27,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras descansaba en una casa de playa en Malibú. Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California. El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa producción, dando origen a una de las piezas más aclamadas del siglo veinte. ¡Sube el volumen y escuchemos a Hotel California aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 15.93,
+        "text": "En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras descansaba en una casa de playa en Malibú."
+      },
+      {
+        "start": 16.33,
+        "end": 28.82,
+        "text": "Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California."
+      },
+      {
+        "start": 29.22,
+        "end": 41.88,
+        "text": "El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa producción, dando origen a una de las piezas más aclamadas del siglo veinte."
+      },
+      {
+        "start": 42.28,
+        "end": 47.28,
+        "text": "¡Sube el volumen y escuchemos a Hotel California aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1136056
+  },
+  {
+    "id": "intro_acdc_highway_to_hell",
+    "pairId": "acdc_highway_to_hell",
+    "songTitle": "Highway to Hell",
+    "bandName": "AC/DC",
+    "albumName": "Highway to Hell",
+    "year": "1979",
+    "audioUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
+    "fileUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
+    "duration": 47,
+    "durationSec": 46.53,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar durante meses en autobús bajo el calor de las giras. En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad callejera del grupo. Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott antes de su repentina muerte, dejando su legado sellado para siempre. ¡Sube el volumen y escuchemos a Highway to Hell aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 15.33,
+        "text": "El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar durante meses en autobús bajo el calor de las giras."
+      },
+      {
+        "start": 15.73,
+        "end": 30.94,
+        "text": "En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad callejera del grupo."
+      },
+      {
+        "start": 31.34,
+        "end": 41.46,
+        "text": "Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott antes de su repentina muerte, dejando su legado sellado para siempre."
+      },
+      {
+        "start": 41.86,
+        "end": 46.54,
+        "text": "¡Sube el volumen y escuchemos a Highway to Hell aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1118501
+  },
+  {
+    "id": "intro_acdc_back_in_black",
+    "pairId": "acdc_back_in_black",
+    "songTitle": "Back in Black",
+    "bandName": "AC/DC",
+    "albumName": "Back in Black",
+    "year": "1980",
+    "audioUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
+    "fileUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
+    "duration": 44,
+    "durationSec": 43.84,
+    "introSec": "44s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música. ¡Sube el volumen y escuchemos a Back in Black aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 21.06,
+        "text": "Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido."
+      },
+      {
+        "start": 21.46,
+        "end": 38.79,
+        "text": "Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música."
+      },
+      {
+        "start": 39.19,
+        "end": 43.86,
+        "text": "¡Sube el volumen y escuchemos a Back in Black aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1053927
+  },
+  {
+    "id": "intro_guns_n_roses_sweet_child_o_mine",
+    "pairId": "guns_n_roses_sweet_child_o_mine",
+    "songTitle": "Sweet Child O' Mine",
+    "bandName": "Guns N' Roses",
+    "albumName": "Appetite for Destruction",
+    "year": "1987",
+    "audioUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
+    "fileUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
+    "duration": 47,
+    "durationSec": 47.04,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1987, durante un ensayo informal en la casa comunal de la banda en Los Ángeles, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera. ¡Sube el volumen y escuchemos a Sweet Child O' Mine aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 19.13,
+        "text": "En 1987, durante un ensayo informal en la casa comunal de la banda en Los Ángeles, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia."
+      },
+      {
+        "start": 19.53,
+        "end": 29.72,
+        "text": "Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly."
+      },
+      {
+        "start": 30.12,
+        "end": 41.44,
+        "text": "En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
+      },
+      {
+        "start": 41.84,
+        "end": 47.05,
+        "text": "¡Sube el volumen y escuchemos a Sweet Child O' Mine aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1130413
+  },
+  {
+    "id": "intro_toto_africa",
+    "pairId": "toto_africa",
+    "songTitle": "Africa",
+    "bandName": "Toto",
+    "albumName": "Toto IV",
+    "year": "1982",
+    "audioUrl": "audio/eddie_intro_toto_africa.mp3",
+    "fileUrl": "audio/eddie_intro_toto_africa.mp3",
+    "duration": 47,
+    "durationSec": 47.29,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver conmovedores documentales sobre el sufrimiento y la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia. Junto al virtuoso baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro casi biológico. Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió en una cumbre indiscutible de la producción musical de los ochenta. ¡Sube el volumen y escuchemos a Africa aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 20.27,
+        "text": "A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver conmovedores documentales sobre el sufrimiento y la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia."
+      },
+      {
+        "start": 20.67,
+        "end": 31.54,
+        "text": "Junto al virtuoso baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro casi biológico."
+      },
+      {
+        "start": 31.94,
+        "end": 42.51,
+        "text": "Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió en una cumbre indiscutible de la producción musical de los ochenta."
+      },
+      {
+        "start": 42.91,
+        "end": 47.3,
+        "text": "¡Sube el volumen y escuchemos a Africa aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1136683
+  },
+  {
+    "id": "intro_alphaville_forever_young",
+    "pairId": "alphaville_forever_young",
+    "songTitle": "Forever Young",
+    "bandName": "Alphaville",
+    "albumName": "Forever Young",
+    "year": "1984",
+    "audioUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
+    "fileUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
+    "duration": 47,
+    "durationSec": 46.63,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales. ¡Sube el volumen y escuchemos a Forever Young aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 16.84,
+        "text": "En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS."
+      },
+      {
+        "start": 17.24,
+        "end": 27.15,
+        "text": "Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión."
+      },
+      {
+        "start": 27.55,
+        "end": 41.57,
+        "text": "En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales."
+      },
+      {
+        "start": 41.97,
+        "end": 46.65,
+        "text": "¡Sube el volumen y escuchemos a Forever Young aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1121009
+  },
+  {
+    "id": "intro_rush_subdivisions",
+    "pairId": "rush_subdivisions",
+    "songTitle": "Subdivisions",
+    "bandName": "Rush",
+    "albumName": "Signals",
+    "year": "1982",
+    "audioUrl": "audio/eddie_intro_rush_subdivisions.mp3",
+    "fileUrl": "audio/eddie_intro_rush_subdivisions.mp3",
+    "duration": 47,
+    "durationSec": 46.59,
+    "introSec": "47s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema. En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes. ¡Sube el volumen y escuchemos a Subdivisions aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 20.3,
+        "text": "En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema."
+      },
+      {
+        "start": 20.7,
+        "end": 30.34,
+        "text": "En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense."
+      },
+      {
+        "start": 30.74,
+        "end": 41.39,
+        "text": "Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes."
+      },
+      {
+        "start": 41.79,
+        "end": 46.6,
+        "text": "¡Sube el volumen y escuchemos a Subdivisions aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1119755
+  },
+  {
+    "id": "intro_mtley_cre_shout_at_the_devil",
+    "pairId": "mtley_cre_shout_at_the_devil",
+    "songTitle": "Shout at the Devil",
+    "bandName": "Mötley Crüe",
+    "albumName": "Shout at the Devil",
+    "year": "1983",
+    "audioUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
+    "fileUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
+    "duration": 46,
+    "durationSec": 46.5,
+    "introSec": "46s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A comienzos de 1983, inmerso en la atmósfera salvaje y bohemia de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal. ¡Sube el volumen y escuchemos a Shout at the Devil aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 19.65,
+        "text": "A comienzos de 1983, inmerso en la atmósfera salvaje y bohemia de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos."
+      },
+      {
+        "start": 20.05,
+        "end": 30.39,
+        "text": "Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente."
+      },
+      {
+        "start": 30.79,
+        "end": 41.37,
+        "text": "Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal."
+      },
+      {
+        "start": 41.77,
+        "end": 46.51,
+        "text": "¡Sube el volumen y escuchemos a Shout at the Devil aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1117874
+  },
+  {
+    "id": "intro_led_zeppelin_stairway_to_heaven",
+    "pairId": "led_zeppelin_stairway_to_heaven",
+    "songTitle": "Stairway to Heaven",
+    "bandName": "Led Zeppelin",
+    "albumName": "Led Zeppelin IV",
+    "year": "1971",
+    "audioUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
+    "fileUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
+    "duration": 49,
+    "durationSec": 48.63,
+    "introSec": "49s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica. En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles. ¡Sube el volumen y escuchemos a Stairway to Heaven aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 15.74,
+        "text": "A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente."
+      },
+      {
+        "start": 16.14,
+        "end": 29.15,
+        "text": "Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica."
+      },
+      {
+        "start": 29.55,
+        "end": 43.45,
+        "text": "En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles."
+      },
+      {
+        "start": 43.85,
+        "end": 48.65,
+        "text": "¡Sube el volumen y escuchemos a Stairway to Heaven aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1168656
+  },
+  {
+    "id": "intro_def_leppard_hysteria",
+    "pairId": "def_leppard_hysteria",
+    "songTitle": "Hysteria",
+    "bandName": "Def Leppard",
+    "albumName": "Hysteria",
+    "year": "1987",
+    "audioUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
+    "fileUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
+    "duration": 45,
+    "durationSec": 44.51,
+    "introSec": "45s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo. Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante. Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera. ¡Sube el volumen y escuchemos a Hysteria aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 13.54,
+        "text": "La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo."
+      },
+      {
+        "start": 13.94,
+        "end": 22.98,
+        "text": "Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante."
+      },
+      {
+        "start": 23.38,
+        "end": 30.95,
+        "text": "Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes."
+      },
+      {
+        "start": 31.35,
+        "end": 39.66,
+        "text": "Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera."
+      },
+      {
+        "start": 40.06,
+        "end": 44.52,
+        "text": "¡Sube el volumen y escuchemos a Hysteria aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1069600
+  },
+  {
+    "id": "intro_tears_for_fears_everybody_wants_to_rule_the_w",
+    "pairId": "tears_for_fears_everybody_wants_to_rule_the_w",
+    "songTitle": "Everybody Wants to Rule the World",
+    "bandName": "Tears for Fears",
+    "albumName": "Songs from the Big Chair",
+    "year": "1985",
+    "audioUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
+    "fileUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
+    "duration": 46,
+    "durationSec": 45.9,
+    "introSec": "46s",
+    "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora. ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World aquí en Rock Radio, de regreso al pasado!",
+    "lyrics": [
+      {
+        "start": 0.0,
+        "end": 4.89,
+        "text": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+      },
+      {
+        "start": 5.34,
+        "end": 13.01,
+        "text": "Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair."
+      },
+      {
+        "start": 13.41,
+        "end": 21.19,
+        "text": "El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes."
+      },
+      {
+        "start": 21.59,
+        "end": 30.96,
+        "text": "En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho."
+      },
+      {
+        "start": 31.36,
+        "end": 39.95,
+        "text": "Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora."
+      },
+      {
+        "start": 40.35,
+        "end": 45.91,
+        "text": "¡Sube el volumen y escuchemos a Everybody Wants to Rule the World aquí en Rock Radio, de regreso al pasado!"
+      }
+    ],
+    "success": true,
+    "sizeBytes": 1103455
+  }
+]

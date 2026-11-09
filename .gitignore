@@ -9,4 +9,7 @@ alegra-clone/
 .agents/
 .impeccable/
 .vercel
+backup_audio_pre_master/
+__pycache__/
+*.pyc
 .env*
