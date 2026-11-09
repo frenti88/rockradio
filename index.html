@@ -1081,6 +1081,460 @@
       }
     }
 
+    /* ========================================================
+       SPOTIFY HOME SCREEN & DJ EDDIE (LA RADIO DE LA IA)
+       ======================================================== */
+    .spotify-home-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 24px 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .spotify-home-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .home-filter-pill {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 9999px;
+      padding: 7px 16px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .home-filter-pill:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .home-filter-pill.active {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+    }
+    .home-filter-pill.djeddie-pill {
+      background: linear-gradient(135deg, rgba(29, 78, 216, 0.35) 0%, rgba(16, 185, 129, 0.35) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.5);
+      color: #6ee7b7;
+    }
+    .home-filter-pill.djeddie-pill.active {
+      background: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+      color: #ffffff;
+      border-color: #34d399;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    /* DJ Eddie Hero Interactive Banner (Spotify AI DJ / DJ Livi Style) */
+    .dj-eddie-hero-section {
+      padding: 8px 24px 20px;
+    }
+    .dj-eddie-hero-card {
+      position: relative;
+      border-radius: 14px;
+      padding: 24px 28px;
+      background: radial-gradient(circle at 82% 50%, rgba(16, 185, 129, 0.32) 0%, rgba(37, 99, 235, 0.38) 38%, rgba(18, 24, 38, 0.96) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+    }
+    .dj-eddie-left {
+      flex: 1;
+      min-width: 0;
+      z-index: 2;
+    }
+    .dj-eddie-badge-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #34d399;
+      margin-bottom: 10px;
+    }
+    .dj-eddie-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: djPulseDot 1.6s infinite ease-in-out;
+    }
+    @keyframes djPulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.65; }
+    }
+    .dj-eddie-title {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .dj-eddie-desc {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 620px;
+      line-height: 1.45;
+      margin-bottom: 14px;
+    }
+    .dj-eddie-now-playing-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #e5e7eb;
+      margin-bottom: 16px;
+    }
+    .dj-eddie-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-dj-eddie-play {
+      background: #1ed760;
+      color: #000000;
+      border: none;
+      border-radius: 9999px;
+      padding: 11px 22px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(30, 215, 96, 0.35);
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .btn-dj-eddie-play:hover {
+      background: #1fdf64;
+      transform: scale(1.04);
+    }
+    .btn-dj-eddie-next {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 9999px;
+      padding: 10px 18px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .btn-dj-eddie-next:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.02);
+    }
+    .dj-eddie-voice-pills {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .dj-voice-mini-btn {
+      background: transparent;
+      color: #b3b3b3;
+      border: none;
+      border-radius: 9999px;
+      padding: 5px 11px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .dj-voice-mini-btn.active {
+      background: #1ed760;
+      color: #000000;
+    }
+
+    /* Animated AI Orb (DJ Livi / DJ Eddie Visual Ring) */
+    .dj-eddie-orb-wrap {
+      width: 126px;
+      height: 126px;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .dj-eddie-orb-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, #1ed760, #3b82f6, #06b6d4, #10b981, #1ed760);
+      animation: djOrbSpin 6s linear infinite;
+      box-shadow: 0 0 32px rgba(16, 185, 129, 0.55), inset 0 0 18px rgba(59, 130, 246, 0.6);
+    }
+    .dj-eddie-orb-inner {
+      position: relative;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #1e293b 0%, #090d16 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      border: 2px solid rgba(255, 255, 255, 0.18);
+    }
+    .dj-eddie-orb-waves {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 18px;
+      margin-bottom: 4px;
+    }
+    .dj-eddie-orb-waves span {
+      width: 3.5px;
+      background: #1ed760;
+      border-radius: 2px;
+      animation: djWaveAnim 1.1s infinite ease-in-out;
+    }
+    .dj-eddie-orb-waves span:nth-child(1) { height: 8px; animation-delay: 0s; }
+    .dj-eddie-orb-waves span:nth-child(2) { height: 16px; animation-delay: 0.2s; }
+    .dj-eddie-orb-waves span:nth-child(3) { height: 12px; animation-delay: 0.4s; }
+    .dj-eddie-orb-waves span:nth-child(4) { height: 18px; animation-delay: 0.1s; }
+    @keyframes djOrbSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes djWaveAnim {
+      0%, 100% { transform: scaleY(0.45); }
+      50% { transform: scaleY(1.1); }
+    }
+
+    /* Spotify Home Shelves Container */
+    .spotify-home-shelves {
+      padding: 4px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .home-shelf-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .home-shelf-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .home-shelf-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .home-shelf-subtitle {
+      font-size: 0.8rem;
+      color: #b3b3b3;
+      margin-top: 2px;
+    }
+    .home-shelf-more {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #b3b3b3;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .home-shelf-more:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Horizontal Scroll / Responsive Grid of Spotify Home Cards */
+    .home-cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+      gap: 16px;
+    }
+    .home-sp-card {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.22s ease, transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .home-sp-card:hover {
+      background: #282828;
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+    .home-sp-card.active-playing {
+      background: rgba(30, 215, 96, 0.12);
+      border-color: #1ed760;
+    }
+    .home-sp-card-art {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    }
+    .home-sp-card-art.circle {
+      border-radius: 50%;
+    }
+    .home-sp-card-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .home-sp-card-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(6px);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .home-sp-card-dur {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .home-sp-card-play {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1ed760;
+      border: none;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .home-sp-card:hover .home-sp-card-play,
+    .home-sp-card.active-playing .home-sp-card-play {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .home-sp-card-play svg {
+      width: 20px;
+      height: 20px;
+      fill: #000;
+      margin-left: 2px;
+    }
+    .home-sp-card-title {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .home-sp-card-sub {
+      font-size: 0.78rem;
+      color: #b3b3b3;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .spotify-home-filter-bar {
+        padding: 8px 14px 4px;
+      }
+      .dj-eddie-hero-section {
+        padding: 8px 14px 16px;
+      }
+      .dj-eddie-hero-card {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        padding: 18px;
+        gap: 14px;
+      }
+      .dj-eddie-orb-wrap {
+        width: 86px;
+        height: 86px;
+      }
+      .dj-eddie-orb-inner {
+        width: 64px;
+        height: 64px;
+        font-size: 0.62rem;
+      }
+      .dj-eddie-title {
+        font-size: 1.45rem;
+      }
+      .spotify-home-shelves {
+        padding: 4px 14px 20px;
+        gap: 22px;
+      }
+      .home-cards-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
     /* Spotify 6-Card Quick Banners Grid */
     .spotify-quick-banners-section {
       padding: 16px 24px 16px;
@@ -3899,10 +4353,123 @@
         </div>
       </section>
 
-      <!-- 3. Banners de las bandas (Spotify 6-card Quick Access Grid) -->
+      <!-- PÍLDORAS DE CATEGORÍAS DEL HOME DE SPOTIFY -->
+      <div class="spotify-home-filter-bar" id="spotifyHomeFilterBar">
+        <button class="home-filter-pill active" data-homefilter="all" type="button">Todo</button>
+        <button class="home-filter-pill djeddie-pill" data-homefilter="djeddie" type="button">
+          <span>🤖 DJ Eddie • Radio IA</span>
+        </button>
+        <button class="home-filter-pill" data-homefilter="music" type="button">Música</button>
+        <button class="home-filter-pill" data-homefilter="podcasts" type="button">Cápsulas 45s</button>
+        <button class="home-filter-pill" data-homefilter="artists" type="button">Artistas</button>
+      </div>
+
+      <!-- 3. Accesos Rápidos estilo Spotify Home (Incluye DJ Eddie IA + Favoritos) -->
       <section class="spotify-quick-banners-section" id="spotifyQuickBannersSection">
         <div class="spotify-quick-banners-grid" id="spotifyQuickBannersGrid">
           <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- HERO INTERACTIVO: DJ EDDIE — LA RADIO DE LA IA (Estilo DJ Livi de Spotify) -->
+      <section class="dj-eddie-hero-section" id="djEddieHeroSection">
+        <div class="dj-eddie-hero-card">
+          <div class="dj-eddie-left">
+            <div class="dj-eddie-badge-row">
+              <span class="dj-eddie-live-dot"></span>
+              <span>DJ EDDIE • LA RADIO DE LA IA EN VIVO</span>
+            </div>
+            <h2 class="dj-eddie-title">Hola, soy DJ Eddie</h2>
+            <p class="dj-eddie-desc" id="djEddieHeroDesc">
+              Tu locutor de rock con Inteligencia Artificial. Conozco las historias reales detrás de cada grabación y mezclo la locución sobre las intros originales antes de soltar los clásicos completos al 100%.
+            </p>
+            <div class="dj-eddie-now-playing-pill" id="djEddieNowPlayingPill">
+              <span>🎙️ En cabina: <strong id="djEddieCurrentStatus">11 Clásicos Completos con Locución IA listos para sonar</strong></span>
+            </div>
+            <div class="dj-eddie-actions-row">
+              <button class="btn-dj-eddie-play" id="btnStartDjEddie" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <span id="btnStartDjEddieLabel">Escuchar DJ Eddie IA</span>
+              </button>
+              <button class="btn-dj-eddie-next" id="btnNextDjEddie" type="button" title="Cambiar a la siguiente mezcla de DJ Eddie">
+                <span>⏭ Siguiente mezcla IA</span>
+              </button>
+              <div class="dj-eddie-voice-pills" title="Cambiar voz de la IA">
+                <button class="dj-voice-mini-btn active" data-djvoice="jorge" type="button">🎙️ Jorge</button>
+                <button class="dj-voice-mini-btn" data-djvoice="dalia" type="button">⚡ Dalia</button>
+                <button class="dj-voice-mini-btn" data-djvoice="alonso" type="button">📻 Alonso</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Orbe de IA Interactivo estilo DJ Livi -->
+          <div class="dj-eddie-orb-wrap" id="djEddieOrbBtn" title="Toca para iniciar o cambiar mezcla de DJ Eddie">
+            <div class="dj-eddie-orb-ring"></div>
+            <div class="dj-eddie-orb-inner">
+              <div class="dj-eddie-orb-waves">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <span>DJ EDDIE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ESTANTERÍAS DEL HOME DE SPOTIFY (Categorías + DJ Eddie + Daily Mixes + Artistas) -->
+      <section class="spotify-home-shelves" id="spotifyHomeShelves">
+        <!-- 1. Categoría Principal: DJ Eddie - La Radio de la IA (Canciones generadas con voces) -->
+        <div class="home-shelf-section" id="shelfDjEddie">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">🤖 DJ Eddie • La Radio de la IA</h2>
+              <p class="home-shelf-subtitle">Canciones completas con historia real narrada por IA sobre la intro musical</p>
+            </div>
+            <button class="home-shelf-more" type="button" data-filterjump="djeddie">Mostrar todo (11)</button>
+          </div>
+          <div class="home-cards-row" id="djEddieTracksRow">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- 2. Categoría Spotify: Hecho para ti (Daily Mixes & Estaciones de Rock) -->
+        <div class="home-shelf-section" id="shelfMadeForYou">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">Hecho para ti</h2>
+              <p class="home-shelf-subtitle">Mixes diarios y sesiones curadas al estilo Spotify según tus gustos de rock</p>
+            </div>
+          </div>
+          <div class="home-cards-row" id="madeForYouRow">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- 3. Categoría Spotify: Cápsulas Originales Rock en 45 Segundos -->
+        <div class="home-shelf-section" id="shelfCapsules45">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">⚡ Cápsulas: Rock en 45 Segundos</h2>
+              <p class="home-shelf-subtitle">Micro-documentales sonorizados de 45 segundos sobre las grandes leyendas</p>
+            </div>
+            <button class="home-shelf-more" type="button" data-filterjump="podcasts">Ver las 13 cápsulas</button>
+          </div>
+          <div class="home-cards-row" id="capsules45Row">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- 4. Categoría Spotify: Tus Artistas Favoritos -->
+        <div class="home-shelf-section" id="shelfFavoriteArtists">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">Tus artistas favoritos</h2>
+              <p class="home-shelf-subtitle">Toca cualquier banda para abrir su discografía, integrantes y letra sincronizada</p>
+            </div>
+            <button class="home-shelf-more" type="button" data-filterjump="artists">Mostrar todos</button>
+          </div>
+          <div class="home-cards-row" id="favoriteArtistsRow">
+            <!-- Rendered via JS -->
+          </div>
         </div>
       </section>
 
@@ -4962,13 +5529,110 @@
       });
     }
 
+    // ========================================================
+    // DJ EDDIE (LA RADIO DE LA IA) & SPOTIFY HOME ENGINE
+    // ========================================================
+    let djEddieQueue = [];
+    let djEddieIndex = 0;
+    let isDjEddieActive = false;
+    let currentHomeCategory = 'all';
+
+    function buildDjEddieCatalog() {
+      // Ordered with newest full radio productions first
+      const preferredOrder = [
+        'toto', 'alphaville', 'rush', 'motley_crue', 'metallica',
+        'acdc', 'led_zeppelin', 'kiss', 'def_leppard', 'tears_for_fears'
+      ];
+      const list = [];
+      preferredOrder.forEach(bandId => {
+        const b = bands[bandId];
+        if (!b || !b.hasFullTrack) return;
+        const tracks = (b.fullTracks && b.fullTracks.length) ? b.fullTracks : (b.fullTrack ? [b.fullTrack] : []);
+        tracks.forEach(ft => {
+          list.push({
+            bandId: b.id,
+            bandName: b.name,
+            cover: b.cover,
+            themeColor: b.themeColor,
+            songTitle: ft.songTitle,
+            title: ft.title,
+            year: ft.year || b.era,
+            duration: ft.duration,
+            introSec: ft.introSec || '20s',
+            summary: ft.summary,
+            fullTrackObj: ft
+          });
+        });
+      });
+      djEddieQueue = list;
+      return list;
+    }
+
+    function playDjEddieItem(index, scrollToLyrics = false) {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      if (index < 0 || index >= djEddieQueue.length) index = 0;
+      djEddieIndex = index;
+      isDjEddieActive = true;
+
+      const item = djEddieQueue[djEddieIndex];
+      const b = bands[item.bandId];
+      if (b) {
+        b.fullTrack = item.fullTrackObj;
+      }
+
+      loadBand(item.bandId, true, 'full');
+
+      const statusEl = document.getElementById('djEddieCurrentStatus');
+      if (statusEl) {
+        statusEl.textContent = `Sonando: ${item.songTitle} — ${item.bandName} (Locución: ${activeVoice.toUpperCase()})`;
+      }
+      const btnLabel = document.getElementById('btnStartDjEddieLabel');
+      if (btnLabel) {
+        btnLabel.textContent = `Sonando: ${item.songTitle}`;
+      }
+
+      renderSpotifyHomeShelves();
+
+      if (scrollToLyrics) {
+        const lyr = document.getElementById('lyricsSection');
+        if (lyr) lyr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function nextDjEddieTrack() {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      const nextIdx = (djEddieIndex + 1) % djEddieQueue.length;
+      playDjEddieItem(nextIdx, false);
+    }
+
     function renderQuickBanners() {
       const container = document.getElementById('spotifyQuickBannersGrid');
       if (!container) return;
       container.innerHTML = '';
-      Object.values(bands).forEach(b => {
+
+      // Tile #1: DJ Eddie (La Radio de la IA)
+      const djTile = document.createElement('div');
+      djTile.className = 'spotify-quick-banner-card' + (isDjEddieActive ? ' active' : '');
+      djTile.style.background = 'linear-gradient(90deg, rgba(37,99,235,0.42) 0%, rgba(16,185,129,0.28) 100%)';
+      djTile.style.borderColor = 'rgba(52, 211, 153, 0.45)';
+      djTile.innerHTML = `
+        <div class="quick-banner-thumb" style="background: radial-gradient(circle, #1ed760 0%, #1e3a8a 100%); display:flex; align-items:center; justify-content:center; font-size:1.35rem;">
+          <span>🤖</span>
+        </div>
+        <div class="quick-banner-name" style="color:#6ee7b7;">DJ Eddie • Radio IA</div>
+        <button class="quick-banner-play-btn" title="Iniciar DJ Eddie IA">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      `;
+      djTile.addEventListener('click', () => {
+        playDjEddieItem(djEddieIndex, false);
+      });
+      container.appendChild(djTile);
+
+      // Next tiles: Featured Bands
+      Object.values(bands).slice(0, 7).forEach(b => {
         const card = document.createElement('div');
-        card.className = 'spotify-quick-banner-card' + (b.id === activeBandId ? ' active' : '');
+        card.className = 'spotify-quick-banner-card' + (!isDjEddieActive && b.id === activeBandId ? ' active' : '');
         card.dataset.bandId = b.id;
         card.innerHTML = `
           <div class="quick-banner-thumb">
@@ -4980,10 +5644,224 @@
           </button>
         `;
         card.addEventListener('click', () => {
-          loadBand(b.id, true);
+          isDjEddieActive = false;
+          loadBand(b.id, true, b.hasFullTrack ? 'full' : '45s');
+          const heroEl = document.getElementById('heroBanner');
+          if (heroEl) heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
         container.appendChild(card);
       });
+    }
+
+    function renderSpotifyHomeShelves() {
+      const catalog = buildDjEddieCatalog();
+
+      // 1. DJ Eddie Row (All 11 full radio tracks generated with voices)
+      const djRow = document.getElementById('djEddieTracksRow');
+      if (djRow) {
+        djRow.innerHTML = '';
+        catalog.forEach((item, idx) => {
+          const isPlayingThis = (activeBandId === item.bandId && activeTrackFormat === 'full' && bands[item.bandId].fullTrack && bands[item.bandId].fullTrack.songTitle === item.songTitle);
+          const card = document.createElement('div');
+          card.className = 'home-sp-card' + (isPlayingThis ? ' active-playing' : '');
+          card.innerHTML = `
+            <div class="home-sp-card-art">
+              <img src="${item.cover}" alt="${item.songTitle}" loading="lazy">
+              <span class="home-sp-card-badge">🤖 DJ Eddie IA</span>
+              <span class="home-sp-card-dur">${formatTime(item.duration)}</span>
+              <button class="home-sp-card-play" type="button" title="Reproducir ${item.songTitle} con DJ Eddie">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="home-sp-card-title" title="${item.songTitle} — ${item.bandName}">${item.songTitle}</div>
+            <div class="home-sp-card-sub">${item.bandName} (${item.year}) • Intro IA (${item.introSec}) + Tema Completo</div>
+          `;
+          card.addEventListener('click', () => {
+            playDjEddieItem(idx, false);
+          });
+          djRow.appendChild(card);
+        });
+      }
+
+      // 2. "Hecho para ti" Row (Spotify Daily Mixes & Curated Rock Sessions)
+      const mixesRow = document.getElementById('madeForYouRow');
+      if (mixesRow && mixesRow.children.length === 0) {
+        const mixes = [
+          {
+            title: 'Daily Mix 1: Clásicos 80s',
+            sub: 'Toto, Alphaville, Tears for Fears, Def Leppard y más con DJ Eddie',
+            cover: 'img/covers/cover_toto.png',
+            badge: 'DAILY MIX 01',
+            action: () => playDjEddieItem(0, false)
+          },
+          {
+            title: 'Daily Mix 2: Heavy & Thrash',
+            sub: 'Metallica (One & Enter Sandman), Mötley Crüe, Black Sabbath',
+            cover: 'img/covers/cover_metallica.png',
+            badge: 'DAILY MIX 02',
+            action: () => {
+              const idx = catalog.findIndex(x => x.bandId === 'metallica');
+              playDjEddieItem(idx >= 0 ? idx : 0, false);
+            }
+          },
+          {
+            title: 'Daily Mix 3: Hard Rock & Arena',
+            sub: 'AC/DC (Back in Black), Led Zeppelin (Stairway to Heaven), KISS',
+            cover: 'img/covers/cover_acdc.png',
+            badge: 'DAILY MIX 03',
+            action: () => {
+              const idx = catalog.findIndex(x => x.bandId === 'acdc');
+              playDjEddieItem(idx >= 0 ? idx : 0, false);
+            }
+          },
+          {
+            title: 'Daily Mix 4: Synth & Prog Rock',
+            sub: 'Rush (Subdivisions), Alphaville (Forever Young), Queen',
+            cover: 'img/covers/cover_rush.png',
+            badge: 'DAILY MIX 04',
+            action: () => {
+              const idx = catalog.findIndex(x => x.bandId === 'rush');
+              playDjEddieItem(idx >= 0 ? idx : 0, false);
+            }
+          },
+          {
+            title: 'Baladas & Himnos de Estadio',
+            sub: 'KISS (Forever), Led Zeppelin, Def Leppard (Hysteria)',
+            cover: 'img/covers/cover_kiss.png',
+            badge: 'RADIO MIX',
+            action: () => {
+              const idx = catalog.findIndex(x => x.bandId === 'kiss');
+              playDjEddieItem(idx >= 0 ? idx : 0, false);
+            }
+          },
+          {
+            title: 'Sunset Strip & Glam Metal',
+            sub: "Mötley Crüe (Shout at the Devil), Guns N' Roses, Def Leppard",
+            cover: 'img/covers/cover_motley_crue.png',
+            badge: 'GLAM MIX',
+            action: () => {
+              const idx = catalog.findIndex(x => x.bandId === 'motley_crue');
+              playDjEddieItem(idx >= 0 ? idx : 0, false);
+            }
+          }
+        ];
+
+        mixes.forEach(mx => {
+          const card = document.createElement('div');
+          card.className = 'home-sp-card';
+          card.innerHTML = `
+            <div class="home-sp-card-art">
+              <img src="${mx.cover}" alt="${mx.title}" loading="lazy">
+              <span class="home-sp-card-badge" style="color:#1ed760;border-color:rgba(30,215,96,0.45);">${mx.badge}</span>
+              <button class="home-sp-card-play" type="button" title="Reproducir ${mx.title}">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="home-sp-card-title">${mx.title}</div>
+            <div class="home-sp-card-sub">${mx.sub}</div>
+          `;
+          card.addEventListener('click', mx.action);
+          mixesRow.appendChild(card);
+        });
+      }
+
+      // 3. Capsules 45s Row
+      const capRow = document.getElementById('capsules45Row');
+      if (capRow) {
+        capRow.innerHTML = '';
+        Object.values(bands).forEach(b => {
+          const isPlaying45 = (activeBandId === b.id && activeTrackFormat === '45s');
+          const card = document.createElement('div');
+          card.className = 'home-sp-card' + (isPlaying45 ? ' active-playing' : '');
+          card.innerHTML = `
+            <div class="home-sp-card-art">
+              <img src="${b.cover}" alt="${b.name}" loading="lazy">
+              <span class="home-sp-card-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.45);">${b.badge}</span>
+              <span class="home-sp-card-dur">0:45</span>
+              <button class="home-sp-card-play" type="button" title="Reproducir cápsula de ${b.name}">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="home-sp-card-title">${b.name}: ${b.title}</div>
+            <div class="home-sp-card-sub">${b.era} • ${b.genreLabel}</div>
+          `;
+          card.addEventListener('click', () => {
+            isDjEddieActive = false;
+            loadBand(b.id, true, '45s');
+          });
+          capRow.appendChild(card);
+        });
+      }
+
+      // 4. Favorite Artists Row (Circular Spotify Artist Cards)
+      const artRow = document.getElementById('favoriteArtistsRow');
+      if (artRow && artRow.children.length === 0) {
+        Object.values(bands).forEach(b => {
+          const card = document.createElement('div');
+          card.className = 'home-sp-card';
+          card.innerHTML = `
+            <div class="home-sp-card-art circle">
+              <img src="${b.cover}" alt="${b.name}" loading="lazy">
+              <button class="home-sp-card-play" type="button" title="Abrir perfil de ${b.name}">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="home-sp-card-title" style="text-align:center;">${b.name}</div>
+            <div class="home-sp-card-sub" style="text-align:center;">Artista • ${b.genreLabel}</div>
+          `;
+          card.addEventListener('click', () => {
+            loadBand(b.id, true, b.hasFullTrack ? 'full' : '45s');
+            const heroEl = document.getElementById('heroBanner');
+            if (heroEl) heroEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+          artRow.appendChild(card);
+        });
+      }
+    }
+
+    function applyHomeCategoryFilter(cat) {
+      currentHomeCategory = cat;
+      document.querySelectorAll('.home-filter-pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.homefilter === cat);
+      });
+
+      const djHero = document.getElementById('djEddieHeroSection');
+      const shelfDj = document.getElementById('shelfDjEddie');
+      const shelfMix = document.getElementById('shelfMadeForYou');
+      const shelfCap = document.getElementById('shelfCapsules45');
+      const shelfArt = document.getElementById('shelfFavoriteArtists');
+
+      if (cat === 'all') {
+        if (djHero) djHero.style.display = '';
+        if (shelfDj) shelfDj.style.display = '';
+        if (shelfMix) shelfMix.style.display = '';
+        if (shelfCap) shelfCap.style.display = '';
+        if (shelfArt) shelfArt.style.display = '';
+      } else if (cat === 'djeddie') {
+        if (djHero) djHero.style.display = '';
+        if (shelfDj) shelfDj.style.display = '';
+        if (shelfMix) shelfMix.style.display = 'none';
+        if (shelfCap) shelfCap.style.display = 'none';
+        if (shelfArt) shelfArt.style.display = 'none';
+      } else if (cat === 'music') {
+        if (djHero) djHero.style.display = 'none';
+        if (shelfDj) shelfDj.style.display = '';
+        if (shelfMix) shelfMix.style.display = '';
+        if (shelfCap) shelfCap.style.display = 'none';
+        if (shelfArt) shelfArt.style.display = '';
+      } else if (cat === 'podcasts') {
+        if (djHero) djHero.style.display = 'none';
+        if (shelfDj) shelfDj.style.display = 'none';
+        if (shelfMix) shelfMix.style.display = 'none';
+        if (shelfCap) shelfCap.style.display = '';
+        if (shelfArt) shelfArt.style.display = 'none';
+      } else if (cat === 'artists') {
+        if (djHero) djHero.style.display = 'none';
+        if (shelfDj) shelfDj.style.display = 'none';
+        if (shelfMix) shelfMix.style.display = 'none';
+        if (shelfCap) shelfCap.style.display = 'none';
+        if (shelfArt) shelfArt.style.display = '';
+      }
     }
 
     // Play / Pause Logic
@@ -5111,6 +5989,10 @@
     });
 
     spotifyAudio.addEventListener('ended', () => {
+      if (isDjEddieActive || activeTrackFormat === 'full') {
+        nextDjEddieTrack();
+        return;
+      }
       updatePlayUI(false);
       spotifyAudio.currentTime = 0;
       spotifyProgressFill.style.width = '0%';
@@ -6535,8 +7417,55 @@
       }
     })();
 
-    // Initial render of quick banners
+    // Wire Home Filter Pills & DJ Eddie Controls
+    document.querySelectorAll('.home-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        applyHomeCategoryFilter(pill.dataset.homefilter || 'all');
+      });
+    });
+
+    document.querySelectorAll('[data-filterjump]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyHomeCategoryFilter(btn.dataset.filterjump || 'all');
+      });
+    });
+
+    const btnStartDjEddie = document.getElementById('btnStartDjEddie');
+    if (btnStartDjEddie) {
+      btnStartDjEddie.addEventListener('click', () => {
+        playDjEddieItem(djEddieIndex, false);
+      });
+    }
+
+    const btnNextDjEddie = document.getElementById('btnNextDjEddie');
+    if (btnNextDjEddie) {
+      btnNextDjEddie.addEventListener('click', () => {
+        nextDjEddieTrack();
+      });
+    }
+
+    const djEddieOrbBtn = document.getElementById('djEddieOrbBtn');
+    if (djEddieOrbBtn) {
+      djEddieOrbBtn.addEventListener('click', () => {
+        if (!isDjEddieActive || spotifyAudio.paused) {
+          playDjEddieItem(djEddieIndex, false);
+        } else {
+          nextDjEddieTrack();
+        }
+      });
+    }
+
+    document.querySelectorAll('.dj-voice-mini-btn').forEach(vBtn => {
+      vBtn.addEventListener('click', () => {
+        document.querySelectorAll('.dj-voice-mini-btn').forEach(b => b.classList.remove('active'));
+        vBtn.classList.add('active');
+        selectVoice(vBtn.dataset.djvoice || 'jorge');
+      });
+    });
+
+    // Initial render of quick banners & Spotify Home shelves
     renderQuickBanners();
+    renderSpotifyHomeShelves();
   </script>
 </body>
 </html>
