@@ -764,8 +764,8 @@ def run_server(port=5055):
                 self.send_response(404)
                 self.end_headers()
 
-    server = ThreadingHTTPServer(('127.0.0.1', port), DjEddieAudioHandler)
-    print(f"🚀 [DJ EDDIE SERVICE] Servidor de locuciones maestras de Eddie en http://127.0.0.1:{port}/api/generate_audio", flush=True)
+    server = ThreadingHTTPServer(('0.0.0.0', port), DjEddieAudioHandler)
+    print(f"🚀 [DJ EDDIE SERVICE] Servidor de locuciones maestras de Eddie en http://0.0.0.0:{port}/api/generate_audio", flush=True)
     print(f"   Voz: Eddie (es-US-AlonsoNeural) | Sincronización de letras activa", flush=True)
     try:
         server.serve_forever()

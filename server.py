@@ -65,13 +65,49 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+        self.send_header("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization")
         self.send_header("Accept-Ranges", "bytes")
         super().end_headers()
 
     def do_OPTIONS(self):
         self.send_response(200)
         self.end_headers()
+
+    def _proxy_to_api(self):
+        import urllib.request
+        target_url = f"http://127.0.0.1:5055{self.path}"
+        length = int(self.headers.get('Content-Length', 0))
+        body = self.rfile.read(length) if length > 0 else None
+        headers = {k: v for k, v in self.headers.items() if k.lower() not in ('host', 'content-length')}
+        req = urllib.request.Request(target_url, data=body, headers=headers, method=self.command)
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                self.send_response(resp.status)
+                for k, v in resp.getheaders():
+                    if k.lower() not in ('transfer-encoding', 'content-length', 'access-control-allow-origin'):
+                        self.send_header(k, v)
+                resp_body = resp.read()
+                self.send_header('Content-Length', str(len(resp_body)))
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(resp_body)
+        except Exception as e:
+            self.send_response(502)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(f'{{"error": "API gateway error: {e}"}}'.encode('utf-8'))
+
+    def do_POST(self):
+        if self.path.startswith('/api/'):
+            return self._proxy_to_api()
+        self.send_error(405, "Method Not Allowed")
+
+    def do_GET(self):
+        if self.path.startswith('/api/'):
+            return self._proxy_to_api()
+        return super().do_GET()
 
 if __name__ == '__main__':
     server = ThreadingHTTPServer(('0.0.0.0', PORT), RangeRequestHandler)

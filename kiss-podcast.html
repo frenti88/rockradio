@@ -3673,40 +3673,145 @@
     }
     .rock-radio-toast {
       position: fixed;
-      bottom: 104px;
+      bottom: 106px;
       left: 50%;
-      transform: translate(-50%, 20px);
-      background: rgba(18, 18, 18, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      transform: translate(-50%, 20px) scale(0.96);
+      background: rgba(18, 18, 20, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       color: #fff;
-      padding: 10px 20px;
-      border-radius: 9999px;
+      padding: 12px 18px;
+      border-radius: 14px;
       font-size: 0.86rem;
-      font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05);
       z-index: 99999;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      backdrop-filter: blur(12px);
-      white-space: nowrap;
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 460px;
+      width: auto;
+      min-width: 280px;
     }
     .rock-radio-toast.show {
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: translate(-50%, 0) scale(1);
       pointer-events: auto;
     }
-    .rock-radio-toast.success {
-      border-color: rgba(30, 215, 96, 0.6);
-      color: #a7f3d0;
+    .rock-radio-toast .toast-icon-wrap {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      background: rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
     }
-    .rock-radio-toast.warn {
-      border-color: rgba(234, 179, 8, 0.6);
-      color: #fef08a;
+    .rock-radio-toast.generating .toast-icon-wrap {
+      background: rgba(168, 85, 247, 0.18);
+      color: #c084fc;
+      animation: toastPulse 1.4s ease-in-out infinite;
     }
-    .rock-radio-toast.info {
-      border-color: rgba(59, 130, 246, 0.6);
-      color: #bfdbfe;
+    .rock-radio-toast.success .toast-icon-wrap {
+      background: rgba(30, 215, 96, 0.18);
+      color: #1ed760;
+    }
+    .rock-radio-toast.info .toast-icon-wrap {
+      background: rgba(59, 130, 246, 0.18);
+      color: #60a5fa;
+    }
+    .rock-radio-toast.warn .toast-icon-wrap {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+    }
+    .rock-radio-toast.error .toast-icon-wrap {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
+    }
+    @keyframes toastPulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .rock-radio-toast .toast-text-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+    .rock-radio-toast .toast-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rock-radio-toast .toast-desc {
+      font-size: 0.77rem;
+      color: #a3a3a3;
+      line-height: 1.35;
+      white-space: normal;
+    }
+    .rock-radio-toast .toast-dismiss-btn {
+      background: transparent;
+      border: none;
+      color: #71717a;
+      cursor: pointer;
+      padding: 4px;
+      font-size: 1.1rem;
+      line-height: 1;
+      border-radius: 6px;
+      margin-left: 4px;
+    }
+    .rock-radio-toast .toast-dismiss-btn:hover {
+      color: #ffffff;
+    }
+    .dj-dur-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.15;
+    }
+    .dj-dur-text {
+      font-variant-numeric: tabular-nums;
+    }
+    .dj-dur-gen-time {
+      font-size: 0.68rem;
+      color: #34d399;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+    .dj-live-elapsed {
+      font-variant-numeric: tabular-nums;
+      color: #fbbf24;
+      font-weight: 700;
+      font-size: 0.82rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      animation: djBadgePulse 1s infinite alternate;
+    }
+    @media (max-width: 768px) {
+      .rock-radio-toast {
+        bottom: 110px;
+        left: 14px;
+        right: 14px;
+        transform: translateY(20px);
+        max-width: none;
+        width: auto;
+      }
+      .rock-radio-toast.show {
+        transform: translateY(0);
+      }
     }
 
     /* SPOTIFY BOTTOM NOW PLAYING BAR (Fixed 90px) */
@@ -6576,21 +6681,73 @@
     let isDjEddieActive = false;
     let currentHomeCategory = 'all';
 
-    // Global Toast Notification System
-    function showAppToast(message, type = 'info') {
+    // Global Toast Notification System (Non-invasive, rich card)
+    function showAppToast(messageOrOpts, type = 'info', extraOpts = {}) {
+      let opts = {};
+      if (typeof messageOrOpts === 'object' && messageOrOpts !== null) {
+        opts = messageOrOpts;
+      } else {
+        opts = { desc: String(messageOrOpts), type: type, ...extraOpts };
+      }
+      const toastType = opts.type || type || 'info';
+      const duration = opts.duration !== undefined ? opts.duration : (toastType === 'generating' ? 7000 : 4000);
+      let title = opts.title;
+      let desc = opts.desc || opts.message || '';
+      let icon = opts.icon;
+
+      if (!title) {
+        if (toastType === 'generating') {
+          title = 'Generando historia con DJ Eddie';
+          icon = icon || '🎙️';
+        } else if (toastType === 'success') {
+          title = '¡Operación exitosa!';
+          icon = icon || '✅';
+        } else if (toastType === 'warn') {
+          title = 'Aviso';
+          icon = icon || '⚠️';
+        } else if (toastType === 'error') {
+          title = 'Error de generación';
+          icon = icon || '❌';
+        } else {
+          title = 'Rock Radio';
+          icon = icon || '📻';
+        }
+      }
+      if (!icon) {
+        icon = (toastType === 'generating') ? '🎙️' : (toastType === 'success' ? '✅' : '📻');
+      }
+
       let toastEl = document.getElementById('rockRadioGlobalToast');
       if (!toastEl) {
         toastEl = document.createElement('div');
         toastEl.id = 'rockRadioGlobalToast';
-        toastEl.className = 'rock-radio-toast';
         document.body.appendChild(toastEl);
       }
-      toastEl.textContent = message;
-      toastEl.className = 'rock-radio-toast show ' + type;
+
+      toastEl.className = 'rock-radio-toast show ' + toastType;
+      toastEl.innerHTML = `
+        <div class="toast-icon-wrap">${icon}</div>
+        <div class="toast-text-wrap">
+          <div class="toast-title">${escapeHtmlStr(title)}</div>
+          <div class="toast-desc">${escapeHtmlStr(desc)}</div>
+        </div>
+        <button class="toast-dismiss-btn" type="button" aria-label="Cerrar">&times;</button>
+      `;
+
+      const dismissBtn = toastEl.querySelector('.toast-dismiss-btn');
+      if (dismissBtn) {
+        dismissBtn.onclick = (e) => {
+          e.stopPropagation();
+          toastEl.classList.remove('show');
+        };
+      }
+
       if (toastEl._timeout) clearTimeout(toastEl._timeout);
-      toastEl._timeout = setTimeout(() => {
-        toastEl.classList.remove('show');
-      }, 3500);
+      if (duration > 0) {
+        toastEl._timeout = setTimeout(() => {
+          toastEl.classList.remove('show');
+        }, duration);
+      }
     }
 
     const BASE_DJ_EDDIE_TRACKS = [
@@ -6608,6 +6765,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a2/d3/62/a2d3622d-eb35-c2cc-9c54-c7e05f56db8e/06UMGIM10660.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
     "fileUrl": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock. El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento. La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor. ¡Sube el volumen y escuchemos a Detroit Rock City aquí en Rock Radio, de regreso al pasado!",
@@ -6683,6 +6841,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/a3/30/54/a33054b1-d501-b7ea-5eb3-3ed36201c4ba/06UMGIM15802.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_kiss_forever.mp3",
     "fileUrl": "audio/eddie_intro_kiss_forever.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales. ¡Sube el volumen y escuchemos a Forever aquí en Rock Radio, de regreso al pasado!",
@@ -6753,6 +6912,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/d4/f2/96/d4f296b0-895c-5ebc-395f-51987332f11c/mzi.ndfnaqlu.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
     "fileUrl": "audio/eddie_intro_alice_cooper_poison.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible de los éxitos radiales, Desmond Child, para dar vida al álbum Trash. El resultado fue una resurrección espectacular para el pionero del shock rock. Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química en el estudio fue arrolladora. Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial. ¡Sube el volumen y escuchemos a Poison aquí en Rock Radio, de regreso al pasado!",
@@ -6828,6 +6988,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/5a/82/b85a8259-60d9-bfaa-770a-2baac8380e87/858978005196.png/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
     "fileUrl": "audio/eddie_intro_metallica_master_of_puppets.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1986, desde los legendarios estudios Sweet Silence en la fría Copenhague, Metallica forjó la obra cumbre del thrash metal. James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, personificadas en un titiritero invisible que manipula a sus víctimas. Para alcanzar una precisión rítmica quirúrgica e implacable, todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo. Además, el virtuoso bajista Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia. ¡Sube el volumen y escuchemos a Master of Puppets aquí en Rock Radio, de regreso al pasado!",
@@ -6903,6 +7064,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/2e/94/95/2e9495d7-dfe3-ddc8-87ef-6ef797a60218/850007452056.png/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
     "fileUrl": "audio/eddie_intro_metallica_enter_sandman.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba en su habitación inspirado por la densidad del rock pesado. Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad. La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario. ¡Sube el volumen y escuchemos a Enter Sandman aquí en Rock Radio, de regreso al pasado!",
@@ -6973,6 +7135,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/f3/83/b5f38312-5b95-9a09-fcb9-5622dd5ea077/858978005820.png/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_metallica_one.mp3",
     "fileUrl": "audio/eddie_intro_metallica_one.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Inspirada en la desgarradora novela pacifista de 1939 Johnny Got His Gun, Metallica compuso en 1988 su himno más complejo y dramático. La pieza describe el aislamiento absoluto de un soldado que pierde sus extremidades y sentidos en la guerra, atrapado en su propia conciencia. La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica. La sincronía descomunal entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial. ¡Sube el volumen y escuchemos a One aquí en Rock Radio, de regreso al pasado!",
@@ -7048,6 +7211,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/88/16/2c/88162c3d-46db-8321-61f3-3a47404cfe76/075596050920.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
     "fileUrl": "audio/eddie_intro_eagles_hotel_california.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras descansaba en una casa de playa en Malibú. Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California. El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa producción, dando origen a una de las piezas más aclamadas del siglo veinte. ¡Sube el volumen y escuchemos a Hotel California aquí en Rock Radio, de regreso al pasado!",
@@ -7118,6 +7282,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/b9/c8/ef/b9c8ef42-bbc9-64df-11f8-717571f6730f/886443673458.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
     "fileUrl": "audio/eddie_intro_acdc_highway_to_hell.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar durante meses en autobús bajo el calor de las giras. En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad callejera del grupo. Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott antes de su repentina muerte, dejando su legado sellado para siempre. ¡Sube el volumen y escuchemos a Highway to Hell aquí en Rock Radio, de regreso al pasado!",
@@ -7188,6 +7353,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/1e/14/58/1e145814-281a-58e0-3ab1-145f5d1af421/886443673441.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
     "fileUrl": "audio/eddie_intro_acdc_back_in_black.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música. ¡Sube el volumen y escuchemos a Back in Black aquí en Rock Radio, de regreso al pasado!",
@@ -7253,6 +7419,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
     "fileUrl": "audio/eddie_intro_guns_n_roses_sweet_child_o_mine.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1987, durante un ensayo informal en la casa comunal de la banda en Los Ángeles, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera. ¡Sube el volumen y escuchemos a Sweet Child O' Mine aquí en Rock Radio, de regreso al pasado!",
@@ -7323,6 +7490,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/69/ce/d2/69ced240-07a7-2a04-bbab-2afbacf30809/074643772822.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_toto_africa.mp3",
     "fileUrl": "audio/eddie_intro_toto_africa.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver conmovedores documentales sobre el sufrimiento y la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia. Junto al virtuoso baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro casi biológico. Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió en una cumbre indiscutible de la producción musical de los ochenta. ¡Sube el volumen y escuchemos a Africa aquí en Rock Radio, de regreso al pasado!",
@@ -7393,6 +7561,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music/y2005/m06/d22/h05/s05.qwwmqauc.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
     "fileUrl": "audio/eddie_intro_alphaville_forever_young.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales. ¡Sube el volumen y escuchemos a Forever Young aquí en Rock Radio, de regreso al pasado!",
@@ -7463,6 +7632,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/05/ff/40/05ff4054-a7dc-f2a7-8abb-1a3fbc0cf34d/12UMGIM19536.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_rush_subdivisions.mp3",
     "fileUrl": "audio/eddie_intro_rush_subdivisions.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema. En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes. ¡Sube el volumen y escuchemos a Subdivisions aquí en Rock Radio, de regreso al pasado!",
@@ -7533,6 +7703,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/05/e6/37/05e6373f-6e30-21a8-9299-b09731e7b14b/00602527270548.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
     "fileUrl": "audio/eddie_intro_mtley_cre_shout_at_the_devil.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A comienzos de 1983, inmerso en la atmósfera salvaje y bohemia de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal. ¡Sube el volumen y escuchemos a Shout at the Devil aquí en Rock Radio, de regreso al pasado!",
@@ -7603,6 +7774,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/5c/15/9b/5c159b27-95ca-b9a7-84e3-28e795fffd39/dj.kvkrpptq.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
     "fileUrl": "audio/eddie_intro_led_zeppelin_stairway_to_heaven.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica. En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles. ¡Sube el volumen y escuchemos a Stairway to Heaven aquí en Rock Radio, de regreso al pasado!",
@@ -7673,6 +7845,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/0f/76/fa/0f76fa8d-8341-c0af-84d8-543b9193c728/17UM1IM41552.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
     "fileUrl": "audio/eddie_intro_def_leppard_hysteria.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo. Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante. Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera. ¡Sube el volumen y escuchemos a Hysteria aquí en Rock Radio, de regreso al pasado!",
@@ -7748,6 +7921,7 @@
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/74/41/43/744143ae-afad-8380-106e-1c1bc48922e4/14UMGIM34762.rgb.jpg/640x640bb.jpg",
     "tag": "Historia",
     "status": "con_audio",
+    "genElapsedSec": 7.2,
     "audioUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
     "fileUrl": "audio/eddie_intro_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
     "summary": "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie. Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora. ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World aquí en Rock Radio, de regreso al pasado!",
@@ -8054,33 +8228,66 @@
       return 'data:audio/wav;base64,' + btoa(binary);
     }
 
+    // Resilient API invoker with reverse proxy on :8080 and fallback to direct :5055
+    async function callEddieApi(endpoint, body = {}, signal = null) {
+      const normalized = endpoint.startsWith('/') ? endpoint : ('/' + endpoint);
+      const apiPath = normalized.startsWith('/api/') ? normalized : ('/api' + normalized);
+      
+      const host = window.location.hostname || 'localhost';
+      const candidates = [
+        apiPath, // 1. Reverse proxy through current server (port 8080)
+        `http://${host}:5055${apiPath}`, // 2. Direct port 5055 on current host
+        `http://127.0.0.1:5055${apiPath}` // 3. Localhost fallback
+      ];
+
+      let lastError = null;
+      for (const url of candidates) {
+        if (signal && signal.aborted) {
+          const abortErr = new Error('Operación cancelada');
+          abortErr.name = 'AbortError';
+          throw abortErr;
+        }
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+            signal: signal
+          });
+          if (res.ok) {
+            return await res.json();
+          }
+          console.warn(`callEddieApi [${url}] returned status ${res.status}`);
+        } catch (err) {
+          if (err.name === 'AbortError' || (signal && signal.aborted)) {
+            throw err;
+          }
+          lastError = err;
+        }
+      }
+      throw lastError || new Error(`No se pudo conectar al servicio de audio de DJ Eddie (${endpoint})`);
+    }
+
     // Automatic Full Song Resolver via Local Service (ensures 100% full song playback from Spotify)
     async function resolveFullSongForTrack(songItemId, songTitle, bandName) {
       try {
-        const res = await fetch('http://127.0.0.1:5055/api/resolve_full_song', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            song_title: songTitle,
-            band_name: bandName,
-            track_id: songItemId
-          })
+        const data = await callEddieApi('/api/resolve_full_song', {
+          song_title: songTitle,
+          band_name: bandName,
+          track_id: songItemId
         });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.audioUrl) {
-            const customTracks = getDjEddieCustomTracks();
-            const idx = customTracks.findIndex(t => t.id === songItemId || t.pairId === songItemId);
-            if (idx !== -1) {
-              customTracks[idx].audioUrl = data.audioUrl;
-              customTracks[idx].fileUrl = data.audioUrl;
-              customTracks[idx].duration = Math.round(data.durationSec || customTracks[idx].duration);
-              saveDjEddieCustomTracks(customTracks);
-              buildDjEddieCatalog();
-              renderDjEddiePlaylistSongs();
-            }
-            return data.audioUrl;
+        if (data && data.audioUrl) {
+          const customTracks = getDjEddieCustomTracks();
+          const idx = customTracks.findIndex(t => t.id === songItemId || t.pairId === songItemId);
+          if (idx !== -1) {
+            customTracks[idx].audioUrl = data.audioUrl;
+            customTracks[idx].fileUrl = data.audioUrl;
+            customTracks[idx].duration = Math.round(data.durationSec || customTracks[idx].duration);
+            saveDjEddieCustomTracks(customTracks);
+            buildDjEddieCatalog();
+            renderDjEddiePlaylistSongs();
           }
+          return data.audioUrl;
         }
       } catch (e) {
         console.warn('resolveFullSongForTrack notice:', e);
@@ -8220,6 +8427,10 @@
         if (badge) {
           badge.textContent = `🎙️ Sintetizando audio (${elapsed}s)...`;
         }
+        const liveDur = document.querySelector(`.dj-live-elapsed[data-pair-id="${pairId}"]`);
+        if (liveDur) {
+          liveDur.textContent = `⏳ ${formatTime(elapsed)}`;
+        }
       }, 1000);
     }
 
@@ -8256,6 +8467,7 @@
         summary: introItem.summary,
         duration: introItem.duration,
         introSec: introItem.introSec,
+        genElapsedSec: introItem.genElapsedSec,
         lyrics: introItem.lyrics ? JSON.parse(JSON.stringify(introItem.lyrics)) : []
       };
 
@@ -8268,6 +8480,15 @@
         elapsed: 0,
         timerId: null
       };
+
+      // Alerta no invasiva de inicio informando que se avisará al terminar
+      showAppToast({
+        title: 'Generando historia con DJ Eddie',
+        desc: `Se está generando la letra y el audio para «${introItem.songTitle}». Te avisaremos en cuanto termine.`,
+        type: 'generating',
+        icon: '🎙️',
+        duration: 7000
+      });
 
       // FASE 1: Generando guion escrito («generando_guion»)
       introItem.status = 'generando_guion';
@@ -8285,10 +8506,10 @@
       buildDjEddieCatalog();
       renderDjEddiePlaylistSongs();
 
-      showAppToast(`📝 Creando guion para "${introItem.songTitle}"...`, 'info');
+      startGenerationTimer(pairId);
 
       // Brief organic transition so user sees the written script immediately
-      await new Promise(r => setTimeout(r, 450));
+      await new Promise(r => setTimeout(r, 400));
 
       // Cancellation check before proceeding to audio synthesis
       if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) {
@@ -8302,29 +8523,20 @@
       buildDjEddieCatalog();
       renderDjEddiePlaylistSongs();
 
-      startGenerationTimer(pairId);
-      showAppToast(`🎙️ Sintetizando locución de Eddie para "${introItem.songTitle}"...`, 'info');
-
       let audioData = null;
 
       try {
-        const res = await fetch('http://127.0.0.1:5055/api/generate_audio', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            job_id: jobId,
-            track_id: pairId,
-            song_title: introItem.songTitle,
-            band_name: introItem.bandName,
-            album: introItem.albumName || '',
-            year: introItem.year || '',
-            text: introItem.summary
-          }),
-          signal: abortController.signal
-        });
+        const json = await callEddieApi('/api/generate_audio', {
+          job_id: jobId,
+          track_id: pairId,
+          song_title: introItem.songTitle,
+          band_name: introItem.bandName,
+          album: introItem.albumName || '',
+          year: introItem.year || '',
+          text: introItem.summary
+        }, abortController.signal);
 
-        if (res.ok) {
-          const json = await res.json();
+        if (json) {
           if (json.cancelled) {
             console.log('Backend reportó trabajo cancelado para', jobId);
             return;
@@ -8347,6 +8559,7 @@
         return;
       }
 
+      const totalElapsedReal = audioData?.elapsedSec || Math.round((Date.now() - activeStoryGenerations[pairId].startTime) / 100) / 10;
       stopGenerationTimer(pairId);
       delete activeStoryGenerations[pairId];
 
@@ -8356,6 +8569,7 @@
         introItem.fileUrl = audioData.fileUrl || audioData.audioUrl;
         introItem.duration = Math.round(audioData.durationSec || 45);
         introItem.introSec = audioData.duration || `${introItem.duration}s`;
+        introItem.genElapsedSec = totalElapsedReal;
         introItem.hasRealAudio = true;
         introItem.status = 'con_audio';
         if (audioData.full_script) introItem.summary = audioData.full_script;
@@ -8366,7 +8580,14 @@
         buildDjEddieCatalog();
         renderDjEddiePlaylistSongs();
 
-        showAppToast(`✓ Historia de "${introItem.songTitle}" lista con la voz de Eddie`, 'success');
+        // Alerta no invasiva al finalizar con el tiempo real de backend
+        showAppToast({
+          title: '¡Historia de DJ Eddie lista!',
+          desc: `«${introItem.songTitle}» lista para escuchar. Generada en ${introItem.genElapsedSec}s.`,
+          type: 'success',
+          icon: '✅',
+          duration: 5000
+        });
       } else {
         // Error handling with option to retry
         introItem.status = 'error';
@@ -8377,7 +8598,13 @@
         buildDjEddieCatalog();
         renderDjEddiePlaylistSongs();
 
-        showAppToast(`⚠️ No se pudo sintetizar el audio con DJ Eddie. Pulsa "Reintentar".`, 'warn');
+        showAppToast({
+          title: 'Error de síntesis',
+          desc: `No se pudo generar el audio para «${introItem.songTitle}». Pulsa "Reintentar".`,
+          type: 'error',
+          icon: '⚠️',
+          duration: 5000
+        });
       }
     }
 
@@ -8400,13 +8627,9 @@
         stopGenerationTimer(pairId);
 
         // Notify backend to cancel Chatterbox/Edge-TTS task and delete temp files
-        fetch('http://127.0.0.1:5055/api/cancel_generation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            job_id: active.jobId,
-            track_id: pairId
-          })
+        callEddieApi('/api/cancel_generation', {
+          job_id: active.jobId,
+          track_id: pairId
         }).catch(() => {});
 
         const isRegen = active.isRegen;
@@ -8422,14 +8645,27 @@
           introItem.summary = previousState.summary;
           introItem.duration = previousState.duration;
           introItem.introSec = previousState.introSec;
+          introItem.genElapsedSec = previousState.genElapsedSec;
           introItem.lyrics = previousState.lyrics;
-          showAppToast(`⏹️ Regeneración detenida. Se conservó la versión anterior.`, 'info');
+          showAppToast({
+            title: 'Regeneración detenida',
+            desc: `Se conservó la versión anterior de «${introItem.songTitle}».`,
+            type: 'info',
+            icon: '⏹️',
+            duration: 3500
+          });
         } else {
           // Initial generation cancelled: retain original song, reset status to 'cancelado'
           introItem.status = 'cancelado';
           introItem.hasRealAudio = false;
           introItem.audioUrl = '';
-          showAppToast(`⏹️ Generación de historia detenida. Canción conservada en la lista.`, 'info');
+          showAppToast({
+            title: 'Generación detenida',
+            desc: `Se canceló la historia de «${introItem.songTitle}». La canción se conserva en la lista.`,
+            type: 'warn',
+            icon: '⏹️',
+            duration: 3500
+          });
         }
       } else {
         introItem.status = 'cancelado';
@@ -8576,7 +8812,8 @@
             statusBadgeHtml = `<span class="dj-status-badge running">📝 Creando guion...</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+                <span class="dj-live-elapsed" data-pair-id="${item.pairId}">⏳ 0:00</span>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener</button>
               </div>
             `;
           } else if (item.status === 'generando_audio') {
@@ -8584,7 +8821,8 @@
             statusBadgeHtml = `<span class="dj-status-badge running dj-audio-timer" data-pair-id="${item.pairId}">🎙️ Sintetizando audio (${elSec}s)...</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+                <span class="dj-live-elapsed" data-pair-id="${item.pairId}">⏳ ${formatTime(elSec)}</span>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener</button>
               </div>
             `;
           } else if (item.status === 'cancelado') {
@@ -8608,13 +8846,16 @@
             statusBadgeHtml = `<span class="dj-intro-pill">Historia</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <span class="dj-dur-text">${formatTime(item.duration)}</span>
+                <div class="dj-dur-box">
+                  <span class="dj-dur-text">${formatTime(item.duration)}</span>
+                  ${item.genElapsedSec ? `<span class="dj-dur-gen-time" title="Tiempo real de generación en backend: ${item.genElapsedSec}s">⚡ ${item.genElapsedSec}s</span>` : ''}
+                </div>
                 <button class="dj-row-play-btn" type="button" title="${isPlayingNow ? 'Pausar' : 'Escuchar Historia'}">
                   ${isPlayingNow
                     ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
                 </button>
-                ${item.isCustom ? '<button class="dj-action-btn regen-story" type="button" title="Regenerar historia con DJ Eddie">🔄 Regenerar historia</button>' : ''}
+                ${item.isCustom ? '<button class="dj-action-btn regen-story" type="button" title="Regenerar historia con DJ Eddie">🔄 Regenerar</button>' : ''}
                 ${item.isCustom ? '<button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Eddie">🗑️</button>' : ''}
               </div>
             `;
