@@ -531,10 +531,374 @@
       display: block;
     }
 
-    .spotify-api-tracks-grid {
+    /* Spotify Search Category Filter Chips */
+    .sp-search-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .sp-search-tabs::-webkit-scrollbar {
+      display: none;
+    }
+    .sp-search-tab {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: none;
+      border-radius: 9999px;
+      padding: 7px 15px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .sp-search-tab:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .sp-search-tab.active {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    /* Spotify "Todo" Top Split: Top Result (Left) + Songs (Right) */
+    .sp-top-split-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      grid-template-columns: minmax(280px, 380px) 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 920px) {
+      .sp-top-split-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+
+    .sp-block-heading-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .sp-block-heading {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+    .sp-block-more-btn {
+      background: transparent;
+      border: none;
+      color: #b3b3b3;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .sp-block-more-btn:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Resultado Principal Card */
+    .sp-top-result-card {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 225px;
+    }
+    .sp-top-result-card:hover {
+      background: #242424;
+      border-color: rgba(30, 215, 96, 0.35);
+    }
+    .sp-top-result-img {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+      margin-bottom: 16px;
+      background: #000;
+    }
+    .sp-top-result-img.square {
+      border-radius: 8px;
+    }
+    .sp-top-result-title {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .sp-top-result-meta {
+      display: flex;
+      align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: #b3b3b3;
+      font-weight: 600;
+    }
+    .sp-top-result-pill {
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .sp-top-result-play {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #1ed760;
+      border: none;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .sp-top-result-play:hover {
+      transform: scale(1.08);
+      background: #1fdf64;
+    }
+    .sp-top-result-play svg {
+      width: 22px;
+      height: 22px;
+      fill: #000;
+      margin-left: 2px;
+    }
+
+    /* Songs List (Right column & Full Songs View) */
+    .sp-songs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .sp-song-row {
+      display: grid;
+      grid-template-columns: 44px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 7px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .sp-song-row:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .sp-song-row.playing {
+      background: rgba(30, 215, 96, 0.15);
+    }
+    .sp-song-row-thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .sp-song-row-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sp-song-row-main {
+      min-width: 0;
+    }
+    .sp-song-row-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sp-song-row.playing .sp-song-row-title {
+      color: #1ed760;
+    }
+    .sp-song-row-sub {
+      font-size: 0.76rem;
+      color: #b3b3b3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .sp-explicit-tag {
+      background: rgba(255, 255, 255, 0.2);
+      color: #121212;
+      font-size: 0.6rem;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 2px;
+      line-height: 1.1;
+      flex-shrink: 0;
+    }
+    .sp-song-row-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #b3b3b3;
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Spotify Media Cards Grid (Albums, Artists, Playlists) */
+    .sp-media-section {
+      margin-bottom: 26px;
+    }
+    .sp-media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 600px) {
+      .sp-media-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+    .sp-media-card {
+      background: #181818;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .sp-media-card:hover {
+      background: #282828;
+      transform: translateY(-2px);
+    }
+    .sp-media-art-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #000;
+      margin-bottom: 10px;
+      position: relative;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+    .sp-media-art-wrap.circle {
+      border-radius: 50%;
+    }
+    .sp-media-art-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sp-media-hover-play {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #1ed760;
+      border: none;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+    .sp-media-card:hover .sp-media-hover-play {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .sp-media-hover-play svg {
+      width: 18px;
+      height: 18px;
+      fill: #000;
+      margin-left: 2px;
+    }
+    .sp-media-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+    .sp-media-sub {
+      font-size: 0.75rem;
+      color: #b3b3b3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sp-load-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 9px 20px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .sp-load-more-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .sp-back-breadcrumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(30, 215, 96, 0.15);
+      color: #1ed760;
+      border: 1px solid rgba(30, 215, 96, 0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+    .sp-back-breadcrumb:hover {
+      background: rgba(30, 215, 96, 0.25);
+    }
+
+    .spotify-api-tracks-grid {
+      display: block;
     }
 
     .spotify-api-track-card {
@@ -3515,12 +3879,21 @@
           <button class="spotify-api-close-btn" id="btnCloseSpotifyResults">Cerrar resultados ✕</button>
         </div>
 
+        <!-- Pestañas de Categorías estilo Spotify App -->
+        <div class="sp-search-tabs" id="spotifySearchTabs">
+          <button class="sp-search-tab active" data-sptab="all" type="button">Todo</button>
+          <button class="sp-search-tab" data-sptab="tracks" type="button">Canciones</button>
+          <button class="sp-search-tab" data-sptab="artists" type="button">Artistas</button>
+          <button class="sp-search-tab" data-sptab="albums" type="button">Álbumes</button>
+          <button class="sp-search-tab" data-sptab="playlists" type="button">Playlists</button>
+        </div>
+
         <!-- Reproductor Spotify Integrado (Embed + Web Playback SDK) -->
         <div class="spotify-embed-player-dock" id="spotifyEmbedPlayerDock">
           <div id="spotifyEmbedIframeContainer"></div>
         </div>
 
-        <!-- Grid de Canciones Encontradas en Spotify -->
+        <!-- Contenedor Completo de Resultados de Spotify (Todo / Canciones / Artistas / Álbumes / Playlists) -->
         <div class="spotify-api-tracks-grid" id="spotifyApiTracksGrid">
           <!-- Rendered dynamically via Spotify Web API -->
         </div>
@@ -5335,6 +5708,719 @@
         const initial = displayName.charAt(0).toUpperCase();
 
         if (btnSpotifyAuthTop) {
+          btnSpotifyAuthTop.classList.add('connected');
+          btnSpotifyAuthTop.title = `Conectado como ${displayName} (${emailText}) • Clic para ver cuenta`;
+          const avatarHtml = avatarUrl
+            ? `<span class="sp-top-user-avatar"><img src="${avatarUrl}" alt="${displayName}"></span>`
+            : `<span class="sp-top-user-avatar">${initial}</span>`;
+          btnSpotifyAuthTop.innerHTML = `
+            ${avatarHtml}
+            <span id="spAuthTopLabel">${displayName}</span>
+            <span class="sp-connected-dot"></span>
+          `;
+        }
+
+        if (topbarAvatarCircle) {
+          topbarAvatarCircle.innerHTML = avatarUrl
+            ? `<img src="${avatarUrl}" alt="${displayName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+            : `<span>${initial}</span>`;
+        }
+
+        if (drawerAvatarCircle) {
+          drawerAvatarCircle.innerHTML = avatarUrl
+            ? `<img src="${avatarUrl}" alt="${displayName}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+            : initial;
+        }
+        if (drawerUserName) drawerUserName.textContent = displayName;
+        if (drawerUserSub) drawerUserSub.textContent = emailText;
+        if (drawerSpStatusPill) {
+          drawerSpStatusPill.textContent = `● ${(profile.product || 'Activo').toUpperCase()}`;
+          drawerSpStatusPill.style.color = '#1ed760';
+        }
+        if (drawerSpDesc) {
+          drawerSpDesc.textContent = `Sesión iniciada con ${emailText}. Usa el buscador superior para encontrar y reproducir cualquier canción de Spotify.`;
+        }
+        if (btnDrawerSpotifyAction) {
+          btnDrawerSpotifyAction.className = 'drawer-sp-btn logout';
+          btnDrawerSpotifyAction.innerHTML = '<span>Cerrar sesión de Spotify</span>';
+        }
+
+        initSpotifyWebPlaybackSDK();
+      } else {
+        if (btnSpotifyAuthTop) {
+          btnSpotifyAuthTop.classList.remove('connected');
+          btnSpotifyAuthTop.title = 'Conectar con tu cuenta de Spotify';
+          btnSpotifyAuthTop.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
+            <span id="spAuthTopLabel">Iniciar sesión <span class="sp-btn-label-desktop">con Spotify</span></span>
+          `;
+        }
+        if (topbarAvatarCircle) topbarAvatarCircle.innerHTML = '<span>⚡</span>';
+        if (drawerAvatarCircle) drawerAvatarCircle.innerHTML = '⚡';
+        if (drawerUserName) drawerUserName.textContent = 'Rockero FM';
+        if (drawerUserSub) drawerUserSub.textContent = 'Sin sesión de Spotify activa';
+        if (drawerSpStatusPill) {
+          drawerSpStatusPill.textContent = 'Desconectado';
+          drawerSpStatusPill.style.color = '#9ca3af';
+        }
+        if (drawerSpDesc) {
+          drawerSpDesc.textContent = 'Inicia sesión con tu correo de Spotify para buscar y reproducir cualquier canción del catálogo mundial.';
+        }
+        if (btnDrawerSpotifyAction) {
+          btnDrawerSpotifyAction.className = 'drawer-sp-btn';
+          btnDrawerSpotifyAction.innerHTML = '<span>Iniciar sesión con Spotify</span>';
+        }
+      }
+    }
+
+    function initSpotifyWebPlaybackSDK() {
+      if (window.Spotify || document.getElementById('spotify-player-sdk-script')) return;
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        spotifySdkPlayer = new window.Spotify.Player({
+          name: 'Rock Radio Web Player',
+          getOAuthToken: async cb => {
+            const t = await getValidSpotifyToken();
+            if (t) cb(t);
+          },
+          volume: 0.85
+        });
+
+        spotifySdkPlayer.addListener('ready', ({ device_id }) => {
+          spotifySdkDeviceId = device_id;
+          console.log('Spotify Web Playback SDK listo en dispositivo:', device_id);
+        });
+
+        spotifySdkPlayer.connect();
+      };
+
+      const script = document.createElement('script');
+      script.id = 'spotify-player-sdk-script';
+      script.src = 'https://sdk.scdn.co/spotify-player.js';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    let activeSpotifyTab = 'all';
+    let lastSpotifyQuery = '';
+    let lastSpotifyData = { tracks: [], artists: [], albums: [], playlists: [] };
+    let spotifyTrackOffset = 0;
+    let spotifyAlbumOffset = 0;
+
+    const spotifySearchTabs = document.getElementById('spotifySearchTabs');
+    if (spotifySearchTabs) {
+      spotifySearchTabs.querySelectorAll('.sp-search-tab').forEach(tabBtn => {
+        tabBtn.addEventListener('click', () => {
+          spotifySearchTabs.querySelectorAll('.sp-search-tab').forEach(b => b.classList.remove('active'));
+          tabBtn.classList.add('active');
+          activeSpotifyTab = tabBtn.dataset.sptab || 'all';
+          renderSpotifySearchResults();
+        });
+      });
+    }
+
+    function escapeHtmlStr(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function openSpotifyEmbed(entityType, entityId) {
+      if (!spotifyEmbedPlayerDock || !spotifyEmbedIframeContainer || !entityId) return;
+      spotifyEmbedPlayerDock.classList.add('active');
+      const height = (entityType === 'track') ? 152 : 352;
+      spotifyEmbedIframeContainer.innerHTML = `
+        <iframe
+          src="https://open.spotify.com/embed/${entityType}/${entityId}?utm_source=generator&theme=0"
+          width="100%"
+          height="${height}"
+          frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          style="display:block; border-radius: 12px;">
+        </iframe>
+      `;
+    }
+
+    async function playSpotifyTrack(track, rowEl) {
+      if (!spotifyAudio.paused) {
+        spotifyAudio.pause();
+        updatePlayUI(false);
+      }
+
+      document.querySelectorAll('.sp-song-row, .spotify-api-track-card').forEach(c => c.classList.remove('playing'));
+      if (rowEl) rowEl.classList.add('playing');
+
+      openSpotifyEmbed('track', track.id);
+
+      if (spotifySdkDeviceId && track.uri) {
+        const token = await getValidSpotifyToken();
+        if (token) {
+          fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ uris: [track.uri] })
+          }).catch(() => {});
+        }
+      }
+
+      const albumImg = (track.album && track.album.images && track.album.images.length > 0) ? track.album.images[0].url : null;
+      const artistNames = (track.artists || []).map(a => a.name).join(', ');
+      const barThumbImg = document.getElementById('barThumbImg');
+      if (barThumbImg && albumImg) barThumbImg.src = albumImg;
+      if (barTitle) barTitle.textContent = track.name;
+      if (barArtist) barArtist.textContent = `${artistNames} • Spotify`;
+    }
+
+    async function playSpotifyContext(entityType, entityId, entityUri, title, subtitle, imgUrl) {
+      if (!spotifyAudio.paused) {
+        spotifyAudio.pause();
+        updatePlayUI(false);
+      }
+      openSpotifyEmbed(entityType, entityId);
+
+      if (spotifySdkDeviceId && entityUri) {
+        const token = await getValidSpotifyToken();
+        if (token) {
+          fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ context_uri: entityUri })
+          }).catch(() => {});
+        }
+      }
+
+      const barThumbImg = document.getElementById('barThumbImg');
+      if (barThumbImg && imgUrl) barThumbImg.src = imgUrl;
+      if (barTitle && title) barTitle.textContent = title;
+      if (barArtist && subtitle) barArtist.textContent = `${subtitle} • Spotify`;
+    }
+
+    function createSongRowElement(track, indexNum = null) {
+      const imgUrl = (track.album && track.album.images && track.album.images.length > 0)
+        ? (track.album.images[track.album.images.length - 1].url || track.album.images[0].url)
+        : 'img/covers/cover_kiss.png';
+      const artists = (track.artists || []).map(a => a.name).join(', ');
+      const albumName = (track.album && track.album.name) ? track.album.name : '';
+      const year = (track.album && track.album.release_date) ? track.album.release_date.slice(0, 4) : '';
+      const durSec = Math.floor((track.duration_ms || 0) / 1000);
+      const durFormatted = formatTime(durSec);
+
+      const row = document.createElement('div');
+      row.className = 'sp-song-row';
+      row.innerHTML = `
+        <div class="sp-song-row-thumb">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(track.name)}" loading="lazy">
+        </div>
+        <div class="sp-song-row-main">
+          <div class="sp-song-row-title" title="${escapeHtmlStr(track.name)}">${indexNum !== null ? `<span style="color:#727272;margin-right:6px;">${indexNum}.</span>` : ''}${escapeHtmlStr(track.name)}</div>
+          <div class="sp-song-row-sub">
+            ${track.explicit ? '<span class="sp-explicit-tag">E</span>' : ''}
+            <span>${escapeHtmlStr(artists)}${albumName ? ' • ' + escapeHtmlStr(albumName) : ''}${year ? ' (' + year + ')' : ''}</span>
+          </div>
+        </div>
+        <div class="sp-song-row-right">
+          <span>${durFormatted}</span>
+          <button class="sp-track-play-pill" type="button" title="Reproducir ${escapeHtmlStr(track.name)}">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      `;
+      row.addEventListener('click', () => playSpotifyTrack(track, row));
+      return row;
+    }
+
+    // Drill-down: Open full Artist Catalog (Top Tracks + All Albums) inside the search view
+    async function openSpotifyArtistCatalog(artist) {
+      const token = await getValidSpotifyToken();
+      if (!token || !spotifyApiTracksGrid) return;
+
+      if (spotifyApiResultsTitle) {
+        spotifyApiResultsTitle.textContent = `Artista en Spotify: ${artist.name}`;
+      }
+      spotifyApiTracksGrid.innerHTML = `<div style="color:#b3b3b3;padding:12px 0;">Cargando canciones y discografía de <strong>${escapeHtmlStr(artist.name)}</strong>...</div>`;
+
+      try {
+        // Fetch artist's tracks and albums via search + artist endpoints
+        const qArtist = `artist:"${artist.name}"`;
+        let res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(qArtist)}&type=track,album&limit=10`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) {
+          res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(artist.name)}&type=track,album&limit=10`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
+        const data = await res.json();
+        const artistTracks = (data.tracks && data.tracks.items) ? data.tracks.items : [];
+        const artistAlbums = (data.albums && data.albums.items) ? data.albums.items : [];
+
+        // Also open artist player in dock
+        const artistImg = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/covers/cover_kiss.png';
+        openSpotifyEmbed('artist', artist.id);
+
+        spotifyApiTracksGrid.innerHTML = '';
+
+        const backBtn = document.createElement('button');
+        backBtn.className = 'sp-back-breadcrumb';
+        backBtn.type = 'button';
+        backBtn.innerHTML = '← Volver a todos los resultados de búsqueda';
+        backBtn.addEventListener('click', () => {
+          if (spotifyApiResultsTitle) spotifyApiResultsTitle.textContent = `Resultados en Spotify para "${lastSpotifyQuery}"`;
+          renderSpotifySearchResults();
+        });
+        spotifyApiTracksGrid.appendChild(backBtn);
+
+        // Artist Header Banner
+        const followers = (artist.followers && artist.followers.total) ? artist.followers.total.toLocaleString() : null;
+        const genres = (artist.genres && artist.genres.length > 0) ? artist.genres.slice(0, 3).join(' • ') : 'Artista Oficial en Spotify';
+        const headerCard = document.createElement('div');
+        headerCard.style.cssText = 'display:flex;align-items:center;gap:18px;padding:16px;background:#181818;border-radius:10px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.08);flex-wrap:wrap;';
+        headerCard.innerHTML = `
+          <img src="${artistImg}" alt="${escapeHtmlStr(artist.name)}" style="width:84px;height:84px;border-radius:50%;object-fit:cover;box-shadow:0 6px 20px rgba(0,0,0,0.6);">
+          <div style="flex:1;min-width:180px;">
+            <div style="font-size:0.72rem;font-weight:800;color:#1ed760;text-transform:uppercase;letter-spacing:0.06em;">Artista Verificado • Spotify</div>
+            <div style="font-size:1.6rem;font-weight:900;color:#fff;margin:2px 0 4px;">${escapeHtmlStr(artist.name)}</div>
+            <div style="font-size:0.8rem;color:#b3b3b3;">${followers ? followers + ' seguidores • ' : ''}${escapeHtmlStr(genres)}</div>
+          </div>
+        `;
+        spotifyApiTracksGrid.appendChild(headerCard);
+
+        // Artist Top Songs
+        const songsSec = document.createElement('div');
+        songsSec.className = 'sp-media-section';
+        songsSec.innerHTML = `<div class="sp-block-heading-row"><h3 class="sp-block-heading">Canciones populares de ${escapeHtmlStr(artist.name)}</h3></div>`;
+        const songsList = document.createElement('div');
+        songsList.className = 'sp-songs-list';
+        artistTracks.forEach((t, i) => songsList.appendChild(createSongRowElement(t, i + 1)));
+        songsSec.appendChild(songsList);
+        spotifyApiTracksGrid.appendChild(songsSec);
+
+        // Artist Albums
+        if (artistAlbums.length > 0) {
+          const albSec = document.createElement('div');
+          albSec.className = 'sp-media-section';
+          albSec.innerHTML = `<div class="sp-block-heading-row"><h3 class="sp-block-heading">Discografía en Spotify (${artistAlbums.length} álbumes)</h3></div>`;
+          const albGrid = document.createElement('div');
+          albGrid.className = 'sp-media-grid';
+          artistAlbums.forEach(alb => albGrid.appendChild(createAlbumCardElement(alb)));
+          albSec.appendChild(albGrid);
+          spotifyApiTracksGrid.appendChild(albSec);
+        }
+      } catch (e) {
+        console.warn('Error loading artist catalog:', e);
+      }
+    }
+
+    // Drill-down: Open Album Tracklist & Album Embed Player
+    async function openSpotifyAlbumTracks(album) {
+      const token = await getValidSpotifyToken();
+      if (!token || !spotifyApiTracksGrid) return;
+
+      const albImg = (album.images && album.images.length > 0) ? album.images[0].url : 'img/covers/cover_kiss.png';
+      const albArtists = (album.artists || []).map(a => a.name).join(', ');
+      playSpotifyContext('album', album.id, album.uri, album.name, albArtists, albImg);
+
+      if (spotifyApiResultsTitle) {
+        spotifyApiResultsTitle.textContent = `Álbum: ${album.name} (${albArtists})`;
+      }
+
+      try {
+        const res = await fetch(`https://api.spotify.com/v1/albums/${album.id}/tracks?limit=50`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = data.items || [];
+
+        spotifyApiTracksGrid.innerHTML = '';
+
+        const backBtn = document.createElement('button');
+        backBtn.className = 'sp-back-breadcrumb';
+        backBtn.type = 'button';
+        backBtn.innerHTML = '← Volver a los resultados de búsqueda';
+        backBtn.addEventListener('click', () => {
+          if (spotifyApiResultsTitle) spotifyApiResultsTitle.textContent = `Resultados en Spotify para "${lastSpotifyQuery}"`;
+          renderSpotifySearchResults();
+        });
+        spotifyApiTracksGrid.appendChild(backBtn);
+
+        const songsSec = document.createElement('div');
+        songsSec.className = 'sp-media-section';
+        songsSec.innerHTML = `<div class="sp-block-heading-row"><h3 class="sp-block-heading">${escapeHtmlStr(album.name)} • ${items.length} pistas</h3></div>`;
+        const songsList = document.createElement('div');
+        songsList.className = 'sp-songs-list';
+        items.forEach((t, idx) => {
+          t.album = album;
+          songsList.appendChild(createSongRowElement(t, t.track_number || (idx + 1)));
+        });
+        songsSec.appendChild(songsList);
+        spotifyApiTracksGrid.appendChild(songsSec);
+      } catch (e) {
+        console.warn('Error fetching album tracks:', e);
+      }
+    }
+
+    function createArtistCardElement(artist) {
+      const imgUrl = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/covers/cover_kiss.png';
+      const card = document.createElement('div');
+      card.className = 'sp-media-card';
+      card.innerHTML = `
+        <div class="sp-media-art-wrap circle">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(artist.name)}" loading="lazy">
+          <button class="sp-media-hover-play" type="button" title="Escuchar ${escapeHtmlStr(artist.name)}">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="sp-media-title" title="${escapeHtmlStr(artist.name)}">${escapeHtmlStr(artist.name)}</div>
+        <div class="sp-media-sub">Artista</div>
+      `;
+      card.addEventListener('click', () => openSpotifyArtistCatalog(artist));
+      return card;
+    }
+
+    function createAlbumCardElement(album) {
+      const imgUrl = (album.images && album.images.length > 0) ? album.images[0].url : 'img/covers/cover_kiss.png';
+      const year = album.release_date ? album.release_date.slice(0, 4) : '';
+      const artists = (album.artists || []).map(a => a.name).join(', ');
+      const card = document.createElement('div');
+      card.className = 'sp-media-card';
+      card.innerHTML = `
+        <div class="sp-media-art-wrap">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(album.name)}" loading="lazy">
+          <button class="sp-media-hover-play" type="button" title="Reproducir álbum ${escapeHtmlStr(album.name)}">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="sp-media-title" title="${escapeHtmlStr(album.name)}">${escapeHtmlStr(album.name)}</div>
+        <div class="sp-media-sub">${year ? year + ' • ' : ''}${escapeHtmlStr(artists)}</div>
+      `;
+      card.addEventListener('click', () => openSpotifyAlbumTracks(album));
+      return card;
+    }
+
+    function createPlaylistCardElement(playlist) {
+      if (!playlist) return null;
+      const imgUrl = (playlist.images && playlist.images.length > 0 && playlist.images[0]) ? playlist.images[0].url : 'img/covers/cover_kiss.png';
+      const owner = (playlist.owner && playlist.owner.display_name) ? playlist.owner.display_name : 'Spotify';
+      const card = document.createElement('div');
+      card.className = 'sp-media-card';
+      card.innerHTML = `
+        <div class="sp-media-art-wrap">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}" loading="lazy">
+          <button class="sp-media-hover-play" type="button" title="Reproducir playlist ${escapeHtmlStr(playlist.name)}">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="sp-media-title" title="${escapeHtmlStr(playlist.name)}">${escapeHtmlStr(playlist.name)}</div>
+        <div class="sp-media-sub">De ${escapeHtmlStr(owner)}</div>
+      `;
+      card.addEventListener('click', () => {
+        playSpotifyContext('playlist', playlist.id, playlist.uri, playlist.name, `Playlist • ${owner}`, imgUrl);
+      });
+      return card;
+    }
+
+    async function loadMoreSpotifyTracks() {
+      const token = await getValidSpotifyToken();
+      if (!token || !lastSpotifyQuery) return;
+      spotifyTrackOffset += 10;
+      try {
+        const res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(lastSpotifyQuery)}&type=track&limit=10&offset=${spotifyTrackOffset}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const moreTracks = (data.tracks && data.tracks.items) ? data.tracks.items : [];
+        if (moreTracks.length > 0) {
+          lastSpotifyData.tracks = lastSpotifyData.tracks.concat(moreTracks);
+          renderSpotifySearchResults();
+        }
+      } catch (e) {
+        console.warn('Error loading more tracks:', e);
+      }
+    }
+
+    function switchSpotifySearchTab(tabName) {
+      activeSpotifyTab = tabName;
+      if (spotifySearchTabs) {
+        spotifySearchTabs.querySelectorAll('.sp-search-tab').forEach(b => {
+          b.classList.toggle('active', b.dataset.sptab === tabName);
+        });
+      }
+      renderSpotifySearchResults();
+    }
+
+    function renderSpotifySearchResults() {
+      if (!spotifyApiTracksGrid) return;
+      spotifyApiTracksGrid.innerHTML = '';
+
+      const tracks = lastSpotifyData.tracks || [];
+      const artists = (lastSpotifyData.artists || []).filter(Boolean);
+      const albums = (lastSpotifyData.albums || []).filter(Boolean);
+      const playlists = (lastSpotifyData.playlists || []).filter(Boolean);
+
+      if (tracks.length === 0 && artists.length === 0 && albums.length === 0 && playlists.length === 0) {
+        spotifyApiTracksGrid.innerHTML = `<div style="color: var(--sp-text-muted); font-size: 0.88rem; padding: 10px 0;">No se encontraron resultados en Spotify para "${escapeHtmlStr(lastSpotifyQuery)}".</div>`;
+        return;
+      }
+
+      // 1. TAB: TODO (Official Spotify App Split Layout + Grids)
+      if (activeSpotifyTab === 'all') {
+        const topSplit = document.createElement('div');
+        topSplit.className = 'sp-top-split-grid';
+
+        // Left: Top Result (Artist #1 or Track #1)
+        const topLeftWrap = document.createElement('div');
+        topLeftWrap.innerHTML = `<div class="sp-block-heading-row"><h3 class="sp-block-heading">Resultado principal</h3></div>`;
+        const topResultCard = document.createElement('div');
+        topResultCard.className = 'sp-top-result-card';
+
+        if (artists.length > 0) {
+          const topArtist = artists[0];
+          const artImg = (topArtist.images && topArtist.images.length > 0) ? topArtist.images[0].url : 'img/covers/cover_kiss.png';
+          const followers = (topArtist.followers && topArtist.followers.total) ? `${topArtist.followers.total.toLocaleString()} seguidores` : 'Catálogo Oficial';
+          topResultCard.innerHTML = `
+            <div>
+              <img src="${artImg}" alt="${escapeHtmlStr(topArtist.name)}" class="sp-top-result-img">
+              <div class="sp-top-result-title">${escapeHtmlStr(topArtist.name)}</div>
+              <div class="sp-top-result-meta">
+                <span class="sp-top-result-pill">Artista</span>
+                <span>${followers}</span>
+              </div>
+            </div>
+            <div style="margin-top: 14px; font-size: 0.76rem; color: #1ed760; font-weight: 700;">
+              Ver todas las canciones y álbumes de ${escapeHtmlStr(topArtist.name)} →
+            </div>
+            <button class="sp-top-result-play" type="button" title="Escuchar ${escapeHtmlStr(topArtist.name)}">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          `;
+          topResultCard.addEventListener('click', () => openSpotifyArtistCatalog(topArtist));
+        } else if (tracks.length > 0) {
+          const topTrack = tracks[0];
+          const trImg = (topTrack.album && topTrack.album.images && topTrack.album.images.length > 0) ? topTrack.album.images[0].url : 'img/covers/cover_kiss.png';
+          const trArtists = (topTrack.artists || []).map(a => a.name).join(', ');
+          topResultCard.innerHTML = `
+            <div>
+              <img src="${trImg}" alt="${escapeHtmlStr(topTrack.name)}" class="sp-top-result-img square">
+              <div class="sp-top-result-title">${escapeHtmlStr(topTrack.name)}</div>
+              <div class="sp-top-result-meta">
+                <span class="sp-top-result-pill">Canción</span>
+                <span>${escapeHtmlStr(trArtists)}</span>
+              </div>
+            </div>
+            <button class="sp-top-result-play" type="button" title="Reproducir ${escapeHtmlStr(topTrack.name)}">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          `;
+          topResultCard.addEventListener('click', () => playSpotifyTrack(topTrack, topResultCard));
+        }
+        topLeftWrap.appendChild(topResultCard);
+        topSplit.appendChild(topLeftWrap);
+
+        // Right: Top 5 Songs
+        const topRightWrap = document.createElement('div');
+        topRightWrap.innerHTML = `
+          <div class="sp-block-heading-row">
+            <h3 class="sp-block-heading">Canciones</h3>
+            <button class="sp-block-more-btn" type="button" id="btnSeeAllSpTracks">Ver todas (${tracks.length}+) →</button>
+          </div>
+        `;
+        const songsBox = document.createElement('div');
+        songsBox.className = 'sp-songs-list';
+        tracks.slice(0, 5).forEach(t => songsBox.appendChild(createSongRowElement(t)));
+        topRightWrap.appendChild(songsBox);
+        topSplit.appendChild(topRightWrap);
+
+        spotifyApiTracksGrid.appendChild(topSplit);
+
+        const seeAllTracksBtn = document.getElementById('btnSeeAllSpTracks');
+        if (seeAllTracksBtn) {
+          seeAllTracksBtn.addEventListener('click', () => switchSpotifySearchTab('tracks'));
+        }
+
+        // Section: Albums
+        if (albums.length > 0) {
+          const albSec = document.createElement('div');
+          albSec.className = 'sp-media-section';
+          albSec.innerHTML = `
+            <div class="sp-block-heading-row">
+              <h3 class="sp-block-heading">Álbumes</h3>
+              <button class="sp-block-more-btn" type="button" onclick="switchSpotifySearchTab('albums')">Mostrar todos →</button>
+            </div>
+          `;
+          const albGrid = document.createElement('div');
+          albGrid.className = 'sp-media-grid';
+          albums.slice(0, 6).forEach(alb => albGrid.appendChild(createAlbumCardElement(alb)));
+          albSec.appendChild(albGrid);
+          spotifyApiTracksGrid.appendChild(albSec);
+        }
+
+        // Section: Artists
+        if (artists.length > 0) {
+          const artSec = document.createElement('div');
+          artSec.className = 'sp-media-section';
+          artSec.innerHTML = `
+            <div class="sp-block-heading-row">
+              <h3 class="sp-block-heading">Artistas</h3>
+              <button class="sp-block-more-btn" type="button" onclick="switchSpotifySearchTab('artists')">Mostrar todos →</button>
+            </div>
+          `;
+          const artGrid = document.createElement('div');
+          artGrid.className = 'sp-media-grid';
+          artists.slice(0, 6).forEach(ar => artGrid.appendChild(createArtistCardElement(ar)));
+          artSec.appendChild(artGrid);
+          spotifyApiTracksGrid.appendChild(artSec);
+        }
+
+        // Section: Playlists
+        if (playlists.length > 0) {
+          const plSec = document.createElement('div');
+          plSec.className = 'sp-media-section';
+          plSec.innerHTML = `
+            <div class="sp-block-heading-row">
+              <h3 class="sp-block-heading">Playlists de Spotify</h3>
+              <button class="sp-block-more-btn" type="button" onclick="switchSpotifySearchTab('playlists')">Mostrar todas →</button>
+            </div>
+          `;
+          const plGrid = document.createElement('div');
+          plGrid.className = 'sp-media-grid';
+          playlists.slice(0, 6).forEach(pl => {
+            const el = createPlaylistCardElement(pl);
+            if (el) plGrid.appendChild(el);
+          });
+          plSec.appendChild(plGrid);
+          spotifyApiTracksGrid.appendChild(plSec);
+        }
+        return;
+      }
+
+      // 2. TAB: CANCIONES (Full List + Load More Pagination)
+      if (activeSpotifyTab === 'tracks') {
+        const listWrap = document.createElement('div');
+        listWrap.className = 'sp-songs-list';
+        tracks.forEach((t, idx) => listWrap.appendChild(createSongRowElement(t, idx + 1)));
+        spotifyApiTracksGrid.appendChild(listWrap);
+
+        const moreBtn = document.createElement('button');
+        moreBtn.className = 'sp-load-more-btn';
+        moreBtn.type = 'button';
+        moreBtn.textContent = '+ Cargar más canciones de Spotify';
+        moreBtn.addEventListener('click', loadMoreSpotifyTracks);
+        spotifyApiTracksGrid.appendChild(moreBtn);
+        return;
+      }
+
+      // 3. TAB: ARTISTAS
+      if (activeSpotifyTab === 'artists') {
+        const grid = document.createElement('div');
+        grid.className = 'sp-media-grid';
+        artists.forEach(ar => grid.appendChild(createArtistCardElement(ar)));
+        spotifyApiTracksGrid.appendChild(grid);
+        return;
+      }
+
+      // 4. TAB: ÁLBUMES
+      if (activeSpotifyTab === 'albums') {
+        const grid = document.createElement('div');
+        grid.className = 'sp-media-grid';
+        albums.forEach(alb => grid.appendChild(createAlbumCardElement(alb)));
+        spotifyApiTracksGrid.appendChild(grid);
+        return;
+      }
+
+      // 5. TAB: PLAYLISTS
+      if (activeSpotifyTab === 'playlists') {
+        const grid = document.createElement('div');
+        grid.className = 'sp-media-grid';
+        playlists.forEach(pl => {
+          const el = createPlaylistCardElement(pl);
+          if (el) grid.appendChild(el);
+        });
+        spotifyApiTracksGrid.appendChild(grid);
+      }
+    }
+
+    async function searchSpotifyCatalog(query) {
+      const q = (query || '').trim();
+      if (!q || q.length < 2) {
+        if (spotifyApiSearchSection && (!spotifyEmbedPlayerDock || !spotifyEmbedPlayerDock.classList.contains('active'))) {
+          spotifyApiSearchSection.classList.remove('visible');
+        }
+        return;
+      }
+
+      lastSpotifyQuery = q;
+      spotifyTrackOffset = 0;
+      spotifyAlbumOffset = 0;
+
+      if (spotifyApiSearchSection) {
+        spotifyApiSearchSection.classList.add('visible');
+      }
+
+      const token = await getValidSpotifyToken();
+      if (!token) {
+        if (spotifyApiResultsTitle) spotifyApiResultsTitle.textContent = `Buscar "${q}" en Spotify`;
+        if (spotifyApiStatusBadge) {
+          spotifyApiStatusBadge.textContent = 'Requiere Login';
+          spotifyApiStatusBadge.style.color = '#fbbf24';
+        }
+        if (spotifyApiTracksGrid) {
+          spotifyApiTracksGrid.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding: 14px 16px; background: rgba(0,0,0,0.45); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-size: 0.86rem; color: #e5e7eb;">
+                Conecta tu cuenta de Spotify para ver todos los resultados (Artista, Canciones, Álbumes y Playlists) de <strong>"${escapeHtmlStr(q)}"</strong>.
+              </div>
+              <button type="button" onclick="startSpotifyLogin()" style="background: #1ed760; color: #000; border: none; border-radius: 9999px; padding: 8px 16px; font-weight: 800; font-size: 0.8rem; cursor: pointer;">
+                Iniciar sesión con Spotify
+              </button>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      if (spotifyApiResultsTitle) spotifyApiResultsTitle.textContent = `Resultados en Spotify para "${q}"`;
+      if (spotifyApiStatusBadge) {
+        spotifyApiStatusBadge.textContent = 'Buscando en Spotify...';
+        spotifyApiStatusBadge.style.color = '#1ed760';
+      }
+
+      try {
+        let res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track,artist,album,playlist&limit=10`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) {
+          // Fallback in case limit=10 on multi-type is restricted
+          res = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track,artist,album,playlist&limit=8`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
+        if (!res.ok) throw new Error('Error en API de Spotify');
+        const data = await res.json();
+
+        lastSpotifyData = {
+          tracks: (data.tracks && data.tracks.items) ? data.tracks.items : [],
+          artists: (data.artists && data.artists.items) ? data.artists.items : [],
+          albums: (data.albums && data.albums.items) ? data.albums.items : [],
+          playlists: (data.playlists && data.playlists.items) ? data.playlists.items : []
+        };
+
+        if (spotifyApiStatusBadge) {
+          spotifyApiStatusBadge.textContent = `Catálogo completo`;
+        }
+
+        renderSpotifySearchResults();
+      } catch (err) {
+        console.warn('Spotify search error:', err);
+      }
+    }
+
+    if (btnSpotifyAuthTop) {
           btnSpotifyAuthTop.classList.add('connected');
           btnSpotifyAuthTop.title = `Conectado como ${displayName} (${emailText}) • Clic para ver cuenta`;
           const avatarHtml = avatarUrl
