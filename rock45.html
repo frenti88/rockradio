@@ -3056,6 +3056,38 @@
       letter-spacing: 0.04em;
     }
 
+    
+    /* Global Player Source Badges (Spotify vs DJ Eddie Radio IA vs Cápsula 45s) */
+    .player-source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.62rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+    .player-source-badge.spotify {
+      background: rgba(30, 215, 96, 0.18);
+      color: #1ed760;
+      border: 1px solid rgba(30, 215, 96, 0.4);
+    }
+    .player-source-badge.djeddie {
+      background: rgba(16, 185, 129, 0.18);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.4);
+    }
+    .player-source-badge.local45 {
+      background: rgba(245, 158, 11, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
     /* SPOTIFY BOTTOM NOW PLAYING BAR (Fixed 90px) */
     .spotify-player-bar {
       height: 90px;
@@ -5180,16 +5212,34 @@
         }
       }
 
+      // Update Global Player State for DJ Eddie / Local Audio
+      GlobalAudioPlayer.source = (activeTrackFormat === 'full' || isDjEddieActive) ? 'djeddie' : 'local45';
+      GlobalAudioPlayer.spotifyIsPlaying = false;
+      stopSpotifyProgressSimulation();
+      if (spotifyIframeController) {
+        try { spotifyIframeController.pause(); } catch(e){}
+      }
+      if (spotifySdkPlayer) {
+        try { spotifySdkPlayer.pause(); } catch(e){}
+      }
+
       // Update Player Bar
       const barThumbImg = document.getElementById('barThumbImg');
       if (barThumbImg && b.cover) barThumbImg.src = b.cover;
       barTitle.textContent = currentTitle;
-      barArtist.textContent = b.name;
+      
+      const badgeType = (activeTrackFormat === 'full' || isDjEddieActive) ? 'djeddie' : 'local45';
+      const badgeText = (activeTrackFormat === 'full' || isDjEddieActive) ? '🤖 RADIO IA' : '📻 45s';
+      if (barArtist) {
+        barArtist.innerHTML = `<span class="player-source-badge ${badgeType}">${badgeText}</span> ${escapeHtmlStr(b.name)}`;
+      }
 
       // Update Mobile Modal & Top Bar
       if (modalArtImg && b.cover) modalArtImg.src = b.cover;
       if (modalTrackTitle) modalTrackTitle.textContent = currentTitle;
-      if (modalTrackArtist) modalTrackArtist.textContent = b.name;
+      if (modalTrackArtist) {
+        modalTrackArtist.textContent = (activeTrackFormat === 'full' || isDjEddieActive) ? `${b.name} • 🤖 DJ Eddie (Radio IA)` : `${b.name} • Cápsula 45s`;
+      }
       if (modalHeaderBand) modalHeaderBand.textContent = b.name;
       if (mobileTopTitle) mobileTopTitle.textContent = b.name;
       updateVoiceBadge();
@@ -5853,14 +5903,262 @@
       }
     }
 
-    // Play / Pause Logic
-    function togglePlay() {
-      if (spotifyAudio.paused) {
-        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
-      } else {
-        spotifyAudio.pause();
-        updatePlayUI(false);
+    // ========================================================
+    // UNIFIED GLOBAL AUDIO PLAYER ENGINE (DJ EDDIE + SPOTIFY)
+    // ========================================================
+    const GlobalAudioPlayer = {
+      source: 'djeddie', // 'djeddie' | 'local45' | 'spotify'
+      spotifyTrack: null,
+      spotifyQueue: [],
+      spotifyIndex: 0,
+      spotifyIsPlaying: false,
+      spotifyDurationMs: 180000,
+      spotifyPositionMs: 0,
+      
+      playSpotify(track, queue = [], index = -1) {
+        if (!spotifyAudio.paused) {
+          spotifyAudio.pause();
+        }
+
+        this.source = 'spotify';
+        this.spotifyTrack = track;
+        if (queue && queue.length) {
+          this.spotifyQueue = queue;
+          this.spotifyIndex = (index >= 0) ? index : queue.findIndex(t => t.id === track.id);
+        } else if (!this.spotifyQueue.length) {
+          this.spotifyQueue = [track];
+          this.spotifyIndex = 0;
+        } else if (index >= 0) {
+          this.spotifyIndex = index;
+        }
+
+        this.spotifyIsPlaying = true;
+        this.spotifyDurationMs = track.duration_ms || 180000;
+        this.spotifyPositionMs = 0;
+        isDjEddieActive = false;
+
+        const albumImg = (track.album && track.album.images && track.album.images.length > 0)
+          ? track.album.images[0].url
+          : 'img/covers/cover_kiss.png';
+        const artistNames = (track.artists || []).map(a => a.name).join(', ');
+        const durSec = Math.floor(this.spotifyDurationMs / 1000);
+        const durFormatted = formatTime(durSec);
+
+        // Update Bottom Bar
+        const barThumbImg = document.getElementById('barThumbImg');
+        if (barThumbImg) barThumbImg.src = albumImg;
+        if (barTitle) barTitle.textContent = track.name;
+        if (barArtist) {
+          barArtist.innerHTML = `<span class="player-source-badge spotify">🟢 SPOTIFY</span> ${escapeHtmlStr(artistNames)}`;
+        }
+        if (barTimeCurrent) barTimeCurrent.textContent = '0:00';
+        if (barTimeTotal) barTimeTotal.textContent = durFormatted;
+        if (spotifyProgressFill) spotifyProgressFill.style.width = '0%';
+
+        // Update Mobile Mini & Fullscreen Modal
+        if (miniProgressFill) miniProgressFill.style.width = '0%';
+        if (modalArtImg) modalArtImg.src = albumImg;
+        if (modalTrackTitle) modalTrackTitle.textContent = track.name;
+        if (modalTrackArtist) modalTrackArtist.textContent = `${artistNames} • Spotify`;
+        if (modalHeaderBand) modalHeaderBand.textContent = artistNames;
+        if (modalTimeCurrent) modalTimeCurrent.textContent = '0:00';
+        if (modalTimeTotal) modalTimeTotal.textContent = durFormatted;
+        if (modalProgressFill) modalProgressFill.style.width = '0%';
+
+        updatePlayUI(true);
+
+        // Audio Execution Strategy:
+        // A. If track has direct preview MP3, load directly into HTML5 audio
+        if (track.preview_url) {
+          spotifyAudio.src = track.preview_url;
+          spotifyAudio.currentTime = 0;
+          spotifyAudio.play().catch(e => console.warn('Preview play notice:', e));
+        } else {
+          // Empty local source so it does not conflict
+          try { spotifyAudio.removeAttribute('src'); } catch(e){}
+        }
+
+        // B. Spotify Web Playback SDK (For authenticated Premium users)
+        if (spotifySdkDeviceId && track.uri) {
+          getValidSpotifyToken().then(t => {
+            if (t) {
+              fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ uris: [track.uri] })
+              }).catch(() => {});
+            }
+          });
+        }
+
+        // C. Spotify Embed Controller (Iframe API)
+        if (spotifyIframeController) {
+          try {
+            spotifyIframeController.loadUri(`spotify:track:${track.id}`);
+            spotifyIframeController.play();
+          } catch(e) {
+            openSpotifyEmbed('track', track.id);
+          }
+        } else {
+          openSpotifyEmbed('track', track.id);
+        }
+
+        startSpotifyProgressSimulation();
+      },
+
+      togglePlay() {
+        if (this.source === 'spotify') {
+          if (this.spotifyIsPlaying) {
+            // Pause Spotify
+            this.spotifyIsPlaying = false;
+            if (!spotifyAudio.paused) spotifyAudio.pause();
+            if (spotifyIframeController) { try { spotifyIframeController.pause(); } catch(e){} }
+            if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
+            stopSpotifyProgressSimulation();
+            updatePlayUI(false);
+          } else {
+            // Resume Spotify
+            this.spotifyIsPlaying = true;
+            if (this.spotifyTrack && this.spotifyTrack.preview_url) {
+              spotifyAudio.play().catch(() => {});
+            }
+            if (spotifyIframeController) { try { spotifyIframeController.resume(); } catch(e){} }
+            if (spotifySdkPlayer) { try { spotifySdkPlayer.resume(); } catch(e){} }
+            startSpotifyProgressSimulation();
+            updatePlayUI(true);
+          }
+        } else {
+          // DJ Eddie or Local 45s
+          if (spotifyAudio.paused) {
+            spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+          } else {
+            spotifyAudio.pause();
+            updatePlayUI(false);
+          }
+        }
+      },
+
+      next() {
+        if (this.source === 'spotify') {
+          if (this.spotifyQueue && this.spotifyQueue.length > 0) {
+            const nextIdx = (this.spotifyIndex + 1) % this.spotifyQueue.length;
+            this.playSpotify(this.spotifyQueue[nextIdx], this.spotifyQueue, nextIdx);
+          } else {
+            nextDjEddieTrack();
+          }
+        } else if (this.source === 'djeddie' || isDjEddieActive) {
+          nextDjEddieTrack();
+        } else {
+          const curIdx = bandKeys.indexOf(activeBandId);
+          const nextIdx = (curIdx + 1) % bandKeys.length;
+          loadBand(bandKeys[nextIdx], true);
+        }
+      },
+
+      prev() {
+        if (this.source === 'spotify') {
+          if (this.spotifyQueue && this.spotifyQueue.length > 0) {
+            const prevIdx = (this.spotifyIndex - 1 + this.spotifyQueue.length) % this.spotifyQueue.length;
+            this.playSpotify(this.spotifyQueue[prevIdx], this.spotifyQueue, prevIdx);
+          } else {
+            prevDjEddieTrack();
+          }
+        } else if (this.source === 'djeddie' || isDjEddieActive) {
+          prevDjEddieTrack();
+        } else {
+          const curIdx = bandKeys.indexOf(activeBandId);
+          const prevIdx = (curIdx - 1 + bandKeys.length) % bandKeys.length;
+          loadBand(bandKeys[prevIdx], true);
+        }
+      },
+
+      seek(pct) {
+        pct = Math.max(0, Math.min(1, pct));
+        if (this.source === 'spotify') {
+          const durMs = this.spotifyDurationMs || 180000;
+          this.spotifyPositionMs = pct * durMs;
+          const curSec = Math.floor(this.spotifyPositionMs / 1000);
+
+          if (this.spotifyTrack && this.spotifyTrack.preview_url && spotifyAudio.duration) {
+            spotifyAudio.currentTime = pct * spotifyAudio.duration;
+          }
+          if (spotifyIframeController) {
+            try { spotifyIframeController.seek(curSec); } catch(e){}
+          }
+          if (spotifySdkPlayer) {
+            try { spotifySdkPlayer.seek(Math.floor(this.spotifyPositionMs)); } catch(e){}
+          }
+          if (spotifySdkDeviceId) {
+            getValidSpotifyToken().then(token => {
+              if (token) {
+                fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${Math.floor(pct * durMs)}&device_id=${spotifySdkDeviceId}`, {
+                  method: 'PUT',
+                  headers: { 'Authorization': `Bearer ${token}` }
+                }).catch(() => {});
+              }
+            });
+          }
+
+          if (spotifyProgressFill) spotifyProgressFill.style.width = `${pct * 100}%`;
+          if (miniProgressFill) miniProgressFill.style.width = `${pct * 100}%`;
+          if (modalProgressFill) modalProgressFill.style.width = `${pct * 100}%`;
+          if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
+          if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(curSec);
+        } else {
+          const dur = spotifyAudio.duration || 44.95;
+          spotifyAudio.currentTime = pct * dur;
+        }
       }
+    };
+
+    let spotifyProgressInterval = null;
+
+    function startSpotifyProgressSimulation() {
+      if (spotifyProgressInterval) clearInterval(spotifyProgressInterval);
+      spotifyProgressInterval = setInterval(() => {
+        if (GlobalAudioPlayer.source !== 'spotify' || !GlobalAudioPlayer.spotifyIsPlaying) return;
+
+        // If native audio is actively playing preview_url, timeupdate event handles the sync
+        if (GlobalAudioPlayer.spotifyTrack && GlobalAudioPlayer.spotifyTrack.preview_url && !spotifyAudio.paused) {
+          return;
+        }
+
+        GlobalAudioPlayer.spotifyPositionMs += 500;
+        const durMs = GlobalAudioPlayer.spotifyDurationMs || 180000;
+        if (GlobalAudioPlayer.spotifyPositionMs >= durMs) {
+          GlobalAudioPlayer.next();
+          return;
+        }
+        const pct = (GlobalAudioPlayer.spotifyPositionMs / durMs) * 100;
+        const curSec = Math.floor(GlobalAudioPlayer.spotifyPositionMs / 1000);
+        const durSec = Math.floor(durMs / 1000);
+
+        if (spotifyProgressFill) spotifyProgressFill.style.width = `${pct}%`;
+        if (miniProgressFill) miniProgressFill.style.width = `${pct}%`;
+        if (modalProgressFill) modalProgressFill.style.width = `${pct}%`;
+        if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
+        if (barTimeTotal) barTimeTotal.textContent = formatTime(durSec);
+        if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(curSec);
+        if (modalTimeTotal) modalTimeTotal.textContent = formatTime(durSec);
+      }, 500);
+    }
+
+    function stopSpotifyProgressSimulation() {
+      if (spotifyProgressInterval) {
+        clearInterval(spotifyProgressInterval);
+        spotifyProgressInterval = null;
+      }
+    }
+
+    function prevDjEddieTrack() {
+      if (!djEddieQueue.length) buildDjEddieCatalog();
+      const prevIdx = (djEddieIndex - 1 + djEddieQueue.length) % djEddieQueue.length;
+      playDjEddieItem(prevIdx, false);
+    }
+
+    // Global Play / Pause Trigger
+    function togglePlay() {
+      GlobalAudioPlayer.togglePlay();
     }
 
     function updatePlayUI(isPlaying) {
@@ -5902,9 +6200,26 @@
 
     btnBarPlayPause.addEventListener('click', togglePlay);
 
-    // Audio time update
+    // Audio time update (Native HTML5 Audio)
     spotifyAudio.addEventListener('timeupdate', () => {
       const cur = spotifyAudio.currentTime;
+
+      // When playing Spotify preview MP3
+      if (GlobalAudioPlayer.source === 'spotify') {
+        const dur = spotifyAudio.duration || (GlobalAudioPlayer.spotifyDurationMs / 1000) || 30;
+        const pct = Math.min(100, Math.max(0, (cur / dur) * 100));
+        spotifyProgressFill.style.width = `${pct}%`;
+        barTimeCurrent.textContent = formatTime(cur);
+        barTimeTotal.textContent = formatTime(dur);
+
+        if (miniProgressFill) miniProgressFill.style.width = `${pct}%`;
+        if (modalProgressFill) modalProgressFill.style.width = `${pct}%`;
+        if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(cur);
+        if (modalTimeTotal) modalTimeTotal.textContent = formatTime(dur);
+        return;
+      }
+
+      // DJ Eddie / Local 45s audio
       const b = bands[activeBandId];
       const isFull = (activeTrackFormat === 'full' && b && b.hasFullTrack && b.fullTrack);
       const expectedDur = isFull ? b.fullTrack.duration : 44.95;
@@ -5920,7 +6235,7 @@
       if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(cur);
       if (modalTimeTotal) modalTimeTotal.textContent = formatTime(dur);
 
-      // Second-by-second Spotify lyrics sync & auto-scroll
+      // Second-by-second Spotify lyrics sync & auto-scroll (local bands)
       const lyricItems = document.querySelectorAll('.spotify-lyric-item');
       let currentIdx = -1;
 
@@ -5978,6 +6293,10 @@
     });
 
     spotifyAudio.addEventListener('ended', () => {
+      if (GlobalAudioPlayer.source === 'spotify') {
+        GlobalAudioPlayer.next();
+        return;
+      }
       if (isDjEddieActive || activeTrackFormat === 'full') {
         nextDjEddieTrack();
         return;
@@ -5987,28 +6306,23 @@
       spotifyProgressFill.style.width = '0%';
     });
 
-    // Timeline Scrubbing
+    // Timeline Scrubbing for Desktop Player Bar
     spotifyProgressBar.addEventListener('click', (e) => {
       const rect = spotifyProgressBar.getBoundingClientRect();
       const pos = (e.clientX - rect.left) / rect.width;
-      const dur = spotifyAudio.duration || 44.95;
-      spotifyAudio.currentTime = pos * dur;
+      GlobalAudioPlayer.seek(pos);
     });
 
-    // Next / Previous Band
+    // Next / Previous Global Controls
     btnBarNext.addEventListener('click', () => {
-      const curIdx = bandKeys.indexOf(activeBandId);
-      const nextIdx = (curIdx + 1) % bandKeys.length;
-      loadBand(bandKeys[nextIdx], true);
+      GlobalAudioPlayer.next();
     });
 
     btnBarPrev.addEventListener('click', () => {
-      const curIdx = bandKeys.indexOf(activeBandId);
-      const prevIdx = (curIdx - 1 + bandKeys.length) % bandKeys.length;
-      loadBand(bandKeys[prevIdx], true);
+      GlobalAudioPlayer.prev();
     });
 
-    // Voice Switcher (Integrated into Profile Lateral Drawer)
+        // Voice Switcher (Integrated into Profile Lateral Drawer)
     function selectVoice(voice) {
       activeVoice = voice;
       document.querySelectorAll('.drawer-voice-card, .voice-card').forEach(c => {
@@ -6233,8 +6547,7 @@
       modalProgressBar.addEventListener('click', (e) => {
         const rect = modalProgressBar.getBoundingClientRect();
         const pos = (e.clientX - rect.left) / rect.width;
-        const dur = spotifyAudio.duration || 44.95;
-        spotifyAudio.currentTime = pos * dur;
+        GlobalAudioPlayer.seek(pos);
       });
     }
     if (btnModalVoiceSelect) {
@@ -6710,37 +7023,53 @@
       `;
     }
 
-    async function playSpotifyTrack(track, rowEl) {
-      if (!spotifyAudio.paused) {
-        spotifyAudio.pause();
-        updatePlayUI(false);
-      }
+    let spotifyIframeController = null;
+    let isSpotifyIframeReady = false;
 
+    // Spotify Iframe API callback for seamless controller integration
+    window.onSpotifyIframeApiReady = (IFrameAPI) => {
+      const container = document.getElementById('spotifyEmbedIframeContainer');
+      if (!container) return;
+      const options = {
+        width: '100%',
+        height: 152,
+        uri: 'spotify:track:4cOdK2wGLETKBW3PvgPWqT'
+      };
+      IFrameAPI.createController(container, options, (EmbedController) => {
+        spotifyIframeController = EmbedController;
+        isSpotifyIframeReady = true;
+
+        EmbedController.addListener('playback_update', e => {
+          if (GlobalAudioPlayer.source === 'spotify') {
+            const isPaused = e.data.isPaused;
+            GlobalAudioPlayer.spotifyIsPlaying = !isPaused;
+            updatePlayUI(!isPaused);
+
+            if (e.data.duration > 0) {
+              GlobalAudioPlayer.spotifyDurationMs = e.data.duration;
+              GlobalAudioPlayer.spotifyPositionMs = e.data.position;
+              const curSec = Math.floor(e.data.position / 1000);
+              const durSec = Math.floor(e.data.duration / 1000);
+              const pct = Math.min(100, Math.max(0, (e.data.position / e.data.duration) * 100));
+
+              if (spotifyProgressFill) spotifyProgressFill.style.width = `${pct}%`;
+              if (miniProgressFill) miniProgressFill.style.width = `${pct}%`;
+              if (modalProgressFill) modalProgressFill.style.width = `${pct}%`;
+              if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
+              if (barTimeTotal) barTimeTotal.textContent = formatTime(durSec);
+              if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(curSec);
+              if (modalTimeTotal) modalTimeTotal.textContent = formatTime(durSec);
+            }
+          }
+        });
+      });
+    };
+
+    async function playSpotifyTrack(track, rowEl = null, queue = [], index = -1) {
       document.querySelectorAll('.sp-song-row, .spotify-api-track-card').forEach(c => c.classList.remove('playing'));
       if (rowEl) rowEl.classList.add('playing');
 
-      openSpotifyEmbed('track', track.id);
-
-      if (spotifySdkDeviceId && track.uri) {
-        const token = await getValidSpotifyToken();
-        if (token) {
-          fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ uris: [track.uri] })
-          }).catch(() => {});
-        }
-      }
-
-      const albumImg = (track.album && track.album.images && track.album.images.length > 0) ? track.album.images[0].url : null;
-      const artistNames = (track.artists || []).map(a => a.name).join(', ');
-      const barThumbImg = document.getElementById('barThumbImg');
-      if (barThumbImg && albumImg) barThumbImg.src = albumImg;
-      if (barTitle) barTitle.textContent = track.name;
-      if (barArtist) barArtist.textContent = `${artistNames} • Spotify`;
+      GlobalAudioPlayer.playSpotify(track, queue, index);
     }
 
     async function playSpotifyContext(entityType, entityId, entityUri, title, subtitle, imgUrl) {
@@ -6767,10 +7096,12 @@
       const barThumbImg = document.getElementById('barThumbImg');
       if (barThumbImg && imgUrl) barThumbImg.src = imgUrl;
       if (barTitle && title) barTitle.textContent = title;
-      if (barArtist && subtitle) barArtist.textContent = `${subtitle} • Spotify`;
+      if (barArtist && subtitle) {
+        barArtist.innerHTML = `<span class="player-source-badge spotify">SPOTIFY</span> ${escapeHtmlStr(subtitle)}`;
+      }
     }
 
-    function createSongRowElement(track, indexNum = null) {
+        function createSongRowElement(track, indexNum = null, queue = [], queueIndex = -1) {
       const imgUrl = (track.album && track.album.images && track.album.images.length > 0)
         ? (track.album.images[track.album.images.length - 1].url || track.album.images[0].url)
         : 'img/covers/cover_kiss.png';
@@ -6800,7 +7131,7 @@
           </button>
         </div>
       `;
-      row.addEventListener('click', () => playSpotifyTrack(track, row));
+      row.addEventListener('click', () => playSpotifyTrack(track, row, queue, queueIndex));
       return row;
     }
 
@@ -6866,7 +7197,7 @@
         songsSec.innerHTML = `<div class="sp-block-heading-row"><h3 class="sp-block-heading">Canciones populares de ${escapeHtmlStr(artist.name)}</h3></div>`;
         const songsList = document.createElement('div');
         songsList.className = 'sp-songs-list';
-        artistTracks.forEach((t, i) => songsList.appendChild(createSongRowElement(t, i + 1)));
+        artistTracks.forEach((t, i) => songsList.appendChild(createSongRowElement(t, i + 1, artistTracks, i)));
         songsSec.appendChild(songsList);
         spotifyApiTracksGrid.appendChild(songsSec);
 
@@ -6926,7 +7257,7 @@
         songsList.className = 'sp-songs-list';
         items.forEach((t, idx) => {
           t.album = album;
-          songsList.appendChild(createSongRowElement(t, t.track_number || (idx + 1)));
+          songsList.appendChild(createSongRowElement(t, t.track_number || (idx + 1), items, idx));
         });
         songsSec.appendChild(songsList);
         spotifyApiTracksGrid.appendChild(songsSec);
@@ -7088,7 +7419,7 @@
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           `;
-          topResultCard.addEventListener('click', () => playSpotifyTrack(topTrack, topResultCard));
+          topResultCard.addEventListener('click', () => playSpotifyTrack(topTrack, topResultCard, tracks, 0));
         }
         topLeftWrap.appendChild(topResultCard);
         topSplit.appendChild(topLeftWrap);
@@ -7103,7 +7434,7 @@
         `;
         const songsBox = document.createElement('div');
         songsBox.className = 'sp-songs-list';
-        tracks.slice(0, 5).forEach(t => songsBox.appendChild(createSongRowElement(t)));
+        tracks.slice(0, 5).forEach((t, i) => songsBox.appendChild(createSongRowElement(t, null, tracks, i)));
         topRightWrap.appendChild(songsBox);
         topSplit.appendChild(topRightWrap);
 
@@ -7174,7 +7505,7 @@
       if (activeSpotifyTab === 'tracks') {
         const listWrap = document.createElement('div');
         listWrap.className = 'sp-songs-list';
-        tracks.forEach((t, idx) => listWrap.appendChild(createSongRowElement(t, idx + 1)));
+        tracks.forEach((t, idx) => listWrap.appendChild(createSongRowElement(t, idx + 1, tracks, idx)));
         spotifyApiTracksGrid.appendChild(listWrap);
 
         const moreBtn = document.createElement('button');
@@ -7456,5 +7787,7 @@
     renderQuickBanners();
     renderSpotifyHomeShelves();
   </script>
+  <!-- Spotify Embed Iframe API for Programmatic Controller -->
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </body>
 </html>
