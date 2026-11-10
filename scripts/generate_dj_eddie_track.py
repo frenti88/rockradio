@@ -43,6 +43,9 @@ FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/f
 
 APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
 
+DEFAULT_VOICE = "es-US-AlonsoNeural"
+DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
+
 MASTER_CURATED_STORIES = {
     "bohemian rhapsody": (
         "En el caluroso verano de 1975, Freddie Mercury llegó a los estudios Rockfield en Gales con la estructura de Bohemian Rhapsody concebida en pequeñas hojas de papel y guías telefónicas. "
@@ -598,7 +601,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
     tmp_prefix = f"/tmp/fred_rewind_{pid}_{int(t_start*1000)}"
 
-    voice = "es-CO-GonzaloNeural"
+    voice = DEFAULT_VOICE
     temp_files = []
 
     def is_cancelled():
@@ -656,13 +659,13 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
                 ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
 
     # 2. Síntesis concurrente ultrarrápida con Edge-TTS
-    # Locución de historia: relajada, evocadora y cálida (-2% ritmo, -2Hz pitch)
+    # Locución en español latino natural (Alonso): ritmo y tono naturales (+0%, +0Hz)
     tts_tasks = []
-    tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="-2%", pitch="-2Hz").save(ap_mp3))
+    tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="+0%", pitch="+0Hz").save(ap_mp3))
     for idx, s_text in enumerate(dev_tts_list):
-        tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="-2%", pitch="-2Hz").save(dev_mp3_paths[idx]))
-    # Cierre con llamada enérgica a la acción (+3% ritmo, +0Hz)
-    tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+3%", pitch="+0Hz").save(ci_mp3))
+        tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
+    # Cierre con llamada enérgica a la acción (+2% ritmo, +0Hz)
+    tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+2%", pitch="+0Hz").save(ci_mp3))
 
     await asyncio.gather(*tts_tasks)
 
@@ -685,7 +688,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     make_silence_mp3(0.45, sil_sent_mp3)  # Respiración natural tras cada punto final
     make_silence_mp3(0.65, sil_ci_mp3)    # Pausa dramática previa al sube el volumen
 
-    # 5. Ensamblaje secuencial sin solapamientos ni cortes
+    # 5. Ensamblaje secuencial de la pista vocal sin solapamientos
     concat_list = [ap_mp3, sil_ap_mp3]
     for idx, dev_p in enumerate(dev_mp3_paths):
         concat_list.append(dev_p)
@@ -713,30 +716,69 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # 6. Masterización analógica radial con FFmpeg
+    # 6. Masterización analógica con mezcla de música de fondo tenue instrumental sin derechos de autor
     if not out_mp3_path:
         out_mp3_path = f"/tmp/dj_fredd_{pid}.mp3"
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
 
-    master_filter = (
-        "aresample=44100,"
-        "highpass=f=65,"
-        "equalizer=f=120:width_type=o:width=1.0:g=1.8,"
-        "equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
-        "equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
-        "equalizer=f=10000:width_type=o:width=1.5:g=1.2,"
-        "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
-        "alimiter=limit=-1.0dB:attack=5:release=50"
-    )
+    total_voice_dur = get_audio_duration(raw_concat_mp3)
+    ci_start = round(dur_ap + 0.55 + sum(dur_dev_list) + max(0, len(dur_dev_list) - 1) * 0.45 + 0.65, 2)
 
-    cmd = [
-        FFMPEG_BIN, "-y",
-        "-i", raw_concat_mp3,
-        "-af", master_filter,
-        "-codec:a", "libmp3lame",
-        "-b:a", "192k",
-        out_mp3_path
-    ]
+    has_bed = os.path.exists(DEFAULT_MUSIC_BED) and os.path.getsize(DEFAULT_MUSIC_BED) > 10000
+
+    if has_bed:
+        # Colchón musical tenue instrumental:
+        # - atrim: recortado a la duración de la voz
+        # - afade in: entrada suave en 1.8 segundos
+        # - afade out: bajada suave de 2.2 segundos exactamente al iniciar el cierre institucional
+        # - highpass 120Hz & lowpass 6500Hz: despeja frecuencias de graves y presencia para la voz
+        # - volume 0.075 (-22.5dB): nivel tenue perfecto de colchón de radio
+        # - Ecualización cálida analógica para la voz
+        # - Compresión broadcast y limitador True Peak a -1.0dB
+        filter_complex = (
+            f"[1:a]atrim=0:{total_voice_dur},aresample=44100,"
+            f"afade=t=in:st=0:d=1.8,afade=t=out:st={ci_start}:d=2.2,"
+            f"highpass=f=120,lowpass=f=6500,volume=0.075[bed];"
+            f"[0:a]aresample=44100,"
+            f"highpass=f=65,"
+            f"equalizer=f=120:width_type=o:width=1.0:g=1.8,"
+            f"equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
+            f"equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
+            f"equalizer=f=10000:width_type=o:width=1.5:g=1.2[vox];"
+            f"[vox][bed]amix=inputs=2:duration=first:dropout_transition=2[mixed];"
+            f"[mixed]acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
+            f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
+        )
+        cmd = [
+            FFMPEG_BIN, "-y",
+            "-i", raw_concat_mp3,
+            "-i", DEFAULT_MUSIC_BED,
+            "-filter_complex", filter_complex,
+            "-map", "[aout]",
+            "-codec:a", "libmp3lame",
+            "-b:a", "192k",
+            out_mp3_path
+        ]
+    else:
+        master_filter = (
+            "aresample=44100,"
+            "highpass=f=65,"
+            "equalizer=f=120:width_type=o:width=1.0:g=1.8,"
+            "equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
+            "equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
+            "equalizer=f=10000:width_type=o:width=1.5:g=1.2,"
+            "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
+            "alimiter=limit=-1.0dB:attack=5:release=50"
+        )
+        cmd = [
+            FFMPEG_BIN, "-y",
+            "-i", raw_concat_mp3,
+            "-af", master_filter,
+            "-codec:a", "libmp3lame",
+            "-b:a", "192k",
+            out_mp3_path
+        ]
+
     subprocess.run(cmd, capture_output=True, check=True)
 
     if is_cancelled():
@@ -813,8 +855,9 @@ def run_server(port=5055):
                     'status': 'online',
                     'service': 'Fred Rewind • Servicio Oficial de Audio con DJ Fredd',
                     'voice': 'DJ Fredd',
-                    'voiceModel': 'es-CO-GonzaloNeural',
-                    'engine': 'Edge-TTS + Master Radio FM Analog Chain',
+                    'voiceModel': 'es-US-AlonsoNeural (Español Latino Natural)',
+                    'musicBed': 'Slow Burn - Kevin MacLeod (CC-BY 4.0 Royalty-Free Commercial Instrumental Bed)',
+                    'engine': 'Edge-TTS + Master Radio FM Analog Chain + Colchón Instrumental',
                     'lyricsSync': True,
                     'port': port,
                     'activeJobsCount': len(ACTIVE_JOBS),
@@ -895,7 +938,7 @@ def run_server(port=5055):
                         'duration': duration_fmt,
                         'durationSec': round(duration, 2),
                         'elapsedSec': round(elapsed, 2),
-                        'voice': 'DJ Fredd (es-CO-GonzaloNeural FM Master)',
+                        'voice': 'DJ Fredd (es-US-AlonsoNeural • Español Latino Natural + Colchón Instrumental)',
                         'trackId': track_id,
                         'jobId': job_id,
                         'intro_timings': intro_timings,
@@ -1045,7 +1088,7 @@ def run_server(port=5055):
 
     server = ThreadingHTTPServer(('0.0.0.0', port), DjFreddAudioHandler)
     print(f"🚀 [DJ FREDD SERVICE] Servidor de locuciones maestras en http://0.0.0.0:{port}/api/generate_audio", flush=True)
-    print(f"   Voz: DJ Fredd (es-CO-GonzaloNeural FM Master) | Sincronización de letras activa", flush=True)
+    print(f"   Voz: DJ Fredd (es-US-AlonsoNeural • Español Latino Natural + Colchón Instrumental) | Sincronización activa", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
