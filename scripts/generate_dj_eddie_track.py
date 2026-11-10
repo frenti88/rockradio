@@ -160,6 +160,11 @@ MASTER_CURATED_STORIES = {
         "sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, "
         "Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante "
         "sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora."
+    ),
+    "help": (
+        "En 1965, durante la cumbre de la Beatlemanía, The Beatles filmaban su segunda película entre las Bahamas y Londres. "
+        "John Lennon, sintiendo el peso abrumador de la fama mundial y un profundo agotamiento emocional, compuso esta confesión directa y honesta en su mansión de Kenwood. "
+        "Aunque Paul McCartney y la banda la vistieron con un ritmo de rock and roll enérgico y brillante, Lennon siempre la consideró uno de sus temas más sinceros y personales de toda su carrera."
     )
 }
 
@@ -210,6 +215,234 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
     cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!"
     full_script = f"{APERTURA_OBLIGATORIA} {dev_story} {cierre}"
     return APERTURA_OBLIGATORIA, dev_story, cierre, full_script
+
+# ==============================================================================
+# DICCIONARIO FONÉTICO MAESTRO PARA PRONUNCIACIÓN EN INGLÉS (DJ EDDIE)
+# Adapta nombres de bandas, músicos, lugares, discos y canciones para que la voz
+# neural hispanohablante (es-US-AlonsoNeural) los pronuncie de forma natural en inglés.
+# ==============================================================================
+ENGLISH_PHONETICS = [
+    # Bandas y Agrupaciones
+    (r'\bThe Beatles\b', 'De Bítels'),
+    (r'\bBeatles\b', 'Bítels'),
+    (r'\bBeatlemanía\b', 'Bítel-manía'),
+    (r'\bThe Rolling Stones\b', 'De Róling Stóuns'),
+    (r'\bRolling Stones\b', 'Róling Stóuns'),
+    (r'\bThe Who\b', 'De Ju'),
+    (r'\bThe Doors\b', 'De Dors'),
+    (r'\bThe Police\b', 'De Polís'),
+    (r'\bThe Clash\b', 'De Klash'),
+    (r'\bLed Zeppelin\b', 'Led Zépelin'),
+    (r'\bPink Floyd\b', 'Pink Flóid'),
+    (r'\bDeep Purple\b', 'Dip Pérpol'),
+    (r'\bBlack Sabbath\b', 'Blak Sábas'),
+    (r'\bQueen\b', 'Cuín'),
+    (r'\bAC/DC\b', 'Ei-Si Di-Si'),
+    (r'\bAerosmith\b', 'Éro-smiz'),
+    (r'\bKiss\b', 'Kis'),
+    (r'\bKISS\b', 'Kis'),
+    (r'\bKISS Army\b', 'Kis Ármi'),
+    (r'\bGuns N\' Roses\b', 'Gans en Róuses'),
+    (r'\bGuns and Roses\b', 'Gans and Róuses'),
+    (r'\bMetallica\b', 'Metálica'),
+    (r'\bIron Maiden\b', 'Áiron Méiden'),
+    (r'\bJudas Priest\b', 'Yúdas Prist'),
+    (r'\bDef Leppard\b', 'Def Lépard'),
+    (r'\bMötley Crüe\b', 'Mótli Krú'),
+    (r'\bMotley Crue\b', 'Mótli Krú'),
+    (r'\bBon Jovi\b', 'Bon Yóvi'),
+    (r'\bScorpions\b', 'Scór-pions'),
+    (r'\bTwisted Sister\b', 'Tuísted Síster'),
+    (r'\bDire Straits\b', 'Dáir Stréits'),
+    (r'\bFleetwood Mac\b', 'Flít-wud Mak'),
+    (r'\bThe Eagles\b', 'De Íguls'),
+    (r'\bEagles\b', 'Íguls'),
+    (r'\bLynyrd Skynyrd\b', 'Lénard Skínard'),
+    (r'\bCreedence Clearwater Revival\b', 'Kridens Klir-uóter Rivaival'),
+    (r'\bCreedence\b', 'Kridens'),
+    (r'\bVan Halen\b', 'Van Jéilen'),
+    (r'\bRush\b', 'Rásh'),
+    (r'\bToto\b', 'Tóu-tou'),
+    (r'\bAlphaville\b', 'Álfa-vil'),
+    (r'\bTears for Fears\b', 'Tíars for Fíars'),
+    (r'\bBoston\b', 'Bóston'),
+    (r'\bJourney\b', 'Yérni'),
+    (r'\bForeigner\b', 'Fóreiner'),
+    (r'\bKansas\b', 'Kánsas'),
+    (r'\bSurvivor\b', 'Ser-váivor'),
+    (r'\bEurope\b', 'Yúrop'),
+    (r'\bWhitesnake\b', 'Uáit-sneik'),
+    (r'\bDio\b', 'Dí-o'),
+    (r'\bDokken\b', 'Dóken'),
+    (r'\bQuiet Riot\b', 'Kuáiet Rái-ot'),
+    (r'\bSkid Row\b', 'Skid Róu'),
+
+    # Músicos y Productores
+    (r'\bJohn Lennon\b', 'Yón Lénon'),
+    (r'\bLennon\b', 'Lénon'),
+    (r'\bPaul McCartney\b', 'Pol Macárney'),
+    (r'\bMcCartney\b', 'Macárney'),
+    (r'\bGeorge Harrison\b', 'Yorch Járison'),
+    (r'\bRingo Starr\b', 'Ringo Star'),
+    (r'\bFreddie Mercury\b', 'Frédi Mérkuri'),
+    (r'\bBrian May\b', 'Bráian Méi'),
+    (r'\bRoger Taylor\b', 'Róyer Téilor'),
+    (r'\bJohn Deacon\b', 'Yón Díkon'),
+    (r'\bRobert Plant\b', 'Róbert Plánt'),
+    (r'\bJimmy Page\b', 'Yími Péiy'),
+    (r'\bJohn Paul Jones\b', 'Yón Pol Yóuns'),
+    (r'\bJohn Bonham\b', 'Yón Bón-jam'),
+    (r'\bMick Jagger\b', 'Mik Yáguer'),
+    (r'\bKeith Richards\b', 'Kiz Ríchards'),
+    (r'\bPaul Stanley\b', 'Pol Stánli'),
+    (r'\bGene Simmons\b', 'Yin Símons'),
+    (r'\bAce Frehley\b', 'Eis Fréili'),
+    (r'\bPeter Criss\b', 'Píter Cris'),
+    (r'\bBruce Kulick\b', 'Brus Kúlik'),
+    (r'\bBob Ezrin\b', 'Bob Éz-rin'),
+    (r'\bMichael Bolton\b', 'Máikel Bólton'),
+    (r'\bAxl Rose\b', 'Áksel Róus'),
+    (r'\bSlash\b', 'Slásh'),
+    (r'\bDuff McKagan\b', 'Daf Mac-Kágan'),
+    (r'\bIzzy Stradlin\b', 'Ízi Strád-lin'),
+    (r'\bSteven Adler\b', 'Stíven Ádler'),
+    (r'\bJames Hetfield\b', 'Yéims Jét-fild'),
+    (r'\bKirk Hammett\b', 'Kerk Jámet'),
+    (r'\bLars Ulrich\b', 'Lars Úl-rik'),
+    (r'\bCliff Burton\b', 'Klif Bér-ton'),
+    (r'\bBob Rock\b', 'Bob Rok'),
+    (r'\bAngus Young\b', 'Ángus Yang'),
+    (r'\bMalcolm Young\b', 'Málcolm Yang'),
+    (r'\bBon Scott\b', 'Bon Skot'),
+    (r'\bBrian Johnson\b', 'Bráian Yónson'),
+    (r'\bOzzy Osbourne\b', 'Ózi Ósborn'),
+    (r'\bRandy Rhoads\b', 'Rándi Róuds'),
+    (r'\bTony Iommi\b', 'Tóni Aiómi'),
+    (r'\bGeezer Butler\b', 'Guízer Bátler'),
+    (r'\bAlice Cooper\b', 'Ális Kú-per'),
+    (r'\bDesmond Child\b', 'Déz-mond Cháild'),
+    (r'\bJon Bon Jovi\b', 'Yon Bon Yóvi'),
+    (r'\bRichie Sambora\b', 'Ríchi Sambóra'),
+    (r'\bJoe Elliott\b', 'Yóu Éliot'),
+    (r'\bRick Allen\b', 'Rik Álen'),
+    (r'\bSteve Clark\b', 'Stiv Klark'),
+    (r'\bPhil Collen\b', 'Fil Kólen'),
+    (r'\bMutt Lange\b', 'Mat Lang'),
+    (r'\bNikki Sixx\b', 'Níki Síks'),
+    (r'\bVince Neil\b', 'Vins Níl'),
+    (r'\bMick Mars\b', 'Mik Mars'),
+    (r'\bTommy Lee\b', 'Tómi Lí'),
+    (r'\bKlaus Meine\b', 'Kláus Máine'),
+    (r'\bRudolf Schenker\b', 'Rúdolf Shénker'),
+    (r'\bMatthias Jabs\b', 'Matías Yabs'),
+    (r'\bDon Henley\b', 'Don Jénli'),
+    (r'\bGlenn Frey\b', 'Glen Frái'),
+    (r'\bDon Felder\b', 'Don Félder'),
+    (r'\bJoe Walsh\b', 'Yóu Uólsh'),
+    (r'\bTimothy B. Schmit\b', 'Tímosi Shmit'),
+    (r'\bJeff Porcaro\b', 'Yef Porcáro'),
+    (r'\bDavid Paich\b', 'Déivid Péich'),
+    (r'\bSteve Lukather\b', 'Stiv Lukáser'),
+    (r'\bMarian Gold\b', 'Már-ian Góld'),
+    (r'\bGeddy Lee\b', 'Guédi Lí'),
+    (r'\bAlex Lifeson\b', 'Áleks Láif-son'),
+    (r'\bNeil Peart\b', 'Nil Pírt'),
+    (r'\bDee Snider\b', 'Di Snáider'),
+    (r'\bEddie Ojeda\b', 'Édi Oyéda'),
+    (r'\bRonnie James Dio\b', 'Róni Yéims Dí-o'),
+    (r'\bGeorge Lynch\b', 'Yorch Linch'),
+    (r'\bDon Dokken\b', 'Don Dóken'),
+    (r'\bKurt Cobain\b', 'Kert Kobéin'),
+    (r'\bDave Grohl\b', 'Déiv Groul'),
+    (r'\bKrist Novoselic\b', 'Krist Novosélik'),
+    (r'\bEddie Vedder\b', 'Édi Vé-der'),
+    (r'\bChris Cornell\b', 'Kris Kornél'),
+
+    # Canciones y Álbumes
+    (r'\bHelp!\b', '¡Jelp!'),
+    (r'\bHelp\b', 'Jelp'),
+    (r'\bYesterday\b', 'Yéster-dei'),
+    (r'\bHey Jude\b', 'Jéi Yúd'),
+    (r'\bLet It Be\b', 'Let It Bí'),
+    (r'\bCome Together\b', 'Kam Tu-gué-der'),
+    (r'\bSomething\b', 'Sám-zing'),
+    (r'\bA Day in the Life\b', 'Ei Déi in de Láif'),
+    (r'\bBohemian Rhapsody\b', 'Boují-mian Rápsodi'),
+    (r'\bWe Will Rock You\b', 'Ui Uíl Rok Yú'),
+    (r'\bWe Are the Champions\b', 'Ui Ar de Chám-pions'),
+    (r'\bAnother One Bites the Dust\b', 'Anó-der Uan Báits de Dast'),
+    (r'\bHotel California\b', 'Joutél Califórnia'),
+    (r'\bStairway to Heaven\b', 'Stér-wei tu Jéven'),
+    (r'\bHighway to Hell\b', 'Jái-wei tu Jel'),
+    (r'\bBack in Black\b', 'Bak in Blák'),
+    (r'\bSweet Child O\' Mine\b', 'Suít Cháild o Máin'),
+    (r'\bSweet Child of Mine\b', 'Suít Cháild ov Máin'),
+    (r'\bDetroit Rock City\b', 'Detróit Rok Síti'),
+    (r'\bRock and Roll All Nite\b', 'Rok and Roul Ol Náit'),
+    (r'\bForever\b', 'For-éver'),
+    (r'\bMaster of Puppets\b', 'Máster ov Pá-pets'),
+    (r'\bEnter Sandman\b', 'Énter Sánd-man'),
+    (r'\bPoison\b', 'Póison'),
+    (r'\bHysteria\b', 'Jistíria'),
+    (r'\bPour Some Sugar on Me\b', 'Por Sam Shúgar on Mí'),
+    (r'\bShout at the Devil\b', 'Sháut at de Dévil'),
+    (r'\bSubdivisions\b', 'Sab-diví-shons'),
+    (r'\bTom Sawyer\b', 'Tom Sóyer'),
+    (r'\bForever Young\b', 'For-éver Yang'),
+    (r'\bAfrica\b', 'Áfrika'),
+    (r'\bRosanna\b', 'Rou-sána'),
+    (r'\bThe Price\b', 'De Práis'),
+    (r'\bWe\'re Not Gonna Take It\b', 'Uir Not Gó-na Téik It'),
+    (r'\bRainbow in the Dark\b', 'Réin-bou in de Dárk'),
+    (r'\bHoly Diver\b', 'Jóu-li Dáiver'),
+    (r'\bDream Warriors\b', 'Drim Uórriors'),
+    (r'\bCrazy Train\b', 'Kréisi Tréin'),
+    (r'\bMr\. Crowley\b', 'Míster Króu-li'),
+    (r'\bWind of Change\b', 'Uínd ov Chéiny'),
+    (r'\bRock You Like a Hurricane\b', 'Rok Yú Láik ei Jér-ri-kein'),
+    (r'\bDon\'t Stop Believin\'\b', 'Dount Stop Bilívin'),
+    (r'\bEye of the Tiger\b', 'Ái ov de Táiguer'),
+    (r'\bThe Final Countdown\b', 'De Fáinal Káunt-daun'),
+    (r'\bJump\b', 'Yamp'),
+    (r'\bSmoke on the Water\b', 'Smóuk on de Uóter'),
+    (r'\bParanoid\b', 'Pár-anoid'),
+    (r'\bIron Man\b', 'Áiron Man'),
+    (r'\bComfortably Numb\b', 'Kómforta-bli Nam'),
+    (r'\bWish You Were Here\b', 'Uísh Yú Uér Jír'),
+    (r'\bDream On\b', 'Drim On'),
+    (r'\bWalk This Way\b', 'Uók Dis Uéi'),
+
+    # Lugares y Términos Técnicos de Estudio
+    (r'\bKenwood\b', 'Kén-wud'),
+    (r'\bSunset Strip\b', 'Sánset Strip'),
+    (r'\bAbbey Road\b', 'Ábi Róud'),
+    (r'\bBahamas\b', 'Bajámas'),
+    (r'\brock and roll\b', 'rok and roul'),
+    (r'\bhard rock\b', 'jard rok'),
+    (r'\bheavy metal\b', 'jevi metal'),
+    (r'\bglam rock\b', 'glam rok'),
+    (r'\bthrash metal\b', 'zrash metal'),
+    (r'\briff\b', 'rif'),
+    (r'\briffs\b', 'rifs'),
+    (r'\bsolo\b', 'solo'),
+    (r'\btrack\b', 'trak'),
+    (r'\bhit\b', 'jit'),
+    (r'\bhits\b', 'jits'),
+    (r'\bsingle\b', 'sínguel'),
+    (r'\blp\b', 'el-pé')
+]
+
+def apply_english_phonetics(text):
+    """
+    Sustituye nombres propios y términos en inglés por su pronunciación fonética nativa
+    para que la voz neural en español de DJ Eddie suene auténtica, cálida y anglosajona.
+    """
+    if not text:
+        return ""
+    result = text
+    for pattern, replacement in ENGLISH_PHONETICS:
+        result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
+    return result
 
 def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
     """
@@ -304,13 +537,12 @@ def get_audio_duration(path):
 async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None):
     """
     Genera la locución oficial de DJ Eddie con todos los lineamientos maestros de producción:
-    - Voz Eddie (es-US-AlonsoNeural)
-    - Apertura obligatoria con pausa de respiración (450ms)
-    - Desarrollo con anécdota real de 30-45s y pausas naturales entre oraciones (400ms)
-    - Cierre institucional obligatorio con ganancia enérgica de cabina (2.4dB)
-    - Master analógico radial (EQ cálido, presencia, compresión analógica 4:1, limitador -0.6dB)
-    - Cálculo de timestamps exactos (intro_timings) para sincronizar la letra al 100%
-    - Soporte de cancelación en tiempo real y limpieza estricta de archivos temporales
+    - Voz Eddie (es-US-AlonsoNeural) con pronunciación fonética nativa en inglés para nombres propios y bandas.
+    - Flujo narrativo orgánico continuo: sin cortes abruptos entre oraciones, puntos o comas.
+    - Cierre institucional obligatorio con ganancia enérgica de cabina (+3.8dB) y presencia radial.
+    - Master analógico radial (EQ cálido, presencia, compresión analógica y limitador).
+    - Cálculo de timestamps exactos (intro_timings) para sincronizar la letra al 100%.
+    - Soporte de cancelación en tiempo real y limpieza estricta de archivos temporales.
     """
     pid = os.getpid()
     t_start = time.time()
@@ -346,149 +578,89 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # 1. Apertura
-    ap_mp3 = f"{tmp_prefix}_ap.mp3"
-    w_ap = f"{tmp_prefix}_ap.wav"
-    w_sil_ap = f"{tmp_prefix}_sil_ap.wav"
-    temp_files.extend([ap_mp3, w_ap, w_sil_ap])
+    # Preparar textos con pronunciación fonética en inglés para la síntesis
+    narrative_clean = f"{apertura}\n\n{' '.join(dev_sentences)}"
+    narrative_tts = apply_english_phonetics(narrative_clean)
+    cierre_tts = apply_english_phonetics(cierre)
+
+    # 1. PARTE A: Síntesis continua orgánica de Apertura + Desarrollo
+    narr_mp3 = f"{tmp_prefix}_narr.mp3"
+    temp_files.append(narr_mp3)
     if job_id:
         with ACTIVE_JOBS_LOCK:
             if job_id in ACTIVE_JOBS:
-                ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
+                ACTIVE_JOBS[job_id]['temp_files'].add(narr_mp3)
 
-    await save_tts_line_with_retry(apertura, voice, "+3%", "+1Hz", ap_mp3)
+    comm_narr = edge_tts.Communicate(narrative_tts, voice, rate="+1%", pitch="+1Hz")
+    audio_narr_bytes = bytearray()
+    boundaries = []
+
+    async for chunk in comm_narr.stream():
+        if is_cancelled():
+            cleanup_on_cancel()
+            return None, 0, 0, [], 0, ""
+        if chunk['type'] == 'audio':
+            audio_narr_bytes.extend(chunk['data'])
+        elif chunk['type'] == 'SentenceBoundary':
+            st = round(chunk['offset'] / 10000000, 2)
+            dur = round(chunk['duration'] / 10000000, 2)
+            en = round(st + dur, 2)
+            boundaries.append({'start': st, 'end': en, 'text': chunk['text']})
+
+    with open(narr_mp3, 'wb') as f:
+        f.write(audio_narr_bytes)
+
+    dur_narr = get_audio_duration(narr_mp3)
+
     if is_cancelled():
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    trim_and_boost_wav(ap_mp3, w_ap, "1.2dB")
-    make_silence_wav(0.45, w_sil_ap)
-    dur_ap = get_audio_duration(w_ap)
-
-    intro_timings = []
-    t_cursor = 0.0
-    intro_timings.append({
-        'start': round(t_cursor, 2),
-        'end': round(t_cursor + dur_ap, 2),
-        'text': apertura
-    })
-    t_cursor += dur_ap + 0.45
-    concat_list = [w_ap, w_sil_ap]
-
-    # 2. Desarrollo (Oraciones de la historia con respiraciones naturales)
-    for idx, sent in enumerate(dev_sentences):
-        if is_cancelled():
-            cleanup_on_cancel()
-            return None, 0, 0, [], 0, ""
-
-        s_mp3 = f"{tmp_prefix}_dev_{idx}.mp3"
-        w_s = f"{tmp_prefix}_dev_{idx}.wav"
-        w_sil = f"{tmp_prefix}_dev_sil_{idx}.wav"
-        temp_files.extend([s_mp3, w_s, w_sil])
-        if job_id:
-            with ACTIVE_JOBS_LOCK:
-                if job_id in ACTIVE_JOBS:
-                    ACTIVE_JOBS[job_id]['temp_files'].update([s_mp3, w_s, w_sil])
-
-        await save_tts_line_with_retry(sent, voice, "+3%", "+1Hz", s_mp3)
-        if is_cancelled():
-            cleanup_on_cancel()
-            return None, 0, 0, [], 0, ""
-
-        trim_and_boost_wav(s_mp3, w_s, "1.6dB")
-        make_silence_wav(0.40, w_sil)
-
-        dur_s = get_audio_duration(w_s)
-        intro_timings.append({
-            'start': round(t_cursor, 2),
-            'end': round(t_cursor + dur_s, 2),
-            'text': sent
-        })
-        t_cursor += dur_s + 0.40
-        concat_list.extend([w_s, w_sil])
-
-    # 3. Cierre Institucional Obligatorio
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
-
+    # 2. PARTE B: Cierre institucional con subida de energía y entrega radial (+4% ritmo, +2Hz entonación)
     ci_mp3 = f"{tmp_prefix}_ci.mp3"
-    w_ci = f"{tmp_prefix}_ci.wav"
-    temp_files.extend([ci_mp3, w_ci])
+    temp_files.append(ci_mp3)
     if job_id:
         with ACTIVE_JOBS_LOCK:
             if job_id in ACTIVE_JOBS:
-                ACTIVE_JOBS[job_id]['temp_files'].update([ci_mp3, w_ci])
+                ACTIVE_JOBS[job_id]['temp_files'].add(ci_mp3)
 
-    await save_tts_line_with_retry(cierre, voice, "+5%", "+2Hz", ci_mp3)
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
-
-    trim_and_boost_wav(ci_mp3, w_ci, "2.4dB")
-    dur_ci = get_audio_duration(w_ci)
-
-    intro_timings.append({
-        'start': round(t_cursor, 2),
-        'end': round(t_cursor + dur_ci, 2),
-        'text': cierre
-    })
-    concat_list.append(w_ci)
-    intro_end = round(t_cursor + dur_ci, 2)
+    await save_tts_line_with_retry(cierre_tts, voice, "+4%", "+2Hz", ci_mp3)
+    dur_ci = get_audio_duration(ci_mp3)
 
     if is_cancelled():
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # Concatenar todos los segmentos
-    concat_txt = f"{tmp_prefix}_concat.txt"
-    temp_files.append(concat_txt)
-    with open(concat_txt, "w") as f:
-        for fn in concat_list:
-            f.write(f"file '{fn}'\n")
-
-    raw_voice_wav = f"{tmp_prefix}_raw.wav"
-    temp_files.append(raw_voice_wav)
-    subprocess.run([FFMPEG_BIN, "-y", "-f", "concat", "-safe", "0", "-i", concat_txt, raw_voice_wav], capture_output=True, check=True)
-
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
-
-    # Cadena de procesamiento analógico radial de DJ Eddie:
-    # 1. Pitch shift sutil (1.055)
-    # 2. Highpass filter para eliminar ruidos sub-bajos
-    # 3. Ecualización de presencia vocal: cuerpo cálido en 135Hz, recorte de caja en 260Hz, brillo en 3400Hz y aire en 7500Hz
-    # 4. Compresor de estudio (-16dB threshold, 4:1 ratio, 2.6dB makeup)
-    # 5. Limitador estricto (-0.6dB peak)
-    vc_filter_base = (
-        "aresample=44100,"
-        "asetrate=44100*1.055,"
-        "atempo=1/1.055,"
-        "aresample=44100,"
-        "highpass=f=80,"
-        "equalizer=f=135:width_type=o:width=1.0:g=2.4,"
-        "equalizer=f=260:width_type=o:width=1.0:g=-1.8,"
-        "equalizer=f=3400:width_type=o:width=1.2:g=4.8,"
-        "equalizer=f=7500:width_type=o:width=1.5:g=3.0,"
-        "acompressor=threshold=-16dB:ratio=4.0:attack=8:release=90:makeup=2.6,"
-        "alimiter=limit=-0.6dB:attack=5:release=50:asc=1"
-    )
-
+    # 3. Masterización con subida de volumen motivada al pedir subir el volumen
     if not out_mp3_path:
         out_mp3_path = f"/tmp/dj_eddie_{pid}.mp3"
-
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
 
-    # Masterizar MP3 a 192k
-    subprocess.run([
+    filter_complex = (
+        "[0:a]aresample=44100,volume=1.2dB,equalizer=f=135:width_type=o:width=1.0:g=2.2,equalizer=f=3400:width_type=o:width=1.2:g=3.8[a0];"
+        "[1:a]aresample=44100,volume=3.8dB,equalizer=f=140:width_type=o:width=1.0:g=2.6,equalizer=f=3600:width_type=o:width=1.2:g=5.5[a1];"
+        "[a0][a1]acrossfade=d=0.15:c1=tri:c2=tri[amix];"
+        "[amix]aresample=44100,"
+        "highpass=f=75,"
+        "equalizer=f=135:width_type=o:width=1.0:g=1.8,"
+        "equalizer=f=260:width_type=o:width=1.0:g=-1.5,"
+        "equalizer=f=3400:width_type=o:width=1.2:g=3.2,"
+        "equalizer=f=7500:width_type=o:width=1.5:g=2.5,"
+        "acompressor=threshold=-15dB:ratio=3.5:attack=10:release=100:makeup=2.2,"
+        "alimiter=limit=-0.5dB:attack=5:release=50[aout]"
+    )
+
+    cmd = [
         FFMPEG_BIN, "-y",
-        "-i", raw_voice_wav,
-        "-af", vc_filter_base,
+        "-i", narr_mp3,
+        "-i", ci_mp3,
+        "-filter_complex", filter_complex,
+        "-map", "[aout]",
         "-codec:a", "libmp3lame",
         "-b:a", "192k",
         out_mp3_path
-    ], capture_output=True, check=True)
+    ]
+    subprocess.run(cmd, capture_output=True, check=True)
 
     if is_cancelled():
         cleanup_on_cancel()
@@ -496,6 +668,39 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
+
+    # 4. Construcción precisa de intro_timings con el texto oficial en pantalla
+    intro_timings = []
+    ap_end = boundaries[1]['end'] if len(boundaries) > 1 else (boundaries[0]['end'] if boundaries else 5.5)
+    intro_timings.append({
+        'start': 0.0,
+        'end': round(ap_end, 2),
+        'text': apertura
+    })
+
+    dev_offset = 2 if len(boundaries) > len(dev_sentences) + 1 else 1
+    for idx, sent in enumerate(dev_sentences):
+        b_idx = dev_offset + idx
+        if b_idx < len(boundaries):
+            st = round(boundaries[b_idx]['start'], 2)
+            en = round(boundaries[b_idx]['end'], 2)
+        else:
+            st = round(intro_timings[-1]['end'], 2)
+            rem = max(1.0, dur_narr - st)
+            en = round(st + (rem / (len(dev_sentences) - idx)), 2)
+        intro_timings.append({
+            'start': st,
+            'end': en,
+            'text': sent
+        })
+
+    intro_end = round(max(0.0, dur_narr - 0.15), 2)
+    intro_timings.append({
+        'start': intro_end,
+        'end': round(duration, 2),
+        'text': cierre
+    })
+
     print(f"✓ [DJ EDDIE SERVICE] Locución maestra generada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
 
     # Limpieza de archivos temporales

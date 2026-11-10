@@ -7991,6 +7991,11 @@
     // DJ Eddie Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjEddieCustomTracks() {
       try {
+        if (!localStorage.getItem('dj_eddie_reset_v4_clean')) {
+          localStorage.removeItem('dj_eddie_custom_tracks_v2');
+          localStorage.setItem('dj_eddie_reset_v4_clean', 'true');
+          return [];
+        }
         const raw = localStorage.getItem('dj_eddie_custom_tracks_v2');
         if (!raw) return [];
         const parsed = JSON.parse(raw);
@@ -8035,7 +8040,8 @@
       'shout at the devil': 'A comienzos de 1983, inmerso en la atmósfera salvaje y bohemia de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal.',
       'stairway to heaven': 'A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica. En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles.',
       'hysteria': 'La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo. Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante. Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera.',
-      'everybody wants to rule the world': 'Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora.'
+      'everybody wants to rule the world': 'Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora.',
+      'help': 'En 1965, durante la cumbre de la Beatlemanía, The Beatles filmaban su segunda película entre las Bahamas y Londres. John Lennon, sintiendo el peso abrumador de la fama mundial y un profundo agotamiento emocional, compuso esta confesión directa y honesta en su mansión de Kenwood. Aunque Paul McCartney y la banda la vistieron con un ritmo de rock and roll enérgico y brillante, Lennon siempre la consideró uno de sus temas más sinceros y personales de toda su carrera.'
     };
 
     function buildEddieRadioScript(songTitle, bandName, albumName = '', year = '', angle = 1) {
@@ -8122,6 +8128,19 @@
         { d: 13.0, text: "I wanna love you, but I better not touch... I wanna hold you, but my senses tell me to stop" },
         { d: 14.0, text: "I wanna kiss you, but I want it too much... I wanna taste you, but your lips are venomous poison!" },
         { d: 16.0, text: "You're poison running through my veins... You're poison, I don't wanna break these chains!" }
+      ],
+      'help': [
+        { d: 10.0, text: "🎸  🥁  🎸 (Arranque con Guitarras de John Lennon & George Harrison)" },
+        { d: 12.0, text: "Help! I need somebody... Help! Not just anybody... Help! You know I need someone, help!" },
+        { d: 13.0, text: "When I was younger, so much younger than today... I never needed anybody's help in any way" },
+        { d: 13.0, text: "But now these days are gone, I'm not so self assured... Now I find I've changed my mind and opened up the doors" },
+        { d: 14.0, text: "Help me if you can, I'm feeling down... And I do appreciate you being 'round" },
+        { d: 14.0, text: "Help me get my feet back on the ground... Won't you please, please help me?" },
+        { d: 14.0, text: "And now my life has changed in oh so many ways... My independence seems to vanish in the haze" },
+        { d: 14.0, text: "But every now and then I feel so insecure... I know that I just need you like I've never done before" },
+        { d: 15.0, text: "Help me if you can, I'm feeling down... And I do appreciate you being 'round" },
+        { d: 15.0, text: "Help me get my feet back on the ground... Won't you please, please help me?" },
+        { d: 4.0, text: "Help me, help me, ooh!" }
       ]
     };
 
