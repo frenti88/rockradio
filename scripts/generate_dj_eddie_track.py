@@ -46,6 +46,22 @@ APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy
 DEFAULT_VOICE = "es-US-AlonsoNeural"
 DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
 
+def load_env_local():
+    workspace_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    env_path = os.path.join(workspace_dir, '.env.local')
+    if os.path.exists(env_path):
+        with open(env_path, 'r', encoding='utf-8', errors='ignore') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    k, v = line.split('=', 1)
+                    k = k.strip()
+                    v = v.strip().strip('"\'')
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+load_env_local()
+
+
 MASTER_CURATED_STORIES = {
     "bohemian rhapsody": (
         "En el caluroso verano de 1975, Freddie Mercury llegó a los estudios Rockfield en Gales con la estructura de Bohemian Rhapsody concebida en pequeñas hojas de papel y guías telefónicas. "
@@ -228,6 +244,101 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
     cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
     full_script = f"{APERTURA_OBLIGATORIA} {dev_story} {cierre}"
     return APERTURA_OBLIGATORIA, dev_story, cierre, full_script
+
+def generate_ai_story_script(song_title, band_name, album_name="", year="", angle=1):
+    """
+    Genera un guion de DJ Fredd usando IA (OpenAI gpt-4o-mini o Gemini) o catálogo maestro de respaldo.
+    Cumple rigurosamente:
+    - APERTURA: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.'
+    - DESARROLLO: Anécdota musical auténtica de al menos 30 segundos narrados (90-130 palabras).
+    - CIERRE: '¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!'
+    - Frase insignia: 'La música tiene memoria'.
+    """
+    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
+    api_key = os.environ.get('OPENAI_API_KEY')
+
+    if api_key:
+        try:
+            import requests
+            system_prompt = (
+                "Eres DJ Fredd, el respetado locutor de radio de rock clásico de la emisora 'Fred Rewind'. "
+                "Tu frase insignia es 'La música tiene memoria' y el concepto del programa es 'De regreso al pasado'. "
+                "Hablas con tono cálido, medio-grave, melómano, apasionado por las historias musicales de los 60s, 70s, 80s y 90s, "
+                "con estilo de radio clásica FM en español latinoamericano. "
+                "Tu tarea es escribir el guion oficial para narrar la historia detrás de una canción."
+            )
+            user_prompt = (
+                f"Escribe la historia oficial para la canción '{song_title}' de '{band_name}' "
+                f"(Álbum: '{album_name or 'Clásico'}', Año: '{year or 'Época Clásica'}').\n\n"
+                "ESTRUCTURA OBLIGATORIA:\n"
+                f"1. APERTURA EXACTA:\n\"{APERTURA_OBLIGATORIA}\"\n\n"
+                "2. DESARROLLO (Anécdota musical auténtica):\n"
+                "- Narra una historia real, interesante y verificable sobre la composición, grabación en el estudio, anécdotas de los músicos o el impacto histórico que la convirtió en un clásico.\n"
+                "- Duración mínima narrada: al menos 30 a 45 segundos de locución real (entre 90 y 130 palabras en el desarrollo).\n"
+                "- No inventes fechas ni acontecimientos falsos.\n"
+                "- Incorpora de forma natural y elegante la frase insignia: 'La música tiene memoria'.\n"
+                "- Puntuación cuidada con comas y puntos para pausas orgánicas de respiración en la voz de radio. No uses etiquetas técnicas ni acotaciones entre paréntesis.\n\n"
+                f"3. CIERRE EXACTO:\n\"{cierre}\""
+            )
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                "temperature": 0.7,
+                "max_tokens": 380
+            }
+            resp = requests.post(
+                "https://api.openai.com/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json=payload,
+                timeout=15
+            )
+            if resp.status_code == 200:
+                resp_data = resp.json()
+                raw_text = resp_data["choices"][0]["message"]["content"].strip()
+
+                desarrollo = raw_text
+                desarrollo = re.sub(r'^(?:"?Estás escuchando Fred Rewind, de regreso al pasado\.\s*Soy DJ Fredd\.?"?)\s*', '', desarrollo, flags=re.IGNORECASE).strip()
+                desarrollo = re.sub(r'(?:"?¡?Sube el volumen y escuchemos a .*? aquí en Fred Rewind, de regreso al pasado!?"?)\s*$', '', desarrollo, flags=re.IGNORECASE).strip()
+                desarrollo = desarrollo.strip('"\' ')
+
+                if len(desarrollo.split()) >= 60:
+                    full_script = f"{APERTURA_OBLIGATORIA} {desarrollo} {cierre}"
+                    word_count = len(desarrollo.split())
+                    dur_est = round(word_count / 2.3)
+                    return {
+                        "success": True,
+                        "full_script": full_script,
+                        "apertura": APERTURA_OBLIGATORIA,
+                        "desarrollo": desarrollo,
+                        "cierre": cierre,
+                        "source": "openai_gpt_4o_mini",
+                        "words": word_count,
+                        "duration_est_sec": dur_est
+                    }
+        except Exception as e:
+            print(f"⚠️ [DJ FREDD AI] Fallback a historias maestras por: {e}", flush=True)
+
+    # Fallback to master curated stories
+    apertura, dev_story, cierre_text, full_script = get_master_eddie_script(song_title, band_name, album_name, year, angle)
+    word_count = len(dev_story.split())
+    dur_est = round(word_count / 2.3)
+    return {
+        "success": True,
+        "full_script": full_script,
+        "apertura": apertura,
+        "desarrollo": dev_story,
+        "cierre": cierre_text,
+        "source": "curated_master",
+        "words": word_count,
+        "duration_est_sec": dur_est
+    }
+
 
 # ==============================================================================
 # DICCIONARIO FONÉTICO MAESTRO PARA PRONUNCIACIÓN NATIVA EN INGLÉS (DJ FREDD)
@@ -883,7 +994,8 @@ def run_server(port=5055):
                     year = data.get('year', '')
 
                     if not text:
-                        _, _, _, text = get_master_eddie_script(song_title, band_name, album_name, year)
+                        res = generate_ai_story_script(song_title, band_name, album_name, year)
+                        text = res['full_script']
 
                     safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
                     workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"fredd_intro_{safe_slug}_{track_id}.mp3")
@@ -1009,19 +1121,12 @@ def run_server(port=5055):
                     year = data.get('year', '')
                     angle = int(data.get('angle', 1))
 
-                    apertura, dev_story, cierre, full_script = get_master_eddie_script(song_title, band_name, album_name, year, angle)
+                    story_res = generate_ai_story_script(song_title, band_name, album_name, year, angle)
                     self.send_response(200)
                     self._set_cors()
                     self.send_header('Content-Type', 'application/json')
                     self.end_headers()
-                    self.wfile.write(json.dumps({
-                        'success': True,
-                        'full_script': full_script,
-                        'apertura': apertura,
-                        'desarrollo': dev_story,
-                        'cierre': cierre,
-                        'angle': angle
-                    }).encode('utf-8'))
+                    self.wfile.write(json.dumps(story_res).encode('utf-8'))
                 except Exception as e:
                     self.send_response(500)
                     self._set_cors()

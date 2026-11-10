@@ -5710,12 +5710,34 @@
       font-size: 0.78rem;
       color: #a7f3d0;
       line-height: 1.4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .dj-script-preview .dj-script-text {
+      flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    .dj-copy-script-mini {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      color: #e5e7eb;
+      font-size: 0.7rem;
+      padding: 2px 7px;
       cursor: pointer;
-      transition: background 0.2s ease;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .dj-copy-script-mini:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
     }
     .dj-script-preview:hover {
       background: rgba(16, 185, 129, 0.16);
@@ -7953,44 +7975,81 @@
 
       // Alerta no invasiva de inicio informando que se avisará al terminar
       showAppToast({
-        title: 'Generando historia con DJ Fredd',
-        desc: `Se está generando la letra y el audio para «${introItem.songTitle}». Te avisaremos en cuanto termine.`,
+        title: 'Fred Rewind — Generando historia',
+        desc: `Investigando y escribiendo historia con IA para «${introItem.songTitle}»...`,
         type: 'generating',
         icon: '🎙️',
         duration: 7000
       });
 
-      // FASE 1: Generando guion escrito («generando_guion»)
-      introItem.status = 'generando_guion';
+      startGenerationTimer(pairId);
+
+      // FASE 1: Investigando canción («investigando_cancion»)
+      introItem.status = 'investigando_cancion';
       introItem.jobId = jobId;
-
-      const nextAngle = isRegen ? (((introItem.regenAngle || 1) % 3) + 1) : (introItem.regenAngle || 1);
-      introItem.regenAngle = nextAngle;
-
-      // Produce the master rock anecdote script using the official template
-      const scriptText = buildEddieRadioScript(introItem.songTitle, introItem.bandName, introItem.albumName, introItem.year, nextAngle);
-      introItem.summary = scriptText;
-
       customTracks[introIdx] = introItem;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
       renderDjEddiePlaylistSongs();
 
-      startGenerationTimer(pairId);
+      await new Promise(r => setTimeout(r, 600));
+      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) return;
 
-      // Brief organic transition so user sees the written script immediately
-      await new Promise(r => setTimeout(r, 400));
+      // FASE 2: Generando historia con IA («generando_historia»)
+      introItem.status = 'generando_historia';
+      customTracks[introIdx] = introItem;
+      saveDjEddieCustomTracks(customTracks);
+      renderDjEddiePlaylistSongs();
 
-      // Cancellation check before proceeding to audio synthesis
-      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) {
-        return; // Aborted during script phase
+      const nextAngle = isRegen ? (((introItem.regenAngle || 1) % 3) + 1) : (introItem.regenAngle || 1);
+      introItem.regenAngle = nextAngle;
+
+      let generatedStoryScript = null;
+      try {
+        const storyRes = await callEddieApi('/api/generate_story_text', {
+          song_title: introItem.songTitle,
+          band_name: introItem.bandName,
+          album: introItem.albumName || '',
+          year: introItem.year || '',
+          angle: nextAngle
+        }, abortController.signal);
+
+        if (storyRes && storyRes.full_script) {
+          generatedStoryScript = storyRes.full_script;
+          introItem.scriptWords = storyRes.words;
+          introItem.scriptDurationEst = storyRes.duration_est_sec;
+          introItem.scriptSource = storyRes.source || 'openai_gpt_4o_mini';
+        }
+      } catch (err) {
+        if (err.name === 'AbortError' || abortController.signal.aborted) {
+          console.log(`Generación de texto abortada para job ${jobId}`);
+          return;
+        }
+        console.warn('Fallo en API de texto de DJ Fredd, usando respaldo maestro:', err);
       }
 
-      // FASE 2: Sintetizando locución con DJ Eddie en Chatterbox / Edge-TTS («generando_audio»)
-      introItem.status = 'generando_audio';
+      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) return;
+
+      if (!generatedStoryScript) {
+        generatedStoryScript = buildEddieRadioScript(introItem.songTitle, introItem.bandName, introItem.albumName, introItem.year, nextAngle);
+      }
+
+      // FASE 3: Guion generado («guion_generado») - Mostrar texto inmediatamente en la interfaz
+      introItem.status = 'guion_generado';
+      introItem.summary = generatedStoryScript;
       customTracks[introIdx] = introItem;
       saveDjEddieCustomTracks(customTracks);
       buildDjEddieCatalog();
+      renderDjEddiePlaylistSongs();
+
+      // Breve pausa para que el usuario visualice el guion escrito antes de sintetizar voz
+      await new Promise(r => setTimeout(r, 800));
+      if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) return;
+
+      // FASE 4: Sintetizando locución con DJ Fredd en Chatterbox («generando_audio»)
+      introItem.status = 'generando_audio';
+      customTracks[introIdx] = introItem;
+      saveDjEddieCustomTracks(customTracks);
       renderDjEddiePlaylistSongs();
 
       let audioData = null;
@@ -8323,24 +8382,41 @@
             actionsHtml = `
               <div class="dj-col-actions">
                 <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Fredd">✨ Generar historia</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Fredd">🗑️</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind">🗑️</button>
               </div>
             `;
-          } else if (item.status === 'generando_guion') {
-            statusBadgeHtml = `<span class="dj-status-badge running">📝 Creando guion...</span>`;
+          } else if (item.status === 'investigando_cancion') {
+            statusBadgeHtml = `<span class="dj-status-badge running">🔍 Investigando canción...</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-live-elapsed" data-pair-id="${item.pairId}">⏳ 0:00</span>
-                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener</button>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
               </div>
             `;
-          } else if (item.status === 'generando_audio') {
+          } else if (item.status === 'generando_historia') {
+            statusBadgeHtml = `<span class="dj-status-badge running">✍️ Generando historia con IA...</span>`;
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <span class="dj-live-elapsed" data-pair-id="${item.pairId}">⏳ 0:00</span>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+              </div>
+            `;
+          } else if (item.status === 'guion_generado') {
+            statusBadgeHtml = `<span class="dj-status-badge running">📜 Guion generado</span>`;
+            actionsHtml = `
+              <div class="dj-col-actions">
+                <button class="dj-action-btn view-script-btn" type="button" title="Consultar el guion oficial de Fred Rewind">📜 Ver guion</button>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
+              </div>
+            `;
+          } else if (item.status === 'generando_audio' || item.status === 'generando_guion') {
             const elSec = (activeStoryGenerations[item.pairId]?.elapsed) || 0;
-            statusBadgeHtml = `<span class="dj-status-badge running dj-audio-timer" data-pair-id="${item.pairId}">🎙️ Sintetizando audio (${elSec}s)...</span>`;
+            statusBadgeHtml = `<span class="dj-status-badge running dj-audio-timer" data-pair-id="${item.pairId}">🎙️ Generando audio (${elSec}s)...</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-live-elapsed" data-pair-id="${item.pairId}">⏳ ${formatTime(elSec)}</span>
-                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener</button>
+                <button class="dj-action-btn view-script-btn" type="button" title="Consultar el guion oficial de Fred Rewind">📜 Ver guion</button>
+                <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
               </div>
             `;
           } else if (item.status === 'cancelado') {
@@ -8348,7 +8424,7 @@
             actionsHtml = `
               <div class="dj-col-actions">
                 <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Fredd">✨ Generar historia</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Fredd">🗑️</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind">🗑️</button>
               </div>
             `;
           } else if (item.status === 'error') {
@@ -8356,12 +8432,12 @@
             actionsHtml = `
               <div class="dj-col-actions">
                 <button class="dj-action-btn retry-gen" type="button" title="Reintentar generación de la historia">🔄 Reintentar</button>
-                <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Fredd">🗑️</button>
+                <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind">🗑️</button>
               </div>
             `;
           } else {
-            // 'con_audio' (Historia completada)
-            statusBadgeHtml = `<span class="dj-intro-pill">Historia • DJ Fredd</span>`;
+            // 'con_audio' (Historia y audio disponibles)
+            statusBadgeHtml = `<span class="dj-intro-pill">Historia y audio disponibles</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
                 <div class="dj-dur-box">
@@ -8389,13 +8465,16 @@
                   ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                   : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
               </button>
-              <button class="dj-action-btn del-track" type="button" title="Eliminar de DJ Fredd">🗑️</button>
+              <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind">🗑️</button>
             </div>
           `;
         }
 
         const scriptPreviewHtml = (item.isIntro && item.summary)
-          ? `<div class="dj-script-preview ${item.status === 'generando_audio' ? 'is-generating' : ''}" title="${escapeHtmlStr(item.summary)}">${escapeHtmlStr(item.summary)}</div>`
+          ? `<div class="dj-script-preview ${['generando_audio', 'investigando_cancion', 'generando_historia', 'guion_generado'].includes(item.status) ? 'is-generating' : ''}" title="${escapeHtmlStr(item.summary)}">
+              <span class="dj-script-text">"${escapeHtmlStr(item.summary)}"</span>
+              <button class="dj-copy-script-mini" type="button" title="Copiar guion oficial de Fred Rewind">📋 Copiar</button>
+            </div>`
           : '';
 
         row.innerHTML = `
@@ -8431,6 +8510,23 @@
           scriptPreviewEl.addEventListener('click', (e) => {
             e.stopPropagation();
             openFredScriptModal(item);
+          });
+        }
+        const copyScriptMiniBtn = row.querySelector('.dj-copy-script-mini');
+        if (copyScriptMiniBtn) {
+          copyScriptMiniBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (item.summary) {
+              if (navigator.clipboard) {
+                navigator.clipboard.writeText(item.summary).then(() => {
+                  showAppToast('Guion oficial copiado al portapapeles', 'success');
+                }).catch(() => {
+                  showAppToast('Guion copiado', 'success');
+                });
+              } else {
+                showAppToast('Guion copiado', 'success');
+              }
+            }
           });
         }
         const genStoryBtn = row.querySelector('.gen-story');
