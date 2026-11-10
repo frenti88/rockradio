@@ -1595,7 +1595,7 @@
 
     .spotify-quick-banners-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
       gap: 10px;
     }
 
@@ -4161,7 +4161,7 @@
       }
 
       .spotify-quick-banners-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: 1fr !important;
         gap: 8px !important;
       }
 
@@ -8025,7 +8025,7 @@
       if (!container) return;
       container.innerHTML = '';
 
-      // Tile #1: DJ Eddie (La Radio de la IA) -> Opens Song List View!
+      // Tile: DJ Fredd (La Radio de la IA) -> Opens Song List View!
       const djTile = document.createElement('div');
       djTile.className = 'spotify-quick-banner-card' + (currentAppView === 'djeddie' || isDjEddieActive ? ' active' : '');
       djTile.style.background = 'linear-gradient(90deg, rgba(37,99,235,0.42) 0%, rgba(16,185,129,0.28) 100%)';
@@ -8035,7 +8035,7 @@
           <span>🤖</span>
         </div>
         <div class="quick-banner-name" style="color:#6ee7b7;">DJ Fredd • Radio IA</div>
-        <button class="quick-banner-play-btn" title="Abrir listado de canciones de DJ Eddie">
+        <button class="quick-banner-play-btn" title="Abrir listado de canciones de DJ Fredd">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </button>
       `;
@@ -8043,26 +8043,6 @@
         openDjEddiePlaylistView();
       });
       container.appendChild(djTile);
-
-      // Next tiles: Featured Bands
-      Object.values(bands).slice(0, 7).forEach(b => {
-        const card = document.createElement('div');
-        card.className = 'spotify-quick-banner-card' + (currentAppView === 'band' && !isDjEddieActive && b.id === activeBandId ? ' active' : '');
-        card.dataset.bandId = b.id;
-        card.innerHTML = `
-          <div class="quick-banner-thumb">
-            <img src="${b.cover}" alt="${b.name}">
-          </div>
-          <div class="quick-banner-name">${b.name}</div>
-          <button class="quick-banner-play-btn" title="Abrir ${b.name}">
-            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-        `;
-        card.addEventListener('click', () => {
-          openBandView(b.id, true, b.hasFullTrack ? 'full' : '45s');
-        });
-        container.appendChild(card);
-      });
     }
 
     function renderSpotifyHomeShelves() {
