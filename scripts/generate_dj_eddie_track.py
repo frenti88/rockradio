@@ -38,7 +38,7 @@ os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffmpeg") else "ffmpeg"
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
-APERTURA_OBLIGATORIA = "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie."
+APERTURA_OBLIGATORIA = "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Fredd."
 
 MASTER_CURATED_STORIES = {
     "detroit rock city": (
@@ -186,15 +186,15 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
             break
 
     if not dev_story:
-        # Generador de historias dinámicas y auténticas para cualquier tema nuevo (ej. importado de Spotify)
+        # Generador de historias dinámicas y auténticas para DJ Fredd
         year_str = f"En {year}, " if year else ""
         album_str = f"para su recordado álbum {album_name}" if album_name else "en una de las etapas de mayor solidez creativa de su trayectoria"
 
         if angle == 1:
             dev_story = (
                 f"{year_str}{album_str}, {band_name} se encerró en el estudio con la convicción de forjar una obra perdurable. "
-                f"Registrando cada instrumento directamente sobre cinta analógica y con guitarras al rojo vivo, la química grupal capturó "
-                f"una energía vibrante e irrepetible. Las largas sesiones de producción terminaron de perfilar una pista contundente "
+                f"Porque la música tiene memoria, registrando cada instrumento directamente sobre cinta analógica y con guitarras al rojo vivo, "
+                f"la química grupal capturó una energía vibrante e irrepetible. Las largas sesiones de producción terminaron de perfilar una pista contundente "
                 f"que rápidamente saltó a los primeros lugares de las radios, convirtiéndose en un testimonio fiel de la época dorada del rock."
             )
         elif angle == 2:
@@ -202,14 +202,15 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
                 f"{year_str}con un riff memorable y el sello sonoro inconfundible que siempre ha caracterizado a {band_name}, "
                 f"esta grabación nació {album_str}. En la sala de ensayo, los músicos buscaron simplificar los arreglos para privilegiar "
                 f"el impacto emocional de la melodía y la garra de la base rítmica. La toma final en la consola de mezclas captó una fuerza "
-                f"tan arrolladora que de inmediato se convirtió en una de las composiciones más queridas y celebradas por sus seguidores en todo el mundo."
+                f"tan arrolladora que de inmediato se convirtió en una de las composiciones más queridas y celebradas por sus seguidores en todo el mundo. "
+                f"La música tiene memoria, y esta joya sonora lo demuestra compás a compás."
             )
         else:
             dev_story = (
                 f"{year_str}destacada como una de las piezas más representativas en el repertorio de {band_name} {album_str}, "
                 f"esta entrega confirmó la versatilidad y el talento interpretativo de la banda. Desde la sutileza de su introducción "
-                f"hasta el clímax instrumental, cada compás fue diseñado para conectar con la fibra de los oyentes. Su éxito masivo "
-                f"en los diales consolidó este corte como una verdadera joya radial que se mantiene tan fresca y poderosa como el primer día."
+                f"hasta el clímax instrumental, cada compás fue diseñado para conectar con la fibra de los oyentes. Como siempre recordamos aquí en Rock Radio, "
+                f"la música tiene memoria, y este clásico perdura tan fresco y poderoso como el primer día."
             )
 
     cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!"
@@ -454,8 +455,8 @@ def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
     text = (text or "").strip()
     cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!"
 
-    # Detectar o extraer apertura si ya viene en el texto
-    ap_match = re.search(r'^(Estás escuchando Rock Radio[^\.]*\.\s*Soy DJ Eddie\.?)', text, re.IGNORECASE)
+    # Detectar o extraer apertura si ya viene en el texto (Fredd o Eddie)
+    ap_match = re.search(r'^(Estás escuchando Rock Radio[^\.]*\.\s*Soy DJ (?:Fredd|Eddie)\.?)', text, re.IGNORECASE)
     if ap_match:
         body = text[ap_match.end():].strip()
     else:
@@ -551,7 +552,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
     tmp_prefix = f"/tmp/dj_eddie_master_{pid}_{int(t_start*1000)}"
 
-    voice = "es-US-AlonsoNeural"
+    voice = "es-CO-GonzaloNeural"
     temp_files = []
 
     def is_cancelled():
@@ -591,7 +592,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
             if job_id in ACTIVE_JOBS:
                 ACTIVE_JOBS[job_id]['temp_files'].add(narr_mp3)
 
-    comm_narr = edge_tts.Communicate(narrative_tts, voice, rate="+1%", pitch="+1Hz")
+    comm_narr = edge_tts.Communicate(narrative_tts, voice, rate="+1%", pitch="-1Hz")
     audio_narr_bytes = bytearray()
     boundaries = []
 
@@ -624,7 +625,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
             if job_id in ACTIVE_JOBS:
                 ACTIVE_JOBS[job_id]['temp_files'].add(ci_mp3)
 
-    await save_tts_line_with_retry(cierre_tts, voice, "+4%", "+2Hz", ci_mp3)
+    await save_tts_line_with_retry(cierre_tts, voice, "+4%", "+1Hz", ci_mp3)
     dur_ci = get_audio_duration(ci_mp3)
 
     if is_cancelled():
@@ -737,9 +738,9 @@ def run_server(port=5055):
                 self.end_headers()
                 status_payload = {
                     'status': 'online',
-                    'service': 'DJ Eddie • Master Radio Audio Service',
-                    'voice': 'Eddie',
-                    'voiceModel': 'es-US-AlonsoNeural',
+                    'service': 'DJ Fredd • Master Radio Audio Service',
+                    'voice': 'Fredd',
+                    'voiceModel': 'es-CO-GonzaloNeural',
                     'engine': 'Edge-TTS + Master Radio Booth Analog Chain',
                     'lyricsSync': True,
                     'port': port,
@@ -769,7 +770,7 @@ def run_server(port=5055):
                         _, _, _, text = get_master_eddie_script(song_title, band_name, album_name, year)
 
                     safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
-                    workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_intro_{safe_slug}_{track_id}.mp3")
+                    workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"fredd_intro_{safe_slug}_{track_id}.mp3")
 
                     with ACTIVE_JOBS_LOCK:
                         ACTIVE_JOBS[job_id] = {
@@ -821,7 +822,7 @@ def run_server(port=5055):
                         'duration': duration_fmt,
                         'durationSec': round(duration, 2),
                         'elapsedSec': round(elapsed, 2),
-                        'voice': 'Eddie (Alonso Neural Master)',
+                        'voice': 'Fredd (Gonzalo Neural Master - Rock Radio)',
                         'trackId': track_id,
                         'jobId': job_id,
                         'intro_timings': intro_timings,
