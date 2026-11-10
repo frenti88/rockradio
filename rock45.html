@@ -5880,10 +5880,6 @@
 
       <!-- ESTANTERÍAS DEL HOME DE SPOTIFY (Playlists + Liked Songs + Top Tracks + Recomendados + Recientes + Artistas + DJ Fredd) -->
       <section class="spotify-home-shelves" id="spotifyHomeShelves">
-        <!-- Banner de Conexión / Estado Spotify -->
-        <div class="spotify-connect-banner" id="spotifyHomeConnectBanner">
-          <!-- Rendered dynamically via JS -->
-        </div>
 
         <!-- 1. Tus Playlists -->
         <div class="home-shelf-section" id="shelfUserPlaylists">
@@ -9543,61 +9539,7 @@
         backFromPlaylistBtn.addEventListener('click', () => switchAppView('home'));
       }
 
-      // 1. Spotify Connect Banner on Home
-      const bannerEl = document.getElementById('spotifyHomeConnectBanner');
-      if (bannerEl) {
-        if (token) {
-          let profile = null;
-          try { profile = JSON.parse(localStorage.getItem('sp_user_profile') || 'null'); } catch (e) {}
-          const userName = profile ? (profile.display_name || profile.email) : 'Usuario Spotify';
-          const product = profile ? (profile.product || 'Conectado') : 'Activo';
-
-          bannerEl.innerHTML = `
-            <div class="spotify-connect-banner-left">
-              <div class="spotify-connect-logo-badge">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
-              </div>
-              <div>
-                <div class="spotify-connect-title">🟢 Conectado con Spotify • ${escapeHtmlStr(userName)}</div>
-                <div class="spotify-connect-sub">Tu cuenta (${product.toUpperCase()}) está vinculada. Explora tus playlists, tus canciones favoritas o añade cualquier tema a DJ Fredd.</div>
-              </div>
-            </div>
-            <button class="spotify-connect-btn" type="button" id="btnHomeOpenSearch" style="background:rgba(255,255,255,0.1); color:#ffffff; border:1px solid rgba(255,255,255,0.2);">
-              <span>🔍 Buscar en Spotify</span>
-            </button>
-          `;
-          const btnSearch = bannerEl.querySelector('#btnHomeOpenSearch');
-          if (btnSearch) {
-            btnSearch.addEventListener('click', () => {
-              if (spotifySearchInput) {
-                spotifySearchInput.focus();
-                spotifySearchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            });
-          }
-        } else {
-          bannerEl.innerHTML = `
-            <div class="spotify-connect-banner-left">
-              <div class="spotify-connect-logo-badge">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
-              </div>
-              <div>
-                <div class="spotify-connect-title">Conecta tu cuenta de Spotify</div>
-                <div class="spotify-connect-sub">Accede a tus playlists reales, tus canciones favoritas y recomendaciones personalizadas para escucharlas o narrarlas con DJ Fredd.</div>
-              </div>
-            </div>
-            <button class="spotify-connect-btn" type="button" id="btnHomeConnectSp">
-              <span>Iniciar sesión con Spotify</span>
-            </button>
-          `;
-          const btnConn = bannerEl.querySelector('#btnHomeConnectSp');
-          if (btnConn) {
-            btnConn.addEventListener('click', startSpotifyLogin);
-          }
-        }
-      }
-
-      // 2. Shelf: Tus Playlists
+      // 1. Shelf: Tus Playlists
       const userPlRow = document.getElementById('userPlaylistsRow');
       const subUserPl = document.getElementById('subUserPlaylists');
       const btnMoreUserPl = document.getElementById('btnMoreUserPlaylists');
