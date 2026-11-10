@@ -38,7 +38,7 @@ os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffmpeg") else "ffmpeg"
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
-APERTURA_OBLIGATORIA = "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Fredd."
+APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
 
 MASTER_CURATED_STORIES = {
     "detroit rock city": (
@@ -209,11 +209,11 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
             dev_story = (
                 f"{year_str}destacada como una de las piezas más representativas en el repertorio de {band_name} {album_str}, "
                 f"esta entrega confirmó la versatilidad y el talento interpretativo de la banda. Desde la sutileza de su introducción "
-                f"hasta el clímax instrumental, cada compás fue diseñado para conectar con la fibra de los oyentes. Como siempre recordamos aquí en Rock Radio, "
+                f"hasta el clímax instrumental, cada compás fue diseñado para conectar con la fibra de los oyentes. Como siempre recordamos aquí en Fred Rewind, "
                 f"la música tiene memoria, y este clásico perdura tan fresco y poderoso como el primer día."
             )
 
-    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!"
+    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
     full_script = f"{APERTURA_OBLIGATORIA} {dev_story} {cierre}"
     return APERTURA_OBLIGATORIA, dev_story, cierre, full_script
 
@@ -223,6 +223,9 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
 # neural hispanohablante (es-US-AlonsoNeural) los pronuncie de forma natural en inglés.
 # ==============================================================================
 ENGLISH_PHONETICS = [
+    (r'Fred Rewind', 'Fred Riuáind'),
+    (r'DJ Fredd', 'Dí-yéi Fred'),
+    (r'Rewind', 'Riuáind'),
     # Bandas y Agrupaciones
     (r'\bThe Beatles\b', 'De Bítels'),
     (r'\bBeatles\b', 'Bítels'),
@@ -453,10 +456,10 @@ def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
     - Cierre estándar de DJ Eddie
     """
     text = (text or "").strip()
-    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!"
+    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
 
     # Detectar o extraer apertura si ya viene en el texto (Fredd o Eddie)
-    ap_match = re.search(r'^(Estás escuchando Rock Radio[^\.]*\.\s*Soy DJ (?:Fredd|Eddie)\.?)', text, re.IGNORECASE)
+    ap_match = re.search(r'^(Estás escuchando (?:Fred Rewind|Rock Radio)[^\.]*\.\s*Soy DJ (?:Fredd|Eddie)\.?)', text, re.IGNORECASE)
     if ap_match:
         body = text[ap_match.end():].strip()
     else:
@@ -738,7 +741,7 @@ def run_server(port=5055):
                 self.end_headers()
                 status_payload = {
                     'status': 'online',
-                    'service': 'DJ Fredd • Master Radio Audio Service',
+                    'service': 'Fred Rewind • Servicio Oficial de Audio con DJ Fredd',
                     'voice': 'Fredd',
                     'voiceModel': 'es-CO-GonzaloNeural',
                     'engine': 'Edge-TTS + Master Radio Booth Analog Chain',
