@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-ROCK RADIO — Generador Oficial de Historias y Locuciones de DJ Eddie con IA
-Implementa los lineamientos maestros para DJ Eddie:
-- Locutor: Eddie (Voz oficial Alonso: es-US-AlonsoNeural)
-- Apertura Institucional Obligatoria: "Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie." (Pausa breve)
-- Desarrollo: Anécdota musical auténtica de 30 a 45 segundos de locución real (85-110 palabras)
-- Cierre Institucional Obligatorio: "¡Sube el volumen y escuchemos a {nombre_cancion} aquí en Rock Radio, de regreso al pasado!"
-- Procesamiento de cabina radial con FFmpeg: silenceremove (-45dB), pitch shift (1.055), ecualización analógica cálida y compresor
-- Generación de audio real con duración real (40 a 65 segundos en total)
-- Retorno de marcas de tiempo exactas (intro_timings) para sincronizar la letra del intro al 100%
-- Servidor HTTP local en puerto 5055 para la app web de Rock Radio
+FRED REWIND — Generador Oficial de Historias y Locuciones de DJ Fredd con IA
+Identidad Oficial:
+- Producto: Fred Rewind (1 'd')
+- Locutor: DJ Fredd (2 'd's)
+- Frase Insignia: La música tiene memoria.
+- Concepto: De regreso al pasado.
+- Voz oficial: es-CO-GonzaloNeural (FM classic rock host, voz cálida medio-grave, dicción evocadora)
+- Apertura Obligatoria: "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd." (Pausa reflexiva 550ms)
+- Desarrollo: Anécdota musical auténtica de 30 a 50 segundos de locución real (85-130 palabras) con pausas naturales
+- Cierre Obligatorio: "¡Sube el volumen y escuchemos a {nombre_cancion} aquí en Fred Rewind, de regreso al pasado!"
+- Masterización radial analógica con FFmpeg: calidez en graves (120Hz), claridad vocal sin sibilancia (2.8kHz),
+  aire analógico (10kHz), compresor broadcast LA-2A y limitador a -1.0dB true peak.
+- Sincronización milimétrica de letra/guion (intro_timings) sin desfase ni solapamiento.
 """
 
 import sys
@@ -41,139 +44,146 @@ FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/f
 APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
 
 MASTER_CURATED_STORIES = {
+    "bohemian rhapsody": (
+        "En el caluroso verano de 1975, Freddie Mercury llegó a los estudios Rockfield en Gales con la estructura de Bohemian Rhapsody concebida en pequeñas hojas de papel y guías telefónicas. "
+        "Mercury, Brian May y Roger Taylor pasaron semanas grabando armonías vocales durante doce horas al día, regrabando tantas capas que la cinta de dos pulgadas se volvió prácticamente transparente por el desgaste físico del cabezal. "
+        "Cuando los ejecutivos discográficos insistieron en que una pieza operística de casi seis minutos jamás sonaría en las radios comerciales, la banda entregó una copia exclusiva al legendario locutor Kenny Everett, desatando una fascinación colectiva que cambió para siempre los horizontes de la música contemporánea."
+    ),
     "detroit rock city": (
         "Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock. "
-        "El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales "
-        "de autos encendiéndose, transmisiones de radio y un choque violento. La lírica estuvo inspirada en una desgarradora noticia real: "
-        "un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. "
-        "Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo "
-        "de la ciudad del motor."
+        "El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento. "
+        "La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. "
+        "Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor."
     ),
-    "forever": (
-        "En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton "
-        "para componer una de las baladas más conmovedoras en la historia de KISS. Lejos del maquillaje teatral y de los artificios "
-        "escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. "
-        "En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo "
-        "en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales."
+    "sweet child o' mine": (
+        "En 1987, durante un ensayo informal en la casa comunal de la banda en Sunset Strip, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. "
+        "Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. "
+        "En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
     ),
-    "poison": (
-        "A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible "
-        "de los éxitos radiales, Desmond Child, para dar vida al álbum Trash. El resultado fue una resurrección espectacular para el pionero "
-        "del shock rock. Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química "
-        "en el estudio fue arrolladora. Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando "
-        "coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial."
+    "sweet child o mine": (
+        "En 1987, durante un ensayo informal en la casa comunal de la banda en Sunset Strip, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. "
+        "Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. "
+        "En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
+    ),
+    "back in black": (
+        "Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. "
+        "Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música."
+    ),
+    "paranoid": (
+        "En el otoño de 1970, durante las sesiones finales de su segundo disco en los estudios Regent Sound de Londres, Black Sabbath descubrió que el álbum necesitaba tres minutos adicionales para completar la duración requerida por el sello discográfico. "
+        "Mientras el resto del grupo almorzaba en un pub cercano, el guitarrista Tony Iommi se quedó solo en la sala improvisando un riff frenético y punzante. "
+        "Al regresar la banda, el bajista Geezer Butler escribió apresuradamente los versos sobre la alienación mental en un trozo de papel mientras Ozzy Osbourne memorizaba la melodía. "
+        "Grabada en apenas veinticinco minutos como un simple relleno de última hora, la pieza se convirtió en el mayor éxito planetario del heavy metal."
+    ),
+    "rock and roll all nite": (
+        "A principios de 1975, en una habitación del hotel Hyatt de Los Ángeles conocida popularmente como el Riot House, Paul Stanley y Gene Simmons recibieron una advertencia urgente de Casablanca Records: la banda necesitaba con urgencia un himno unificador que capturara la energía electrizante de sus conciertos. "
+        "Stanley ideó el contagioso estribillo mientras rasgueaba su guitarra en el hotel, mientras Simmons aportó versos inspirados en una vieja composición suya. "
+        "Grabada en los estudios Electric Lady de Nueva York junto a un coro improvisado que incluía miembros del equipo técnico y secretarias, la canción se convirtió en el credo definitivo de toda una generación."
+    ),
+    "hotel california": (
+        "En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras descansaba en una casa de playa en Malibú. "
+        "Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California. "
+        "El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa producción, dando origen a una de las piezas más aclamadas del siglo veinte."
+    ),
+    "stairway to heaven": (
+        "A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. "
+        "Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica. "
+        "En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles."
+    ),
+    "highway to hell": (
+        "El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar durante meses en autobús bajo el calor de las giras. "
+        "En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad callejera del grupo. "
+        "Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott antes de su repentina muerte, dejando su legado sellado para siempre."
     ),
     "master of puppets": (
         "En 1986, desde los legendarios estudios Sweet Silence en la fría Copenhague, Metallica forjó la obra cumbre del thrash metal. "
-        "James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, "
-        "personificadas en un titiritero invisible que manipula a sus víctimas. Para alcanzar una precisión rítmica quirúrgica e implacable, "
-        "todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo. Además, el virtuoso bajista "
-        "Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia."
+        "James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, personificadas en un titiritero invisible que manipula a sus víctimas. "
+        "Para alcanzar una precisión rítmica quirúrgica e implacable, todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo. "
+        "Además, el virtuoso bajista Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia."
     ),
     "enter sandman": (
-        "El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba "
-        "en su habitación inspirado por la densidad del rock pesado. Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, "
-        "James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad. "
-        "La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió "
-        "a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario."
+        "El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba en su habitación inspirado por la densidad del rock pesado. "
+        "Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad. "
+        "La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario."
     ),
     "one": (
         "Inspirada en la desgarradora novela pacifista de 1939 Johnny Got His Gun, Metallica compuso en 1988 su himno más complejo y dramático. "
         "La pieza describe el aislamiento absoluto de un soldado que pierde sus extremidades y sentidos en la guerra, atrapado en su propia conciencia. "
-        "La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica. La sincronía descomunal "
-        "entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, "
-        "convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial."
+        "La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica. "
+        "La sincronía descomunal entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial."
     ),
-    "hotel california": (
-        "En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras "
-        "descansaba en una casa de playa en Malibú. Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo "
-        "una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California. "
-        "El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa "
-        "producción, dando origen a una de las piezas más aclamadas del siglo veinte."
+    "poison": (
+        "A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible de los éxitos radiales, Desmond Child, para dar vida al álbum Trash. "
+        "El resultado fue una resurrección espectacular para el pionero del shock rock. "
+        "Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química en el estudio fue arrolladora. "
+        "Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial."
     ),
-    "highway to hell": (
-        "El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar "
-        "durante meses en autobús bajo el calor de las giras. En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, "
-        "quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad "
-        "callejera del grupo. Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott "
-        "antes de su repentina muerte, dejando su legado sellado para siempre."
-    ),
-    "back in black": (
-        "Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron "
-        "que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. "
-        "Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras "
-        "forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido "
-        "en la historia de la música."
-    ),
-    "sweet child o' mine": (
-        "En 1987, durante un ensayo informal en la casa comunal de la banda en Los Ángeles, Slash comenzó a ejecutar un ejercicio técnico de digitación "
-        "en su guitarra que él mismo consideraba una melodía circense sin importancia. Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado "
-        "aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. En el estudio, cuando la banda no sabía "
-        "cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
-    ),
-    "sweet child o mine": (
-        "En 1987, durante un ensayo informal en la casa comunal de la banda en Los Ángeles, Slash comenzó a ejecutar un ejercicio técnico de digitación "
-        "en su guitarra que él mismo consideraba una melodía circense sin importancia. Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado "
-        "aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. En el estudio, cuando la banda no sabía "
-        "cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
+    "forever": (
+        "En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. "
+        "Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. "
+        "En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales."
     ),
     "africa": (
-        "A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver conmovedores documentales "
-        "sobre el sufrimiento y la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia. Junto al virtuoso "
-        "baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro "
-        "casi biológico. Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió "
-        "en una cumbre indiscutible de la producción musical de los ochenta."
+        "A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver documentales sobre la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia. "
+        "Junto al virtuoso baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro casi biológico. "
+        "Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió en una cumbre indiscutible de la producción musical de los ochenta."
     ),
     "forever young": (
-        "Compuesta en Berlín Occidental durante los días más tensos de la Guerra Fría, Alphaville concibió este himno generacional bajo la sombra inquietante "
-        "de la amenaza nuclear entre las superpotencias. El cantante Marian Gold plasmó en sus versos el anhelo desesperado de detener el transcurso del tiempo, "
-        "celebrar la juventud y encontrar belleza en medio de un planeta frágil y convulso. Aunque inicialmente fue grabada como una canción electrónica bailable y veloz, "
-        "los productores acertadamente redujeron el tempo para transformarla en una balada solemne con sintetizadores nostálgicos y una melodía conmovedora "
-        "que ha trascendido generaciones enteras en el mundo entero."
+        "Compuesta en Berlín Occidental durante los días más tensos de la Guerra Fría, Alphaville concibió este himno generacional bajo la sombra inquietante de la amenaza nuclear entre las superpotencias. "
+        "El cantante Marian Gold plasmó en sus versos el anhelo desesperado de detener el transcurso del tiempo, celebrar la juventud y encontrar belleza en medio de un planeta frágil y convulso. "
+        "Aunque inicialmente fue grabada como una canción electrónica bailable, los productores acertadamente redujeron el tempo para transformarla en una balada solemne con sintetizadores nostálgicos y una melodía conmovedora que ha trascendido generaciones."
     ),
     "subdivisions": (
-        "En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, "
-        "el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema. En el estudio de grabación, Geddy Lee asumió un audaz "
-        "protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. Con la icónica y cavernosa voz "
-        "del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes."
+        "En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema. "
+        "En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. "
+        "Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes."
     ),
     "shout at the devil": (
-        "A comienzos de 1983, inmerso en la atmósfera salvaje y bohemia de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, "
-        "inspirado por su curiosidad hacia el misticismo y los textos arcanos. Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla "
-        "a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. Con una muralla de riffs agresivos de Mick Mars "
-        "y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal."
-    ),
-    "stairway to heaven": (
-        "A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. "
-        "Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias "
-        "renacentistas y crecía gradualmente en tempo y potencia eléctrica. En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario "
-        "de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles."
+        "A comienzos de 1983, inmerso en la atmósfera salvaje de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. "
+        "Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. "
+        "Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal."
     ),
     "hysteria": (
         "La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo. "
         "Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante. "
-        "Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. Al escucharlo, "
-        "el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera."
+        "Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. "
+        "Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera."
     ),
     "everybody wants to rule the world": (
-        "Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes "
-        "sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. En una sola tarde de inspiración, "
-        "Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. Con una lírica penetrante "
-        "sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora."
+        "Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. "
+        "El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. "
+        "En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. "
+        "Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora."
     ),
     "help": (
         "En 1965, durante la cumbre de la Beatlemanía, The Beatles filmaban su segunda película entre las Bahamas y Londres. "
         "John Lennon, sintiendo el peso abrumador de la fama mundial y un profundo agotamiento emocional, compuso esta confesión directa y honesta en su mansión de Kenwood. "
         "Aunque Paul McCartney y la banda la vistieron con un ritmo de rock and roll enérgico y brillante, Lennon siempre la consideró uno de sus temas más sinceros y personales de toda su carrera."
+    ),
+    "smoke on the water": (
+        "En diciembre de 1971, Deep Purple viajó a Montreux en Suiza para grabar en el Casino frente al lago Ginebra usando el estudio móvil de The Rolling Stones. "
+        "Durante un concierto de Frank Zappa, un asistente disparó una bengala hacia el techo de mimbre, provocando un devastador incendio que consumió todo el edificio. "
+        "Desde la ventana de su hotel, la banda observó una inmensa columna de humo extendiéndose sobre las aguas del lago. "
+        "Inspirado por esa visión dramática y guiado por el riff más icónico de Ritchie Blackmore con su Stratocaster, nació el clásico más coreado en la historia del rock."
+    ),
+    "dream on": (
+        "Steven Tyler compuso las notas iniciales de este himno en un viejo piano vertical de la posada de su familia en Sunapee, Nuevo Hampshire, cuando apenas tenía catorce años. "
+        "Años más tarde, durante las difíciles sesiones de grabación del primer disco de Aerosmith en Boston, Tyler temía que su voz sonara inmadura ante el micrófono, por lo que utilizó un tono vocal más grave en todo el álbum excepto en esta pista. "
+        "En el clímax final, Steven liberó su registro natural alcanzando notas agudas desgarradoras que catapultaron a la banda hacia el estrellato definitivo."
+    ),
+    "comfortably numb": (
+        "Nacida inicialmente como una maqueta descartada para el álbum en solitario de David Gilmour, la música cobró una dimensión trascendental cuando Roger Waters la integró a la ópera rock The Wall. "
+        "Waters escribió los versos recordando el shock físico y la desconexión emocional que sufrió en Filadelfia en 1977 tras recibir inyecciones de sedantes para poder salir al escenario con fiebre alta. "
+        "Grabado en apenas dos tomas con su legendaria Black Stratocaster, el majestuoso solo final de David Gilmour es aclamado mundialmente como la cúspide emotiva de la guitarra eléctrica en el rock."
     )
 }
 
 def get_master_eddie_script(song_title, band_name, album_name="", year="", angle=1):
     """
-    Construye el guion maestro de DJ Eddie respetando los lineamientos obligatorios:
-    1. Apertura: 'Estás escuchando Rock Radio, de regreso al pasado. Soy DJ Eddie.'
-    2. Desarrollo: Anécdota musical auténtica de 85 a 110 palabras (30 a 45s de locución real).
-    3. Cierre: '¡Sube el volumen y escuchemos a {song_title} aquí en Rock Radio, de regreso al pasado!'
+    Construye el guion maestro de DJ Fredd respetando los lineamientos obligatorios:
+    1. Apertura: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.'
+    2. Desarrollo: Anécdota musical auténtica de 30 a 50 segundos de locución real (85-130 palabras).
+    3. Cierre: '¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!'
     """
     clean_key = (song_title or '').lower().strip()
     clean_key = clean_key.replace("'", "").replace("’", "").strip()
@@ -186,7 +196,6 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
             break
 
     if not dev_story:
-        # Generador de historias dinámicas y auténticas para DJ Fredd
         year_str = f"En {year}, " if year else ""
         album_str = f"para su recordado álbum {album_name}" if album_name else "en una de las etapas de mayor solidez creativa de su trayectoria"
 
@@ -218,14 +227,18 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
     return APERTURA_OBLIGATORIA, dev_story, cierre, full_script
 
 # ==============================================================================
-# DICCIONARIO FONÉTICO MAESTRO PARA PRONUNCIACIÓN EN INGLÉS (DJ EDDIE)
-# Adapta nombres de bandas, músicos, lugares, discos y canciones para que la voz
-# neural hispanohablante (es-US-AlonsoNeural) los pronuncie de forma natural en inglés.
+# DICCIONARIO FONÉTICO MAESTRO PARA PRONUNCIACIÓN NATIVA EN INGLÉS (DJ FREDD)
+# Utiliza límites de palabras exactos (\\b) para que nombres propios, bandas,
+# discos, canciones, estudios y términos técnicos se pronuncien en inglés con total fluidez.
 # ==============================================================================
 ENGLISH_PHONETICS = [
-    (r'Fred Rewind', 'Fred Riuáind'),
-    (r'DJ Fredd', 'Dí-yéi Fred'),
-    (r'Rewind', 'Riuáind'),
+    # Marca y Estación
+    (r'\bFred Rewind\b', 'Fred Riuáind'),
+    (r'\bDJ Fredd\b', 'Dí-yéi Fred'),
+    (r'\bDJ Eddie\b', 'Dí-yéi Fred'),
+    (r'\bDJ\b', 'Dí-yéi'),
+    (r'\bRewind\b', 'Riuáind'),
+
     # Bandas y Agrupaciones
     (r'\bThe Beatles\b', 'De Bítels'),
     (r'\bBeatles\b', 'Bítels'),
@@ -242,11 +255,13 @@ ENGLISH_PHONETICS = [
     (r'\bBlack Sabbath\b', 'Blak Sábas'),
     (r'\bQueen\b', 'Cuín'),
     (r'\bAC/DC\b', 'Ei-Si Di-Si'),
+    (r'\bACDC\b', 'Ei-Si Di-Si'),
     (r'\bAerosmith\b', 'Éro-smiz'),
     (r'\bKiss\b', 'Kis'),
     (r'\bKISS\b', 'Kis'),
     (r'\bKISS Army\b', 'Kis Ármi'),
     (r'\bGuns N\' Roses\b', 'Gans en Róuses'),
+    (r'\bGuns N Roses\b', 'Gans en Róuses'),
     (r'\bGuns and Roses\b', 'Gans and Róuses'),
     (r'\bMetallica\b', 'Metálica'),
     (r'\bIron Maiden\b', 'Áiron Méiden'),
@@ -259,8 +274,8 @@ ENGLISH_PHONETICS = [
     (r'\bTwisted Sister\b', 'Tuísted Síster'),
     (r'\bDire Straits\b', 'Dáir Stréits'),
     (r'\bFleetwood Mac\b', 'Flít-wud Mak'),
-    (r'\bThe Eagles\b', 'De Íguls'),
-    (r'\bEagles\b', 'Íguls'),
+    (r'\bThe Eagles\b', 'De Ígols'),
+    (r'\bEagles\b', 'Ígols'),
     (r'\bLynyrd Skynyrd\b', 'Lénard Skínard'),
     (r'\bCreedence Clearwater Revival\b', 'Kridens Klir-uóter Rivaival'),
     (r'\bCreedence\b', 'Kridens'),
@@ -280,8 +295,12 @@ ENGLISH_PHONETICS = [
     (r'\bDokken\b', 'Dóken'),
     (r'\bQuiet Riot\b', 'Kuáiet Rái-ot'),
     (r'\bSkid Row\b', 'Skid Róu'),
+    (r'\bNirvana\b', 'Nir-vána'),
+    (r'\bPearl Jam\b', 'Perl Yam'),
+    (r'\bSoundgarden\b', 'Sáund-garden'),
+    (r'\bAlice in Chains\b', 'Ális in Chéins'),
 
-    # Músicos y Productores
+    # Músicos, Productores y Locutores
     (r'\bJohn Lennon\b', 'Yón Lénon'),
     (r'\bLennon\b', 'Lénon'),
     (r'\bPaul McCartney\b', 'Pol Macárney'),
@@ -361,8 +380,68 @@ ENGLISH_PHONETICS = [
     (r'\bKrist Novoselic\b', 'Krist Novosélik'),
     (r'\bEddie Vedder\b', 'Édi Vé-der'),
     (r'\bChris Cornell\b', 'Kris Kornél'),
+    (r'\bSteven Tyler\b', 'Stíven Táiler'),
+    (r'\bDavid Gilmour\b', 'Déivid Guílmor'),
+    (r'\bRoger Waters\b', 'Róyer Uóters'),
+    (r'\bRitchie Blackmore\b', 'Ríchi Blákmor'),
+    (r'\bFrank Zappa\b', 'Frank Zápa'),
+    (r'\bKenny Everett\b', 'Kéni Éver-et'),
+    (r'\bNeil Bogart\b', 'Nil Bóugart'),
+    (r'\bChris Hughes\b', 'Kris Jiús'),
+    (r'\bRoland Orzabal\b', 'Róuland Or-zábal'),
+    (r'\bErin Everly\b', 'Érin Éver-li'),
+    (r'\bMark Dailey\b', 'Mark Déi-li'),
 
     # Canciones y Álbumes
+    (r'\bBohemian Rhapsody\b', 'Boují-mian Rápsodi'),
+    (r'\bA Night at the Opera\b', 'Ei Náit at de Ópera'),
+    (r'\bSweet Child O\' Mine\b', 'Suít Cháild o Máin'),
+    (r'\bSweet Child of Mine\b', 'Suít Cháild ov Máin'),
+    (r'\bAppetite for Destruction\b', 'Ápetait for Destrák-shon'),
+    (r'\bDetroit Rock City\b', 'Detróit Rok Síti'),
+    (r'\bDestroyer\b', 'Destróier'),
+    (r'\bRock and Roll All Nite\b', 'Rok and Roul Ol Náit'),
+    (r'\bAlive!\b', 'Aláiv'),
+    (r'\bBack in Black\b', 'Bak in Blák'),
+    (r'\bHighway to Hell\b', 'Jái-wei tu Jel'),
+    (r'\bHotel California\b', 'Joutél Califórnia'),
+    (r'\bStairway to Heaven\b', 'Stér-wei tu Jéven'),
+    (r'\bParanoid\b', 'Pár-anoid'),
+    (r'\bIron Man\b', 'Áiron Man'),
+    (r'\bWar Pigs\b', 'Uór Pigs'),
+    (r'\bMaster of Puppets\b', 'Máster ov Pá-pets'),
+    (r'\bRide the Lightning\b', 'Ráid de Láit-ning'),
+    (r'\bEnter Sandman\b', 'Énter Sánd-man'),
+    (r'\bThe Black Album\b', 'De Blak Álbum'),
+    (r'\bÁlbum Negro\b', 'Álbum Negro'),
+    (r'\bJohnny Got His Gun\b', 'Yóni Got Jis Gan'),
+    (r'\bOne\b', 'Uan'),
+    (r'\bPoison\b', 'Póison'),
+    (r'\bTrash\b', 'Trash'),
+    (r'\bForever\b', 'For-éver'),
+    (r'\bHot in the Shade\b', 'Jot in de Shéid'),
+    (r'\bAfrica\b', 'Áfrika'),
+    (r'\bRosanna\b', 'Rou-sána'),
+    (r'\bToto IV\b', 'Tóu-tou Cuátro'),
+    (r'\bForever Young\b', 'For-éver Yang'),
+    (r'\bSubdivisions\b', 'Sab-diví-shons'),
+    (r'\bSignals\b', 'Sígnals'),
+    (r'\bMoving Pictures\b', 'Múving Pík-churs'),
+    (r'\bTom Sawyer\b', 'Tom Sóyer'),
+    (r'\bShout at the Devil\b', 'Sháut at de Dévil'),
+    (r'\bDr\. Feelgood\b', 'Dóktor Fíl-gud'),
+    (r'\bHysteria\b', 'Jistíria'),
+    (r'\bPyromania\b', 'Pairo-méinia'),
+    (r'\bPour Some Sugar on Me\b', 'Por Sam Shúgar on Mí'),
+    (r'\bSongs from the Big Chair\b', 'Songs from de Big Chér'),
+    (r'\bEverybody Wants to Rule the World\b', 'Évribadi Uónts tu Rul de Uérld'),
+    (r'\bSmoke on the Water\b', 'Smóuk on de Uóter'),
+    (r'\bMachine Head\b', 'Mashín Jed'),
+    (r'\bDream On\b', 'Drim On'),
+    (r'\bWalk This Way\b', 'Uók Dis Uéi'),
+    (r'\bComfortably Numb\b', 'Kómforta-bli Nam'),
+    (r'\bWish You Were Here\b', 'Uísh Yú Uér Jír'),
+    (r'\bThe Wall\b', 'De Uól'),
     (r'\bHelp!\b', '¡Jelp!'),
     (r'\bHelp\b', 'Jelp'),
     (r'\bYesterday\b', 'Yéster-dei'),
@@ -371,30 +450,9 @@ ENGLISH_PHONETICS = [
     (r'\bCome Together\b', 'Kam Tu-gué-der'),
     (r'\bSomething\b', 'Sám-zing'),
     (r'\bA Day in the Life\b', 'Ei Déi in de Láif'),
-    (r'\bBohemian Rhapsody\b', 'Boují-mian Rápsodi'),
     (r'\bWe Will Rock You\b', 'Ui Uíl Rok Yú'),
     (r'\bWe Are the Champions\b', 'Ui Ar de Chám-pions'),
     (r'\bAnother One Bites the Dust\b', 'Anó-der Uan Báits de Dast'),
-    (r'\bHotel California\b', 'Joutél Califórnia'),
-    (r'\bStairway to Heaven\b', 'Stér-wei tu Jéven'),
-    (r'\bHighway to Hell\b', 'Jái-wei tu Jel'),
-    (r'\bBack in Black\b', 'Bak in Blák'),
-    (r'\bSweet Child O\' Mine\b', 'Suít Cháild o Máin'),
-    (r'\bSweet Child of Mine\b', 'Suít Cháild ov Máin'),
-    (r'\bDetroit Rock City\b', 'Detróit Rok Síti'),
-    (r'\bRock and Roll All Nite\b', 'Rok and Roul Ol Náit'),
-    (r'\bForever\b', 'For-éver'),
-    (r'\bMaster of Puppets\b', 'Máster ov Pá-pets'),
-    (r'\bEnter Sandman\b', 'Énter Sánd-man'),
-    (r'\bPoison\b', 'Póison'),
-    (r'\bHysteria\b', 'Jistíria'),
-    (r'\bPour Some Sugar on Me\b', 'Por Sam Shúgar on Mí'),
-    (r'\bShout at the Devil\b', 'Sháut at de Dévil'),
-    (r'\bSubdivisions\b', 'Sab-diví-shons'),
-    (r'\bTom Sawyer\b', 'Tom Sóyer'),
-    (r'\bForever Young\b', 'For-éver Yang'),
-    (r'\bAfrica\b', 'Áfrika'),
-    (r'\bRosanna\b', 'Rou-sána'),
     (r'\bThe Price\b', 'De Práis'),
     (r'\bWe\'re Not Gonna Take It\b', 'Uir Not Gó-na Téik It'),
     (r'\bRainbow in the Dark\b', 'Réin-bou in de Dárk'),
@@ -408,38 +466,60 @@ ENGLISH_PHONETICS = [
     (r'\bEye of the Tiger\b', 'Ái ov de Táiguer'),
     (r'\bThe Final Countdown\b', 'De Fáinal Káunt-daun'),
     (r'\bJump\b', 'Yamp'),
-    (r'\bSmoke on the Water\b', 'Smóuk on de Uóter'),
-    (r'\bParanoid\b', 'Pár-anoid'),
-    (r'\bIron Man\b', 'Áiron Man'),
-    (r'\bComfortably Numb\b', 'Kómforta-bli Nam'),
-    (r'\bWish You Were Here\b', 'Uísh Yú Uér Jír'),
-    (r'\bDream On\b', 'Drim On'),
-    (r'\bWalk This Way\b', 'Uók Dis Uéi'),
 
-    # Lugares y Términos Técnicos de Estudio
-    (r'\bKenwood\b', 'Kén-wud'),
+    # Lugares, Estudios y Términos Técnicos
     (r'\bSunset Strip\b', 'Sánset Strip'),
     (r'\bAbbey Road\b', 'Ábi Róud'),
-    (r'\bBahamas\b', 'Bajámas'),
+    (r'\bRockfield\b', 'Rók-fild'),
+    (r'\bCompass Point\b', 'Kómpas Póint'),
+    (r'\bSweet Silence\b', 'Suít Sáilens'),
+    (r'\bIsland Studios\b', 'Áiland Stúdios'),
+    (r'\bElectric Lady\b', 'Iléktrik Léidi'),
+    (r'\bRegent Sound\b', 'Ríyent Sáund'),
+    (r'\bFortress\b', 'Fórtres'),
+    (r'\bKenwood\b', 'Kén-wud'),
+    (r'\bBron-Yr-Aur\b', 'Bron-er-áur'),
+    (r'\bMontreux\b', 'Mon-tró'),
+    (r'\bSunapee\b', 'Sána-pi'),
+    (r'\bRiot House\b', 'Rái-ot Jáus'),
+    (r'\bHyatt\b', 'Jái-at'),
+    (r'\bCasablanca Records\b', 'Kasa-blánka Rékords'),
+    (r'\bCapital Radio\b', 'Cápital Réidio'),
+    (r'\bOberheim\b', 'Óber-jaim'),
+    (r'\bTelecaster\b', 'Tel-e-káster'),
+    (r'\bStratocaster\b', 'Strato-káster'),
+    (r'\bBlack Stratocaster\b', 'Blak Strato-káster'),
+    (r'\bGibson\b', 'Guíb-son'),
+    (r'\bLes Paul\b', 'Les Pol'),
     (r'\brock and roll\b', 'rok and roul'),
     (r'\bhard rock\b', 'jard rok'),
     (r'\bheavy metal\b', 'jevi metal'),
     (r'\bglam rock\b', 'glam rok'),
     (r'\bthrash metal\b', 'zrash metal'),
+    (r'\bshock rock\b', 'shok rok'),
+    (r'\bpop rock\b', 'pop rok'),
     (r'\briff\b', 'rif'),
     (r'\briffs\b', 'rifs'),
-    (r'\bsolo\b', 'solo'),
     (r'\btrack\b', 'trak'),
+    (r'\btracks\b', 'traks'),
     (r'\bhit\b', 'jit'),
     (r'\bhits\b', 'jits'),
     (r'\bsingle\b', 'sínguel'),
-    (r'\blp\b', 'el-pé')
+    (r'\bsingles\b', 'sínguels'),
+    (r'\bfrontman\b', 'front-man'),
+    (r'\bline-up\b', 'láin-ap'),
+    (r'\bshow\b', 'shóu'),
+    (r'\bshows\b', 'shóus'),
+    (r'\blive\b', 'láiv'),
+    (r'\bplay\b', 'pléi'),
+    (r'\bplaylist\b', 'pléi-list'),
+    (r'\bLP\b', 'el-pé')
 ]
 
 def apply_english_phonetics(text):
     """
-    Sustituye nombres propios y términos en inglés por su pronunciación fonética nativa
-    para que la voz neural en español de DJ Eddie suene auténtica, cálida y anglosajona.
+    Sustituye nombres propios, bandas, discos y términos en inglés por su pronunciación fonética nativa
+    para que la voz neural de DJ Fredd (es-CO-GonzaloNeural) los pronuncie de forma natural y auténtica.
     """
     if not text:
         return ""
@@ -450,15 +530,15 @@ def apply_english_phonetics(text):
 
 def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
     """
-    Parsea y normaliza cualquier guion para garantizar la estructura maestra obligatoria:
-    - Apertura estándar de DJ Eddie
-    - Frases del desarrollo para locución fluida y sincronización de letra
-    - Cierre estándar de DJ Eddie
+    Parsea y normaliza cualquier guion para garantizar la estructura oficial de Fred Rewind:
+    - Apertura estándar de DJ Fredd
+    - Oraciones del desarrollo separadas para pausas naturales de respiración y sincronización
+    - Cierre estándar de DJ Fredd
     """
     text = (text or "").strip()
     cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
 
-    # Detectar o extraer apertura si ya viene en el texto (Fredd o Eddie)
+    # Detectar o extraer apertura si ya viene en el texto
     ap_match = re.search(r'^(Estás escuchando (?:Fred Rewind|Rock Radio)[^\.]*\.\s*Soy DJ (?:Fredd|Eddie)\.?)', text, re.IGNORECASE)
     if ap_match:
         body = text[ap_match.end():].strip()
@@ -475,52 +555,13 @@ def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
     if not dev_text or len(dev_text.split()) < 20:
         _, dev_text, _, _ = get_master_eddie_script(song_title, band_name)
 
-    # Dividir desarrollo en oraciones naturales para locución y sincronización
+    # Dividir desarrollo en oraciones naturales por puntuación
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', dev_text) if s.strip()]
 
     full_script = f"{APERTURA_OBLIGATORIA} {' '.join(sentences)} {cierre}"
     return APERTURA_OBLIGATORIA, sentences, cierre, full_script
 
-async def save_tts_line_with_retry(text, voice, rate, pitch, output_file, max_retries=5):
-    """
-    Guarda una línea con Edge-TTS con reintentos para asegurar estabilidad absoluta.
-    """
-    clean_text = text.strip()
-    if not clean_text:
-        return False
-    for attempt in range(max_retries):
-        try:
-            if os.path.exists(output_file):
-                os.remove(output_file)
-            comm = edge_tts.Communicate(clean_text, voice, rate=rate, pitch=pitch)
-            await comm.save(output_file)
-            if os.path.exists(output_file) and os.path.getsize(output_file) > 500:
-                return True
-        except Exception as e:
-            await asyncio.sleep(0.5 * (attempt + 1))
-    raise RuntimeError(f"Fallo al sintetizar línea de locución: {clean_text}")
-
-def trim_and_boost_wav(raw_mp3, out_wav, gain_val):
-    """
-    Limpia los silencios digitales en los extremos (-45dB) y aplica ganancia normalizada.
-    """
-    af_chain = (
-        f"silenceremove=start_periods=1:start_duration=0.02:start_threshold=-45dB,"
-        f"areverse,"
-        f"silenceremove=start_periods=1:start_duration=0.02:start_threshold=-45dB,"
-        f"areverse,"
-        f"volume={gain_val},"
-        f"aresample=44100"
-    )
-    subprocess.run([
-        FFMPEG_BIN, "-y",
-        "-i", raw_mp3,
-        "-af", af_chain,
-        "-ac", "1",
-        out_wav
-    ], capture_output=True, check=True)
-
-def make_silence_wav(duration_sec, out_path):
+def make_silence_mp3(duration_sec, out_path):
     """
     Genera silencio digital estricto para los espacios de respiración en cabina radial.
     """
@@ -528,6 +569,7 @@ def make_silence_wav(duration_sec, out_path):
         FFMPEG_BIN, "-y",
         "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
         "-t", f"{duration_sec:.3f}",
+        "-codec:a", "libmp3lame", "-b:a", "192k",
         out_path
     ], capture_output=True, check=True)
 
@@ -540,20 +582,21 @@ def get_audio_duration(path):
 
 async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None):
     """
-    Genera la locución oficial de DJ Eddie con todos los lineamientos maestros de producción:
-    - Voz Eddie (es-US-AlonsoNeural) con pronunciación fonética nativa en inglés para nombres propios y bandas.
-    - Flujo narrativo orgánico continuo: sin cortes abruptos entre oraciones, puntos o comas.
-    - Cierre institucional obligatorio con ganancia enérgica de cabina (+3.8dB) y presencia radial.
-    - Master analógico radial (EQ cálido, presencia, compresión analógica y limitador).
-    - Cálculo de timestamps exactos (intro_timings) para sincronizar la letra al 100%.
-    - Soporte de cancelación en tiempo real y limpieza estricta de archivos temporales.
+    Genera la locución oficial de DJ Fredd con los lineamientos de audio maestro:
+    1. Pronunciación en inglés fluida y nativa para nombres propios, bandas, discos y términos técnicos.
+    2. Cadencia de radio FM cálida, evocadora y relajada (rate -2%, pitch -2Hz con es-CO-GonzaloNeural).
+    3. Momentos de respiración calibrados después de puntos finales y apertura (550ms tras apertura, 450ms entre oraciones).
+    4. Pausa dramática previa al cierre (650ms) y energía motivada en la presentación musical (+3% ritmo, +0Hz, +1.5dB).
+    5. Masterización analógica con FFmpeg: calidez vocal 120Hz, corte de asperezas, brillo aéreo 10kHz y compresión broadcast.
+    6. Marcas de tiempo (intro_timings) 100% exactas para sincronización milimétrica en pantalla.
+    7. Cancelación segura y limpieza estricta de archivos temporales.
     """
     pid = os.getpid()
     t_start = time.time()
-    print(f"\n🎙️ [DJ EDDIE SERVICE] Generando locución maestra para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
+    print(f"\n🎙️ [DJ FREDD SERVICE] Generando locución maestra para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
 
     apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
-    tmp_prefix = f"/tmp/dj_eddie_master_{pid}_{int(t_start*1000)}"
+    tmp_prefix = f"/tmp/fred_rewind_{pid}_{int(t_start*1000)}"
 
     voice = "es-CO-GonzaloNeural"
     temp_files = []
@@ -565,7 +608,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
             return ACTIVE_JOBS.get(job_id, {}).get('cancelled', False)
 
     def cleanup_on_cancel():
-        print(f"🛑 [DJ EDDIE SERVICE] Cancelación en curso para '{song_title}' (job: {job_id}). Limpiando archivos temporales...", flush=True)
+        print(f"🛑 [DJ FREDD SERVICE] Cancelación en curso para '{song_title}' (job: {job_id}). Limpiando temporales...", flush=True)
         for tmp_f in temp_files:
             try:
                 if os.path.exists(tmp_f):
@@ -582,84 +625,114 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # Preparar textos con pronunciación fonética en inglés para la síntesis
-    narrative_clean = f"{apertura}\n\n{' '.join(dev_sentences)}"
-    narrative_tts = apply_english_phonetics(narrative_clean)
-    cierre_tts = apply_english_phonetics(cierre)
+    # 1. Preparar textos hablados con fonética inglesa y pausas de respiración
+    ap_spoken = apply_english_phonetics(apertura)
+    ap_tts = ap_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
 
-    # 1. PARTE A: Síntesis continua orgánica de Apertura + Desarrollo
-    narr_mp3 = f"{tmp_prefix}_narr.mp3"
-    temp_files.append(narr_mp3)
-    if job_id:
-        with ACTIVE_JOBS_LOCK:
-            if job_id in ACTIVE_JOBS:
-                ACTIVE_JOBS[job_id]['temp_files'].add(narr_mp3)
+    dev_tts_list = []
+    for s in dev_sentences:
+        s_spoken = apply_english_phonetics(s)
+        dev_tts_list.append(s_spoken)
 
-    comm_narr = edge_tts.Communicate(narrative_tts, voice, rate="+1%", pitch="-1Hz")
-    audio_narr_bytes = bytearray()
-    boundaries = []
+    ci_spoken = apply_english_phonetics(cierre)
+    ci_tts = ci_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
 
-    async for chunk in comm_narr.stream():
-        if is_cancelled():
-            cleanup_on_cancel()
-            return None, 0, 0, [], 0, ""
-        if chunk['type'] == 'audio':
-            audio_narr_bytes.extend(chunk['data'])
-        elif chunk['type'] == 'SentenceBoundary':
-            st = round(chunk['offset'] / 10000000, 2)
-            dur = round(chunk['duration'] / 10000000, 2)
-            en = round(st + dur, 2)
-            boundaries.append({'start': st, 'end': en, 'text': chunk['text']})
+    # Rutas de chunks individuales
+    ap_mp3 = f"{tmp_prefix}_ap.mp3"
+    temp_files.append(ap_mp3)
 
-    with open(narr_mp3, 'wb') as f:
-        f.write(audio_narr_bytes)
+    dev_mp3_paths = []
+    for idx in range(len(dev_sentences)):
+        p = f"{tmp_prefix}_dev_{idx}.mp3"
+        dev_mp3_paths.append(p)
+        temp_files.append(p)
 
-    dur_narr = get_audio_duration(narr_mp3)
-
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
-
-    # 2. PARTE B: Cierre institucional con subida de energía y entrega radial (+4% ritmo, +2Hz entonación)
     ci_mp3 = f"{tmp_prefix}_ci.mp3"
     temp_files.append(ci_mp3)
+
     if job_id:
         with ACTIVE_JOBS_LOCK:
             if job_id in ACTIVE_JOBS:
-                ACTIVE_JOBS[job_id]['temp_files'].add(ci_mp3)
+                ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
 
-    await save_tts_line_with_retry(cierre_tts, voice, "+4%", "+1Hz", ci_mp3)
-    dur_ci = get_audio_duration(ci_mp3)
+    # 2. Síntesis concurrente ultrarrápida con Edge-TTS
+    # Locución de historia: relajada, evocadora y cálida (-2% ritmo, -2Hz pitch)
+    tts_tasks = []
+    tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="-2%", pitch="-2Hz").save(ap_mp3))
+    for idx, s_text in enumerate(dev_tts_list):
+        tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="-2%", pitch="-2Hz").save(dev_mp3_paths[idx]))
+    # Cierre con llamada enérgica a la acción (+3% ritmo, +0Hz)
+    tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+3%", pitch="+0Hz").save(ci_mp3))
+
+    await asyncio.gather(*tts_tasks)
 
     if is_cancelled():
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # 3. Masterización con subida de volumen motivada al pedir subir el volumen
+    # 3. Medición milimétrica de duraciones de cada segmento
+    dur_ap = get_audio_duration(ap_mp3)
+    dur_dev_list = [get_audio_duration(p) for p in dev_mp3_paths]
+    dur_ci = get_audio_duration(ci_mp3)
+
+    # 4. Generación de silencios orgánicos de cabina
+    sil_ap_mp3 = f"{tmp_prefix}_sil_ap.mp3"
+    sil_sent_mp3 = f"{tmp_prefix}_sil_sent.mp3"
+    sil_ci_mp3 = f"{tmp_prefix}_sil_ci.mp3"
+    temp_files.extend([sil_ap_mp3, sil_sent_mp3, sil_ci_mp3])
+
+    make_silence_mp3(0.55, sil_ap_mp3)    # Pausa tras identificador de emisora y locutor
+    make_silence_mp3(0.45, sil_sent_mp3)  # Respiración natural tras cada punto final
+    make_silence_mp3(0.65, sil_ci_mp3)    # Pausa dramática previa al sube el volumen
+
+    # 5. Ensamblaje secuencial sin solapamientos ni cortes
+    concat_list = [ap_mp3, sil_ap_mp3]
+    for idx, dev_p in enumerate(dev_mp3_paths):
+        concat_list.append(dev_p)
+        if idx < len(dev_mp3_paths) - 1:
+            concat_list.append(sil_sent_mp3)
+    concat_list.append(sil_ci_mp3)
+    concat_list.append(ci_mp3)
+
+    concat_txt = f"{tmp_prefix}_concat.txt"
+    temp_files.append(concat_txt)
+    with open(concat_txt, 'w') as f:
+        for c in concat_list:
+            f.write(f"file '{c}'\n")
+
+    raw_concat_mp3 = f"{tmp_prefix}_raw.mp3"
+    temp_files.append(raw_concat_mp3)
+    subprocess.run([
+        FFMPEG_BIN, "-y",
+        "-f", "concat", "-safe", "0", "-i", concat_txt,
+        "-c", "copy",
+        raw_concat_mp3
+    ], capture_output=True, check=True)
+
+    if is_cancelled():
+        cleanup_on_cancel()
+        return None, 0, 0, [], 0, ""
+
+    # 6. Masterización analógica radial con FFmpeg
     if not out_mp3_path:
-        out_mp3_path = f"/tmp/dj_eddie_{pid}.mp3"
+        out_mp3_path = f"/tmp/dj_fredd_{pid}.mp3"
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
 
-    filter_complex = (
-        "[0:a]aresample=44100,volume=1.2dB,equalizer=f=135:width_type=o:width=1.0:g=2.2,equalizer=f=3400:width_type=o:width=1.2:g=3.8[a0];"
-        "[1:a]aresample=44100,volume=3.8dB,equalizer=f=140:width_type=o:width=1.0:g=2.6,equalizer=f=3600:width_type=o:width=1.2:g=5.5[a1];"
-        "[a0][a1]acrossfade=d=0.15:c1=tri:c2=tri[amix];"
-        "[amix]aresample=44100,"
-        "highpass=f=75,"
-        "equalizer=f=135:width_type=o:width=1.0:g=1.8,"
-        "equalizer=f=260:width_type=o:width=1.0:g=-1.5,"
-        "equalizer=f=3400:width_type=o:width=1.2:g=3.2,"
-        "equalizer=f=7500:width_type=o:width=1.5:g=2.5,"
-        "acompressor=threshold=-15dB:ratio=3.5:attack=10:release=100:makeup=2.2,"
-        "alimiter=limit=-0.5dB:attack=5:release=50[aout]"
+    master_filter = (
+        "aresample=44100,"
+        "highpass=f=65,"
+        "equalizer=f=120:width_type=o:width=1.0:g=1.8,"
+        "equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
+        "equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
+        "equalizer=f=10000:width_type=o:width=1.5:g=1.2,"
+        "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
+        "alimiter=limit=-1.0dB:attack=5:release=50"
     )
 
     cmd = [
         FFMPEG_BIN, "-y",
-        "-i", narr_mp3,
-        "-i", ci_mp3,
-        "-filter_complex", filter_complex,
-        "-map", "[aout]",
+        "-i", raw_concat_mp3,
+        "-af", master_filter,
         "-codec:a", "libmp3lame",
         "-b:a", "192k",
         out_mp3_path
@@ -673,41 +746,38 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     duration = get_audio_duration(out_mp3_path)
     elapsed = time.time() - t_start
 
-    # 4. Construcción precisa de intro_timings con el texto oficial en pantalla
+    # 7. Construcción milimétrica de marcas de tiempo (intro_timings)
     intro_timings = []
-    ap_end = boundaries[1]['end'] if len(boundaries) > 1 else (boundaries[0]['end'] if boundaries else 5.5)
+    # Apertura
     intro_timings.append({
         'start': 0.0,
-        'end': round(ap_end, 2),
+        'end': round(dur_ap, 2),
         'text': apertura
     })
 
-    dev_offset = 2 if len(boundaries) > len(dev_sentences) + 1 else 1
+    curr_t = dur_ap + 0.55
     for idx, sent in enumerate(dev_sentences):
-        b_idx = dev_offset + idx
-        if b_idx < len(boundaries):
-            st = round(boundaries[b_idx]['start'], 2)
-            en = round(boundaries[b_idx]['end'], 2)
-        else:
-            st = round(intro_timings[-1]['end'], 2)
-            rem = max(1.0, dur_narr - st)
-            en = round(st + (rem / (len(dev_sentences) - idx)), 2)
+        st = round(curr_t, 2)
+        en = round(curr_t + dur_dev_list[idx], 2)
         intro_timings.append({
             'start': st,
             'end': en,
             'text': sent
         })
+        curr_t = en + 0.45
 
-    intro_end = round(max(0.0, dur_narr - 0.15), 2)
+    ci_start = round(curr_t - 0.45 + 0.65, 2)
     intro_timings.append({
-        'start': intro_end,
-        'end': round(duration, 2),
+        'start': ci_start,
+        'end': round(ci_start + dur_ci, 2),
         'text': cierre
     })
+    intro_end = ci_start
 
-    print(f"✓ [DJ EDDIE SERVICE] Locución maestra generada en {elapsed:.2f}s (duración audio: {duration:.2f}s, intro_end: {intro_end}s): {out_mp3_path}", flush=True)
+    story_alone_dur = round(ci_start - 0.65 - (dur_ap + 0.55), 2)
+    print(f"✓ [DJ FREDD SERVICE] Locución maestra generada en {elapsed:.2f}s | Duración total: {duration:.2f}s | Anécdota sola: {story_alone_dur:.2f}s", flush=True)
 
-    # Limpieza de archivos temporales
+    # 8. Limpieza rigurosa de archivos temporales
     for tmp_f in temp_files:
         try:
             if os.path.exists(tmp_f):
@@ -719,10 +789,10 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 
 def run_server(port=5055):
     """
-    Servidor HTTP en puerto 5055 para la app web de Rock Radio.
-    Atiende solicitudes de generación de locuciones estandarizadas, cancelación inmediata y sincronización de letras.
+    Servidor HTTP en puerto 5055 para la app web de Fred Rewind.
+    Atiende solicitudes de generación de locuciones, cancelación inmediata y sincronización de letras.
     """
-    class DjEddieAudioHandler(BaseHTTPRequestHandler):
+    class DjFreddAudioHandler(BaseHTTPRequestHandler):
         def _set_cors(self):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
@@ -742,9 +812,9 @@ def run_server(port=5055):
                 status_payload = {
                     'status': 'online',
                     'service': 'Fred Rewind • Servicio Oficial de Audio con DJ Fredd',
-                    'voice': 'Fredd',
+                    'voice': 'DJ Fredd',
                     'voiceModel': 'es-CO-GonzaloNeural',
-                    'engine': 'Edge-TTS + Master Radio Booth Analog Chain',
+                    'engine': 'Edge-TTS + Master Radio FM Analog Chain',
                     'lyricsSync': True,
                     'port': port,
                     'activeJobsCount': len(ACTIVE_JOBS),
@@ -825,7 +895,7 @@ def run_server(port=5055):
                         'duration': duration_fmt,
                         'durationSec': round(duration, 2),
                         'elapsedSec': round(elapsed, 2),
-                        'voice': 'Fredd (Gonzalo Neural Master - Rock Radio)',
+                        'voice': 'DJ Fredd (es-CO-GonzaloNeural FM Master)',
                         'trackId': track_id,
                         'jobId': job_id,
                         'intro_timings': intro_timings,
@@ -867,7 +937,7 @@ def run_server(port=5055):
                                         os.remove(out_p)
                                     except Exception:
                                         pass
-                    print(f"🛑 [DJ EDDIE SERVICE] Cancelación procesada para job: {target_job_id} / track: {target_track_id}. Total: {cancelled_count}", flush=True)
+                    print(f"🛑 [DJ FREDD SERVICE] Cancelación procesada para job: {target_job_id} / track: {target_track_id}. Total: {cancelled_count}", flush=True)
                     self.send_response(200)
                     self._set_cors()
                     self.send_header('Content-Type', 'application/json')
@@ -941,7 +1011,7 @@ def run_server(port=5055):
                             "-o", target_mp3,
                             query
                         ]
-                        print(f"  🔍 [DJ EDDIE SERVICE] Obteniendo pista completa para '{song_title}' de {band_name}...", flush=True)
+                        print(f"  🔍 [DJ FREDD SERVICE] Obteniendo pista completa para '{song_title}' de {band_name}...", flush=True)
                         subprocess.run(cmd, capture_output=True, timeout=90)
 
                     if os.path.exists(target_mp3) and os.path.getsize(target_mp3) > 100000:
@@ -973,16 +1043,16 @@ def run_server(port=5055):
                 self.send_response(404)
                 self.end_headers()
 
-    server = ThreadingHTTPServer(('0.0.0.0', port), DjEddieAudioHandler)
-    print(f"🚀 [DJ EDDIE SERVICE] Servidor de locuciones maestras de Eddie en http://0.0.0.0:{port}/api/generate_audio", flush=True)
-    print(f"   Voz: Eddie (es-US-AlonsoNeural) | Sincronización de letras activa", flush=True)
+    server = ThreadingHTTPServer(('0.0.0.0', port), DjFreddAudioHandler)
+    print(f"🚀 [DJ FREDD SERVICE] Servidor de locuciones maestras en http://0.0.0.0:{port}/api/generate_audio", flush=True)
+    print(f"   Voz: DJ Fredd (es-CO-GonzaloNeural FM Master) | Sincronización de letras activa", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         print("\nDeteniendo servidor de audio.")
 
 def main():
-    parser = argparse.ArgumentParser(description="Generador Oficial de Locuciones de DJ Eddie con Sincronización de Letras")
+    parser = argparse.ArgumentParser(description="Generador Oficial de Locuciones de DJ Fredd con Sincronización de Letras")
     parser.add_argument("--song", help="Nombre de la canción")
     parser.add_argument("--band", help="Nombre de la banda o artista")
     parser.add_argument("--album", default="", help="Nombre del álbum")
@@ -1006,10 +1076,10 @@ def main():
     if not script_text:
         _, _, _, script_text = get_master_eddie_script(song_name, band_name, args.album, args.year, args.angle)
 
-    out_file = args.out or f"/tmp/eddie_{band_name}_{song_name}.mp3".replace(" ", "_").lower()
+    out_file = args.out or f"/tmp/fredd_{band_name}_{song_name}.mp3".replace(" ", "_").lower()
 
     print(f"=======================================================")
-    print(f"🎸 DJ EDDIE • ROCK RADIO — LOCUCIÓN MAESTRA ESTANDARIZADA")
+    print(f"🎙️ FRED REWIND • DJ FREDD — LOCUCIÓN MAESTRA ESTANDARIZADA")
     print(f"=======================================================")
 
     out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
