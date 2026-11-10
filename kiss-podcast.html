@@ -5423,11 +5423,10 @@
         </div>
       </section>
 
-      <!-- 2. Barra de Filtros de Categoría del Home estilo Spotify (Todo, DJ Fredd, Cápsulas 45s, Artistas) -->
+      <!-- 2. Barra de Filtros de Categoría del Home estilo Spotify (Todo, DJ Fredd, Artistas) -->
       <div class="spotify-home-filter-bar" id="spotifyHomeFilterBar">
         <button class="home-filter-pill active" data-homefilter="all" type="button">Todo</button>
         <button class="home-filter-pill djeddie-pill" data-homefilter="djeddie" type="button">🎙️ DJ Fredd</button>
-        <button class="home-filter-pill" data-homefilter="podcasts" type="button">⚡ Cápsulas 45s</button>
         <button class="home-filter-pill" data-homefilter="artists" type="button">🎸 Artistas</button>
       </div>
 
@@ -5493,34 +5492,7 @@
           </div>
         </div>
 
-        <!-- 2. Categoría Spotify: Hecho para ti (Daily Mixes & Estaciones de Rock) -->
-        <div class="home-shelf-section" id="shelfMadeForYou">
-          <div class="home-shelf-header">
-            <div>
-              <h2 class="home-shelf-title">Hecho para ti</h2>
-              <p class="home-shelf-subtitle">Mixes diarios y sesiones curadas al estilo Spotify según tus gustos de rock</p>
-            </div>
-          </div>
-          <div class="home-cards-row" id="madeForYouRow">
-            <!-- Rendered via JS -->
-          </div>
-        </div>
-
-        <!-- 3. Categoría Spotify: Cápsulas Originales Rock en 45 Segundos -->
-        <div class="home-shelf-section" id="shelfCapsules45">
-          <div class="home-shelf-header">
-            <div>
-              <h2 class="home-shelf-title">⚡ Cápsulas: Rock en 45 Segundos</h2>
-              <p class="home-shelf-subtitle">Micro-documentales sonorizados de 45 segundos sobre las grandes leyendas</p>
-            </div>
-            <button class="home-shelf-more" type="button" data-filterjump="podcasts">Ver las 13 cápsulas</button>
-          </div>
-          <div class="home-cards-row" id="capsules45Row">
-            <!-- Rendered via JS -->
-          </div>
-        </div>
-
-        <!-- 4. Categoría Spotify: Tus Artistas Favoritos -->
+        <!-- 2. Categoría Spotify: Tus Artistas Favoritos -->
         <div class="home-shelf-section" id="shelfFavoriteArtists">
           <div class="home-shelf-header">
             <div>
@@ -8129,121 +8101,7 @@
         djRow.appendChild(mainDjCard);
       }
 
-      // 2. "Hecho para ti" Row (Spotify Daily Mixes & Curated Rock Sessions)
-      const mixesRow = document.getElementById('madeForYouRow');
-      if (mixesRow && mixesRow.children.length === 0) {
-        const mixes = [
-          {
-            title: 'Daily Mix 1: Clásicos 80s',
-            sub: 'Toto, Alphaville, Tears for Fears, Def Leppard y más con DJ Fredd',
-            cover: 'img/covers/cover_toto.png',
-            badge: 'DAILY MIX 01',
-            action: () => { openDjEddiePlaylistView(); playDjEddieItem(0, false); }
-          },
-          {
-            title: 'Daily Mix 2: Heavy & Thrash',
-            sub: 'Metallica (One & Enter Sandman), Mötley Crüe, Black Sabbath',
-            cover: 'img/covers/cover_metallica.png',
-            badge: 'DAILY MIX 02',
-            action: () => {
-              const idx = catalog.findIndex(x => x.bandId === 'metallica');
-              openDjEddiePlaylistView();
-              playDjEddieItem(idx >= 0 ? idx : 0, false);
-            }
-          },
-          {
-            title: 'Daily Mix 3: Hard Rock & Arena',
-            sub: 'AC/DC (Back in Black), Led Zeppelin (Stairway to Heaven), KISS',
-            cover: 'img/covers/cover_acdc.png',
-            badge: 'DAILY MIX 03',
-            action: () => {
-              const idx = catalog.findIndex(x => x.bandId === 'acdc');
-              openDjEddiePlaylistView();
-              playDjEddieItem(idx >= 0 ? idx : 0, false);
-            }
-          },
-          {
-            title: 'Daily Mix 4: Synth & Prog Rock',
-            sub: 'Rush (Subdivisions), Alphaville (Forever Young), Queen',
-            cover: 'img/covers/cover_rush.png',
-            badge: 'DAILY MIX 04',
-            action: () => {
-              const idx = catalog.findIndex(x => x.bandId === 'rush');
-              openDjEddiePlaylistView();
-              playDjEddieItem(idx >= 0 ? idx : 0, false);
-            }
-          },
-          {
-            title: 'Power Ballads & Himnos FM',
-            sub: 'KISS (Forever), Led Zeppelin, Def Leppard (Hysteria)',
-            cover: 'img/covers/cover_kiss.png',
-            badge: 'RADIO MIX',
-            action: () => {
-              const idx = catalog.findIndex(x => x.bandId === 'kiss');
-              openDjEddiePlaylistView();
-              playDjEddieItem(idx >= 0 ? idx : 0, false);
-            }
-          },
-          {
-            title: 'Sunset Strip & Glam Metal',
-            sub: "Mötley Crüe (Shout at the Devil), Guns N' Roses, Def Leppard",
-            cover: 'img/covers/cover_motley_crue.png',
-            badge: 'GLAM MIX',
-            action: () => {
-              const idx = catalog.findIndex(x => x.bandId === 'motley_crue');
-              openDjEddiePlaylistView();
-              playDjEddieItem(idx >= 0 ? idx : 0, false);
-            }
-          }
-        ];
-
-        mixes.forEach(mx => {
-          const card = document.createElement('div');
-          card.className = 'home-sp-card';
-          card.innerHTML = `
-            <div class="home-sp-card-art">
-              <img src="${mx.cover}" alt="${mx.title}" loading="lazy">
-              <span class="home-sp-card-badge" style="color:#1ed760;border-color:rgba(30,215,96,0.45);">${mx.badge}</span>
-              <button class="home-sp-card-play" type="button" title="Reproducir ${mx.title}">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="home-sp-card-title">${mx.title}</div>
-            <div class="home-sp-card-sub">${mx.sub}</div>
-          `;
-          card.addEventListener('click', mx.action);
-          mixesRow.appendChild(card);
-        });
-      }
-
-      // 3. Capsules 45s Row
-      const capRow = document.getElementById('capsules45Row');
-      if (capRow) {
-        capRow.innerHTML = '';
-        Object.values(bands).forEach(b => {
-          const isPlaying45 = (activeBandId === b.id && activeTrackFormat === '45s');
-          const card = document.createElement('div');
-          card.className = 'home-sp-card' + (isPlaying45 ? ' active-playing' : '');
-          card.innerHTML = `
-            <div class="home-sp-card-art">
-              <img src="${b.cover}" alt="${b.name}" loading="lazy">
-              <span class="home-sp-card-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.45);">${b.badge}</span>
-              <span class="home-sp-card-dur">0:45</span>
-              <button class="home-sp-card-play" type="button" title="Reproducir cápsula de ${b.name}">
-                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-            </div>
-            <div class="home-sp-card-title">${b.name}: ${b.title}</div>
-            <div class="home-sp-card-sub">${b.era} • ${b.genreLabel}</div>
-          `;
-          card.addEventListener('click', () => {
-            openBandView(b.id, true, '45s');
-          });
-          capRow.appendChild(card);
-        });
-      }
-
-      // 4. Favorite Artists Row (Circular Spotify Artist Cards)
+      // Favorite Artists Row (Circular Spotify Artist Cards)
       const artRow = document.getElementById('favoriteArtistsRow');
       if (artRow && artRow.children.length === 0) {
         Object.values(bands).forEach(b => {
@@ -8275,39 +8133,19 @@
 
       const djHero = document.getElementById('djEddieHeroSection');
       const shelfDj = document.getElementById('shelfDjEddie');
-      const shelfMix = document.getElementById('shelfMadeForYou');
-      const shelfCap = document.getElementById('shelfCapsules45');
       const shelfArt = document.getElementById('shelfFavoriteArtists');
 
       if (cat === 'all') {
         if (djHero) djHero.style.display = '';
         if (shelfDj) shelfDj.style.display = '';
-        if (shelfMix) shelfMix.style.display = '';
-        if (shelfCap) shelfCap.style.display = '';
         if (shelfArt) shelfArt.style.display = '';
       } else if (cat === 'djeddie') {
         if (djHero) djHero.style.display = '';
         if (shelfDj) shelfDj.style.display = '';
-        if (shelfMix) shelfMix.style.display = 'none';
-        if (shelfCap) shelfCap.style.display = 'none';
-        if (shelfArt) shelfArt.style.display = 'none';
-      } else if (cat === 'music') {
-        if (djHero) djHero.style.display = 'none';
-        if (shelfDj) shelfDj.style.display = '';
-        if (shelfMix) shelfMix.style.display = '';
-        if (shelfCap) shelfCap.style.display = 'none';
-        if (shelfArt) shelfArt.style.display = '';
-      } else if (cat === 'podcasts') {
-        if (djHero) djHero.style.display = 'none';
-        if (shelfDj) shelfDj.style.display = 'none';
-        if (shelfMix) shelfMix.style.display = 'none';
-        if (shelfCap) shelfCap.style.display = '';
         if (shelfArt) shelfArt.style.display = 'none';
       } else if (cat === 'artists') {
         if (djHero) djHero.style.display = 'none';
         if (shelfDj) shelfDj.style.display = 'none';
-        if (shelfMix) shelfMix.style.display = 'none';
-        if (shelfCap) shelfCap.style.display = 'none';
         if (shelfArt) shelfArt.style.display = '';
       }
     }
