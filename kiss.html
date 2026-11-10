@@ -5862,9 +5862,6 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 <span id="btnStartDjEddieLabel">Ver listado de canciones</span>
               </button>
-              <button class="btn-dj-eddie-next" id="btnNextDjEddie" type="button" title="Cambiar a la siguiente mezcla de DJ Fredd">
-                <span>⏭ Siguiente mezcla IA</span>
-              </button>
             </div>
           </div>
 
@@ -11758,8 +11755,7 @@
 
     const djHeroCardEl = document.querySelector('.dj-eddie-hero-card');
     if (djHeroCardEl) {
-      djHeroCardEl.addEventListener('click', (e) => {
-        if (e.target.closest('#btnNextDjEddie')) return;
+      djHeroCardEl.addEventListener('click', () => {
         openDjEddiePlaylistView();
       });
     }
@@ -11769,14 +11765,6 @@
       btnStartDjEddie.addEventListener('click', (e) => {
         e.stopPropagation();
         openDjEddiePlaylistView();
-      });
-    }
-
-    const btnNextDjEddie = document.getElementById('btnNextDjEddie');
-    if (btnNextDjEddie) {
-      btnNextDjEddie.addEventListener('click', (e) => {
-        e.stopPropagation();
-        nextDjEddieTrack();
       });
     }
 
