@@ -310,6 +310,9 @@
       padding: 0;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: visible;
+      color: #000000;
     }
 
     .topbar-avatar-btn:hover {
@@ -321,12 +324,45 @@
       transform: scale(0.95);
     }
 
-    .topbar-avatar-circle {
-      font-size: 1rem;
+    .topbar-avatar-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      display: block;
+    }
+
+    .topbar-avatar-btn .sp-top-user-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: transparent;
+      color: #000000;
       font-weight: 800;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    .topbar-avatar-btn .sp-top-user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .topbar-avatar-btn .sp-connected-dot {
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #1ed760;
+      border: 2px solid #121212;
+      box-shadow: 0 0 6px #1ed760;
+      z-index: 2;
     }
 
     /* Top Search Bar (Center / Top) */
@@ -4299,7 +4335,8 @@
         height: 34px !important;
         min-width: 34px !important;
         flex-shrink: 0 !important;
-        overflow: hidden !important;
+        position: relative !important;
+        overflow: visible !important;
       }
 
       .top-bar-search-wrap {
@@ -4314,94 +4351,6 @@
         font-size: 0.82rem !important;
         min-width: 0 !important;
         width: 100% !important;
-      }
-
-      .btn-spotify-login-top {
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        max-width: 34px !important;
-        border-radius: 50% !important;
-        background: linear-gradient(135deg, #1ed760 0%, #0a8439 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-        color: #000000 !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-shrink: 0 !important;
-        position: relative !important;
-        overflow: hidden !important;
-        cursor: pointer !important;
-        margin: 0 !important;
-        transition: transform 0.15s ease, box-shadow 0.15s ease !important;
-      }
-
-      .btn-spotify-login-top:hover {
-        transform: scale(1.05) !important;
-        box-shadow: 0 4px 12px rgba(29, 185, 84, 0.35) !important;
-      }
-
-      .btn-spotify-login-top:active {
-        transform: scale(0.95) !important;
-      }
-
-      .btn-spotify-login-top svg {
-        width: 20px !important;
-        height: 20px !important;
-        fill: currentColor !important;
-        flex-shrink: 0 !important;
-        display: block !important;
-      }
-
-      .btn-spotify-login-top #spAuthTopLabel,
-      .btn-spotify-login-top .sp-btn-label-desktop {
-        display: none !important;
-      }
-
-      /* Spotify Connected Profile State on Mobile */
-      .btn-spotify-login-top.connected {
-        background: linear-gradient(135deg, #1ed760 0%, #0a8439 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        position: relative !important;
-      }
-
-      .btn-spotify-login-top.connected .sp-top-user-avatar {
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 50% !important;
-        background: transparent !important;
-        color: #000000 !important;
-        font-weight: 800 !important;
-        font-size: 0.95rem !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: hidden !important;
-      }
-
-      .btn-spotify-login-top.connected .sp-top-user-avatar img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
-        border-radius: 50% !important;
-      }
-
-      .btn-spotify-login-top.connected .sp-connected-dot {
-        position: absolute !important;
-        bottom: -1px !important;
-        right: -1px !important;
-        width: 9px !important;
-        height: 9px !important;
-        border-radius: 50% !important;
-        background: #1ed760 !important;
-        border: 2px solid #121212 !important;
-        box-shadow: 0 0 6px #1ed760 !important;
-        z-index: 2 !important;
       }
 
 
@@ -5847,25 +5796,17 @@
       
       <!-- Top Sticky Navigation Bar (Spotify Official Layout) -->
       <header class="main-top-nav" id="mainTopNav">
-        <!-- 1. Avatar del perfil a la izquierda -->
-        <button class="topbar-avatar-btn" id="topbarAvatarBtn" title="Perfil y Configuración">
-          <div class="topbar-avatar-circle" id="topbarAvatarCircle">
-            <span>⚡</span>
-          </div>
+        <!-- Avatar del perfil y Spotify a la izquierda -->
+        <button class="topbar-avatar-btn" id="topbarAvatarBtn" title="Perfil y cuenta de Spotify">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
         </button>
 
-        <!-- 2. Buscador arriba (Filtra bandas locales + Busca canciones en Spotify API) -->
+        <!-- Buscador arriba (Filtra bandas locales + Busca canciones en Spotify API) -->
         <div class="top-bar-search-wrap">
           <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
           <input type="text" id="spotifySearchInput" placeholder="Buscar banda o canción en Spotify...">
           <button class="search-clear-btn" id="btnClearSearch" title="Limpiar búsqueda">✕</button>
         </div>
-
-        <!-- 3. Botón de Login / Estado de Cuenta Spotify -->
-        <button class="btn-spotify-login-top" id="btnSpotifyAuthTop" title="Conectar con tu cuenta de Spotify">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
-          <span id="spAuthTopLabel">Iniciar sesión <span class="sp-btn-label-desktop">con Spotify</span></span>
-        </button>
       </header>
 
       <!-- SECCIÓN DE RESULTADOS EN VIVO Y REPRODUCTOR DE SPOTIFY API -->
@@ -10719,7 +10660,7 @@
       'user-read-recently-played'
     ].join(' ');
 
-    const btnSpotifyAuthTop = document.getElementById('btnSpotifyAuthTop');
+    const btnSpotifyAuthTop = document.getElementById('topbarAvatarBtn');
     const spAuthTopLabel = document.getElementById('spAuthTopLabel');
     const btnDrawerSpotifyAction = document.getElementById('btnDrawerSpotifyAction');
     const drawerSpStatusPill = document.getElementById('drawerSpStatusPill');
@@ -10919,15 +10860,14 @@
         const avatarUrl = (profile.images && profile.images.length > 0) ? profile.images[0].url : null;
         const initial = displayName.charAt(0).toUpperCase();
 
-        if (btnSpotifyAuthTop) {
-          btnSpotifyAuthTop.classList.add('connected');
-          btnSpotifyAuthTop.title = `Conectado como ${displayName} (${emailText}) • Clic para ver cuenta`;
+        if (topbarAvatarBtn) {
+          topbarAvatarBtn.classList.add('connected');
+          topbarAvatarBtn.title = `Conectado como ${displayName} (${emailText}) • Clic para ver perfil y ajustes`;
           const avatarHtml = avatarUrl
             ? `<span class="sp-top-user-avatar"><img src="${avatarUrl}" alt="${displayName}"></span>`
             : `<span class="sp-top-user-avatar">${initial}</span>`;
-          btnSpotifyAuthTop.innerHTML = `
+          topbarAvatarBtn.innerHTML = `
             ${avatarHtml}
-            <span id="spAuthTopLabel">${displayName}</span>
             <span class="sp-connected-dot"></span>
           `;
         }
@@ -10959,12 +10899,11 @@
 
         initSpotifyWebPlaybackSDK();
       } else {
-        if (btnSpotifyAuthTop) {
-          btnSpotifyAuthTop.classList.remove('connected');
-          btnSpotifyAuthTop.title = 'Conectar con tu cuenta de Spotify';
-          btnSpotifyAuthTop.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
-            <span id="spAuthTopLabel">Iniciar sesión <span class="sp-btn-label-desktop">con Spotify</span></span>
+        if (topbarAvatarBtn) {
+          topbarAvatarBtn.classList.remove('connected');
+          topbarAvatarBtn.title = 'Perfil y cuenta de Spotify • Clic para ver ajustes o conectar';
+          topbarAvatarBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.524 4.477 10 10 10s10-4.476 10-10c0-5.523-4.477-10-10-10zm4.586 14.424c-.18.295-.563.387-.857.207-2.35-1.434-5.308-1.758-8.793-.963-.335.077-.67-.133-.746-.469-.077-.334.132-.67.467-.747 3.812-.871 7.076-.508 9.721 1.116.295.18.388.563.208.856zm1.223-2.723c-.226.367-.709.482-1.075.257-2.69-1.653-6.79-2.133-9.972-1.168-.413.125-.85-.107-.975-.521-.125-.414.108-.851.521-.976 3.633-1.102 8.147-.568 11.244 1.332.366.226.482.71.257 1.076zm.106-2.835C14.692 8.95 9.375 8.775 6.297 9.71c-.496.15-1.022-.134-1.173-.63-.151-.497.133-1.022.63-1.173 3.532-1.072 9.404-.87 13.115 1.333.447.265.592.846.327 1.293-.266.447-.847.592-1.294.326z"/></svg>
           `;
         }
         if (topbarAvatarCircle) topbarAvatarCircle.innerHTML = '<span>⚡</span>';
@@ -11688,14 +11627,9 @@
       }
     }
 
-    if (btnSpotifyAuthTop) {
+    if (btnSpotifyAuthTop && btnSpotifyAuthTop !== topbarAvatarBtn) {
       btnSpotifyAuthTop.addEventListener('click', () => {
-        const savedProfile = localStorage.getItem('sp_user_profile');
-        if (savedProfile && localStorage.getItem('sp_access_token')) {
-          openProfileDrawer();
-        } else {
-          startSpotifyLogin();
-        }
+        openProfileDrawer();
       });
     }
 
