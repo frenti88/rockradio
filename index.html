@@ -6947,7 +6947,7 @@
         try {
           const userPlaylists = await fetchSpotifyUserPlaylists(token);
           userPlaylists.slice(0, 15).forEach(pl => {
-            const plImg = (pl.images && pl.images.length > 0 && pl.images[0].url) ? pl.images[0].url : 'img/covers/cover_queen.png';
+            const plImg = (pl.images && pl.images.length > 0 && pl.images[0].url) ? pl.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
             const pItem = document.createElement('div');
             pItem.className = 'playlist-item' + (currentAppView === 'playlist' && activeInspectedPlaylistId === pl.id ? ' active' : '');
             pItem.innerHTML = `
@@ -7412,7 +7412,7 @@
       const year = (track.album && track.album.release_date) ? track.album.release_date.slice(0, 4) : '';
       const imgUrl = (track.album && track.album.images && track.album.images.length > 0)
         ? (track.album.images[0].url || track.album.images[track.album.images.length - 1].url)
-        : 'img/covers/cover_kiss.png';
+        : 'img/albums/queen_1975_night_at_opera.png';
       const durSec = Math.floor((track.duration_ms || 0) / 1000) || 180;
       const pairId = 'sp_' + track.id;
 
@@ -8534,90 +8534,109 @@
       }
     }
 
-    // Curated Fallback Collections for Rock
+    // Curated Fallback Collections for Rock with Real Authentic Album Artwork
     const CURATED_ROCK_PLAYLISTS = [
       {
         id: 'curated_rock_classics',
         name: 'Rock Clásicos 70s y 80s',
         description: 'Los himnos inmortales de Queen, Led Zeppelin, The Beatles, Pink Floyd y las mayores leyendas.',
-        images: [{ url: 'img/covers/cover_queen.png' }],
+        images: [{ url: 'img/albums/queen_1975_night_at_opera.png' }],
         owner: { display_name: 'Rock Radio' },
         tracks: { total: 8 },
         items: [
-          { id: 'sp_cur_1', name: 'Bohemian Rhapsody', artists: [{ name: 'Queen' }], album: { name: 'A Night at the Opera (1975)', release_date: '1975', images: [{ url: 'img/covers/cover_queen.png' }] }, duration_ms: 354000 },
-          { id: 'sp_cur_2', name: 'Stairway to Heaven', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Led Zeppelin IV (1971)', release_date: '1971', images: [{ url: 'img/covers/cover_led_zeppelin.png' }] }, duration_ms: 482000 },
-          { id: 'sp_cur_3', name: 'Back in Black', artists: [{ name: 'AC/DC' }], album: { name: 'Back in Black (1980)', release_date: '1980', images: [{ url: 'img/covers/cover_acdc.png' }] }, duration_ms: 255000 },
-          { id: 'sp_cur_4', name: 'Help!', artists: [{ name: 'The Beatles' }], album: { name: 'Help! (1965)', release_date: '1965', images: [{ url: 'img/covers/cover_queen.png' }] }, duration_ms: 139000 },
-          { id: 'sp_cur_5', name: 'Enter Sandman', artists: [{ name: 'Metallica' }], album: { name: 'Metallica (1991)', release_date: '1991', images: [{ url: 'img/covers/cover_metallica.png' }] }, duration_ms: 331000 },
-          { id: 'sp_cur_6', name: "Sweet Child O' Mine", artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction (1987)', release_date: '1987', images: [{ url: 'img/covers/cover_guns_n_roses.png' }] }, duration_ms: 356000 },
-          { id: 'sp_cur_7', name: 'Paranoid', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid (1970)', release_date: '1970', images: [{ url: 'img/covers/cover_black_sabbath.png' }] }, duration_ms: 168000 },
-          { id: 'sp_cur_8', name: 'Rock and Roll All Nite', artists: [{ name: 'KISS' }], album: { name: 'Dressed to Kill (1975)', release_date: '1975', images: [{ url: 'img/covers/cover_kiss.png' }] }, duration_ms: 169000 }
+          { id: 'sp_cur_1', name: 'Bohemian Rhapsody', artists: [{ name: 'Queen' }], album: { name: 'A Night at the Opera (1975)', release_date: '1975', images: [{ url: 'img/albums/queen_1975_night_at_opera.png' }] }, duration_ms: 354000 },
+          { id: 'sp_cur_2', name: 'Stairway to Heaven', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Led Zeppelin IV (1971)', release_date: '1971', images: [{ url: 'img/albums/led_zeppelin_1971_iv.png' }] }, duration_ms: 482000 },
+          { id: 'sp_cur_3', name: 'Back in Black', artists: [{ name: 'AC/DC' }], album: { name: 'Back in Black (1980)', release_date: '1980', images: [{ url: 'img/albums/acdc_1980_back_in_black.png' }] }, duration_ms: 255000 },
+          { id: 'sp_cur_4', name: 'Help!', artists: [{ name: 'The Beatles' }], album: { name: 'Help! (1965)', release_date: '1965', images: [{ url: 'img/albums/the_beatles_1965_help.png' }] }, duration_ms: 139000 },
+          { id: 'sp_cur_5', name: 'Enter Sandman', artists: [{ name: 'Metallica' }], album: { name: 'Metallica (1991)', release_date: '1991', images: [{ url: 'img/albums/metallica_1991_black_album.png' }] }, duration_ms: 331000 },
+          { id: 'sp_cur_6', name: "Sweet Child O' Mine", artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction (1987)', release_date: '1987', images: [{ url: 'img/albums/guns_n_roses_1987_appetite.png' }] }, duration_ms: 356000 },
+          { id: 'sp_cur_7', name: 'Paranoid', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid (1970)', release_date: '1970', images: [{ url: 'img/albums/black_sabbath_1970_paranoid.png' }] }, duration_ms: 168000 },
+          { id: 'sp_cur_8', name: 'Rock and Roll All Nite', artists: [{ name: 'KISS' }], album: { name: 'Alive! (1975)', release_date: '1975', images: [{ url: 'img/albums/kiss_1975_alive.png' }] }, duration_ms: 169000 }
         ]
       },
       {
         id: 'curated_hard_rock_stadiums',
         name: 'Hard Rock Stadiums',
         description: 'Riffs demoledores y coros para cantar con el volumen de la radio al 100%.',
-        images: [{ url: 'img/covers/cover_acdc.png' }],
+        images: [{ url: 'img/albums/acdc_1979_highway_to_hell.png' }],
         owner: { display_name: 'Rock Radio' },
         tracks: { total: 6 },
         items: [
-          { id: 'sp_hr_1', name: 'Highway to Hell', artists: [{ name: 'AC/DC' }], album: { name: 'Highway to Hell', release_date: '1979', images: [{ url: 'img/covers/cover_acdc.png' }] }, duration_ms: 208000 },
-          { id: 'sp_hr_2', name: 'Paradise City', artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction', release_date: '1987', images: [{ url: 'img/covers/cover_guns_n_roses.png' }] }, duration_ms: 406000 },
-          { id: 'sp_hr_3', name: 'Detroit Rock City', artists: [{ name: 'KISS' }], album: { name: 'Destroyer', release_date: '1976', images: [{ url: 'img/covers/cover_kiss.png' }] }, duration_ms: 317000 },
-          { id: 'sp_hr_4', name: 'Pour Some Sugar on Me', artists: [{ name: 'Def Leppard' }], album: { name: 'Hysteria', release_date: '1987', images: [{ url: 'img/covers/cover_def_leppard.png' }] }, duration_ms: 267000 },
-          { id: 'sp_hr_5', name: 'Kickstart My Heart', artists: [{ name: 'Mötley Crüe' }], album: { name: 'Dr. Feelgood', release_date: '1989', images: [{ url: 'img/covers/cover_motley_crue.png' }] }, duration_ms: 284000 },
-          { id: 'sp_hr_6', name: 'Tom Sawyer', artists: [{ name: 'Rush' }], album: { name: 'Moving Pictures', release_date: '1981', images: [{ url: 'img/covers/cover_rush.png' }] }, duration_ms: 276000 }
+          { id: 'sp_hr_1', name: 'Highway to Hell', artists: [{ name: 'AC/DC' }], album: { name: 'Highway to Hell', release_date: '1979', images: [{ url: 'img/albums/acdc_1979_highway_to_hell.png' }] }, duration_ms: 208000 },
+          { id: 'sp_hr_2', name: 'Paradise City', artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction', release_date: '1987', images: [{ url: 'img/albums/guns_n_roses_1987_appetite.png' }] }, duration_ms: 406000 },
+          { id: 'sp_hr_3', name: 'Detroit Rock City', artists: [{ name: 'KISS' }], album: { name: 'Destroyer', release_date: '1976', images: [{ url: 'img/albums/kiss_1976_destroyer.png' }] }, duration_ms: 317000 },
+          { id: 'sp_hr_4', name: 'Pour Some Sugar on Me', artists: [{ name: 'Def Leppard' }], album: { name: 'Hysteria', release_date: '1987', images: [{ url: 'img/albums/def_leppard_1987_hysteria.png' }] }, duration_ms: 267000 },
+          { id: 'sp_hr_5', name: 'Kickstart My Heart', artists: [{ name: 'Mötley Crüe' }], album: { name: 'Dr. Feelgood', release_date: '1989', images: [{ url: 'img/albums/motley_crue_1989_feelgood.png' }] }, duration_ms: 284000 },
+          { id: 'sp_hr_6', name: 'Tom Sawyer', artists: [{ name: 'Rush' }], album: { name: 'Moving Pictures', release_date: '1981', images: [{ url: 'img/albums/rush_1981_moving_pictures.png' }] }, duration_ms: 276000 }
         ]
       },
       {
         id: 'curated_heavy_metal_anthems',
         name: 'Heavy Metal Anthems',
         description: 'La forja del metal: guitarras afinadas en oscuridad y distorsión pura.',
-        images: [{ url: 'img/covers/cover_metallica.png' }],
+        images: [{ url: 'img/albums/metallica_1986_master_of_puppets.png' }],
         owner: { display_name: 'Rock Radio' },
         tracks: { total: 5 },
         items: [
-          { id: 'sp_hm_1', name: 'Master of Puppets', artists: [{ name: 'Metallica' }], album: { name: 'Master of Puppets', release_date: '1986', images: [{ url: 'img/covers/cover_metallica.png' }] }, duration_ms: 515000 },
-          { id: 'sp_hm_2', name: 'Iron Man', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/covers/cover_black_sabbath.png' }] }, duration_ms: 356000 },
-          { id: 'sp_hm_3', name: 'One', artists: [{ name: 'Metallica' }], album: { name: '...And Justice for All', release_date: '1988', images: [{ url: 'img/covers/cover_metallica.png' }] }, duration_ms: 446000 },
-          { id: 'sp_hm_4', name: 'War Pigs', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/covers/cover_black_sabbath.png' }] }, duration_ms: 474000 },
-          { id: 'sp_hm_5', name: 'Kashmir', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Physical Graffiti', release_date: '1975', images: [{ url: 'img/covers/cover_led_zeppelin.png' }] }, duration_ms: 512000 }
+          { id: 'sp_hm_1', name: 'Master of Puppets', artists: [{ name: 'Metallica' }], album: { name: 'Master of Puppets', release_date: '1986', images: [{ url: 'img/albums/metallica_1986_master_of_puppets.png' }] }, duration_ms: 515000 },
+          { id: 'sp_hm_2', name: 'Iron Man', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/albums/black_sabbath_1970_paranoid.png' }] }, duration_ms: 356000 },
+          { id: 'sp_hm_3', name: 'One', artists: [{ name: 'Metallica' }], album: { name: '...And Justice for All', release_date: '1988', images: [{ url: 'img/albums/metallica_1988_and_justice_for_all.png' }] }, duration_ms: 446000 },
+          { id: 'sp_hm_4', name: 'War Pigs', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/albums/black_sabbath_1970_paranoid.png' }] }, duration_ms: 474000 },
+          { id: 'sp_hm_5', name: 'Kashmir', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Physical Graffiti', release_date: '1975', images: [{ url: 'img/albums/led_zeppelin_1975_physical.png' }] }, duration_ms: 512000 }
         ]
       },
       {
         id: 'curated_rock_ballads',
         name: 'Baladas Inmortales del Rock',
         description: 'Sensibilidad, solos desgarradores y letras que marcaron épocas.',
-        images: [{ url: 'img/covers/cover_kiss.png' }],
+        images: [{ url: 'img/albums/def_leppard_1987_hysteria.png' }],
         owner: { display_name: 'Rock Radio' },
         tracks: { total: 5 },
         items: [
-          { id: 'sp_rb_1', name: 'Forever', artists: [{ name: 'KISS' }], album: { name: 'Hot in the Shade', release_date: '1989', images: [{ url: 'img/covers/cover_kiss.png' }] }, duration_ms: 233000 },
-          { id: 'sp_rb_2', name: 'November Rain', artists: [{ name: "Guns N' Roses" }], album: { name: 'Use Your Illusion I', release_date: '1991', images: [{ url: 'img/covers/cover_guns_n_roses.png' }] }, duration_ms: 537000 },
-          { id: 'sp_rb_3', name: 'Africa', artists: [{ name: 'Toto' }], album: { name: 'Toto IV', release_date: '1982', images: [{ url: 'img/covers/cover_toto.png' }] }, duration_ms: 295000 },
-          { id: 'sp_rb_4', name: 'Forever Young', artists: [{ name: 'Alphaville' }], album: { name: 'Forever Young', release_date: '1984', images: [{ url: 'img/covers/cover_alphaville.png' }] }, duration_ms: 226000 },
-          { id: 'sp_rb_5', name: 'Love Bites', artists: [{ name: 'Def Leppard' }], album: { name: 'Hysteria', release_date: '1987', images: [{ url: 'img/covers/cover_def_leppard.png' }] }, duration_ms: 346000 }
+          { id: 'sp_rb_1', name: 'Love Bites', artists: [{ name: 'Def Leppard' }], album: { name: 'Hysteria', release_date: '1987', images: [{ url: 'img/albums/def_leppard_1987_hysteria.png' }] }, duration_ms: 346000 },
+          { id: 'sp_rb_2', name: 'November Rain', artists: [{ name: "Guns N' Roses" }], album: { name: 'Use Your Illusion I', release_date: '1991', images: [{ url: 'img/albums/guns_n_roses_1991_illusion_1.png' }] }, duration_ms: 537000 },
+          { id: 'sp_rb_3', name: 'Africa', artists: [{ name: 'Toto' }], album: { name: 'Toto IV', release_date: '1982', images: [{ url: 'img/albums/toto_1982_toto_iv.png' }] }, duration_ms: 295000 },
+          { id: 'sp_rb_4', name: 'Forever Young', artists: [{ name: 'Alphaville' }], album: { name: 'Forever Young', release_date: '1984', images: [{ url: 'img/albums/alphaville_1984_forever_young.png' }] }, duration_ms: 226000 },
+          { id: 'sp_rb_5', name: 'Forever', artists: [{ name: 'KISS' }], album: { name: 'Hot in the Shade', release_date: '1989', images: [{ url: 'img/albums/kiss_1975_alive.png' }] }, duration_ms: 233000 }
         ]
       }
     ];
 
-    const CURATED_ROCK_TRACKS = [
-      { id: 'cur_trk_1', name: 'Stairway to Heaven', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Led Zeppelin IV', release_date: '1971', images: [{ url: 'img/covers/cover_led_zeppelin.png' }] }, duration_ms: 482000 },
-      { id: 'cur_trk_2', name: 'Bohemian Rhapsody', artists: [{ name: 'Queen' }], album: { name: 'A Night at the Opera', release_date: '1975', images: [{ url: 'img/covers/cover_queen.png' }] }, duration_ms: 354000 },
-      { id: 'cur_trk_3', name: 'Back in Black', artists: [{ name: 'AC/DC' }], album: { name: 'Back in Black', release_date: '1980', images: [{ url: 'img/covers/cover_acdc.png' }] }, duration_ms: 255000 },
-      { id: 'cur_trk_4', name: 'Help!', artists: [{ name: 'The Beatles' }], album: { name: 'Help!', release_date: '1965', images: [{ url: 'img/covers/cover_queen.png' }] }, duration_ms: 139000 },
-      { id: 'cur_trk_5', name: 'Enter Sandman', artists: [{ name: 'Metallica' }], album: { name: 'Metallica (The Black Album)', release_date: '1991', images: [{ url: 'img/covers/cover_metallica.png' }] }, duration_ms: 331000 },
-      { id: 'cur_trk_6', name: "Sweet Child O' Mine", artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction', release_date: '1987', images: [{ url: 'img/covers/cover_guns_n_roses.png' }] }, duration_ms: 356000 },
-      { id: 'cur_trk_7', name: 'Paranoid', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/covers/cover_black_sabbath.png' }] }, duration_ms: 168000 },
-      { id: 'cur_trk_8', name: 'Rock and Roll All Nite', artists: [{ name: 'KISS' }], album: { name: 'Dressed to Kill', release_date: '1975', images: [{ url: 'img/covers/cover_kiss.png' }] }, duration_ms: 169000 }
+    // Authentic Rock Tracks with Real Album Art for Each Section
+    const CURATED_TOP_TRACKS = [
+      { id: 'cur_top_1', name: 'Stairway to Heaven', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Led Zeppelin IV', release_date: '1971', images: [{ url: 'img/albums/led_zeppelin_1971_iv.png' }] }, duration_ms: 482000 },
+      { id: 'cur_top_2', name: 'Bohemian Rhapsody', artists: [{ name: 'Queen' }], album: { name: 'A Night at the Opera', release_date: '1975', images: [{ url: 'img/albums/queen_1975_night_at_opera.png' }] }, duration_ms: 354000 },
+      { id: 'cur_top_3', name: 'Back in Black', artists: [{ name: 'AC/DC' }], album: { name: 'Back in Black', release_date: '1980', images: [{ url: 'img/albums/acdc_1980_back_in_black.png' }] }, duration_ms: 255000 },
+      { id: 'cur_top_4', name: 'Help!', artists: [{ name: 'The Beatles' }], album: { name: 'Help!', release_date: '1965', images: [{ url: 'img/albums/the_beatles_1965_help.png' }] }, duration_ms: 139000 },
+      { id: 'cur_top_5', name: 'Enter Sandman', artists: [{ name: 'Metallica' }], album: { name: 'Metallica (The Black Album)', release_date: '1991', images: [{ url: 'img/albums/metallica_1991_black_album.png' }] }, duration_ms: 331000 },
+      { id: 'cur_top_6', name: "Sweet Child O' Mine", artists: [{ name: "Guns N' Roses" }], album: { name: 'Appetite for Destruction', release_date: '1987', images: [{ url: 'img/albums/guns_n_roses_1987_appetite.png' }] }, duration_ms: 356000 }
     ];
+
+    const CURATED_RECOMMENDED_TRACKS = [
+      { id: 'cur_rec_1', name: 'Pour Some Sugar on Me', artists: [{ name: 'Def Leppard' }], album: { name: 'Hysteria', release_date: '1987', images: [{ url: 'img/albums/def_leppard_1987_hysteria.png' }] }, duration_ms: 267000 },
+      { id: 'cur_rec_2', name: 'Tom Sawyer', artists: [{ name: 'Rush' }], album: { name: 'Moving Pictures', release_date: '1981', images: [{ url: 'img/albums/rush_1981_moving_pictures.png' }] }, duration_ms: 276000 },
+      { id: 'cur_rec_3', name: 'Africa', artists: [{ name: 'Toto' }], album: { name: 'Toto IV', release_date: '1982', images: [{ url: 'img/albums/toto_1982_toto_iv.png' }] }, duration_ms: 295000 },
+      { id: 'cur_rec_4', name: 'Forever Young', artists: [{ name: 'Alphaville' }], album: { name: 'Forever Young', release_date: '1984', images: [{ url: 'img/albums/alphaville_1984_forever_young.png' }] }, duration_ms: 226000 },
+      { id: 'cur_rec_5', name: 'Kickstart My Heart', artists: [{ name: 'Mötley Crüe' }], album: { name: 'Dr. Feelgood', release_date: '1989', images: [{ url: 'img/albums/motley_crue_1989_feelgood.png' }] }, duration_ms: 284000 },
+      { id: 'cur_rec_6', name: 'Detroit Rock City', artists: [{ name: 'KISS' }], album: { name: 'Destroyer', release_date: '1976', images: [{ url: 'img/albums/kiss_1976_destroyer.png' }] }, duration_ms: 317000 }
+    ];
+
+    const CURATED_RECENTLY_PLAYED_TRACKS = [
+      { id: 'cur_recp_1', name: 'Paranoid', artists: [{ name: 'Black Sabbath' }], album: { name: 'Paranoid', release_date: '1970', images: [{ url: 'img/albums/black_sabbath_1970_paranoid.png' }] }, duration_ms: 168000 },
+      { id: 'cur_recp_2', name: 'Highway to Hell', artists: [{ name: 'AC/DC' }], album: { name: 'Highway to Hell', release_date: '1979', images: [{ url: 'img/albums/acdc_1979_highway_to_hell.png' }] }, duration_ms: 208000 },
+      { id: 'cur_recp_3', name: 'Master of Puppets', artists: [{ name: 'Metallica' }], album: { name: 'Master of Puppets', release_date: '1986', images: [{ url: 'img/albums/metallica_1986_master_of_puppets.png' }] }, duration_ms: 515000 },
+      { id: 'cur_recp_4', name: 'November Rain', artists: [{ name: "Guns N' Roses" }], album: { name: 'Use Your Illusion I', release_date: '1991', images: [{ url: 'img/albums/guns_n_roses_1991_illusion_1.png' }] }, duration_ms: 537000 },
+      { id: 'cur_recp_5', name: 'Rock and Roll All Nite', artists: [{ name: 'KISS' }], album: { name: 'Alive!', release_date: '1975', images: [{ url: 'img/albums/kiss_1975_alive.png' }] }, duration_ms: 169000 },
+      { id: 'cur_recp_6', name: 'Kashmir', artists: [{ name: 'Led Zeppelin' }], album: { name: 'Physical Graffiti', release_date: '1975', images: [{ url: 'img/albums/led_zeppelin_1975_physical.png' }] }, duration_ms: 512000 }
+    ];
+
+    const CURATED_ROCK_TRACKS = CURATED_TOP_TRACKS;
 
     // Card UI Builders
     function createSpotifyHomeTrackCard(track, queue = [], index = 0) {
       const imgUrl = (track.album && track.album.images && track.album.images.length > 0 && track.album.images[0].url)
         ? track.album.images[0].url
-        : 'img/covers/cover_kiss.png';
+        : 'img/albums/queen_1975_night_at_opera.png';
       const artists = (track.artists || []).map(a => a.name).join(', ') || 'Rock';
       const durSec = Math.floor((track.duration_ms || 180000) / 1000);
 
@@ -8625,7 +8644,7 @@
       card.className = 'home-sp-card';
       card.innerHTML = `
         <div class="home-sp-card-art">
-          <img src="${imgUrl}" alt="${escapeHtmlStr(track.name)}" loading="lazy">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(track.name)}" loading="eager">
           <span class="home-sp-card-dur">${formatTime(durSec)}</span>
           <button class="home-sp-card-play" type="button" title="Reproducir ${escapeHtmlStr(track.name)}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -8663,7 +8682,7 @@
     function createSpotifyHomePlaylistCard(playlist) {
       const imgUrl = (playlist.images && playlist.images.length > 0 && playlist.images[0].url)
         ? playlist.images[0].url
-        : 'img/covers/cover_queen.png';
+        : 'img/albums/queen_1975_night_at_opera.png';
       const owner = (playlist.owner && playlist.owner.display_name) ? playlist.owner.display_name : 'Spotify';
       const trackCount = (playlist.tracks && playlist.tracks.total !== undefined) ? `${playlist.tracks.total} canciones` : 'Playlist';
 
@@ -8671,7 +8690,7 @@
       card.className = 'home-sp-card';
       card.innerHTML = `
         <div class="home-sp-card-art">
-          <img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}" loading="lazy">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}" loading="eager">
           <span class="home-sp-card-badge">PLAYLIST</span>
           <button class="home-sp-card-play" type="button" title="Abrir playlist ${escapeHtmlStr(playlist.name)}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -8733,7 +8752,7 @@
 
       const imgUrl = (playlist.images && playlist.images.length > 0 && playlist.images[0].url)
         ? playlist.images[0].url
-        : 'img/covers/cover_queen.png';
+        : 'img/albums/queen_1975_night_at_opera.png';
       if (coverWrap) {
         coverWrap.className = 'sp-inspected-cover-wrap';
         coverWrap.innerHTML = `<img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}">`;
@@ -8778,7 +8797,7 @@
           row.className = 'dj-song-row';
           row.style.gridTemplateColumns = '36px 3fr 2fr 1fr 140px';
           row.style.alignItems = 'center';
-          const tImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : 'img/covers/cover_kiss.png';
+          const tImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
           const tArtists = (t.artists || []).map(a => a.name).join(', ') || 'Rock';
           const durSec = Math.floor((t.duration_ms || 180000) / 1000);
           const albumName = (t.album && t.album.name) ? t.album.name : 'Álbum Oficial';
@@ -8884,7 +8903,7 @@
           row.className = 'dj-song-row';
           row.style.gridTemplateColumns = '36px 3fr 2fr 1fr 140px';
           row.style.alignItems = 'center';
-          const tImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : 'img/covers/cover_kiss.png';
+          const tImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
           const tArtists = (t.artists || []).map(a => a.name).join(', ') || 'Rock';
           const durSec = Math.floor((t.duration_ms || 180000) / 1000);
           const albumName = (t.album && t.album.name) ? t.album.name : 'Álbum Oficial';
@@ -9049,7 +9068,7 @@
           if (subLiked) subLiked.textContent = `${totalLiked} canciones guardadas en tu biblioteca`;
         }
         if (!likedSongs.length) {
-          likedSongs = CURATED_ROCK_TRACKS.slice(0, 5);
+          likedSongs = CURATED_TOP_TRACKS.slice(0, 5);
           if (subLiked) subLiked.textContent = 'Tus canciones favoritas guardadas en Spotify';
         }
 
@@ -9076,7 +9095,7 @@
           if (subTopTracks) subTopTracks.textContent = 'Tus temas más escuchados en Spotify';
         }
         if (!topTracks || !topTracks.length) {
-          topTracks = CURATED_ROCK_TRACKS;
+          topTracks = CURATED_TOP_TRACKS;
           if (subTopTracks) subTopTracks.textContent = 'Los himnos más escuchados del rock mundial';
         }
         topTracks.slice(0, 6).forEach((trk, idx) => {
@@ -9096,7 +9115,7 @@
           if (subRec) subRec.textContent = 'Recomendaciones algorítmicas de rock basadas en tu gusto';
         }
         if (!recTracks || !recTracks.length) {
-          recTracks = CURATED_ROCK_TRACKS.slice().reverse();
+          recTracks = CURATED_RECOMMENDED_TRACKS;
           if (subRec) subRec.textContent = 'Descubrimientos y joyas del rock seleccionados para ti';
         }
         recTracks.slice(0, 6).forEach((trk, idx) => {
@@ -9122,7 +9141,7 @@
           if (subRecPlayed) subRecPlayed.textContent = 'Tus últimas reproducciones en Spotify';
         }
         if (!recentTracks || !recentTracks.length) {
-          recentTracks = CURATED_ROCK_TRACKS.slice(2, 8);
+          recentTracks = CURATED_RECENTLY_PLAYED_TRACKS;
           if (subRecPlayed) subRecPlayed.textContent = 'Historial reciente de clásicos del rock';
         }
         recentTracks.slice(0, 6).forEach((trk, idx) => {
@@ -9152,7 +9171,7 @@
         }
 
         artistsToShow.slice(0, 6).forEach(a => {
-          const imgUrl = (a.images && a.images.length > 0 && a.images[0].url) ? a.images[0].url : 'img/covers/cover_kiss.png';
+          const imgUrl = (a.images && a.images.length > 0 && a.images[0].url) ? a.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
           const card = document.createElement('div');
           card.className = 'home-sp-card';
           card.innerHTML = `
@@ -9269,7 +9288,7 @@
 
         const albumImg = (track.album && track.album.images && track.album.images.length > 0)
           ? track.album.images[0].url
-          : 'img/covers/cover_kiss.png';
+          : 'img/albums/queen_1975_night_at_opera.png';
         const artistNames = (track.artists || []).map(a => a.name).join(', ');
         const durSec = Math.floor(this.spotifyDurationMs / 1000);
         const durFormatted = formatTime(durSec);
@@ -10446,7 +10465,7 @@
         function createSongRowElement(track, indexNum = null, queue = [], queueIndex = -1) {
       const imgUrl = (track.album && track.album.images && track.album.images.length > 0)
         ? (track.album.images[track.album.images.length - 1].url || track.album.images[0].url)
-        : 'img/covers/cover_kiss.png';
+        : 'img/albums/queen_1975_night_at_opera.png';
       const artists = (track.artists || []).map(a => a.name).join(', ');
       const albumName = (track.album && track.album.name) ? track.album.name : '';
       const year = (track.album && track.album.release_date) ? track.album.release_date.slice(0, 4) : '';
@@ -10457,7 +10476,7 @@
       row.className = 'sp-song-row';
       row.innerHTML = `
         <div class="sp-song-row-thumb">
-          <img src="${imgUrl}" alt="${escapeHtmlStr(track.name)}" loading="lazy">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(track.name)}" loading="eager">
         </div>
         <div class="sp-song-row-main">
           <div class="sp-song-row-title" title="${escapeHtmlStr(track.name)}">${indexNum !== null ? `<span style="color:#727272;margin-right:6px;">${indexNum}.</span>` : ''}${escapeHtmlStr(track.name)}</div>
@@ -10510,7 +10529,7 @@
         const artistTracks = (data.tracks && data.tracks.items) ? data.tracks.items : [];
         const artistAlbums = (data.albums && data.albums.items) ? data.albums.items : [];
 
-        const artistImg = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/covers/cover_kiss.png';
+        const artistImg = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
 
         spotifyApiTracksGrid.innerHTML = '';
 
@@ -10676,7 +10695,7 @@
     }
 
     function createArtistCardElement(artist) {
-      const imgUrl = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/covers/cover_kiss.png';
+      const imgUrl = (artist.images && artist.images.length > 0) ? artist.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
       const card = document.createElement('div');
       card.className = 'sp-media-card';
       card.innerHTML = `
@@ -10694,7 +10713,7 @@
     }
 
     function createAlbumCardElement(album) {
-      const imgUrl = (album.images && album.images.length > 0) ? album.images[0].url : 'img/covers/cover_kiss.png';
+      const imgUrl = (album.images && album.images.length > 0) ? album.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
       const year = album.release_date ? album.release_date.slice(0, 4) : '';
       const artists = (album.artists || []).map(a => a.name).join(', ');
       const card = document.createElement('div');
@@ -10715,13 +10734,13 @@
 
     function createPlaylistCardElement(playlist) {
       if (!playlist) return null;
-      const imgUrl = (playlist.images && playlist.images.length > 0 && playlist.images[0]) ? playlist.images[0].url : 'img/covers/cover_kiss.png';
+      const imgUrl = (playlist.images && playlist.images.length > 0 && playlist.images[0]) ? playlist.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
       const owner = (playlist.owner && playlist.owner.display_name) ? playlist.owner.display_name : 'Spotify';
       const card = document.createElement('div');
       card.className = 'sp-media-card';
       card.innerHTML = `
         <div class="sp-media-art-wrap">
-          <img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}" loading="lazy">
+          <img src="${imgUrl}" alt="${escapeHtmlStr(playlist.name)}" loading="eager">
           <button class="sp-media-hover-play" type="button" title="Reproducir playlist ${escapeHtmlStr(playlist.name)}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
@@ -10792,7 +10811,7 @@
 
         if (artists.length > 0) {
           const topArtist = artists[0];
-          const artImg = (topArtist.images && topArtist.images.length > 0) ? topArtist.images[0].url : 'img/covers/cover_kiss.png';
+          const artImg = (topArtist.images && topArtist.images.length > 0) ? topArtist.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
           const followers = (topArtist.followers && topArtist.followers.total) ? `${topArtist.followers.total.toLocaleString()} seguidores` : 'Catálogo Oficial';
           topResultCard.innerHTML = `
             <div>
@@ -10813,7 +10832,7 @@
           topResultCard.addEventListener('click', () => openSpotifyArtistCatalog(topArtist));
         } else if (tracks.length > 0) {
           const topTrack = tracks[0];
-          const trImg = (topTrack.album && topTrack.album.images && topTrack.album.images.length > 0) ? topTrack.album.images[0].url : 'img/covers/cover_kiss.png';
+          const trImg = (topTrack.album && topTrack.album.images && topTrack.album.images.length > 0) ? topTrack.album.images[0].url : 'img/albums/queen_1975_night_at_opera.png';
           const trArtists = (topTrack.artists || []).map(a => a.name).join(', ');
           topResultCard.innerHTML = `
             <div>
