@@ -1,0 +1,70 @@
+{
+  "id": "/?source=pwa",
+  "name": "Rock Radio — Fred Rewind",
+  "short_name": "Rock Radio",
+  "description": "Fred Rewind con DJ Fredd — Historias del rock clásico y reproductor de alta fidelidad.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "lang": "es",
+  "dir": "ltr",
+  "categories": [
+    "music",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Fred Rewind",
+      "short_name": "Fred Rewind",
+      "description": "Historias y narraciones de DJ Fredd",
+      "url": "/?jump=fred-rewind&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Inicio",
+      "short_name": "Inicio",
+      "description": "Inicio de Rock Radio",
+      "url": "/?jump=home&source=pwa",
+      "icons": [
+        {
+          "src": "/icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
