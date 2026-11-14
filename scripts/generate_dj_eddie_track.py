@@ -25,6 +25,8 @@ import base64
 import re
 import time
 import threading
+import urllib.request
+import urllib.error
 from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
 
 ACTIVE_JOBS = {}
@@ -33,7 +35,7 @@ ACTIVE_JOBS_LOCK = threading.Lock()
 try:
     import edge_tts
 except ImportError:
-    print("Error: edge_tts no está instalado. Ejecuta: pip install edge-tts", file=sys.stderr)
+    edge_tts = None
 
 WORKSPACE_AUDIO_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'audio'))
 os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
@@ -44,6 +46,8 @@ FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/f
 APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
 
 DEFAULT_VOICE = "es-US-AlonsoNeural"
+DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "ac561e5651db4c5585c3972ed49e70ec")
+DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "s2.1-pro-free")
 DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
 
 def load_env_local():
@@ -694,20 +698,69 @@ def get_audio_duration(path):
     except Exception:
         return 45.0
 
-async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None):
+def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL):
+    api_key = os.environ.get("FISH_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("FISH_API_KEY no está configurada en el entorno.")
+
+    raw_tmp = f"{out_mp3_path}.fish_raw.mp3"
+    payload = {
+        "text": text,
+        "reference_id": reference_id,
+        "format": "mp3",
+        "mp3_bitrate": 192,
+        "normalize": True,
+        "latency": "normal"
+    }
+    req = urllib.request.Request(
+        "https://api.fish.audio/v1/tts",
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+            "model": model
+        },
+        method="POST"
+    )
+    with urllib.request.urlopen(req, timeout=90) as resp:
+        audio_bytes = resp.read()
+    with open(raw_tmp, "wb") as f:
+        f.write(audio_bytes)
+
+    # Normalizar a 44100Hz mono 192k MP3 para concatenación limpia sin saltos
+    subprocess.run([
+        FFMPEG_BIN, "-y",
+        "-i", raw_tmp,
+        "-ar", "44100", "-ac", "1",
+        "-codec:a", "libmp3lame", "-b:a", "192k",
+        out_mp3_path
+    ], capture_output=True, check=True)
+    try:
+        os.remove(raw_tmp)
+    except Exception:
+        pass
+
+async def synthesize_fish_audio_tts(sem, text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL):
+    async with sem:
+        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, reference_id, model)
+
+async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None, engine=None, fish_voice=None):
     """
     Genera la locución oficial de DJ Fredd con los lineamientos de audio maestro:
-    1. Pronunciación en inglés fluida y nativa para nombres propios, bandas, discos y términos técnicos.
-    2. Cadencia de radio FM cálida, evocadora y relajada (rate -2%, pitch -2Hz con es-CO-GonzaloNeural).
+    1. Pronunciación natural multilingüe (Fish Audio S2.1 Pro Free) o fonética inglesa (Edge-TTS).
+    2. Cadencia de radio FM cálida, entusiasta y enérgica.
     3. Momentos de respiración calibrados después de puntos finales y apertura (550ms tras apertura, 450ms entre oraciones).
-    4. Pausa dramática previa al cierre (650ms) y energía motivada en la presentación musical (+3% ritmo, +0Hz, +1.5dB).
+    4. Pausa dramática previa al cierre (650ms) y energía motivada en la presentación musical.
     5. Masterización analógica con FFmpeg: calidez vocal 120Hz, corte de asperezas, brillo aéreo 10kHz y compresión broadcast.
     6. Marcas de tiempo (intro_timings) 100% exactas para sincronización milimétrica en pantalla.
     7. Cancelación segura y limpieza estricta de archivos temporales.
     """
     pid = os.getpid()
     t_start = time.time()
-    print(f"\n🎙️ [DJ FREDD SERVICE] Generando locución maestra para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
+    use_fish = (engine == "fish") or (engine is None and bool(os.environ.get("FISH_API_KEY", "").strip()))
+    selected_fish_voice = fish_voice or DEFAULT_FISH_VOICE
+    engine_label = f"Fish Audio ({DEFAULT_FISH_MODEL}, voz={selected_fish_voice[:8]}...)" if use_fish else f"Edge-TTS ({DEFAULT_VOICE})"
+    print(f"\n🎙️ [DJ FREDD SERVICE] Generando locución maestra ({engine_label}) para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
 
     apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
     tmp_prefix = f"/tmp/fred_rewind_{pid}_{int(t_start*1000)}"
@@ -739,17 +792,22 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         cleanup_on_cancel()
         return None, 0, 0, [], 0, ""
 
-    # 1. Preparar textos hablados con fonética inglesa y pausas de respiración
-    ap_spoken = apply_english_phonetics(apertura)
-    ap_tts = ap_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
+    # 1. Preparar textos hablados
+    if use_fish:
+        ap_tts = f"[excited] {apertura}"
+        dev_tts_list = list(dev_sentences)
+        ci_tts = f"[excited] {cierre}"
+    else:
+        ap_spoken = apply_english_phonetics(apertura)
+        ap_tts = ap_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
 
-    dev_tts_list = []
-    for s in dev_sentences:
-        s_spoken = apply_english_phonetics(s)
-        dev_tts_list.append(s_spoken)
+        dev_tts_list = []
+        for s in dev_sentences:
+            s_spoken = apply_english_phonetics(s)
+            dev_tts_list.append(s_spoken)
 
-    ci_spoken = apply_english_phonetics(cierre)
-    ci_tts = ci_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
+        ci_spoken = apply_english_phonetics(cierre)
+        ci_tts = ci_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
 
     # Rutas de chunks individuales
     ap_mp3 = f"{tmp_prefix}_ap.mp3"
@@ -769,14 +827,21 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
             if job_id in ACTIVE_JOBS:
                 ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
 
-    # 2. Síntesis concurrente ultrarrápida con Edge-TTS
-    # Locución en español latino natural (Alonso): ritmo y tono naturales (+0%, +0Hz)
+    # 2. Síntesis concurrente
     tts_tasks = []
-    tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="+0%", pitch="+0Hz").save(ap_mp3))
-    for idx, s_text in enumerate(dev_tts_list):
-        tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
-    # Cierre con llamada enérgica a la acción (+2% ritmo, +0Hz)
-    tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+2%", pitch="+0Hz").save(ci_mp3))
+    if use_fish:
+        sem = asyncio.Semaphore(3)
+        tts_tasks.append(synthesize_fish_audio_tts(sem, ap_tts, ap_mp3, reference_id=selected_fish_voice))
+        for idx, s_text in enumerate(dev_tts_list):
+            tts_tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=selected_fish_voice))
+        tts_tasks.append(synthesize_fish_audio_tts(sem, ci_tts, ci_mp3, reference_id=selected_fish_voice))
+    else:
+        if edge_tts is None:
+            raise RuntimeError("edge_tts no está instalado y FISH_API_KEY no está disponible.")
+        tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="+0%", pitch="+0Hz").save(ap_mp3))
+        for idx, s_text in enumerate(dev_tts_list):
+            tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
+        tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+2%", pitch="+0Hz").save(ci_mp3))
 
     await asyncio.gather(*tts_tasks)
 
@@ -1208,6 +1273,8 @@ def main():
     parser.add_argument("--text", help="Texto o guion personalizado para la locución")
     parser.add_argument("--angle", type=int, default=1, help="Ángulo narrativo (1, 2 o 3)")
     parser.add_argument("--out", default=None, help="Ruta de salida del MP3")
+    parser.add_argument("--engine", choices=["fish", "edge"], default=None, help="Motor TTS: fish (Fish Audio) o edge (Edge-TTS)")
+    parser.add_argument("--fish-voice", default=None, help="ID de voz en Fish Audio")
     parser.add_argument("--serve", action="store_true", help="Iniciar servidor API local para la app web")
     parser.add_argument("--port", type=int, default=5055, help="Puerto del servidor API local (default 5055)")
 
@@ -1231,7 +1298,14 @@ def main():
     print(f"=======================================================")
 
     out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
-        build_eddie_radio_narration(script_text, song_name, band_name, out_file)
+        build_eddie_radio_narration(
+            script_text,
+            song_name,
+            band_name,
+            out_file,
+            engine=args.engine,
+            fish_voice=args.fish_voice
+        )
     )
     print(f"\n✓ Archivo generado: {out_path} ({duration:.2f}s en {elapsed:.2f}s, intro_end: {intro_end}s)")
     print("\nMarcas de tiempo de la letra del Intro:")
