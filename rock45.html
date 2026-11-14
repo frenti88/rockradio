@@ -7399,7 +7399,57 @@
       }
     }
 
-    const BASE_DJ_EDDIE_TRACKS = [];
+    const BASE_DJ_EDDIE_TRACKS = [
+      {
+        id: 'intro_acdc_back_in_black',
+        pairId: 'acdc_back_in_black',
+        isIntro: true,
+        bandName: 'AC/DC',
+        songTitle: 'Back in Black',
+        title: 'Intro: Back in Black',
+        albumName: 'Back in Black (1980)',
+        year: '1980',
+        cover: 'img/albums/acdc_1980_back_in_black.png',
+        tag: 'Historia',
+        duration: 46,
+        durationSec: 45.69,
+        introSec: '46s',
+        summary: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd. Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música. ¡Sube el volumen y escuchemos a Back in Black aquí en Fred Rewind, de regreso al pasado!',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_intro_acdc_back_in_black.mp3',
+        fileUrl: 'audio/eddie_intro_acdc_back_in_black.mp3',
+        hasRealAudio: true,
+        relatedSongId: 'song_acdc_back_in_black',
+        lyrics: [
+          { start: 0.0, end: 4.78, text: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.' },
+          { start: 5.33, end: 21.11, text: 'Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido.' },
+          { start: 21.56, end: 39.43, text: 'Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música.' },
+          { start: 40.08, end: 45.57, text: '¡Sube el volumen y escuchemos a Back in Black aquí en Fred Rewind, de regreso al pasado!' }
+        ]
+      },
+      {
+        id: 'song_acdc_back_in_black',
+        pairId: 'acdc_back_in_black',
+        isIntro: false,
+        bandName: 'AC/DC',
+        songTitle: 'Back in Black',
+        title: 'Back in Black',
+        albumName: 'Back in Black (1980)',
+        year: '1980',
+        cover: 'img/albums/acdc_1980_back_in_black.png',
+        tag: '',
+        duration: 254,
+        durationSec: 253.87,
+        introSec: '',
+        summary: 'Canción original completa (AC/DC — Back in Black)',
+        status: 'con_audio',
+        audioUrl: 'audio/full_acdc_back_in_black.mp3',
+        fileUrl: 'audio/full_acdc_back_in_black.mp3',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_acdc_back_in_black',
+        lyrics: []
+      }
+    ];
 
     // Flag for DJ Eddie broadcast shuffle mode
     let isDjShuffleActive = false;
