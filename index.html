@@ -7448,6 +7448,57 @@
         hasRealAudio: true,
         relatedIntroId: 'intro_acdc_back_in_black',
         lyrics: []
+      },
+      {
+        id: 'intro_kiss_detroit_rock_city',
+        pairId: 'kiss_detroit_rock_city',
+        isIntro: true,
+        bandName: 'KISS',
+        songTitle: 'Detroit Rock City',
+        title: 'Intro: Detroit Rock City',
+        albumName: 'Destroyer (1976)',
+        year: '1976',
+        cover: 'img/albums/kiss_1976_destroyer.png',
+        tag: 'Historia',
+        duration: 52,
+        durationSec: 51.64,
+        introSec: '52s',
+        summary: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd. Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock. El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento. La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor. ¡Sube el volumen y escuchemos a Detroit Rock City aquí en Fred Rewind, de regreso al pasado!',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_intro_kiss_detroit_rock_city.mp3',
+        fileUrl: 'audio/eddie_intro_kiss_detroit_rock_city.mp3',
+        hasRealAudio: true,
+        relatedSongId: 'song_kiss_detroit_rock_city',
+        lyrics: [
+          { start: 0.0, end: 5.62, text: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.' },
+          { start: 6.17, end: 13.56, text: 'Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock.' },
+          { start: 14.01, end: 26.13, text: 'El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento.' },
+          { start: 26.58, end: 36.69, text: 'La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos.' },
+          { start: 37.14, end: 45.63, text: 'Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor.' },
+          { start: 46.28, end: 51.43, text: '¡Sube el volumen y escuchemos a Detroit Rock City aquí en Fred Rewind, de regreso al pasado!' }
+        ]
+      },
+      {
+        id: 'song_kiss_detroit_rock_city',
+        pairId: 'kiss_detroit_rock_city',
+        isIntro: false,
+        bandName: 'KISS',
+        songTitle: 'Detroit Rock City',
+        title: 'Detroit Rock City',
+        albumName: 'Destroyer (1976)',
+        year: '1976',
+        cover: 'img/albums/kiss_1976_destroyer.png',
+        tag: '',
+        duration: 215,
+        durationSec: 215.5,
+        introSec: '',
+        summary: 'Canción original completa (KISS — Detroit Rock City)',
+        status: 'con_audio',
+        audioUrl: 'audio/full_kiss_detroit_rock_city.mp3',
+        fileUrl: 'audio/full_kiss_detroit_rock_city.mp3',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_kiss_detroit_rock_city',
+        lyrics: []
       }
     ];
 
@@ -8274,7 +8325,13 @@
       } catch(e){}
       const custom = getDjEddieCustomTracks().filter(t => !delPairs.includes(t.pairId));
       const customIds = new Set(custom.map(t => t.id));
-      const base = BASE_DJ_EDDIE_TRACKS.filter(t => !customIds.has(t.id) && !delPairs.includes(t.pairId)).map(t => ({ ...t }));
+      const base = BASE_DJ_EDDIE_TRACKS.filter(t => !customIds.has(t.id) && !delPairs.includes(t.pairId)).map(t => {
+        const copy = { ...t };
+        if (!copy.isIntro && (!copy.lyrics || !copy.lyrics.length) && typeof buildFullLyricsForTrack === 'function') {
+          copy.lyrics = buildFullLyricsForTrack(copy.songTitle, copy.bandName, copy.albumName, copy.duration, null, '');
+        }
+        return copy;
+      });
       const list = [...base, ...custom];
 
       djEddieQueue = list;

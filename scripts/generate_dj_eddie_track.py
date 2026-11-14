@@ -712,20 +712,30 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
         "normalize": True,
         "latency": "normal"
     }
-    req = urllib.request.Request(
-        "https://api.fish.audio/v1/tts",
-        data=json.dumps(payload).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "model": model
-        },
-        method="POST"
-    )
-    with urllib.request.urlopen(req, timeout=90) as resp:
-        audio_bytes = resp.read()
-    with open(raw_tmp, "wb") as f:
-        f.write(audio_bytes)
+    max_retries = 4
+    for attempt in range(max_retries):
+        try:
+            req = urllib.request.Request(
+                "https://api.fish.audio/v1/tts",
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "model": model
+                },
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                audio_bytes = resp.read()
+            with open(raw_tmp, "wb") as f:
+                f.write(audio_bytes)
+            break
+        except (urllib.error.HTTPError, urllib.error.URLError, Exception) as e:
+            if attempt == max_retries - 1:
+                raise
+            wait_time = 2.0 * (attempt + 1)
+            print(f"⚠️ [Fish Audio] Intento {attempt + 1} falló ({e}). Reintentando en {wait_time}s...", flush=True)
+            time.sleep(wait_time)
 
     # Normalizar a 44100Hz mono 192k MP3 para concatenación limpia sin saltos
     subprocess.run([
@@ -830,7 +840,7 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     # 2. Síntesis concurrente
     tts_tasks = []
     if use_fish:
-        sem = asyncio.Semaphore(3)
+        sem = asyncio.Semaphore(1)
         tts_tasks.append(synthesize_fish_audio_tts(sem, ap_tts, ap_mp3, reference_id=selected_fish_voice))
         for idx, s_text in enumerate(dev_tts_list):
             tts_tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=selected_fish_voice))
