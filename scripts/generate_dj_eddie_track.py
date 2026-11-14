@@ -924,15 +924,16 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
         filter_complex = (
             f"[1:a]atrim=0:{total_voice_dur},aresample=44100,"
             f"afade=t=in:st=0:d=1.8,afade=t=out:st={ci_start}:d=2.2,"
-            f"highpass=f=120,lowpass=f=6500,volume=0.075[bed];"
+            f"highpass=f=120,lowpass=f=6500,volume=0.06[bed];"
             f"[0:a]aresample=44100,"
+            f"volume=1.5,"
             f"highpass=f=65,"
-            f"equalizer=f=120:width_type=o:width=1.0:g=1.8,"
+            f"equalizer=f=120:width_type=o:width=1.0:g=2.2,"
             f"equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
-            f"equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
-            f"equalizer=f=10000:width_type=o:width=1.5:g=1.2[vox];"
-            f"[vox][bed]amix=inputs=2:duration=first:dropout_transition=2[mixed];"
-            f"[mixed]acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
+            f"equalizer=f=2800:width_type=o:width=1.0:g=1.8,"
+            f"equalizer=f=10000:width_type=o:width=1.5:g=1.5[vox];"
+            f"[vox][bed]amix=inputs=2:duration=first:dropout_transition=2:weights=1.5 0.5[mixed];"
+            f"[mixed]acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=2.5,"
             f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
         )
         cmd = [
@@ -948,12 +949,13 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
     else:
         master_filter = (
             "aresample=44100,"
+            "volume=1.5,"
             "highpass=f=65,"
-            "equalizer=f=120:width_type=o:width=1.0:g=1.8,"
+            "equalizer=f=120:width_type=o:width=1.0:g=2.2,"
             "equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
-            "equalizer=f=2800:width_type=o:width=1.0:g=1.4,"
-            "equalizer=f=10000:width_type=o:width=1.5:g=1.2,"
-            "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=1.8,"
+            "equalizer=f=2800:width_type=o:width=1.0:g=1.8,"
+            "equalizer=f=10000:width_type=o:width=1.5:g=1.5,"
+            "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=2.5,"
             "alimiter=limit=-1.0dB:attack=5:release=50"
         )
         cmd = [
