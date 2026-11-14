@@ -46,7 +46,7 @@ FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/f
 APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
 
 DEFAULT_VOICE = "es-US-AlonsoNeural"
-DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "ac561e5651db4c5585c3972ed49e70ec")
+DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "e8303fcb17bd4a8ba7709b1f6d3416f7")
 DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "s2.1-pro-free")
 DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
 
