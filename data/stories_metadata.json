@@ -1,0 +1,114 @@
+{
+  "recent_openings": [
+    9,
+    7,
+    3
+  ],
+  "last_generated_key": "rush::tom sawyer",
+  "stories": {
+    "rush::tom sawyer": {
+      "song_title": "Tom Sawyer",
+      "band_name": "Rush",
+      "album": "Moving Pictures (1981)",
+      "year": "1981",
+      "cover": "img/albums/rush_1981_moving_pictures.png",
+      "full_song_audio": "audio/full_rush_tom_sawyer.mp3",
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1981 con Rush. Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola. Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense. ¡Sube el volumen y disfruta Tom Sawyer con Rush, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1981 con Rush. [curious] Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola. Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense. [excited] ¡Sube el volumen y disfruta Tom Sawyer con Rush, de vuelta al pasado!",
+      "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1981 con Rush.",
+      "desarrollo": "Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola. Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense.",
+      "cierre": "¡Sube el volumen y disfruta Tom Sawyer con Rush, de vuelta al pasado!",
+      "opening_id": 3,
+      "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1981 con Rush.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 33.52,
+      "final_duration_sec": 39.55,
+      "intro_music_sec": 5.0,
+      "audio_file": "audio/eddie_intro_rush_tom_sawyer.mp3",
+      "angle_index": 2,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 14.61,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1981 con Rush."
+        },
+        {
+          "start": 14.96,
+          "end": 24.63,
+          "text": "Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola."
+        },
+        {
+          "start": 24.93,
+          "end": 33.6,
+          "text": "Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense."
+        },
+        {
+          "start": 34.05,
+          "end": 38.46,
+          "text": "¡Sube el volumen y disfruta Tom Sawyer con Rush, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T17:56:10.089743+00:00",
+      "status": "completed"
+    },
+    "tears for fears::everybody wants to rule the world": {
+      "song_title": "Everybody Wants to Rule the World",
+      "band_name": "Tears for Fears",
+      "album": "Songs from the Big Chair (1985)",
+      "year": "1985",
+      "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+      "full_song_audio": "audio/full_tears_for_fears_everybody_wants_to_rule_the_w.mp3",
+      "visible_script": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Tears for Fears. Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum. En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial. ¡Sube el volumen! ¡Esto es Everybody Wants to Rule the World de Tears for Fears, aquí en Rock Radio!",
+      "vocal_script": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Tears for Fears. [curious] Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum. En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial. [excited] ¡Sube el volumen! ¡Esto es Everybody Wants to Rule the World de Tears for Fears, aquí en Rock Radio!",
+      "apertura": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Tears for Fears.",
+      "desarrollo": "Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum. En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial.",
+      "cierre": "¡Sube el volumen! ¡Esto es Everybody Wants to Rule the World de Tears for Fears, aquí en Rock Radio!",
+      "opening_id": 7,
+      "opening_text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Tears for Fears.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 33.81,
+      "final_duration_sec": 39.84,
+      "intro_music_sec": 5.0,
+      "audio_file": "audio/eddie_intro_tff_everybody_wants_to_rule_the_world.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 12.58,
+          "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Tears for Fears."
+        },
+        {
+          "start": 12.93,
+          "end": 22.72,
+          "text": "Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum."
+        },
+        {
+          "start": 23.02,
+          "end": 31.25,
+          "text": "En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial."
+        },
+        {
+          "start": 31.7,
+          "end": 38.75,
+          "text": "¡Sube el volumen! ¡Esto es Everybody Wants to Rule the World de Tears for Fears, aquí en Rock Radio!"
+        }
+      ],
+      "created_at": "2026-11-16T17:55:39.827041+00:00",
+      "status": "completed"
+    }
+  }
+}

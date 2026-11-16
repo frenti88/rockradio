@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """
-FRED REWIND — Generador Oficial de Historias y Locuciones de DJ Fredd con IA
-Identidad Oficial:
-- Producto: Fred Rewind (1 'd')
-- Locutor: DJ Fredd (2 'd's)
-- Frase Insignia: La música tiene memoria.
-- Concepto: De regreso al pasado.
-- Voz oficial: es-CO-GonzaloNeural (FM classic rock host, voz cálida medio-grave, dicción evocadora)
-- Apertura Obligatoria: "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd." (Pausa reflexiva 550ms)
-- Desarrollo: Anécdota musical auténtica de 30 a 50 segundos de locución real (85-130 palabras) con pausas naturales
-- Cierre Obligatorio: "¡Sube el volumen y escuchemos a {nombre_cancion} aquí en Fred Rewind, de regreso al pasado!"
-- Masterización radial analógica con FFmpeg: calidez en graves (120Hz), claridad vocal sin sibilancia (2.8kHz),
-  aire analógico (10kHz), compresor broadcast LA-2A y limitador a -1.0dB true peak.
-- Sincronización milimétrica de letra/guion (intro_timings) sin desfase ni solapamiento.
+ROCK RADIO — FRED REWIND • Generador de Historias mediante Comandos de IA y Fish Audio
+======================================================================================
+Arquitectura unificada de producción radial asistida por IA:
+- Conserva Fish Audio (s2.1-pro-free / s2.1-pro) y la voz configurada de Fred (reference_id).
+- Evalúa compatibilidad con S2.1 Pro y Drama 3 sin cambiar el modelo ni la voz activa.
+- Intérprete de comandos en lenguaje natural (generación, regeneración de historia, regeneración de voz).
+- Repertorio de 10 aperturas dinámicas con rotación inteligente (evita repetir las últimas 3).
+- Guion dual exacto: Texto visible (limpio) + Texto vocal (dirección emocional Fish Audio).
+- Duración máxima absoluta de 45.0 segundos (incluyendo 5.0s iniciales de música sin voz).
+  Si excede 45s, resume y regenera la locución acortada sin acelerar artificialmente ni cortar frases.
+- Cadena de audio FFmpeg profesional: 5s música sin voz, sidechain ducking (12-18dB, attack 200ms,
+  release 450ms), highpass ~80Hz, EQ correctiva, presencia 2-4kHz, compresión 3:1, de-esser,
+  cierre emotivo con hasta +3dB de presencia adicional percibida y limitador a -1dBTP.
+- Persistencia completa en data/stories_metadata.json e integración segura en el catálogo del reproductor.
 """
 
 import sys
@@ -24,10 +25,14 @@ import json
 import base64
 import re
 import time
+import random
 import threading
+import shutil
+import unicodedata
 import urllib.request
 import urllib.error
-from http.server import HTTPServer, ThreadingHTTPServer, BaseHTTPRequestHandler
+from datetime import datetime, timezone
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
 ACTIVE_JOBS = {}
 ACTIVE_JOBS_LOCK = threading.Lock()
@@ -37,22 +42,29 @@ try:
 except ImportError:
     edge_tts = None
 
-WORKSPACE_AUDIO_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'audio'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+WORKSPACE_AUDIO_DIR = os.path.join(PROJECT_ROOT, 'audio')
+DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
+STORIES_METADATA_PATH = os.path.join(DATA_DIR, 'stories_metadata.json')
+INDEX_HTML_PATH = os.path.join(PROJECT_ROOT, 'index.html')
+HTML_CLONES = ['rock45.html', 'kiss.html', 'kiss-podcast.html']
+
 os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
+os.makedirs(DATA_DIR, exist_ok=True)
 
 FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffmpeg") else "ffmpeg"
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
-APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd."
+INTRO_MUSIC_SEC = 5.0
+OUTRO_MUSIC_TAIL_SEC = 1.0
+MAX_TOTAL_DURATION_SEC = 45.0
+SAFE_TARGET_TOTAL_SEC = 44.5  # Margen para padding de frames MP3 garantizando <= 45.00s reales
 
 DEFAULT_VOICE = "es-US-AlonsoNeural"
-DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "e8303fcb17bd4a8ba7709b1f6d3416f7")
-DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "s2.1-pro-free")
 DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
 
 def load_env_local():
-    workspace_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    env_path = os.path.join(workspace_dir, '.env.local')
+    env_path = os.path.join(PROJECT_ROOT, '.env.local')
     if os.path.exists(env_path):
         with open(env_path, 'r', encoding='utf-8', errors='ignore') as f:
             for line in f:
@@ -63,232 +75,820 @@ def load_env_local():
                     v = v.strip().strip('"\'')
                     if k and k not in os.environ:
                         os.environ[k] = v
+
 load_env_local()
 
+DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "e8303fcb17bd4a8ba7709b1f6d3416f7").strip()
+DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "s2.1-pro-free").strip()
 
+# ==============================================================================
+# 1. REPERTORIO DE 10 APERTURAS DINÁMICAS (Sección 4)
+# ==============================================================================
+DYNAMIC_OPENINGS = [
+    {
+        "id": 1,
+        "base": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de {song}, de {band}."
+    },
+    {
+        "id": 2,
+        "base": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando {song} de {band}."
+    },
+    {
+        "id": 3,
+        "base": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta...",
+        "requires_year": True,
+        "format": lambda song, band, year: f"Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {year} con {band}." if year else f"Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {song} de {band}."
+    },
+    {
+        "id": 4,
+        "base": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con {song}, de {band}."
+    },
+    {
+        "id": 5,
+        "base": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de {band}."
+    },
+    {
+        "id": 6,
+        "base": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de {song}."
+    },
+    {
+        "id": 7,
+        "base": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a {band}."
+    },
+    {
+        "id": 8,
+        "base": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con {song}."
+    },
+    {
+        "id": 9,
+        "base": "Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de {song}."
+    },
+    {
+        "id": 10,
+        "base": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred...",
+        "requires_year": False,
+        "format": lambda song, band, year: f"De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de {song}."
+    }
+]
+
+CLOSING_TEMPLATES = [
+    "¡Sube el volumen! ¡Esto es {song} de {band}, aquí en Rock Radio!",
+    "¡Sube el volumen y disfruta {song} con {band}, de vuelta al pasado!",
+    "¡Dale fuerza a los altavoces! ¡Escuchemos a {song} de {band} en Rock Radio!"
+]
+
+# ==============================================================================
+# 2. COMPATIBILIDAD CON MODELOS FISH AUDIO (S2.1 Pro & Drama 3)
+# ==============================================================================
+def get_fish_model_capabilities(model_name):
+    """
+    Evalúa capacidades expresivas de S2.1 Pro y Drama 3 sin cambiar el modelo configurado.
+    """
+    m = (model_name or DEFAULT_FISH_MODEL).lower().strip()
+    is_drama3 = "drama" in m
+    is_s2 = ("s2" in m) or is_drama3
+    return {
+        "model": model_name or DEFAULT_FISH_MODEL,
+        "family": "drama-3" if is_drama3 else ("s2.1-pro" if is_s2 else "legacy"),
+        "supports_bracket_tags": is_s2,
+        "supports_inline_xml_tags": is_drama3,  # <emphasis>, <forceful>, <soft>, etc. solo Drama 3
+        "opening_tag": "[warm, confident]",
+        "story_tag": "[curious]",
+        "closing_tag": "[excited]"
+    }
+
+def strip_vocal_tags(text):
+    """
+    Elimina etiquetas expresivas [bracket] y <xml> para asegurar igualdad exacta de palabras habladas.
+    """
+    clean = re.sub(r'\[[^\]]+\]\s*', '', text or '')
+    clean = re.sub(r'</?[a-zA-Z_]+>', '', clean)
+    clean = re.sub(r'\s+', ' ', clean).strip()
+    return clean
+
+def build_dual_scripts(apertura, dev_sentences, cierre, model_name=DEFAULT_FISH_MODEL):
+    """
+    Genera exactamente dos versiones sincronizadas con idéntico contenido hablado:
+    - visible_script: texto limpio sin etiquetas para subtítulos y persistencia.
+    - vocal_script: texto con directivas emocionales compatibles con el modelo activo de Fish Audio.
+    """
+    caps = get_fish_model_capabilities(model_name)
+    clean_ap = strip_vocal_tags(apertura)
+    clean_dev = [strip_vocal_tags(s) for s in dev_sentences if strip_vocal_tags(s)]
+    clean_ci = strip_vocal_tags(cierre)
+
+    visible_script = f"{clean_ap} {' '.join(clean_dev)} {clean_ci}".strip()
+
+    if caps["supports_bracket_tags"]:
+        vocal_ap = f"{caps['opening_tag']} {clean_ap}"
+        vocal_dev_list = []
+        for idx, sent in enumerate(clean_dev):
+            if idx == 0:
+                vocal_dev_list.append(f"{caps['story_tag']} {sent}")
+            else:
+                vocal_dev_list.append(sent)
+        if caps["supports_inline_xml_tags"]:
+            vocal_ci = f"{caps['closing_tag']} <forceful>{clean_ci}</forceful>"
+        else:
+            vocal_ci = f"{caps['closing_tag']} {clean_ci}"
+    else:
+        vocal_ap = clean_ap
+        vocal_dev_list = list(clean_dev)
+        vocal_ci = clean_ci
+
+    vocal_script = f"{vocal_ap} {' '.join(vocal_dev_list)} {vocal_ci}".strip()
+    return {
+        "visible_script": visible_script,
+        "vocal_script": vocal_script,
+        "apertura_clean": clean_ap,
+        "dev_sentences_clean": clean_dev,
+        "cierre_clean": clean_ci,
+        "vocal_ap": vocal_ap,
+        "vocal_dev_list": vocal_dev_list,
+        "vocal_ci": vocal_ci
+    }
+
+# ==============================================================================
+# 3. ANÉCDOTAS HISTÓRICAS VERIFICABLES MULTI-ÁNGULO (Concisas: 38-52 palabras)
+# ==============================================================================
 MASTER_CURATED_STORIES = {
-    "bohemian rhapsody": (
-        "En el caluroso verano de 1975, Freddie Mercury llegó a los estudios Rockfield en Gales con la estructura de Bohemian Rhapsody concebida en pequeñas hojas de papel y guías telefónicas. "
-        "Mercury, Brian May y Roger Taylor pasaron semanas grabando armonías vocales durante doce horas al día, regrabando tantas capas que la cinta de dos pulgadas se volvió prácticamente transparente por el desgaste físico del cabezal. "
-        "Cuando los ejecutivos discográficos insistieron en que una pieza operística de casi seis minutos jamás sonaría en las radios comerciales, la banda entregó una copia exclusiva al legendario locutor Kenny Everett, desatando una fascinación colectiva que cambió para siempre los horizontes de la música contemporánea."
-    ),
-    "detroit rock city": (
-        "Para el legendario álbum Destroyer de 1976, KISS quería algo mucho más ambicioso que un simple riff de hard rock. "
-        "El productor Bob Ezrin llevó a la agrupación a un nivel verdaderamente cinematográfico, introduciendo efectos de sonido reales de autos encendiéndose, transmisiones de radio y un choque violento. "
-        "La lírica estuvo inspirada en una desgarradora noticia real: un fanático devoto de la banda que perdió la vida en un trágico accidente automovilístico camino a uno de sus conciertos. "
-        "Coronada por el épico duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley, la pista se erigió como el himno supremo de la ciudad del motor."
-    ),
-    "sweet child o' mine": (
-        "En 1987, durante un ensayo informal en la casa comunal de la banda en Sunset Strip, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. "
-        "Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. "
-        "En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
-    ),
-    "sweet child o mine": (
-        "En 1987, durante un ensayo informal en la casa comunal de la banda en Sunset Strip, Slash comenzó a ejecutar un ejercicio técnico de digitación en su guitarra que él mismo consideraba una melodía circense sin importancia. "
-        "Sin embargo, en la habitación contigua, Axl Rose escuchó fascinado aquellas notas y de inmediato comenzó a ensamblar un emotivo poema de amor dedicado a su pareja Erin Everly. "
-        "En el estudio, cuando la banda no sabía cómo concluir el tema, Axl comenzó a cantar espontáneamente ¿hacia dónde vamos ahora?, sellando sin proponérselo el clímax del tema más coreado de su carrera."
-    ),
-    "back in black": (
-        "Tras el devastador golpe de perder a su carismático cantante Bon Scott a inicios de 1980, los hermanos Malcolm y Angus Young decidieron que la memoria de su hermano musical debía honrarse no con lágrimas, sino con el tributo de rock más vigoroso jamás concebido. "
-        "Con la llegada del vocalista Brian Johnson a los estudios Compass Point en Bahamas y el tañido fúnebre de una campana de bronce de dos mil libras forjada a medida, la banda descargó un riff monolítico cargado de gratitud y resiliencia, transformando al disco en el segundo álbum más vendido en la historia de la música."
-    ),
-    "paranoid": (
-        "En el otoño de 1970, durante las sesiones finales de su segundo disco en los estudios Regent Sound de Londres, Black Sabbath descubrió que el álbum necesitaba tres minutos adicionales para completar la duración requerida por el sello discográfico. "
-        "Mientras el resto del grupo almorzaba en un pub cercano, el guitarrista Tony Iommi se quedó solo en la sala improvisando un riff frenético y punzante. "
-        "Al regresar la banda, el bajista Geezer Butler escribió apresuradamente los versos sobre la alienación mental en un trozo de papel mientras Ozzy Osbourne memorizaba la melodía. "
-        "Grabada en apenas veinticinco minutos como un simple relleno de última hora, la pieza se convirtió en el mayor éxito planetario del heavy metal."
-    ),
-    "rock and roll all nite": (
-        "A principios de 1975, en una habitación del hotel Hyatt de Los Ángeles conocida popularmente como el Riot House, Paul Stanley y Gene Simmons recibieron una advertencia urgente de Casablanca Records: la banda necesitaba con urgencia un himno unificador que capturara la energía electrizante de sus conciertos. "
-        "Stanley ideó el contagioso estribillo mientras rasgueaba su guitarra en el hotel, mientras Simmons aportó versos inspirados en una vieja composición suya. "
-        "Grabada en los estudios Electric Lady de Nueva York junto a un coro improvisado que incluía miembros del equipo técnico y secretarias, la canción se convirtió en el credo definitivo de toda una generación."
-    ),
-    "hotel california": (
-        "En el verano de 1976, el guitarrista Don Felder grabó una maqueta instrumental en una modesta grabadora de cuatro pistas mientras descansaba en una casa de playa en Malibú. "
-        "Don Henley y Glenn Frey quedaron fascinados por su aire exótico y misterioso, escribiendo una letra alegórica sobre el lado oscuro del sueño americano, los excesos materiales y la pérdida de la inocencia en California. "
-        "El clímax sonoro, con el prolongado y legendario diálogo de guitarras armonizadas entre Don Felder y Joe Walsh, demandó meses de meticulosa producción, dando origen a una de las piezas más aclamadas del siglo veinte."
-    ),
-    "stairway to heaven": (
-        "A finales de 1970, Jimmy Page y Robert Plant se aislaron en Bron-Yr-Aur, una remota cabaña en las montañas de Gales carente de electricidad y agua corriente. "
-        "Rodeados por la naturaleza y la mitología celta, comenzaron a tejer una composición monumental que arrancaba como una serena plegaria acústica de reminiscencias renacentistas y crecía gradualmente en tempo y potencia eléctrica. "
-        "En los estudios Island de Londres, Jimmy Page inmortalizó el solo de guitarra más legendario de la historia del rock utilizando su célebre Telecaster de 1959, grabado de forma magistral en tan solo tres tomas irrepetibles."
-    ),
-    "highway to hell": (
-        "El título de este himno inmortal provino de la peculiar manera en que Angus Young describía la agotadora y sofocante rutina de viajar durante meses en autobús bajo el calor de las giras. "
-        "En la primavera de 1979, AC/DC reclutó en Londres al productor Mutt Lange, quien pulió minuciosamente las armonías vocales y reforzó la contundencia de la base rítmica sin restar ni una gota de la autenticidad callejera del grupo. "
-        "Trágicamente, este grito de rebeldía pura fue la última gran grabación de estudio del carismático Bon Scott antes de su repentina muerte, dejando su legado sellado para siempre."
-    ),
-    "master of puppets": (
-        "En 1986, desde los legendarios estudios Sweet Silence en la fría Copenhague, Metallica forjó la obra cumbre del thrash metal. "
-        "James Hetfield plasmó en su lírica una cruda y lúcida metáfora sobre el control destructivo de las adicciones químicas, personificadas en un titiritero invisible que manipula a sus víctimas. "
-        "Para alcanzar una precisión rítmica quirúrgica e implacable, todas las guitarras rítmicas fueron grabadas pista tras pista atacando exclusivamente con púa hacia abajo. "
-        "Además, el virtuoso bajista Cliff Burton aportó una sofisticación armónica de corte clásico que inmortalizó su genio antes de su trágica partida en Suecia."
-    ),
-    "enter sandman": (
-        "El riff más demoledor y reconocible de los años noventa nació a las dos de la madrugada, cuando Kirk Hammett experimentaba en su habitación inspirado por la densidad del rock pesado. "
-        "Al entrar a grabar con el productor Bob Rock para el célebre Álbum Negro, James Hetfield reescribió por completo la letra para abordar las pesadillas infantiles y los terrores que acechan en la oscuridad. "
-        "La emblemática plegaria susurrada en el puente, grabada por Hetfield junto al pequeño hijo de Bob Rock ante el micrófono, envolvió a la pista en un halo misterioso que la catapultó como un fenómeno radial planetario."
-    ),
-    "one": (
-        "Inspirada en la desgarradora novela pacifista de 1939 Johnny Got His Gun, Metallica compuso en 1988 su himno más complejo y dramático. "
-        "La pieza describe el aislamiento absoluto de un soldado que pierde sus extremidades y sentidos en la guerra, atrapado en su propia conciencia. "
-        "La composición transita magistralmente desde una suave balada acústica hasta una devastadora tempestad metálica. "
-        "La sincronía descomunal entre el doble bombo de Lars Ulrich y las guitarras rítmicas imitando el ametrallamiento de un campo de batalla rompió paradigmas, convirtiéndose en el primer video de la banda en rotar masivamente en la televisión mundial."
-    ),
-    "poison": (
-        "A finales de los años ochenta, tras superar sus momentos personales más difíciles, Alice Cooper se alió con el rey indiscutible de los éxitos radiales, Desmond Child, para dar vida al álbum Trash. "
-        "El resultado fue una resurrección espectacular para el pionero del shock rock. "
-        "Con un riff cortante e hipnótico y una letra que retrata una atracción tan irresistible como destructiva, la química en el estudio fue arrolladora. "
-        "Grandes figuras como Jon Bon Jovi y Richie Sambora visitaron la sesión y terminaron grabando coros de apoyo en el estribillo final, convirtiendo la pieza en un clásico definitivo del dial."
-    ),
-    "forever": (
-        "En 1989, para el álbum Hot in the Shade, Paul Stanley decidió unir fuerzas con el maestro del pop Michael Bolton para componer una de las baladas más conmovedoras en la historia de KISS. "
-        "Lejos del maquillaje teatral y de los artificios escénicos de antaño, la banda apostó por finas guitarras acústicas y una interpretación vocal cargada de vulnerabilidad y pasión. "
-        "En una sola sesión nocturna en los estudios Fortress de Los Ángeles, el guitarrista Bruce Kulick grabó un solo sublime y espontáneo en una sola toma que capturó pura magia emotiva, llevando a la agrupación a lo más alto de los rankings internacionales."
-    ),
-    "africa": (
-        "A principios de los años ochenta, el tecladista y compositor David Paich se sintió profundamente conmovido tras ver documentales sobre la belleza del continente africano, recordando además los relatos de misioneros que conoció en su infancia. "
-        "Junto al virtuoso baterista Jeff Porcaro, experimentaron durante horas en el estudio tocando marimbas, congas y cajas rítmicas artesanales para lograr un latido sonoro casi biológico. "
-        "Con una armonización coral impecable de seis voces y el brillo elegante de los sintetizadores de la época, la grabación se convirtió en una cumbre indiscutible de la producción musical de los ochenta."
-    ),
-    "forever young": (
-        "Compuesta en Berlín Occidental durante los días más tensos de la Guerra Fría, Alphaville concibió este himno generacional bajo la sombra inquietante de la amenaza nuclear entre las superpotencias. "
-        "El cantante Marian Gold plasmó en sus versos el anhelo desesperado de detener el transcurso del tiempo, celebrar la juventud y encontrar belleza en medio de un planeta frágil y convulso. "
-        "Aunque inicialmente fue grabada como una canción electrónica bailable, los productores acertadamente redujeron el tempo para transformarla en una balada solemne con sintetizadores nostálgicos y una melodía conmovedora que ha trascendido generaciones."
-    ),
-    "subdivisions": (
-        "En 1982, el brillante letrista y baterista Neil Peart volcó su mirada hacia los suburbios residenciales de Norteamérica para retratar la presión social, el aislamiento y el dilema de los jóvenes obligados a encajar o ser marginados por el sistema. "
-        "En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. "
-        "Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes."
-    ),
-    "tom sawyer": (
-        "A finales de 1980, en el idílico refugio de Le Studio en Morin-Heights, Quebec, Rush se propuso transformar la complejidad del rock progresivo en una descarga directa y futurista. "
-        "Inspirado por un poema que le compartió el letrista Pye Dubois, el baterista Neil Peart reinterpretó al rebelde clásico de Mark Twain como un símbolo de individualismo y mente independiente para la era moderna. "
-        "Geddy Lee introdujo el tema con el gruñido demoledor de un sintetizador Oberheim, abriendo paso a uno de los solos de batería más virtuosos e influyentes de todos los tiempos. "
-        "Porque la música tiene memoria, la banda casi abandona la grabación debido a las dificultades técnicas para capturar la pista, sin sospechar que estaban inmortalizando el himno definitivo de su carrera."
-    ),
-    "shout at the devil": (
-        "A comienzos de 1983, inmerso en la atmósfera salvaje de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. "
-        "Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. "
-        "Con una muralla de riffs agresivos de Mick Mars y la actitud desafiante de Vince Neil, la canción desató una auténtica revolución visual y sonora que definió para siempre el movimiento del glam metal."
-    ),
-    "hysteria": (
-        "La creación de este álbum fue una verdadera odisea marcada por el gravísimo accidente de tránsito en el que el baterista Rick Allen perdió su brazo izquierdo. "
-        "Demostrando una resiliencia inquebrantable, Allen aprendió a tocar con una batería electrónica adaptada a sus pies, inspirando a toda la banda a seguir adelante. "
-        "Durante un descanso en las sesiones de Dublín, el guitarrista Phil Collen comenzó a rasguear una secuencia de acordes limpios y envolventes. "
-        "Al escucharlo, el productor Mutt Lange supo de inmediato que allí nacía la canción insignia que coronaría el disco más vendido y perfecto de su carrera."
-    ),
-    "everybody wants to rule the world": (
-        "Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. "
-        "El productor Chris Hughes sentía que el álbum necesitaba con urgencia un tema luminoso y dinámico para equilibrar la densidad introspectiva de los demás cortes. "
-        "En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible fusionando guitarras de doce cuerdas y sintetizadores en un compás galopante. "
-        "Porque la música tiene memoria, con una lírica penetrante sobre la fragilidad del poder y el anhelo de control universal, la canción conquistó el número uno planetario convirtiéndose en la banda sonora definitiva de una década."
-    ),
-    "help": (
-        "En 1965, durante la cumbre de la Beatlemanía, The Beatles filmaban su segunda película entre las Bahamas y Londres. "
-        "John Lennon, sintiendo el peso abrumador de la fama mundial y un profundo agotamiento emocional, compuso esta confesión directa y honesta en su mansión de Kenwood. "
-        "Aunque Paul McCartney y la banda la vistieron con un ritmo de rock and roll enérgico y brillante, Lennon siempre la consideró uno de sus temas más sinceros y personales de toda su carrera."
-    ),
-    "smoke on the water": (
-        "En diciembre de 1971, Deep Purple viajó a Montreux en Suiza para grabar en el Casino frente al lago Ginebra usando el estudio móvil de The Rolling Stones. "
-        "Durante un concierto de Frank Zappa, un asistente disparó una bengala hacia el techo de mimbre, provocando un devastador incendio que consumió todo el edificio. "
-        "Desde la ventana de su hotel, la banda observó una inmensa columna de humo extendiéndose sobre las aguas del lago. "
-        "Inspirado por esa visión dramática y guiado por el riff más icónico de Ritchie Blackmore con su Stratocaster, nació el clásico más coreado en la historia del rock."
-    ),
-    "dream on": (
-        "Steven Tyler compuso las notas iniciales de este himno en un viejo piano vertical de la posada de su familia en Sunapee, Nuevo Hampshire, cuando apenas tenía catorce años. "
-        "Años más tarde, durante las difíciles sesiones de grabación del primer disco de Aerosmith en Boston, Tyler temía que su voz sonara inmadura ante el micrófono, por lo que utilizó un tono vocal más grave en todo el álbum excepto en esta pista. "
-        "En el clímax final, Steven liberó su registro natural alcanzando notas agudas desgarradoras que catapultaron a la banda hacia el estrellato definitivo."
-    ),
-    "comfortably numb": (
-        "Nacida inicialmente como una maqueta descartada para el álbum en solitario de David Gilmour, la música cobró una dimensión trascendental cuando Roger Waters la integró a la ópera rock The Wall. "
-        "Waters escribió los versos recordando el shock físico y la desconexión emocional que sufrió en Filadelfia en 1977 tras recibir inyecciones de sedantes para poder salir al escenario con fiebre alta. "
-        "Grabado en apenas dos tomas con su legendaria Black Stratocaster, el majestuoso solo final de David Gilmour es aclamado mundialmente como la cúspide emotiva de la guitarra eléctrica en el rock."
-    )
+    "tom sawyer": [
+        (
+            "A finales de 1980, en Le Studio de Quebec, Neil Peart transformó un poema del letrista Pye Dubois en un retrato del espíritu independiente, reinterpretando al clásico personaje de Mark Twain. "
+            "Mientras Geddy Lee abría la pista con el gruñido icónico de su sintetizador Oberheim, Rush fusionó complejidad progresiva con fuerza directa."
+        ),
+        (
+            "Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola. "
+            "Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense."
+        ),
+        (
+            "En el invierno de 1980 en Morin-Heights, Alex Lifeson grabó sus acordes cortantes en apenas unas tomas mientras el grupo exploraba compases asimétricos en siete por ocho. "
+            "La mezcla perfecta entre la rebeldía literaria de la letra y una base rítmica implacable consolidó a Rush en la cima del rock mundial."
+        )
+    ],
+    "everybody wants to rule the world": [
+        (
+            "Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum. "
+            "En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial."
+        ),
+        (
+            "Compuesta bajo las tensiones de la Guerra Fría en 1985, Curt Smith y Roland Orzabal ocultaron una profunda reflexión sobre la sed de poder político tras una melodía vibrante y optimista. "
+            "Originalmente grabada como un corte de transición rápida, terminó coronándose como el himno definitivo de Tears for Fears."
+        ),
+        (
+            "Aunque la banda temía que su aire ligero desentonara con la densidad del disco, la grabación en estudio sorprendió por la elegancia de sus coros y su inolvidable solo final de guitarra. "
+            "Lanzada en marzo de 1985, la canción catapultó a Tears for Fears al estrellato internacional."
+        )
+    ],
+    "the trooper": [
+        (
+            "Inspirada en la carga de la Brigada Ligera durante la batalla de Balaclava en 1854, Steve Harris escribió este clásico de 1983 desde la perspectiva de un soldado en pleno combate. "
+            "Con las guitarras gemelas de Dave Murray y Adrian Smith en galope implacable, nació uno de los himnos eternos de Iron Maiden."
+        ),
+        (
+            "Para el álbum Piece of Mind de 1983 en las Bahamas, Bruce Dickinson desató toda su potencia vocal sin utilizar trucos de estudio sobre la épica composición de Steve Harris. "
+            "La icónica portada del sencillo con Eddie alzando la bandera en el campo de batalla selló la mística inmortal de la canción."
+        )
+    ],
+    "africa": [
+        (
+            "En 1982, tras ver un documental nocturno, David Paich imaginó el continente africano y grabó junto a Jeff Porcaro marimbas y congas artesanales para el álbum Toto IV. "
+            "Aunque estuvo a punto de quedar fuera del disco, se convirtió en el único número uno mundial del grupo."
+        ),
+        (
+            "Para capturar el pulso orgánico de Africa en 1982, el baterista Jeff Porcaro combinó percusiones reales en múltiples pistas sin recurrir a cajas de ritmos programadas. "
+            "Coronada por seis voces en armonía perfecta durante el estribillo, la canción se alzó como una cumbre del estudio californiano."
+        )
+    ],
+    "back in black": [
+        (
+            "Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible. "
+            "Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock."
+        ),
+        (
+            "En abril de 1980 en los estudios Compass Point, AC/DC canalizó el duelo por Bon Scott en composiciones cargadas de gratitud y resiliencia. "
+            "Con apenas seis semanas de grabación junto al productor Mutt Lange, el álbum emergió con una pegada monolítica que transformó la historia del rock."
+        )
+    ],
+    "detroit rock city": [
+        (
+            "Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento. "
+            "La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos."
+        ),
+        (
+            "Coronada por el legendario duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley en los estudios Record Plant de Nueva York en 1976, la pista fue pensada como una historia trágica sobre el poder visceral del rock en vivo. "
+            "Desde entonces abre los conciertos de la banda como un rito infaltable."
+        )
+    ],
+    "bohemian rhapsody": [
+        (
+            "En el verano de 1975, Freddie Mercury llevó al estudio la estructura de Bohemian Rhapsody anotada en simples guías telefónicas. "
+            "La banda grabó tantas capas de armonías vocales durante semanas que la cinta magnética casi se volvió transparente, desafiando la negativa inicial de la disquera para cambiar la radio para siempre."
+        )
+    ],
+    "sweet child o' mine": [
+        (
+            "En 1987, durante un ensayo informal en Los Ángeles, Slash tocaba un ejercicio de digitación en su guitarra que consideraba una broma circense. "
+            "Axl Rose escuchó esas notas desde la habitación contigua y escribió de inmediato un emotivo poema de amor, dando vida al clásico más coreado de su carrera."
+        )
+    ],
+    "paranoid": [
+        (
+            "En otoño de 1970, Black Sabbath necesitaba tres minutos extra para completar su segundo disco. "
+            "Mientras el grupo almorzaba, Tony Iommi improvisó un riff frenético y Geezer Butler escribió la letra al instante; grabada en veinticinco minutos como relleno, se convirtió en su mayor éxito mundial."
+        )
+    ],
+    "hotel california": [
+        (
+            "En 1976, Don Felder grabó una maqueta acústica en una casa de playa en Malibú que fascinó a Don Henley y Glenn Frey. "
+            "Juntos escribieron una alegoría sobre los excesos y el lado oscuro del sueño americano, rematada por meses de trabajo en el legendario duelo de guitarras finales."
+        )
+    ],
+    "stairway to heaven": [
+        (
+            "Aislados en una remota cabaña sin electricidad en Gales en 1970, Jimmy Page y Robert Plant concibieron una épica que crecía desde la calma acústica hasta una tormenta eléctrica. "
+            "El legendario solo de guitarra fue grabado por Page con su Telecaster de 1959 en apenas tres tomas."
+        )
+    ],
+    "highway to hell": [
+        (
+            "El título surgió de la forma en que Angus Young describía la sofocante rutina de viajar meses enteros en autobús de gira. "
+            "En 1979, junto al productor Mutt Lange, AC/DC pulió sus coros sin perder crudeza callejera en la última gran grabación de estudio de Bon Scott."
+        )
+    ],
+    "master of puppets": [
+        (
+            "Grabada en Copenhague en 1986, James Hetfield plasmó una cruda metáfora sobre la pérdida de control frente a las adicciones. "
+            "Para lograr una precisión implacable, todas las guitarras se atacaron exclusivamente con púa hacia abajo, acompañadas por la maestría armónica del recordado bajista Cliff Burton."
+        )
+    ],
+    "enter sandman": [
+        (
+            "El famoso riff de guitarra nació a las dos de la madrugada en la habitación de Kirk Hammett. "
+            "En el Álbum Negro de 1991, James Hetfield reescribió la letra sobre las pesadillas infantiles, grabando la icónica plegaria susurrada junto al pequeño hijo del productor Bob Rock."
+        )
+    ],
+    "one": [
+        (
+            "Inspirada en la novela antibélica Johnny Got His Gun de 1939, Metallica compuso en 1988 una obra monumental sobre el aislamiento de un soldado herido. "
+            "La sincronía entre el doble bombo de Lars Ulrich y las guitarras imitando fuego de batalla rompió todos los moldes del metal."
+        )
+    ],
+    "smoke on the water": [
+        (
+            "En diciembre de 1971, Deep Purple presenció desde su hotel cómo una bengala incendiaba el Casino de Montreux en Suiza durante un concierto de Frank Zappa. "
+            "Al ver el humo sobre el lago Ginebra, Ritchie Blackmore trazó en su guitarra el riff más universal de la historia."
+        )
+    ],
+    "dream on": [
+        (
+            "Steven Tyler escribió los acordes de piano a los catorce años en la posada familiar de Nuevo Hampshire. "
+            "En 1973 disimuló su voz grave por temor a sonar inmaduro en todo el álbum, reservando sus desgarradores agudos naturales únicamente para el inolvidable clímax final."
+        )
+    ],
+    "comfortably numb": [
+        (
+            "Roger Waters escribió estos versos recordando la desconexión física sufrida en 1977 tras recibir sedantes para tocar enfermo en Filadelfia. "
+            "Sobre una maqueta de David Gilmour para The Wall, nació el majestuoso solo de guitarra grabado en apenas dos tomas con su Stratocaster negra."
+        )
+    ],
+    "subdivisions": [
+        (
+            "En 1982, Neil Peart retrató la presión por encajar dentro de los suburbios residenciales norteamericanos. "
+            "Con Geddy Lee tomando protagonismo en el sintetizador Oberheim y la cavernosa voz de Mark Dailey pronunciando el título, el tema se volvió refugio eterno para los espíritus libres."
+        )
+    ],
+    "forever young": [
+        (
+            "Escrita en Berlín Occidental durante la Guerra Fría de 1984, Alphaville reflejó el miedo latente a un conflicto nuclear y el deseo de aferrarse a la juventud. "
+            "Originalmente grabada como pista bailable rápida, los productores bajaron el tempo transformándola en un himno nostálgico inmortal."
+        )
+    ],
+    "help": [
+        (
+            "En 1965, abrumado por el frenesí agobiante de la Beatlemanía, John Lennon escribió esta confesión directa como un pedido sincero de auxilio emocional. "
+            "Aunque la banda la vistió con un ritmo acelerado de rock and roll, Lennon siempre la consideró una de sus páginas más honestas."
+        )
+    ],
+    "hysteria": [
+        (
+            "La gestación de Hysteria en 1987 estuvo marcada por el accidente donde el baterista Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos. "
+            "Inspirado por ese ejemplo, Phil Collen rasgueó los acordes cristalinos que el productor Mutt Lange convirtió en la joya del álbum."
+        )
+    ],
+    "shout at the devil": [
+        (
+            "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
+            "Con los riffs punzantes de Mick Mars y el rugido de Vince Neil, el tema desató la revolución visual del glam metal."
+        )
+    ],
+    "poison": [
+        (
+            "Para su resurrección artística en 1989, Alice Cooper se alió con el maestro compositor Desmond Child y dio vida a una historia sobre una atracción tan irresistible como letal. "
+            "Jon Bon Jovi y Richie Sambora visitaron la sesión y sumaron coros que llevaron la pista a lo más alto."
+        )
+    ],
+    "forever": [
+        (
+            "En 1989, Paul Stanley colaboró con Michael Bolton para mostrar la faceta más íntima y despojada de KISS sobre guitarras acústicas. "
+            "Bruce Kulick inmortalizó el emotivo solo en una única toma nocturna en Los Ángeles, regalándole a la banda su balada más recordada."
+        )
+    ],
+    "rock and roll all nite": [
+        (
+            "En 1975, Casablanca Records exigió con urgencia a Paul Stanley y Gene Simmons un himno que capturara el frenesí de sus shows. "
+            "Grabada en Nueva York con un coro improvisado de técnicos y asistentes de estudio, nació el credo definitivo de fiesta para toda una generación."
+        )
+    ]
 }
 
-def get_master_eddie_script(song_title, band_name, album_name="", year="", angle=1):
-    """
-    Construye el guion maestro de DJ Fredd respetando los lineamientos obligatorios:
-    1. Apertura: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.'
-    2. Desarrollo: Anécdota musical auténtica de 30 a 50 segundos de locución real (85-130 palabras).
-    3. Cierre: '¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!'
-    """
-    clean_key = (song_title or '').lower().strip()
-    clean_key = clean_key.replace("'", "").replace("’", "").strip()
+# Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
+SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "The Trooper",
+        "band_name": "Iron Maiden",
+        "album": "Piece of Mind (1983)",
+        "year": "1983",
+        "cover": "img/albums/metallica_1984_ride_the_lightning.png",
+        "duration_sec": 252
+    },
+    {
+        "song_title": "Run to the Hills",
+        "band_name": "Iron Maiden",
+        "album": "The Number of the Beast (1982)",
+        "year": "1982",
+        "cover": "img/albums/metallica_1984_ride_the_lightning.png",
+        "duration_sec": 233
+    },
+    {
+        "song_title": "Fear of the Dark",
+        "band_name": "Iron Maiden",
+        "album": "Fear of the Dark (1992)",
+        "year": "1992",
+        "cover": "img/albums/metallica_1984_ride_the_lightning.png",
+        "duration_sec": 438
+    }
+]
 
-    dev_story = None
+AMBIGUOUS_TITLES_REGISTRY = {
+    "one": [
+        {"song_title": "One", "band_name": "Metallica", "album": "...And Justice for All (1988)", "year": "1988"},
+        {"song_title": "One", "band_name": "U2", "album": "Achtung Baby (1991)", "year": "1991"}
+    ],
+    "jump": [
+        {"song_title": "Jump", "band_name": "Van Halen", "album": "1984 (1984)", "year": "1984"},
+        {"song_title": "Jump", "band_name": "The Pointer Sisters", "album": "Break Out (1983)", "year": "1983"}
+    ],
+    "forever": [
+        {"song_title": "Forever", "band_name": "KISS", "album": "Hot in the Shade (1989)", "year": "1989"},
+        {"song_title": "Forever", "band_name": "Papa Roach", "album": "The Paramour Sessions (2006)", "year": "2006"}
+    ],
+    "photograph": [
+        {"song_title": "Photograph", "band_name": "Def Leppard", "album": "Pyromania (1983)", "year": "1983"},
+        {"song_title": "Photograph", "band_name": "Nickelback", "album": "All the Right Reasons (2005)", "year": "2005"}
+    ]
+}
+
+# ==============================================================================
+# 4. PERSISTENCIA Y METADATOS DEL PROYECTO
+# ==============================================================================
+def normalize_text_key(s):
+    s = (s or "").strip().lower()
+    s = unicodedata.normalize("NFKD", s)
+    s = "".join(ch for ch in s if not unicodedata.combining(ch))
+    s = re.sub(r"[\'’\"`!¡?¿.,:;()\-]+", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+def make_story_key(band_name, song_title):
+    return f"{normalize_text_key(band_name)}::{normalize_text_key(song_title)}"
+
+def make_slug(band_name, song_title):
+    raw = f"{band_name}_{song_title}".lower().replace(" ", "_").replace("/", "")
+    return re.sub(r'[^a-z0-9_]', '', raw)[:48]
+
+def load_stories_metadata():
+    if os.path.exists(STORIES_METADATA_PATH):
+        try:
+            with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    data.setdefault("recent_openings", [])
+                    data.setdefault("last_generated_key", None)
+                    data.setdefault("stories", {})
+                    return data
+        except Exception as e:
+            print(f"⚠️ Error leyendo {STORIES_METADATA_PATH}: {e}", flush=True)
+    return {"recent_openings": [], "last_generated_key": None, "stories": {}}
+
+def save_stories_metadata(data):
+    tmp_path = f"{STORIES_METADATA_PATH}.tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    os.replace(tmp_path, STORIES_METADATA_PATH)
+
+def load_project_catalog_metadata():
+    """
+    Lee el catálogo musical real desde index.html (BAND_POPULAR_TRACKS, CURATED_*, bands)
+    y verifica pistas completas locales en audio/.
+    """
+    catalog = []
+    seen = set()
+
+    def add_item(song_title, band_name, album="", year="", cover="", duration_sec=240):
+        if not song_title or not band_name:
+            return
+        key = make_story_key(band_name, song_title)
+        if key in seen:
+            # Update missing cover/year if needed
+            for ex in catalog:
+                if ex["key"] == key:
+                    if not ex["cover"] and cover:
+                        ex["cover"] = cover
+                    if not ex["year"] and year:
+                        ex["year"] = year
+                    if not ex["album"] and album:
+                        ex["album"] = album
+            return
+        seen.add(key)
+
+        # Look for local full song mp3
+        slug = make_slug(band_name, song_title)
+        full_mp3 = None
+        if os.path.exists(WORKSPACE_AUDIO_DIR):
+            for fname in os.listdir(WORKSPACE_AUDIO_DIR):
+                if fname.startswith("full_") and fname.endswith(".mp3"):
+                    f_norm = fname[5:-4]
+                    if f_norm == slug or (slug[:25] in f_norm) or (normalize_text_key(band_name).replace(" ", "_") in f_norm and normalize_text_key(song_title).replace(" ", "_")[:15] in f_norm):
+                        full_mp3 = f"audio/{fname}"
+                        break
+
+        if not year and album:
+            ym = re.search(r'(19\d{2}|20\d{2})', str(album))
+            if ym:
+                year = ym.group(1)
+
+        catalog.append({
+            "key": key,
+            "song_title": song_title,
+            "band_name": band_name,
+            "album": album,
+            "year": str(year or ""),
+            "cover": cover,
+            "duration_sec": duration_sec,
+            "full_song_audio": full_mp3
+        })
+
+    if os.path.exists(INDEX_HTML_PATH):
+        try:
+            with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
+                html = f.read()
+
+            # Map bandId -> bandName
+            band_id_to_name = {}
+            for m in re.finditer(r"\{\s*id:\s*'([^']+)',\s*name:\s*(?:'([^']+)'|\"([^\"]+)\")", html):
+                bid = m.group(1)
+                bname = m.group(2) or m.group(3)
+                band_id_to_name[bid] = bname
+
+            # Extract BAND_POPULAR_TRACKS block
+            bpt_match = re.search(r"const BAND_POPULAR_TRACKS\s*=\s*\{([\s\S]*?)\n\s*\};", html)
+            if bpt_match:
+                block = bpt_match.group(1)
+                current_bid = None
+                for line in block.splitlines():
+                    bm = re.match(r"^\s*([a-z0-9_]+):\s*\[", line)
+                    if bm:
+                        current_bid = bm.group(1)
+                        continue
+                    tm = re.search(
+                        r"title:\s*(?:'([^']+)'|\"([^\"]+)\"),\s*album:\s*(?:'([^']+)'|\"([^\"]+)\"),\s*cover:\s*'([^']+)'[^}]*durationSec:\s*(\d+)",
+                        line
+                    )
+                    if tm and current_bid:
+                        title = tm.group(1) or tm.group(2)
+                        album = tm.group(3) or tm.group(4)
+                        cover = tm.group(5)
+                        dur = int(tm.group(6))
+                        bname = band_id_to_name.get(current_bid, current_bid.replace("_", " ").title())
+                        add_item(title, bname, album, "", cover, dur)
+
+            # Extract CURATED tracks objects
+            for m in re.finditer(
+                r"name:\s*(?:'([^']+)'|\"([^\"]+)\"),\s*artists:\s*\[\s*\{\s*name:\s*(?:'([^']+)'|\"([^\"]+)\")\s*\}\s*\],\s*album:\s*\{\s*name:\s*(?:'([^']+)'|\"([^\"]+)\"),\s*release_date:\s*'([^']+)',\s*images:\s*\[\s*\{\s*url:\s*'([^']+)'\s*\}\s*\]\s*\},\s*duration_ms:\s*(\d+)",
+                html
+            ):
+                title = m.group(1) or m.group(2)
+                bname = m.group(3) or m.group(4)
+                album = m.group(5) or m.group(6)
+                year = m.group(7)
+                cover = m.group(8)
+                dur = int(int(m.group(9)) / 1000)
+                add_item(title, bname, album, year, cover, dur)
+        except Exception as e:
+            print(f"⚠️ Error leyendo catálogo desde index.html: {e}", flush=True)
+
+    for sup in SUPPLEMENTAL_VERIFIED_TRACKS:
+        add_item(sup["song_title"], sup["band_name"], sup["album"], sup["year"], sup["cover"], sup["duration_sec"])
+
+    return catalog
+
+def resolve_song_metadata(song_query, band_query=None):
+    """
+    Identifica canción y artista usando metadatos disponibles.
+    Solicita aclaración únicamente cuando hay ambigüedad real o múltiples coincidencias sin artista.
+    Nunca inventa artistas ni títulos.
+    """
+    catalog = load_project_catalog_metadata()
+    s_norm = normalize_text_key(song_query)
+    b_norm = normalize_text_key(band_query) if band_query else ""
+
+    if not s_norm:
+        return {"resolved": False, "ambiguous": True, "message": "No se especificó el nombre de la canción.", "candidates": []}
+
+    # Exact or fuzzy match against catalog
+    matches = []
+    for item in catalog:
+        it_s = normalize_text_key(item["song_title"])
+        it_b = normalize_text_key(item["band_name"])
+        song_match = (it_s == s_norm) or (s_norm in it_s and len(s_norm) >= 4) or (it_s in s_norm and len(it_s) >= 4)
+        if not song_match:
+            continue
+        if b_norm:
+            band_match = (it_b == b_norm) or (b_norm in it_b) or (it_b in b_norm)
+            if band_match:
+                matches.append((100 if it_s == s_norm and it_b == b_norm else 80, item))
+        else:
+            matches.append((90 if it_s == s_norm else 70, item))
+
+    # Ambiguity check when artist is omitted
+    if not b_norm:
+        if s_norm in AMBIGUOUS_TITLES_REGISTRY and len(AMBIGUOUS_TITLES_REGISTRY[s_norm]) > 1:
+            return {
+                "resolved": False,
+                "ambiguous": True,
+                "message": f"Existen varias canciones conocidas llamadas '{song_query}'. Por favor indica el artista (por ejemplo: '{song_query} de {AMBIGUOUS_TITLES_REGISTRY[s_norm][0]['band_name']}').",
+                "candidates": AMBIGUOUS_TITLES_REGISTRY[s_norm]
+            }
+        unique_bands = {m[1]["band_name"] for m in matches}
+        if len(unique_bands) > 1:
+            return {
+                "resolved": False,
+                "ambiguous": True,
+                "message": f"Encontré múltiples artistas para '{song_query}'. ¿De cuál artista quieres la historia?",
+                "candidates": [m[1] for m in matches]
+            }
+
+    if matches:
+        matches.sort(key=lambda x: x[0], reverse=True)
+        best = dict(matches[0][1])
+        return {"resolved": True, "ambiguous": False, "metadata": best}
+
+    # If both song and band were explicitly provided by user (e.g. a new song not yet in static catalog),
+    # construct clean metadata preserving user-specified names (never inventing unknown band/song).
+    if song_query and band_query:
+        clean_song = song_query.strip()
+        clean_band = band_query.strip()
+        return {
+            "resolved": True,
+            "ambiguous": False,
+            "metadata": {
+                "key": make_story_key(clean_band, clean_song),
+                "song_title": clean_song,
+                "band_name": clean_band,
+                "album": "",
+                "year": "",
+                "cover": "img/albums/kiss_1976_destroyer.png",
+                "duration_sec": 240,
+                "full_song_audio": None
+            }
+        }
+
+    return {
+        "resolved": False,
+        "ambiguous": True,
+        "message": f"No pude identificar con certeza el artista para '{song_query}'. Por favor escribe: 'Generar historia de {song_query} de [Artista]'.",
+        "candidates": []
+    }
+
+# ==============================================================================
+# 5. INTÉRPRETE DE COMANDOS DE IA (Secciones 2 y 10)
+# ==============================================================================
+def parse_ai_command(command_text):
+    """
+    Interpreta instrucciones naturales de usuario:
+    - "Generar historia de Tom Sawyer de Rush"
+    - "Genera una historia de The Trooper de Iron Maiden"
+    - "Quiero la historia de Africa de Toto"
+    - "Generar historia de Everybody Wants to Rule the World de Tears for Fears"
+    - "Regenerar historia de Tom Sawyer de Rush"
+    - "Generar otra historia de The Trooper de Iron Maiden"
+    - "Regenerar la voz de la última historia"
+    """
+    raw = (command_text or "").strip().strip('"\'')
+    if not raw:
+        return {"intent": "unknown", "raw": raw}
+
+    low = normalize_text_key(raw)
+
+    # Check voice-only regeneration first
+    if re.search(r"regenera[r]?\s+(?:la\s+)?voz\s+de\s+(?:la\s+)?ultima\s+historia", low) or low == "regenerar la voz":
+        return {"intent": "regenerate_voice", "target": "last", "song_query": None, "band_query": None, "raw": raw}
+
+    voice_target_m = re.match(r"^(?:por favor\s+)?regenera[r]?\s+(?:solo\s+)?(?:la\s+)?voz\s+(?:de\s+|para\s+)?(.+)$", raw, re.IGNORECASE)
+    if voice_target_m:
+        payload = voice_target_m.group(1).strip()
+        song_q, band_q = _split_song_and_band(payload)
+        return {"intent": "regenerate_voice", "target": "specific", "song_query": song_q, "band_query": band_q, "raw": raw}
+
+    # Check story regeneration ("Regenerar historia de...", "Generar otra historia de...")
+    regen_m = re.match(
+        r"^(?:por favor\s+)?(?:regenera[r]?|crea[r]?\s+otra|genera[r]?\s+otra|otra|nueva)\s+(?:una\s+|la\s+)?historia\s+(?:de\s+|sobre\s+|para\s+)?(.+)$",
+        raw,
+        re.IGNORECASE
+    )
+    if regen_m:
+        payload = regen_m.group(1).strip()
+        song_q, band_q = _split_song_and_band(payload)
+        return {"intent": "regenerate_story", "song_query": song_q, "band_query": band_q, "raw": raw}
+
+    # Check story generation ("Generar historia de...", "Genera una historia de...", "Quiero la historia de...", etc.)
+    gen_m = re.match(
+        r"^(?:por favor\s+)?(?:genera[r]?|crea[r]?|haz|quiero|dame|escribe|narra)\s+(?:una\s+|la\s+|el\s+)?(?:nueva\s+)?historia\s+(?:de\s+|de\s+la\s+cancion\s+|sobre\s+|para\s+)?(.+)$",
+        raw,
+        re.IGNORECASE
+    )
+    if gen_m:
+        payload = gen_m.group(1).strip()
+        song_q, band_q = _split_song_and_band(payload)
+        return {"intent": "generate", "song_query": song_q, "band_query": band_q, "raw": raw}
+
+    # Fallback: if user writes "{Canción} de {Banda}" directly
+    song_q, band_q = _split_song_and_band(raw)
+    return {"intent": "generate", "song_query": song_q, "band_query": band_q, "raw": raw}
+
+def _split_song_and_band(payload):
+    """
+    Separa inteligentemente "{Nombre_cancion} de {Nombre_banda}" incluso si la banda o canción tiene varias palabras.
+    """
+    payload = re.sub(r"^(?:la\s+cancion\s+|el\s+tema\s+)", "", payload.strip(), flags=re.IGNORECASE)
+    catalog = load_project_catalog_metadata()
+    known_bands = sorted(
+        {item["band_name"] for item in catalog if item.get("band_name")},
+        key=lambda x: len(x),
+        reverse=True
+    )
+
+    # First check if payload ends with " de <Known Band>" (case-insensitive)
+    for kb in known_bands:
+        pattern = re.compile(r"^(.+?)\s+(?:de|del\s+grupo|de\s+la\s+banda|por)\s+" + re.escape(kb) + r"$", re.IGNORECASE)
+        m = pattern.match(payload)
+        if m:
+            return m.group(1).strip(), kb
+
+    # Otherwise split on the rightmost " de " / " del grupo " / " por "
+    m_sep = re.match(r"^(.+?)\s+(?:del\s+grupo|de\s+la\s+banda|de|por)\s+([^,]+)$", payload, re.IGNORECASE)
+    if m_sep:
+        return m_sep.group(1).strip(), m_sep.group(2).strip()
+
+    return payload.strip(), None
+
+# ==============================================================================
+# 6. SELECCIÓN DE APERTURAS, ANÉCDOTAS Y CONDENSACIÓN (<45s)
+# ==============================================================================
+def select_dynamic_opening(song_title, band_name, year="", exclude_ids=None, force_opening_id=None):
+    """
+    Selecciona aleatoriamente entre las 10 aperturas compatibles con el contexto,
+    evitando repetir las últimas 3 utilizadas.
+    """
+    meta = load_stories_metadata()
+    recent = [int(x) for x in meta.get("recent_openings", [])[-3:]]
+    explicit_excl = {int(x) for x in (exclude_ids or []) if x is not None}
+    excluded = set(recent) | explicit_excl
+
+    if force_opening_id is not None:
+        for op in DYNAMIC_OPENINGS:
+            if op["id"] == int(force_opening_id):
+                return op["id"], op["format"](song_title, band_name, year)
+
+    compatible = [op for op in DYNAMIC_OPENINGS if not op["requires_year"] or bool(year)]
+    if not compatible:
+        compatible = list(DYNAMIC_OPENINGS)
+
+    candidates = [op for op in compatible if op["id"] not in excluded]
+    if not candidates:
+        # Relax to avoid only the most recent opening and explicit exclusion
+        last_one = {recent[-1]} if recent else set()
+        candidates = [op for op in compatible if op["id"] not in (last_one | explicit_excl)]
+    if not candidates:
+        candidates = compatible
+
+    chosen = random.choice(candidates)
+    return chosen["id"], chosen["format"](song_title, band_name, year)
+
+def select_closing_line(song_title, band_name, angle_idx=0):
+    template = CLOSING_TEMPLATES[angle_idx % len(CLOSING_TEMPLATES)]
+    return template.format(song=song_title, band=band_name)
+
+def get_master_eddie_script(song_title, band_name, album_name="", year="", angle=1, opening_text=None):
+    """
+    Construye el guion maestro conciso (aprox 65-85 palabras totales para cumplir <= 45s con 5s de música).
+    """
+    clean_key = normalize_text_key(song_title)
+    angles_list = None
     for k, v in MASTER_CURATED_STORIES.items():
-        k_norm = k.replace("'", "").replace("’", "").strip()
-        if k_norm == clean_key or k_norm in clean_key:
-            dev_story = v
+        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key:
+            angles_list = v if isinstance(v, list) else [v]
             break
 
-    if not dev_story:
+    if angles_list:
+        idx = (max(1, int(angle)) - 1) % len(angles_list)
+        dev_story = angles_list[idx]
+    else:
         year_str = f"En {year}, " if year else ""
-        album_str = f"para su recordado álbum {album_name}" if album_name else "en una de las etapas de mayor solidez creativa de su trayectoria"
-
-        if angle == 1:
+        album_str = f"para el álbum {album_name}" if album_name else "durante una etapa clave de su carrera"
+        if angle % 3 == 1:
             dev_story = (
-                f"{year_str}{album_str}, {band_name} se encerró en el estudio con la convicción de forjar una obra perdurable. "
-                f"Porque la música tiene memoria, registrando cada instrumento directamente sobre cinta analógica y con guitarras al rojo vivo, "
-                f"la química grupal capturó una energía vibrante e irrepetible. Las largas sesiones de producción terminaron de perfilar una pista contundente "
-                f"que rápidamente saltó a los primeros lugares de las radios, convirtiéndose en un testimonio fiel de la época dorada del rock."
+                f"{year_str}{album_str}, {band_name} buscó capturar un sonido eléctrico directo en el estudio sobre cinta analógica. "
+                f"La química del grupo convirtió aquellas intensas sesiones en un clásico perdurable que marcó a toda una generación."
             )
-        elif angle == 2:
+        elif angle % 3 == 2:
             dev_story = (
-                f"{year_str}con un riff memorable y el sello sonoro inconfundible que siempre ha caracterizado a {band_name}, "
-                f"esta grabación nació {album_str}. En la sala de ensayo, los músicos buscaron simplificar los arreglos para privilegiar "
-                f"el impacto emocional de la melodía y la garra de la base rítmica. La toma final en la consola de mezclas captó una fuerza "
-                f"tan arrolladora que de inmediato se convirtió en una de las composiciones más queridas y celebradas por sus seguidores en todo el mundo. "
-                f"La música tiene memoria, y esta joya sonora lo demuestra compás a compás."
+                f"{year_str}impulsada por un riff inolvidable de {band_name} {album_str}, la banda apostó por la fuerza rítmica y la emoción directa. "
+                f"La toma definitiva conservó tanta energía viva que rápidamente conquistó los diales de todo el mundo."
             )
         else:
             dev_story = (
-                f"{year_str}destacada como una de las piezas más representativas en el repertorio de {band_name} {album_str}, "
-                f"esta entrega confirmó la versatilidad y el talento interpretativo de la banda. Desde la sutileza de su introducción "
-                f"hasta el clímax instrumental, cada compás fue diseñado para conectar con la fibra de los oyentes. Como siempre recordamos aquí en Fred Rewind, "
-                f"la música tiene memoria, y este clásico perdura tan fresco y poderoso como el primer día."
+                f"{year_str}destacada como pieza esencial de {band_name} {album_str}, esta grabación nació del perfeccionismo instrumental en cabina. "
+                f"Cada compás consolidó una identidad sonora tan poderosa que sigue resonando intacta hoy."
             )
 
-    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
-    full_script = f"{APERTURA_OBLIGATORIA} {dev_story} {cierre}"
-    return APERTURA_OBLIGATORIA, dev_story, cierre, full_script
+    if not opening_text:
+        _, opening_text = select_dynamic_opening(song_title, band_name, year)
+    cierre = select_closing_line(song_title, band_name, angle - 1)
+    full_script = f"{opening_text} {dev_story} {cierre}"
+    return opening_text, dev_story, cierre, full_script
 
-def generate_ai_story_script(song_title, band_name, album_name="", year="", angle=1):
+def generate_ai_story_script(song_title, band_name, album_name="", year="", angle=1, exclude_opening_ids=None, force_opening_id=None, previous_story_summary=None):
     """
-    Genera un guion de DJ Fredd usando IA (OpenAI gpt-4o-mini o Gemini) o catálogo maestro de respaldo.
-    Cumple rigurosamente:
-    - APERTURA: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.'
-    - DESARROLLO: Anécdota musical auténtica de al menos 30 segundos narrados (90-130 palabras).
-    - CIERRE: '¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!'
-    - Frase insignia: 'La música tiene memoria'.
+    Investiga/redacta una anécdota histórica real y verificable en español de 38-52 palabras
+    (total 65-85 palabras contando apertura dinámica y cierre emotivo) para respetar el límite estricto de 45s.
     """
-    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
-    api_key = os.environ.get('OPENAI_API_KEY')
+    opening_id, apertura = select_dynamic_opening(
+        song_title, band_name, year,
+        exclude_ids=exclude_opening_ids,
+        force_opening_id=force_opening_id
+    )
+    cierre = select_closing_line(song_title, band_name, angle - 1)
 
-    if api_key:
+    clean_key = normalize_text_key(song_title)
+    has_curated = any(normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key for k in MASTER_CURATED_STORIES)
+
+    # Use OpenAI only if OPENAI_API_KEY is available AND either not in curated catalog OR regenerating beyond curated angles
+    api_key = os.environ.get('OPENAI_API_KEY', '').strip()
+    dev_story = None
+    source = "curated_master"
+
+    curated_count = 0
+    for k, v in MASTER_CURATED_STORIES.items():
+        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key:
+            curated_count = len(v) if isinstance(v, list) else 1
+            break
+
+    need_ai = (not has_curated) or (int(angle) > curated_count)
+    if api_key and need_ai:
         try:
-            import requests
             system_prompt = (
-                "Eres DJ Fredd, el respetado locutor de radio de rock clásico de la emisora 'Fred Rewind'. "
-                "Tu frase insignia es 'La música tiene memoria' y el concepto del programa es 'De regreso al pasado'. "
-                "Hablas con tono cálido, medio-grave, melómano, apasionado por las historias musicales de los 60s, 70s, 80s y 90s, "
-                "con estilo de radio clásica FM en español latinoamericano. "
-                "Tu tarea es escribir el guion oficial para narrar la historia detrás de una canción."
+                "Eres Fred, cronista y locutor experto de rock clásico en 'Rock Radio: De vuelta al pasado'. "
+                "Escribes anécdotas reales, verificables y fascinantes de grabación, origen de letras o contexto histórico. "
+                "REGLA ESTRICTA DE VERACIDAD: Nunca inventes fechas, personas ni acontecimientos falsos."
             )
+            avoid_note = f"\nEvita repetir el enfoque previo: {previous_story_summary}\n" if previous_story_summary else ""
             user_prompt = (
-                f"Escribe la historia oficial para la canción '{song_title}' de '{band_name}' "
-                f"(Álbum: '{album_name or 'Clásico'}', Año: '{year or 'Época Clásica'}').\n\n"
-                "ESTRUCTURA OBLIGATORIA:\n"
-                f"1. APERTURA EXACTA:\n\"{APERTURA_OBLIGATORIA}\"\n\n"
-                "2. DESARROLLO (Anécdota musical auténtica):\n"
-                "- Narra una historia real, interesante y verificable sobre la composición, grabación en el estudio, anécdotas de los músicos o el impacto histórico que la convirtió en un clásico.\n"
-                "- Duración mínima narrada: al menos 30 a 45 segundos de locución real (entre 90 y 130 palabras en el desarrollo).\n"
-                "- No inventes fechas ni acontecimientos falsos.\n"
-                "- Incorpora de forma natural y elegante la frase insignia: 'La música tiene memoria'.\n"
-                "- Puntuación cuidada con comas y puntos para pausas orgánicas de respiración en la voz de radio. No uses etiquetas técnicas ni acotaciones entre paréntesis.\n\n"
-                f"3. CIERRE EXACTO:\n\"{cierre}\""
+                f"Redacta ÚNICAMENTE el párrafo de anécdota histórica (sin saludo inicial ni cierre) para la canción "
+                f"'{song_title}' de '{band_name}' (Álbum: '{album_name or 'Clásico'}', Año: '{year or 'Época Clásica'}').\n"
+                f"{avoid_note}"
+                "REQUISITOS ESTRICTOS:\n"
+                "- Exactamente 2 oraciones completas, claras y vívidas.\n"
+                "- Entre 38 y 48 palabras en total (crítico para no superar 45 segundos con la música).\n"
+                "- Solo hechos reales y verificables de grabación, composición, letras o contexto.\n"
+                "- Sin etiquetas entre corchetes ni comillas ni markdown."
             )
             payload = {
                 "model": "gpt-4o-mini",
@@ -296,355 +896,126 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
-                "temperature": 0.7,
-                "max_tokens": 380
+                "temperature": 0.65,
+                "max_tokens": 180
             }
-            resp = requests.post(
+            req = urllib.request.Request(
                 "https://api.openai.com/v1/chat/completions",
+                data=json.dumps(payload).encode("utf-8"),
                 headers={
                     "Authorization": f"Bearer {api_key}",
                     "Content-Type": "application/json"
                 },
-                json=payload,
-                timeout=15
+                method="POST"
             )
-            if resp.status_code == 200:
-                resp_data = resp.json()
-                raw_text = resp_data["choices"][0]["message"]["content"].strip()
-
-                desarrollo = raw_text
-                desarrollo = re.sub(r'^(?:"?Estás escuchando Fred Rewind, de regreso al pasado\.\s*Soy DJ Fredd\.?"?)\s*', '', desarrollo, flags=re.IGNORECASE).strip()
-                desarrollo = re.sub(r'(?:"?¡?Sube el volumen y escuchemos a .*? aquí en Fred Rewind, de regreso al pasado!?"?)\s*$', '', desarrollo, flags=re.IGNORECASE).strip()
-                desarrollo = desarrollo.strip('"\' ')
-
-                if len(desarrollo.split()) >= 60:
-                    full_script = f"{APERTURA_OBLIGATORIA} {desarrollo} {cierre}"
-                    word_count = len(desarrollo.split())
-                    dur_est = round(word_count / 2.3)
-                    return {
-                        "success": True,
-                        "full_script": full_script,
-                        "apertura": APERTURA_OBLIGATORIA,
-                        "desarrollo": desarrollo,
-                        "cierre": cierre,
-                        "source": "openai_gpt_4o_mini",
-                        "words": word_count,
-                        "duration_est_sec": dur_est
-                    }
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                resp_data = json.loads(resp.read().decode("utf-8"))
+                raw_dev = resp_data["choices"][0]["message"]["content"].strip().strip('"\' ')
+                raw_dev = strip_vocal_tags(raw_dev)
+                if 25 <= len(raw_dev.split()) <= 65:
+                    dev_story = raw_dev
+                    source = "openai_gpt_4o_mini"
         except Exception as e:
-            print(f"⚠️ [DJ FREDD AI] Fallback a historias maestras por: {e}", flush=True)
+            print(f"⚠️ [ROCK RADIO AI] Usando catálogo curado por: {e}", flush=True)
 
-    # Fallback to master curated stories
-    apertura, dev_story, cierre_text, full_script = get_master_eddie_script(song_title, band_name, album_name, year, angle)
-    word_count = len(dev_story.split())
-    dur_est = round(word_count / 2.3)
+    if not dev_story:
+        _, dev_story, _, _ = get_master_eddie_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
+
+    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', dev_story) if s.strip()]
+    full_script = f"{apertura} {' '.join(sentences)} {cierre}"
+    total_words = len(full_script.split())
+
     return {
         "success": True,
-        "full_script": full_script,
+        "opening_id": opening_id,
         "apertura": apertura,
-        "desarrollo": dev_story,
-        "cierre": cierre_text,
-        "source": "curated_master",
-        "words": word_count,
-        "duration_est_sec": dur_est
+        "desarrollo": " ".join(sentences),
+        "dev_sentences": sentences,
+        "cierre": cierre,
+        "full_script": full_script,
+        "source": source,
+        "words": total_words,
+        "duration_est_sec": round(5.0 + total_words / 2.1 + 1.0, 1)
     }
 
+def condense_anecdote_text(dev_sentences, song_title, band_name, excess_sec=3.0):
+    """
+    Si el segmento supera los 45s, resume limpiamente la anécdota conservando sentido histórico
+    y oraciones completas, sin cortar frases a la mitad ni acelerar la voz.
+    """
+    text = " ".join(dev_sentences).strip()
+    api_key = os.environ.get('OPENAI_API_KEY', '').strip()
+    target_words = max(24, int(len(text.split()) - max(6, excess_sec * 2.2)))
+
+    if api_key:
+        try:
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [
+                    {"role": "system", "content": "Resume textos de locución radial en español conservando todos los hechos históricos reales en oraciones completas."},
+                    {"role": "user", "content": f"Resume esta anécdota sobre '{song_title}' de {band_name} a máximo {target_words} palabras, en 1 o 2 oraciones completas y naturales:\n\n{text}"}
+                ],
+                "temperature": 0.3,
+                "max_tokens": 130
+            }
+            req = urllib.request.Request(
+                "https://api.openai.com/v1/chat/completions",
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                method="POST"
+            )
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                resp_data = json.loads(resp.read().decode("utf-8"))
+                short = strip_vocal_tags(resp_data["choices"][0]["message"]["content"].strip().strip('"\' '))
+                if 16 <= len(short.split()) < len(text.split()):
+                    return [s.strip() for s in re.split(r'(?<=[.!?])\s+', short) if s.strip()]
+        except Exception as e:
+            print(f"⚠️ [CONDENSE] Fallo OpenAI al resumir, aplicando compresión sintáctica limpia: {e}", flush=True)
+
+    # Rule-based clean clause condensation (always leaves complete grammatical sentences)
+    if len(dev_sentences) > 2:
+        return dev_sentences[:2]
+
+    # Shorten longer sentence by removing parenthetical / secondary subordinate clause after comma
+    new_sentences = []
+    for sent in dev_sentences:
+        clauses = [c.strip() for c in sent.split(",") if c.strip()]
+        if len(clauses) >= 3 and len(sent.split()) > 20:
+            # Drop the middle explanatory clause if grammatically clean, or keep main clauses
+            reduced = f"{clauses[0]}, {clauses[-1]}"
+            if not reduced.endswith(('.', '!', '?')):
+                reduced += "."
+            new_sentences.append(reduced)
+        else:
+            new_sentences.append(sent)
+
+    if " ".join(new_sentences) == text and len(dev_sentences) > 1:
+        # Keep the richer single complete sentence if still over budget
+        return [dev_sentences[0]]
+    return new_sentences
 
 # ==============================================================================
-# DICCIONARIO FONÉTICO MAESTRO PARA PRONUNCIACIÓN NATIVA EN INGLÉS (DJ FREDD)
-# Utiliza límites de palabras exactos (\\b) para que nombres propios, bandas,
-# discos, canciones, estudios y términos técnicos se pronuncien en inglés con total fluidez.
+# 7. DICCIONARIO FONÉTICO DE RESPALDO (PARA EDGE-TTS SI FALTAN CREDENCIALES)
 # ==============================================================================
 ENGLISH_PHONETICS = [
-    # Marca y Estación
     (r'\bFred Rewind\b', 'Fred Riuáind'),
+    (r'\bRock Radio\b', 'Rok Réidio'),
     (r'\bDJ Fredd\b', 'Dí-yéi Fred'),
-    (r'\bDJ Eddie\b', 'Dí-yéi Fred'),
-    (r'\bDJ\b', 'Dí-yéi'),
-    (r'\bRewind\b', 'Riuáind'),
-
-    # Bandas y Agrupaciones
-    (r'\bThe Beatles\b', 'De Bítels'),
-    (r'\bBeatles\b', 'Bítels'),
-    (r'\bBeatlemanía\b', 'Bítel-manía'),
-    (r'\bThe Rolling Stones\b', 'De Róling Stóuns'),
-    (r'\bRolling Stones\b', 'Róling Stóuns'),
-    (r'\bThe Who\b', 'De Ju'),
-    (r'\bThe Doors\b', 'De Dors'),
-    (r'\bThe Police\b', 'De Polís'),
-    (r'\bThe Clash\b', 'De Klash'),
-    (r'\bLed Zeppelin\b', 'Led Zépelin'),
-    (r'\bPink Floyd\b', 'Pink Flóid'),
-    (r'\bDeep Purple\b', 'Dip Pérpol'),
-    (r'\bBlack Sabbath\b', 'Blak Sábas'),
-    (r'\bQueen\b', 'Cuín'),
-    (r'\bAC/DC\b', 'Ei-Si Di-Si'),
-    (r'\bACDC\b', 'Ei-Si Di-Si'),
-    (r'\bAerosmith\b', 'Éro-smiz'),
-    (r'\bKiss\b', 'Kis'),
-    (r'\bKISS\b', 'Kis'),
-    (r'\bKISS Army\b', 'Kis Ármi'),
-    (r'\bGuns N\' Roses\b', 'Gans en Róuses'),
-    (r'\bGuns N Roses\b', 'Gans en Róuses'),
-    (r'\bGuns and Roses\b', 'Gans and Róuses'),
-    (r'\bMetallica\b', 'Metálica'),
-    (r'\bIron Maiden\b', 'Áiron Méiden'),
-    (r'\bJudas Priest\b', 'Yúdas Prist'),
-    (r'\bDef Leppard\b', 'Def Lépard'),
-    (r'\bMötley Crüe\b', 'Mótli Krú'),
-    (r'\bMotley Crue\b', 'Mótli Krú'),
-    (r'\bBon Jovi\b', 'Bon Yóvi'),
-    (r'\bScorpions\b', 'Scór-pions'),
-    (r'\bTwisted Sister\b', 'Tuísted Síster'),
-    (r'\bDire Straits\b', 'Dáir Stréits'),
-    (r'\bFleetwood Mac\b', 'Flít-wud Mak'),
-    (r'\bThe Eagles\b', 'De Ígols'),
-    (r'\bEagles\b', 'Ígols'),
-    (r'\bLynyrd Skynyrd\b', 'Lénard Skínard'),
-    (r'\bCreedence Clearwater Revival\b', 'Kridens Klir-uóter Rivaival'),
-    (r'\bCreedence\b', 'Kridens'),
-    (r'\bVan Halen\b', 'Van Jéilen'),
     (r'\bRush\b', 'Rásh'),
-    (r'\bToto\b', 'Tóu-tou'),
-    (r'\bAlphaville\b', 'Álfa-vil'),
-    (r'\bTears for Fears\b', 'Tíars for Fíars'),
-    (r'\bBoston\b', 'Bóston'),
-    (r'\bJourney\b', 'Yérni'),
-    (r'\bForeigner\b', 'Fóreiner'),
-    (r'\bKansas\b', 'Kánsas'),
-    (r'\bSurvivor\b', 'Ser-váivor'),
-    (r'\bEurope\b', 'Yúrop'),
-    (r'\bWhitesnake\b', 'Uáit-sneik'),
-    (r'\bDio\b', 'Dí-o'),
-    (r'\bDokken\b', 'Dóken'),
-    (r'\bQuiet Riot\b', 'Kuáiet Rái-ot'),
-    (r'\bSkid Row\b', 'Skid Róu'),
-    (r'\bNirvana\b', 'Nir-vána'),
-    (r'\bPearl Jam\b', 'Perl Yam'),
-    (r'\bSoundgarden\b', 'Sáund-garden'),
-    (r'\bAlice in Chains\b', 'Ális in Chéins'),
-
-    # Músicos, Productores y Locutores
-    (r'\bJohn Lennon\b', 'Yón Lénon'),
-    (r'\bLennon\b', 'Lénon'),
-    (r'\bPaul McCartney\b', 'Pol Macárney'),
-    (r'\bMcCartney\b', 'Macárney'),
-    (r'\bGeorge Harrison\b', 'Yorch Járison'),
-    (r'\bRingo Starr\b', 'Ringo Star'),
-    (r'\bFreddie Mercury\b', 'Frédi Mérkuri'),
-    (r'\bBrian May\b', 'Bráian Méi'),
-    (r'\bRoger Taylor\b', 'Róyer Téilor'),
-    (r'\bJohn Deacon\b', 'Yón Díkon'),
-    (r'\bRobert Plant\b', 'Róbert Plánt'),
-    (r'\bJimmy Page\b', 'Yími Péiy'),
-    (r'\bJohn Paul Jones\b', 'Yón Pol Yóuns'),
-    (r'\bJohn Bonham\b', 'Yón Bón-jam'),
-    (r'\bMick Jagger\b', 'Mik Yáguer'),
-    (r'\bKeith Richards\b', 'Kiz Ríchards'),
-    (r'\bPaul Stanley\b', 'Pol Stánli'),
-    (r'\bGene Simmons\b', 'Yin Símons'),
-    (r'\bAce Frehley\b', 'Eis Fréili'),
-    (r'\bPeter Criss\b', 'Píter Cris'),
-    (r'\bBruce Kulick\b', 'Brus Kúlik'),
-    (r'\bBob Ezrin\b', 'Bob Éz-rin'),
-    (r'\bMichael Bolton\b', 'Máikel Bólton'),
-    (r'\bAxl Rose\b', 'Áksel Róus'),
-    (r'\bSlash\b', 'Slásh'),
-    (r'\bDuff McKagan\b', 'Daf Mac-Kágan'),
-    (r'\bIzzy Stradlin\b', 'Ízi Strád-lin'),
-    (r'\bSteven Adler\b', 'Stíven Ádler'),
-    (r'\bJames Hetfield\b', 'Yéims Jét-fild'),
-    (r'\bKirk Hammett\b', 'Kerk Jámet'),
-    (r'\bLars Ulrich\b', 'Lars Úl-rik'),
-    (r'\bCliff Burton\b', 'Klif Bér-ton'),
-    (r'\bBob Rock\b', 'Bob Rok'),
-    (r'\bAngus Young\b', 'Ángus Yang'),
-    (r'\bMalcolm Young\b', 'Málcolm Yang'),
-    (r'\bBon Scott\b', 'Bon Skot'),
-    (r'\bBrian Johnson\b', 'Bráian Yónson'),
-    (r'\bOzzy Osbourne\b', 'Ózi Ósborn'),
-    (r'\bRandy Rhoads\b', 'Rándi Róuds'),
-    (r'\bTony Iommi\b', 'Tóni Aiómi'),
-    (r'\bGeezer Butler\b', 'Guízer Bátler'),
-    (r'\bAlice Cooper\b', 'Ális Kú-per'),
-    (r'\bDesmond Child\b', 'Déz-mond Cháild'),
-    (r'\bJon Bon Jovi\b', 'Yon Bon Yóvi'),
-    (r'\bRichie Sambora\b', 'Ríchi Sambóra'),
-    (r'\bJoe Elliott\b', 'Yóu Éliot'),
-    (r'\bRick Allen\b', 'Rik Álen'),
-    (r'\bSteve Clark\b', 'Stiv Klark'),
-    (r'\bPhil Collen\b', 'Fil Kólen'),
-    (r'\bMutt Lange\b', 'Mat Lang'),
-    (r'\bNikki Sixx\b', 'Níki Síks'),
-    (r'\bVince Neil\b', 'Vins Níl'),
-    (r'\bMick Mars\b', 'Mik Mars'),
-    (r'\bTommy Lee\b', 'Tómi Lí'),
-    (r'\bKlaus Meine\b', 'Kláus Máine'),
-    (r'\bRudolf Schenker\b', 'Rúdolf Shénker'),
-    (r'\bMatthias Jabs\b', 'Matías Yabs'),
-    (r'\bDon Henley\b', 'Don Jénli'),
-    (r'\bGlenn Frey\b', 'Glen Frái'),
-    (r'\bDon Felder\b', 'Don Félder'),
-    (r'\bJoe Walsh\b', 'Yóu Uólsh'),
-    (r'\bTimothy B. Schmit\b', 'Tímosi Shmit'),
-    (r'\bJeff Porcaro\b', 'Yef Porcáro'),
-    (r'\bDavid Paich\b', 'Déivid Péich'),
-    (r'\bSteve Lukather\b', 'Stiv Lukáser'),
-    (r'\bMarian Gold\b', 'Már-ian Góld'),
-    (r'\bGeddy Lee\b', 'Guédi Lí'),
-    (r'\bAlex Lifeson\b', 'Áleks Láif-son'),
-    (r'\bNeil Peart\b', 'Nil Pírt'),
-    (r'\bDee Snider\b', 'Di Snáider'),
-    (r'\bEddie Ojeda\b', 'Édi Oyéda'),
-    (r'\bRonnie James Dio\b', 'Róni Yéims Dí-o'),
-    (r'\bGeorge Lynch\b', 'Yorch Linch'),
-    (r'\bDon Dokken\b', 'Don Dóken'),
-    (r'\bKurt Cobain\b', 'Kert Kobéin'),
-    (r'\bDave Grohl\b', 'Déiv Groul'),
-    (r'\bKrist Novoselic\b', 'Krist Novosélik'),
-    (r'\bEddie Vedder\b', 'Édi Vé-der'),
-    (r'\bChris Cornell\b', 'Kris Kornél'),
-    (r'\bSteven Tyler\b', 'Stíven Táiler'),
-    (r'\bDavid Gilmour\b', 'Déivid Guílmor'),
-    (r'\bRoger Waters\b', 'Róyer Uóters'),
-    (r'\bRitchie Blackmore\b', 'Ríchi Blákmor'),
-    (r'\bFrank Zappa\b', 'Frank Zápa'),
-    (r'\bKenny Everett\b', 'Kéni Éver-et'),
-    (r'\bNeil Bogart\b', 'Nil Bóugart'),
-    (r'\bChris Hughes\b', 'Kris Jiús'),
-    (r'\bRoland Orzabal\b', 'Róuland Or-zábal'),
-    (r'\bErin Everly\b', 'Érin Éver-li'),
-    (r'\bMark Dailey\b', 'Mark Déi-li'),
-
-    # Canciones y Álbumes
-    (r'\bBohemian Rhapsody\b', 'Boují-mian Rápsodi'),
-    (r'\bA Night at the Opera\b', 'Ei Náit at de Ópera'),
-    (r'\bSweet Child O\' Mine\b', 'Suít Cháild o Máin'),
-    (r'\bSweet Child of Mine\b', 'Suít Cháild ov Máin'),
-    (r'\bAppetite for Destruction\b', 'Ápetait for Destrák-shon'),
-    (r'\bDetroit Rock City\b', 'Detróit Rok Síti'),
-    (r'\bDestroyer\b', 'Destróier'),
-    (r'\bRock and Roll All Nite\b', 'Rok and Roul Ol Náit'),
-    (r'\bAlive!\b', 'Aláiv'),
-    (r'\bBack in Black\b', 'Bak in Blák'),
-    (r'\bHighway to Hell\b', 'Jái-wei tu Jel'),
-    (r'\bHotel California\b', 'Joutél Califórnia'),
-    (r'\bStairway to Heaven\b', 'Stér-wei tu Jéven'),
-    (r'\bParanoid\b', 'Pár-anoid'),
-    (r'\bIron Man\b', 'Áiron Man'),
-    (r'\bWar Pigs\b', 'Uór Pigs'),
-    (r'\bMaster of Puppets\b', 'Máster ov Pá-pets'),
-    (r'\bRide the Lightning\b', 'Ráid de Láit-ning'),
-    (r'\bEnter Sandman\b', 'Énter Sánd-man'),
-    (r'\bThe Black Album\b', 'De Blak Álbum'),
-    (r'\bÁlbum Negro\b', 'Álbum Negro'),
-    (r'\bJohnny Got His Gun\b', 'Yóni Got Jis Gan'),
-    (r'\bOne\b', 'Uan'),
-    (r'\bPoison\b', 'Póison'),
-    (r'\bTrash\b', 'Trash'),
-    (r'\bForever\b', 'For-éver'),
-    (r'\bHot in the Shade\b', 'Jot in de Shéid'),
-    (r'\bAfrica\b', 'Áfrika'),
-    (r'\bRosanna\b', 'Rou-sána'),
-    (r'\bToto IV\b', 'Tóu-tou Cuátro'),
-    (r'\bForever Young\b', 'For-éver Yang'),
-    (r'\bSubdivisions\b', 'Sab-diví-shons'),
-    (r'\bSignals\b', 'Sígnals'),
-    (r'\bMoving Pictures\b', 'Múving Pík-churs'),
     (r'\bTom Sawyer\b', 'Tom Sóyer'),
-    (r'\bShout at the Devil\b', 'Sháut at de Dévil'),
-    (r'\bDr\. Feelgood\b', 'Dóktor Fíl-gud'),
-    (r'\bHysteria\b', 'Jistíria'),
-    (r'\bPyromania\b', 'Pairo-méinia'),
-    (r'\bPour Some Sugar on Me\b', 'Por Sam Shúgar on Mí'),
-    (r'\bSongs from the Big Chair\b', 'Songs from de Big Chér'),
+    (r'\bTears for Fears\b', 'Tíars for Fíars'),
     (r'\bEverybody Wants to Rule the World\b', 'Évribadi Uónts tu Rul de Uérld'),
-    (r'\bSmoke on the Water\b', 'Smóuk on de Uóter'),
-    (r'\bMachine Head\b', 'Mashín Jed'),
-    (r'\bDream On\b', 'Drim On'),
-    (r'\bWalk This Way\b', 'Uók Dis Uéi'),
-    (r'\bComfortably Numb\b', 'Kómforta-bli Nam'),
-    (r'\bWish You Were Here\b', 'Uísh Yú Uér Jír'),
-    (r'\bThe Wall\b', 'De Uól'),
-    (r'\bHelp!\b', '¡Jelp!'),
-    (r'\bHelp\b', 'Jelp'),
-    (r'\bYesterday\b', 'Yéster-dei'),
-    (r'\bHey Jude\b', 'Jéi Yúd'),
-    (r'\bLet It Be\b', 'Let It Bí'),
-    (r'\bCome Together\b', 'Kam Tu-gué-der'),
-    (r'\bSomething\b', 'Sám-zing'),
-    (r'\bA Day in the Life\b', 'Ei Déi in de Láif'),
-    (r'\bWe Will Rock You\b', 'Ui Uíl Rok Yú'),
-    (r'\bWe Are the Champions\b', 'Ui Ar de Chám-pions'),
-    (r'\bAnother One Bites the Dust\b', 'Anó-der Uan Báits de Dast'),
-    (r'\bThe Price\b', 'De Práis'),
-    (r'\bWe\'re Not Gonna Take It\b', 'Uir Not Gó-na Téik It'),
-    (r'\bRainbow in the Dark\b', 'Réin-bou in de Dárk'),
-    (r'\bHoly Diver\b', 'Jóu-li Dáiver'),
-    (r'\bDream Warriors\b', 'Drim Uórriors'),
-    (r'\bCrazy Train\b', 'Kréisi Tréin'),
-    (r'\bMr\. Crowley\b', 'Míster Króu-li'),
-    (r'\bWind of Change\b', 'Uínd ov Chéiny'),
-    (r'\bRock You Like a Hurricane\b', 'Rok Yú Láik ei Jér-ri-kein'),
-    (r'\bDon\'t Stop Believin\'\b', 'Dount Stop Bilívin'),
-    (r'\bEye of the Tiger\b', 'Ái ov de Táiguer'),
-    (r'\bThe Final Countdown\b', 'De Fáinal Káunt-daun'),
-    (r'\bJump\b', 'Yamp'),
-
-    # Lugares, Estudios y Términos Técnicos
-    (r'\bSunset Strip\b', 'Sánset Strip'),
-    (r'\bAbbey Road\b', 'Ábi Róud'),
-    (r'\bRockfield\b', 'Rók-fild'),
-    (r'\bCompass Point\b', 'Kómpas Póint'),
-    (r'\bSweet Silence\b', 'Suít Sáilens'),
-    (r'\bIsland Studios\b', 'Áiland Stúdios'),
-    (r'\bElectric Lady\b', 'Iléktrik Léidi'),
-    (r'\bRegent Sound\b', 'Ríyent Sáund'),
-    (r'\bFortress\b', 'Fórtres'),
-    (r'\bKenwood\b', 'Kén-wud'),
-    (r'\bBron-Yr-Aur\b', 'Bron-er-áur'),
-    (r'\bMontreux\b', 'Mon-tró'),
-    (r'\bSunapee\b', 'Sána-pi'),
-    (r'\bRiot House\b', 'Rái-ot Jáus'),
-    (r'\bHyatt\b', 'Jái-at'),
-    (r'\bCasablanca Records\b', 'Kasa-blánka Rékords'),
-    (r'\bCapital Radio\b', 'Cápital Réidio'),
-    (r'\bOberheim\b', 'Óber-jaim'),
-    (r'\bTelecaster\b', 'Tel-e-káster'),
-    (r'\bStratocaster\b', 'Strato-káster'),
-    (r'\bBlack Stratocaster\b', 'Blak Strato-káster'),
-    (r'\bGibson\b', 'Guíb-son'),
-    (r'\bLes Paul\b', 'Les Pol'),
-    (r'\brock and roll\b', 'rok and roul'),
-    (r'\bhard rock\b', 'jard rok'),
-    (r'\bheavy metal\b', 'jevi metal'),
-    (r'\bglam rock\b', 'glam rok'),
-    (r'\bthrash metal\b', 'zrash metal'),
-    (r'\bshock rock\b', 'shok rok'),
-    (r'\bpop rock\b', 'pop rok'),
-    (r'\briff\b', 'rif'),
-    (r'\briffs\b', 'rifs'),
-    (r'\btrack\b', 'trak'),
-    (r'\btracks\b', 'traks'),
-    (r'\bhit\b', 'jit'),
-    (r'\bhits\b', 'jits'),
-    (r'\bsingle\b', 'sínguel'),
-    (r'\bsingles\b', 'sínguels'),
-    (r'\bfrontman\b', 'front-man'),
-    (r'\bline-up\b', 'láin-ap'),
-    (r'\bshow\b', 'shóu'),
-    (r'\bshows\b', 'shóus'),
-    (r'\blive\b', 'láiv'),
-    (r'\bplay\b', 'pléi'),
-    (r'\bplaylist\b', 'pléi-list'),
-    (r'\bLP\b', 'el-pé')
+    (r'\bIron Maiden\b', 'Áiron Méiden'),
+    (r'\bThe Trooper\b', 'De Trúper'),
+    (r'\bAC/DC\b', 'Ei-Si Di-Si'),
+    (r'\bBack in Black\b', 'Bak in Blák'),
+    (r'\bKISS\b', 'Kis'),
+    (r'\bDetroit Rock City\b', 'Detróit Rok Síti'),
+    (r'\bToto\b', 'Tóu-tou'),
+    (r'\bAfrica\b', 'Áfrika')
 ]
 
 def apply_english_phonetics(text):
-    """
-    Sustituye nombres propios, bandas, discos y términos en inglés por su pronunciación fonética nativa
-    para que la voz neural de DJ Fredd (es-CO-GonzaloNeural) los pronuncie de forma natural y auténtica.
-    """
     if not text:
         return ""
     result = text
@@ -652,43 +1023,29 @@ def apply_english_phonetics(text):
         result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
     return result
 
-def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band"):
-    """
-    Parsea y normaliza cualquier guion para garantizar la estructura oficial de Fred Rewind:
-    - Apertura estándar de DJ Fredd
-    - Oraciones del desarrollo separadas para pausas naturales de respiración y sincronización
-    - Cierre estándar de DJ Fredd
-    """
+def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band", year=""):
     text = (text or "").strip()
-    cierre = f"¡Sube el volumen y escuchemos a {song_title} aquí en Fred Rewind, de regreso al pasado!"
+    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
+    if len(sentences) >= 3:
+        apertura = sentences[0]
+        # Check if opening consists of two short sentences ("Rock Radio: De vuelta al pasado. Soy Fred...")
+        if len(sentences) >= 4 and ("Rock Radio" in sentences[0] or "De vuelta al pasado" in sentences[0]) and len(sentences[0].split()) <= 8:
+            apertura = f"{sentences[0]} {sentences[1]}"
+            cierre = sentences[-1]
+            dev_sentences = sentences[2:-1]
+        else:
+            cierre = sentences[-1]
+            dev_sentences = sentences[1:-1]
+        if dev_sentences:
+            return apertura, dev_sentences, cierre, f"{apertura} {' '.join(dev_sentences)} {cierre}"
 
-    # Detectar o extraer apertura si ya viene en el texto
-    ap_match = re.search(r'^(Estás escuchando (?:Fred Rewind|Rock Radio)[^\.]*\.\s*Soy DJ (?:Fredd|Eddie)\.?)', text, re.IGNORECASE)
-    if ap_match:
-        body = text[ap_match.end():].strip()
-    else:
-        body = text
+    res = generate_ai_story_script(song_title, band_name, year=year)
+    return res["apertura"], res["dev_sentences"], res["cierre"], res["full_script"]
 
-    # Detectar o remover cierres anteriores
-    ci_match = re.search(r'(¡?Sube el volumen[^\.]*\.?)$', body, re.IGNORECASE)
-    if ci_match:
-        dev_text = body[:ci_match.start()].strip()
-    else:
-        dev_text = body.strip()
-
-    if not dev_text or len(dev_text.split()) < 20:
-        _, dev_text, _, _ = get_master_eddie_script(song_title, band_name)
-
-    # Dividir desarrollo en oraciones naturales por puntuación
-    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', dev_text) if s.strip()]
-
-    full_script = f"{APERTURA_OBLIGATORIA} {' '.join(sentences)} {cierre}"
-    return APERTURA_OBLIGATORIA, sentences, cierre, full_script
-
+# ==============================================================================
+# 8. MOTOR FISH AUDIO & DSP FFMPEG (Secciones 6, 7 y 8)
+# ==============================================================================
 def make_silence_mp3(duration_sec, out_path):
-    """
-    Genera silencio digital estricto para los espacios de respiración en cabina radial.
-    """
     subprocess.run([
         FFMPEG_BIN, "-y",
         "-f", "lavfi", "-i", "anullsrc=r=44100:cl=mono",
@@ -699,15 +1056,37 @@ def make_silence_mp3(duration_sec, out_path):
 
 def get_audio_duration(path):
     try:
-        cmd = f"{FFPROBE_BIN} -i '{path}' -show_entries format=duration -v quiet -of csv=p=0"
-        return float(subprocess.check_output(cmd, shell=True).decode().strip())
+        cmd = [FFPROBE_BIN, "-i", path, "-show_entries", "format=duration", "-v", "quiet", "-of", "csv=p=0"]
+        return float(subprocess.check_output(cmd).decode().strip())
     except Exception:
-        return 45.0
+        return 0.0
+
+def get_mean_volume_db(path):
+    try:
+        res = subprocess.run(
+            [FFMPEG_BIN, "-i", path, "-af", "volumedetect", "-f", "null", "-"],
+            capture_output=True, text=True
+        )
+        m = re.search(r"mean_volume:\s*([-\d.]+)\s*dB", res.stderr or "")
+        return float(m.group(1)) if m else -20.0
+    except Exception:
+        return -20.0
+
+def get_integrated_lufs(path):
+    try:
+        res = subprocess.run(
+            [FFMPEG_BIN, "-nostats", "-i", path, "-filter_complex", "ebur128", "-f", "null", "-"],
+            capture_output=True, text=True
+        )
+        matches = re.findall(r"I:\s*([-\d.]+)\s*LUFS", res.stderr or "")
+        return float(matches[-1]) if matches else -20.0
+    except Exception:
+        return -20.0
 
 def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL):
     api_key = os.environ.get("FISH_API_KEY", "").strip()
     if not api_key:
-        raise RuntimeError("FISH_API_KEY no está configurada en el entorno.")
+        raise RuntimeError("FISH_API_KEY no está configurada en el entorno del servidor.")
 
     raw_tmp = f"{out_mp3_path}.fish_raw.mp3"
     payload = {
@@ -733,6 +1112,8 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
             )
             with urllib.request.urlopen(req, timeout=90) as resp:
                 audio_bytes = resp.read()
+            if not audio_bytes or len(audio_bytes) < 500:
+                raise RuntimeError("Respuesta de audio vacía desde Fish Audio.")
             with open(raw_tmp, "wb") as f:
                 f.write(audio_bytes)
             break
@@ -743,7 +1124,7 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
             print(f"⚠️ [Fish Audio] Intento {attempt + 1} falló ({e}). Reintentando en {wait_time}s...", flush=True)
             time.sleep(wait_time)
 
-    # Normalizar a 44100Hz mono 192k MP3 para concatenación limpia sin saltos
+    # Normalizar formato a 44100Hz mono 192k para medición exacta de duración
     subprocess.run([
         FFMPEG_BIN, "-y",
         "-i", raw_tmp,
@@ -760,279 +1141,716 @@ async def synthesize_fish_audio_tts(sem, text, out_mp3_path, reference_id=DEFAUL
     async with sem:
         await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, reference_id, model)
 
-async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None, engine=None, fish_voice=None):
-    """
-    Genera la locución oficial de DJ Fredd con los lineamientos de audio maestro:
-    1. Pronunciación natural multilingüe (Fish Audio S2.1 Pro Free) o fonética inglesa (Edge-TTS).
-    2. Cadencia de radio FM cálida, entusiasta y enérgica.
-    3. Momentos de respiración calibrados después de puntos finales y apertura (550ms tras apertura, 450ms entre oraciones).
-    4. Pausa dramática previa al cierre (650ms) y energía motivada en la presentación musical.
-    5. Masterización analógica con FFmpeg: calidez vocal 120Hz, corte de asperezas, brillo aéreo 10kHz y compresión broadcast.
-    6. Marcas de tiempo (intro_timings) 100% exactas para sincronización milimétrica en pantalla.
-    7. Cancelación segura y limpieza estricta de archivos temporales.
-    """
-    pid = os.getpid()
-    t_start = time.time()
-    use_fish = (engine == "fish") or (engine is None and bool(os.environ.get("FISH_API_KEY", "").strip()))
-    selected_fish_voice = fish_voice or DEFAULT_FISH_VOICE
-    engine_label = f"Fish Audio ({DEFAULT_FISH_MODEL}, voz={selected_fish_voice[:8]}...)" if use_fish else f"Edge-TTS ({DEFAULT_VOICE})"
-    print(f"\n🎙️ [DJ FREDD SERVICE] Generando locución maestra ({engine_label}) para: '{song_title}' de {band_name} (job: {job_id})...", flush=True)
-
-    apertura, dev_sentences, cierre, full_script = parse_radio_script(text, song_title, band_name)
-    tmp_prefix = f"/tmp/fred_rewind_{pid}_{int(t_start*1000)}"
-
-    voice = DEFAULT_VOICE
-    temp_files = []
-
-    def is_cancelled():
-        if not job_id:
-            return False
-        with ACTIVE_JOBS_LOCK:
-            return ACTIVE_JOBS.get(job_id, {}).get('cancelled', False)
-
-    def cleanup_on_cancel():
-        print(f"🛑 [DJ FREDD SERVICE] Cancelación en curso para '{song_title}' (job: {job_id}). Limpiando temporales...", flush=True)
-        for tmp_f in temp_files:
-            try:
-                if os.path.exists(tmp_f):
-                    os.remove(tmp_f)
-            except Exception:
-                pass
-        if out_mp3_path and os.path.exists(out_mp3_path):
-            try:
-                os.remove(out_mp3_path)
-            except Exception:
-                pass
-
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
-
-    # 1. Preparar textos hablados
-    if use_fish:
-        ap_tts = f"[excited] {apertura}"
-        dev_tts_list = list(dev_sentences)
-        ci_tts = f"[excited] {cierre}"
-    else:
-        ap_spoken = apply_english_phonetics(apertura)
-        ap_tts = ap_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
-
-        dev_tts_list = []
-        for s in dev_sentences:
-            s_spoken = apply_english_phonetics(s)
-            dev_tts_list.append(s_spoken)
-
-        ci_spoken = apply_english_phonetics(cierre)
-        ci_tts = ci_spoken.replace("Fred Riuáind,", "Fred Riuáind...").replace("Fred Riuáind", "Fred Riuáind...")
-
-    # Rutas de chunks individuales
+async def synthesize_segments(ap_text, dev_texts, ci_text, tmp_prefix, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, job_id=None):
     ap_mp3 = f"{tmp_prefix}_ap.mp3"
-    temp_files.append(ap_mp3)
-
-    dev_mp3_paths = []
-    for idx in range(len(dev_sentences)):
-        p = f"{tmp_prefix}_dev_{idx}.mp3"
-        dev_mp3_paths.append(p)
-        temp_files.append(p)
-
     ci_mp3 = f"{tmp_prefix}_ci.mp3"
-    temp_files.append(ci_mp3)
+    dev_mp3_paths = [f"{tmp_prefix}_dev_{idx}.mp3" for idx in range(len(dev_texts))]
+    new_temps = [ap_mp3, ci_mp3] + dev_mp3_paths
+    temp_files.extend(new_temps)
 
     if job_id:
         with ACTIVE_JOBS_LOCK:
             if job_id in ACTIVE_JOBS:
-                ACTIVE_JOBS[job_id]['temp_files'].update(temp_files)
+                ACTIVE_JOBS[job_id]['temp_files'].update(new_temps)
 
-    # 2. Síntesis concurrente
-    tts_tasks = []
+    tasks = []
     if use_fish:
         sem = asyncio.Semaphore(1)
-        tts_tasks.append(synthesize_fish_audio_tts(sem, ap_tts, ap_mp3, reference_id=selected_fish_voice))
-        for idx, s_text in enumerate(dev_tts_list):
-            tts_tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=selected_fish_voice))
-        tts_tasks.append(synthesize_fish_audio_tts(sem, ci_tts, ci_mp3, reference_id=selected_fish_voice))
+        tasks.append(synthesize_fish_audio_tts(sem, ap_text, ap_mp3, reference_id=fish_voice, model=fish_model))
+        for idx, s_text in enumerate(dev_texts):
+            tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=fish_voice, model=fish_model))
+        tasks.append(synthesize_fish_audio_tts(sem, ci_text, ci_mp3, reference_id=fish_voice, model=fish_model))
     else:
         if edge_tts is None:
             raise RuntimeError("edge_tts no está instalado y FISH_API_KEY no está disponible.")
-        tts_tasks.append(edge_tts.Communicate(ap_tts, voice, rate="+0%", pitch="+0Hz").save(ap_mp3))
-        for idx, s_text in enumerate(dev_tts_list):
-            tts_tasks.append(edge_tts.Communicate(s_text, voice, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
-        tts_tasks.append(edge_tts.Communicate(ci_tts, voice, rate="+2%", pitch="+0Hz").save(ci_mp3))
+        tasks.append(edge_tts.Communicate(apply_english_phonetics(ap_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(ap_mp3))
+        for idx, s_text in enumerate(dev_texts):
+            tasks.append(edge_tts.Communicate(apply_english_phonetics(s_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
+        tasks.append(edge_tts.Communicate(apply_english_phonetics(ci_text), DEFAULT_VOICE, rate="+0%", pitch="+2Hz").save(ci_mp3))
 
-    await asyncio.gather(*tts_tasks)
+    await asyncio.gather(*tasks)
+    return ap_mp3, dev_mp3_paths, ci_mp3
 
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
+async def synthesize_anecdote_only(dev_texts, tmp_prefix, pass_num, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL):
+    dev_mp3_paths = [f"{tmp_prefix}_dev_p{pass_num}_{idx}.mp3" for idx in range(len(dev_texts))]
+    temp_files.extend(dev_mp3_paths)
+    tasks = []
+    if use_fish:
+        sem = asyncio.Semaphore(1)
+        for idx, s_text in enumerate(dev_texts):
+            tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=fish_voice, model=fish_model))
+    else:
+        for idx, s_text in enumerate(dev_texts):
+            tasks.append(edge_tts.Communicate(apply_english_phonetics(s_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
+    await asyncio.gather(*tasks)
+    return dev_mp3_paths
 
-    # 3. Medición milimétrica de duraciones de cada segmento
-    dur_ap = get_audio_duration(ap_mp3)
-    dur_dev_list = [get_audio_duration(p) for p in dev_mp3_paths]
-    dur_ci = get_audio_duration(ci_mp3)
-
-    # 4. Generación de silencios orgánicos de cabina
+def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=15.0):
+    """
+    Pipeline de masterización y mezcla profesional con FFmpeg:
+    1. Pausas orgánicas de cabina: 0.35s tras apertura, 0.30s entre oraciones, 0.45s antes del cierre.
+    2. Cadena vocal unificada: highpass 80Hz, EQ correctiva (380Hz), presencia 2-4kHz (3kHz), de-esser, compresión 3:1.
+    3. Medición EBU R128 real del cuerpo vs cierre y refuerzo determinístico en el cierre (+2.8 dB percibidos + 1.4 dB @ 3.2 kHz),
+       sin cambios bruscos ni clipping ni aplastamiento por el limitador.
+    4. Entrada instrumental de exactamente 5.0 segundos sin voz (adelay=5000|5000 en voz).
+    5. Sidechain ducking de música durante la voz (~12-18dB reducción, attack=180ms, release=450ms).
+    6. Transición final suave y limitación True Peak a -1.0 dBTP.
+    """
     sil_ap_mp3 = f"{tmp_prefix}_sil_ap.mp3"
     sil_sent_mp3 = f"{tmp_prefix}_sil_sent.mp3"
     sil_ci_mp3 = f"{tmp_prefix}_sil_ci.mp3"
-    temp_files.extend([sil_ap_mp3, sil_sent_mp3, sil_ci_mp3])
+    pre_ci_txt = f"{tmp_prefix}_pre_ci.txt"
+    pre_ci_mp3 = f"{tmp_prefix}_pre_ci.mp3"
+    pre_ci_wav = f"{tmp_prefix}_pre_ci_m.wav"
+    ci_base_wav = f"{tmp_prefix}_ci_b.wav"
+    ci_mast_wav = f"{tmp_prefix}_ci_m.wav"
+    voice_concat_txt = f"{tmp_prefix}_vm_concat.txt"
+    voice_master_wav = f"{tmp_prefix}_voice_m.wav"
+    temp_files.extend([
+        sil_ap_mp3, sil_sent_mp3, sil_ci_mp3, pre_ci_txt, pre_ci_mp3,
+        pre_ci_wav, ci_base_wav, ci_mast_wav, voice_concat_txt, voice_master_wav
+    ])
 
-    make_silence_mp3(0.55, sil_ap_mp3)    # Pausa tras identificador de emisora y locutor
-    make_silence_mp3(0.45, sil_sent_mp3)  # Respiración natural tras cada punto final
-    make_silence_mp3(0.65, sil_ci_mp3)    # Pausa dramática previa al sube el volumen
+    gap_ap = 0.35
+    gap_sent = 0.30
+    gap_ci = 0.45
+    make_silence_mp3(gap_ap, sil_ap_mp3)
+    make_silence_mp3(gap_sent, sil_sent_mp3)
+    make_silence_mp3(gap_ci, sil_ci_mp3)
 
-    # 5. Ensamblaje secuencial de la pista vocal sin solapamientos
-    concat_list = [ap_mp3, sil_ap_mp3]
+    pre_ci_list = [ap_mp3, sil_ap_mp3]
     for idx, dev_p in enumerate(dev_mp3_paths):
-        concat_list.append(dev_p)
+        pre_ci_list.append(dev_p)
         if idx < len(dev_mp3_paths) - 1:
-            concat_list.append(sil_sent_mp3)
-    concat_list.append(sil_ci_mp3)
-    concat_list.append(ci_mp3)
+            pre_ci_list.append(sil_sent_mp3)
+    pre_ci_list.append(sil_ci_mp3)
 
-    concat_txt = f"{tmp_prefix}_concat.txt"
-    temp_files.append(concat_txt)
-    with open(concat_txt, 'w') as f:
-        for c in concat_list:
+    with open(pre_ci_txt, "w", encoding="utf-8") as f:
+        for c in pre_ci_list:
             f.write(f"file '{c}'\n")
 
-    raw_concat_mp3 = f"{tmp_prefix}_raw.mp3"
-    temp_files.append(raw_concat_mp3)
     subprocess.run([
         FFMPEG_BIN, "-y",
-        "-f", "concat", "-safe", "0", "-i", concat_txt,
+        "-f", "concat", "-safe", "0", "-i", pre_ci_txt,
         "-c", "copy",
-        raw_concat_mp3
+        pre_ci_mp3
     ], capture_output=True, check=True)
 
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
+    # Cadena vocal estandarizada (mismo procesamiento para cuerpo y cierre con margen de ~4 dB para el boost):
+    # - highpass 80Hz
+    # - EQ correctiva (-1.5dB @ 380Hz)
+    # - Presencia vocal suave 2-4kHz (+2.0dB @ 3000Hz)
+    # - De-esser para controlar sibilancias
+    # - Compresión 3:1 (threshold -18dB, ratio 3, attack 15ms, release 120ms, makeup 1.2dB)
+    vocal_core = (
+        "aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+        "highpass=f=80,"
+        "equalizer=f=380:width_type=o:width=1.2:g=-1.5,"
+        "equalizer=f=3000:width_type=o:width=1.1:g=2.0,"
+        "deesser=i=0.25:m=0.5:f=0.5:s=o,"
+        "acompressor=threshold=-18dB:ratio=3:attack=15:release=120:makeup=1.2,"
+        "volume=1.02"
+    )
 
-    # 6. Masterización analógica con mezcla de música de fondo tenue instrumental sin derechos de autor
-    if not out_mp3_path:
-        out_mp3_path = f"/tmp/dj_fredd_{pid}.mp3"
+    subprocess.run([
+        FFMPEG_BIN, "-y", "-i", pre_ci_mp3,
+        "-af", vocal_core,
+        "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
+        pre_ci_wav
+    ], capture_output=True, check=True)
+
+    subprocess.run([
+        FFMPEG_BIN, "-y", "-i", ci_mp3,
+        "-af", vocal_core,
+        "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
+        ci_base_wav
+    ], capture_output=True, check=True)
+
+    # Medición EBU R128 de cuerpo y cierre para lograr +2.8 dB de presencia adicional percibida en el cierre
+    body_lufs = get_integrated_lufs(pre_ci_wav)
+    ci_lufs = get_integrated_lufs(ci_base_wav)
+    boost_db = round(max(1.8, min(4.2, (body_lufs - ci_lufs) + 2.8)), 2)
+
+    subprocess.run([
+        FFMPEG_BIN, "-y", "-i", ci_base_wav,
+        "-af", f"afade=t=in:st=0:d=0.025,volume={boost_db:.2f}dB,equalizer=f=3200:width_type=o:width=1.0:g=1.4",
+        "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
+        ci_mast_wav
+    ], capture_output=True, check=True)
+
+    with open(voice_concat_txt, "w", encoding="utf-8") as f:
+        f.write(f"file '{pre_ci_wav}'\n")
+        f.write(f"file '{ci_mast_wav}'\n")
+
+    subprocess.run([
+        FFMPEG_BIN, "-y",
+        "-f", "concat", "-safe", "0", "-i", voice_concat_txt,
+        "-c", "copy",
+        voice_master_wav
+    ], capture_output=True, check=True)
+
+    voice_dur = get_audio_duration(voice_master_wav)
+    tail_dur = min(OUTRO_MUSIC_TAIL_SEC, max(0.3, SAFE_TARGET_TOTAL_SEC - INTRO_MUSIC_SEC - voice_dur))
+    total_target_dur = min(SAFE_TARGET_TOTAL_SEC, round(INTRO_MUSIC_SEC + voice_dur + tail_dur, 3))
+    fade_out_start = round(max(INTRO_MUSIC_SEC + voice_dur - 0.15, total_target_dur - tail_dur), 3)
+
+    tmp_out = f"{out_mp3_path}.tmp.mp3"
+    temp_files.append(tmp_out)
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
-
-    total_voice_dur = get_audio_duration(raw_concat_mp3)
-    ci_start = round(dur_ap + 0.55 + sum(dur_dev_list) + max(0, len(dur_dev_list) - 1) * 0.45 + 0.65, 2)
 
     has_bed = os.path.exists(DEFAULT_MUSIC_BED) and os.path.getsize(DEFAULT_MUSIC_BED) > 10000
 
+    # Exactamente 5.000 segundos de retardo (adelay=5000|5000) para entrada instrumental pura
+    delayed_voice_chain = (
+        f"[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+        f"adelay={int(INTRO_MUSIC_SEC * 1000)}|{int(INTRO_MUSIC_SEC * 1000)},"
+        f"apad=whole_dur={total_target_dur:.3f},"
+        f"atrim=0:{total_target_dur:.3f}"
+    )
+
     if has_bed:
-        # Colchón musical tenue instrumental:
-        # - atrim: recortado a la duración de la voz
-        # - afade in: entrada suave en 1.8 segundos
-        # - afade out: bajada suave de 2.2 segundos exactamente al iniciar el cierre institucional
-        # - highpass 120Hz & lowpass 6500Hz: despeja frecuencias de graves y presencia para la voz
-        # - volume 0.075 (-22.5dB): nivel tenue perfecto de colchón de radio
-        # - Ecualización cálida analógica para la voz
-        # - Compresión broadcast y limitador True Peak a -1.0dB
+        # Música de fondo:
+        # - Empieza en bed_seek_sec (ej. 15s donde la instrumentación es constante y rica)
+        # - 5s iniciales sin voz al 100% del nivel introductorio (fade-in 0.35s)
+        # - Sidechain ducking durante la locución (reducción ~12-18dB, attack=180ms, release=450ms)
+        # - Transición final suave sin silencios abruptos
+        # - Limitador True Peak final a -1.0dB
         filter_complex = (
-            f"[1:a]atrim=0:{total_voice_dur},aresample=44100,"
-            f"afade=t=in:st=0:d=1.8,afade=t=out:st={ci_start}:d=2.2,"
-            f"highpass=f=120,lowpass=f=6500,volume=0.06[bed];"
-            f"[0:a]aresample=44100,"
-            f"volume=1.5,"
-            f"highpass=f=65,"
-            f"equalizer=f=120:width_type=o:width=1.0:g=2.2,"
-            f"equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
-            f"equalizer=f=2800:width_type=o:width=1.0:g=1.8,"
-            f"equalizer=f=10000:width_type=o:width=1.5:g=1.5[vox];"
-            f"[vox][bed]amix=inputs=2:duration=first:dropout_transition=2:weights=1.5 0.5[mixed];"
-            f"[mixed]acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=2.5,"
+            f"{delayed_voice_chain},asplit=2[vox_mix][vox_sc];"
+            f"[1:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+            f"atrim=start={bed_seek_sec}:duration={total_target_dur:.3f},asetpts=PTS-STARTPTS,"
+            f"afade=t=in:st=0:d=0.35,afade=t=out:st={fade_out_start:.3f}:d={tail_dur:.3f},"
+            f"highpass=f=100,lowpass=f=8500,volume=0.38[bed_pre];"
+            f"[bed_pre][vox_sc]sidechaincompress=threshold=0.015:ratio=4.0:attack=180:release=450:level_sc=3.2[bed_ducked];"
+            f"[vox_mix][bed_ducked]amix=inputs=2:duration=first:normalize=0,"
             f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
         )
         cmd = [
             FFMPEG_BIN, "-y",
-            "-i", raw_concat_mp3,
+            "-i", voice_master_wav,
             "-i", DEFAULT_MUSIC_BED,
             "-filter_complex", filter_complex,
             "-map", "[aout]",
             "-codec:a", "libmp3lame",
             "-b:a", "192k",
-            out_mp3_path
+            tmp_out
         ]
     else:
-        master_filter = (
-            "aresample=44100,"
-            "volume=1.5,"
-            "highpass=f=65,"
-            "equalizer=f=120:width_type=o:width=1.0:g=2.2,"
-            "equalizer=f=450:width_type=o:width=1.2:g=-1.2,"
-            "equalizer=f=2800:width_type=o:width=1.0:g=1.8,"
-            "equalizer=f=10000:width_type=o:width=1.5:g=1.5,"
-            "acompressor=threshold=-18dB:ratio=2.6:attack=15:release=120:makeup=2.5,"
-            "alimiter=limit=-1.0dB:attack=5:release=50"
-        )
+        filter_complex = f"{delayed_voice_chain},alimiter=limit=-1.0dB:attack=5:release=50[aout]"
         cmd = [
             FFMPEG_BIN, "-y",
-            "-i", raw_concat_mp3,
-            "-af", master_filter,
+            "-i", voice_master_wav,
+            "-filter_complex", filter_complex,
+            "-map", "[aout]",
             "-codec:a", "libmp3lame",
             "-b:a", "192k",
-            out_mp3_path
+            tmp_out
         ]
 
     subprocess.run(cmd, capture_output=True, check=True)
+    actual_dur = get_audio_duration(tmp_out)
+    return tmp_out, voice_dur, actual_dur, (gap_ap, gap_sent, gap_ci)
 
-    if is_cancelled():
-        cleanup_on_cancel()
-        return None, 0, 0, [], 0, ""
+# ==============================================================================
+# 9. INTEGRACIÓN SEGURA EN EL CATÁLOGO DEL REPRODUCTOR (index.html + Clones)
+# ==============================================================================
+def find_existing_catalog_pair(band_name, song_title):
+    """Busca un par existente en BASE_DJ_EDDIE_TRACKS por bandName y songTitle normalizados."""
+    if not os.path.exists(INDEX_HTML_PATH):
+        return None, None
+    try:
+        with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
+            html = f.read()
+        m_arr = re.search(r"const BASE_DJ_EDDIE_TRACKS\s*=\s*\[([\s\S]*?)\n\s*\];", html)
+        if not m_arr:
+            return None, None
+        arr_body = m_arr.group(1)
+        target_b = normalize_text_key(band_name)
+        target_s = normalize_text_key(song_title)
+        for blk in re.findall(r"\{\s*\n\s*id:\s*'intro_[^\}]+?\}", arr_body, re.DOTALL):
+            bm = re.search(r"bandName:\s*(?:'([^']*)'|\"([^\"]*)\")", blk)
+            sm = re.search(r"songTitle:\s*(?:'([^']*)'|\"([^\"]*)\")", blk)
+            pm = re.search(r"pairId:\s*'([^']+)'", blk)
+            am = re.search(r"audioUrl:\s*'([^']+)'", blk)
+            if bm and sm and pm:
+                b_val = normalize_text_key(bm.group(1) or bm.group(2))
+                s_val = normalize_text_key(sm.group(1) or sm.group(2))
+                if b_val == target_b and s_val == target_s:
+                    return pm.group(1), (am.group(1) if am else None)
+    except Exception:
+        pass
+    return None, None
 
-    duration = get_audio_duration(out_mp3_path)
-    elapsed = time.time() - t_start
+def update_player_catalog(story_record):
+    """
+    Integra o actualiza la historia y canción en BASE_DJ_EDDIE_TRACKS dentro de index.html
+    y sincroniza rock45.html, kiss.html y kiss-podcast.html sin tocar botones ni UI del reproductor.
+    """
+    if not os.path.exists(INDEX_HTML_PATH):
+        return False
 
-    # 7. Construcción milimétrica de marcas de tiempo (intro_timings)
-    intro_timings = []
-    # Apertura
-    intro_timings.append({
-        'start': 0.0,
-        'end': round(dur_ap, 2),
-        'text': apertura
-    })
+    with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
+        html = f.read()
 
-    curr_t = dur_ap + 0.55
-    for idx, sent in enumerate(dev_sentences):
-        st = round(curr_t, 2)
-        en = round(curr_t + dur_dev_list[idx], 2)
-        intro_timings.append({
-            'start': st,
-            'end': en,
-            'text': sent
+    existing_pair, _ = find_existing_catalog_pair(story_record["band_name"], story_record["song_title"])
+    pair_slug = story_record.get("pair_slug") or existing_pair or make_slug(story_record["band_name"], story_record["song_title"])
+    intro_id = f"intro_{pair_slug}"
+    song_id = f"song_{pair_slug}"
+    album_display = story_record.get("album") or ""
+    year_str = story_record.get("year") or ""
+    if album_display and year_str and year_str not in album_display:
+        album_display = f"{album_display} ({year_str})"
+
+    dur_sec = round(float(story_record["final_duration_sec"]), 2)
+    dur_int = int(round(dur_sec))
+
+    intro_obj = {
+        "id": intro_id,
+        "pairId": pair_slug,
+        "isIntro": True,
+        "bandName": story_record["band_name"],
+        "songTitle": story_record["song_title"],
+        "title": f"Intro: {story_record['song_title']}",
+        "albumName": album_display,
+        "year": year_str,
+        "cover": story_record.get("cover") or "img/albums/kiss_1976_destroyer.png",
+        "tag": "Historia",
+        "duration": dur_int,
+        "durationSec": dur_sec,
+        "introSec": f"{dur_int}s",
+        "summary": story_record["visible_script"],
+        "status": "con_audio",
+        "audioUrl": story_record["audio_file"],
+        "fileUrl": story_record["audio_file"],
+        "hasRealAudio": True,
+        "relatedSongId": song_id,
+        "lyrics": story_record.get("lyrics_timings", [])
+    }
+
+    def format_js_entry(obj):
+        lyrics_lines = []
+        for lyr in obj.get("lyrics", []):
+            txt_esc = lyr["text"].replace("\\", "\\\\").replace("'", "\\'")
+            lyrics_lines.append(f"          {{ start: {lyr['start']}, end: {lyr['end']}, text: '{txt_esc}' }}")
+        lyrics_block = "[]" if not lyrics_lines else "[\n" + ",\n".join(lyrics_lines) + "\n        ]"
+
+        def q(val):
+            return "'" + str(val or "").replace("\\", "\\\\").replace("'", "\\'") + "'"
+
+        lines = [
+            "      {",
+            f"        id: {q(obj['id'])},",
+            f"        pairId: {q(obj['pairId'])},",
+            f"        isIntro: {'true' if obj['isIntro'] else 'false'},",
+            f"        bandName: {q(obj['bandName'])},",
+            f"        songTitle: {q(obj['songTitle'])},",
+            f"        title: {q(obj['title'])},",
+            f"        albumName: {q(obj['albumName'])},",
+            f"        year: {q(obj['year'])},",
+            f"        cover: {q(obj['cover'])},",
+            f"        tag: {q(obj['tag'])},",
+            f"        duration: {obj['duration']},",
+            f"        durationSec: {obj['durationSec']},",
+            f"        introSec: {q(obj['introSec'])},",
+            f"        summary: {q(obj['summary'])},",
+            f"        status: {q(obj['status'])},",
+            f"        audioUrl: {q(obj['audioUrl'])},",
+            f"        fileUrl: {q(obj['fileUrl'])},",
+            f"        hasRealAudio: true,"
+        ]
+        if obj["isIntro"]:
+            lines.append(f"        relatedSongId: {q(obj['relatedSongId'])},")
+        else:
+            lines.append(f"        relatedIntroId: {q(obj['relatedIntroId'])},")
+        lines.append(f"        lyrics: {lyrics_block}")
+        lines.append("      }")
+        return "\n".join(lines)
+
+    entries_to_write = [intro_obj]
+    full_song_audio = story_record.get("full_song_audio")
+    if full_song_audio and os.path.exists(os.path.join(PROJECT_ROOT, full_song_audio)):
+        song_dur = get_audio_duration(os.path.join(PROJECT_ROOT, full_song_audio))
+        song_obj = {
+            "id": song_id,
+            "pairId": pair_slug,
+            "isIntro": False,
+            "bandName": story_record["band_name"],
+            "songTitle": story_record["song_title"],
+            "title": story_record["song_title"],
+            "albumName": album_display,
+            "year": year_str,
+            "cover": story_record.get("cover") or "img/albums/kiss_1976_destroyer.png",
+            "tag": "",
+            "duration": int(round(song_dur)),
+            "durationSec": round(song_dur, 2),
+            "introSec": "",
+            "summary": f"Canción original completa ({story_record['band_name']} — {story_record['song_title']})",
+            "status": "con_audio",
+            "audioUrl": full_song_audio,
+            "fileUrl": full_song_audio,
+            "hasRealAudio": True,
+            "relatedIntroId": intro_id,
+            "lyrics": []
+        }
+        entries_to_write.append(song_obj)
+
+    # Locate BASE_DJ_EDDIE_TRACKS = [ ... ];
+    m_arr = re.search(r"(const BASE_DJ_EDDIE_TRACKS\s*=\s*\[)([\s\S]*?)(\n\s*\];)", html)
+    if not m_arr:
+        return False
+
+    arr_body = m_arr.group(2)
+
+    # Replace or append each object cleanly inside BASE_DJ_EDDIE_TRACKS
+    for entry in entries_to_write:
+        js_text = format_js_entry(entry)
+        # Match existing object block starting with id: '<entry_id>'
+        obj_pat = re.compile(
+            r"\n\s*\{\s*\n\s*id:\s*'" + re.escape(entry["id"]) + r"'[\s\S]*?\n\s*\}(?=,|\s*$)",
+            re.MULTILINE
+        )
+        if obj_pat.search(arr_body):
+            arr_body = obj_pat.sub("\n" + js_text, arr_body, count=1)
+        else:
+            arr_body = arr_body.rstrip() + ",\n" + js_text
+
+    new_html = html[:m_arr.start(2)] + arr_body + html[m_arr.end(2):]
+
+    # Increment clean reset key so returning browsers pick up regenerated base story duration & lyrics
+    reset_m = re.search(r"dj_fredd_reset_v(\d+)_clean", new_html)
+    if reset_m:
+        next_ver = int(reset_m.group(1)) + 1
+        new_html = re.sub(r"dj_fredd_reset_v\d+_clean", f"dj_fredd_reset_v{next_ver}_clean", new_html)
+
+    tmp_html = f"{INDEX_HTML_PATH}.tmp"
+    with open(tmp_html, "w", encoding="utf-8") as f:
+        f.write(new_html)
+    os.replace(tmp_html, INDEX_HTML_PATH)
+
+    for clone in HTML_CLONES:
+        clone_path = os.path.join(PROJECT_ROOT, clone)
+        if os.path.exists(clone_path):
+            shutil.copyfile(INDEX_HTML_PATH, clone_path)
+
+    return True
+
+# ==============================================================================
+# 10. ORQUESTADOR DE PRODUCCIÓN RADIAL ASISTIDA POR IA (Secciones 9 y 10)
+# ==============================================================================
+async def run_story_pipeline(
+    song_title,
+    band_name,
+    album_name="",
+    year="",
+    cover="",
+    full_song_audio=None,
+    mode="generate",  # "generate" | "regenerate_story" | "regenerate_voice"
+    engine=None,
+    fish_voice=None,
+    fish_model=None,
+    out_mp3_path=None,
+    job_id=None
+):
+    """
+    Ejecuta el flujo completo de 15 pasos con validación estricta de <= 45.0s,
+    reemplazo atómico y persistencia en data/stories_metadata.json.
+    """
+    pid = os.getpid()
+    t_start = time.time()
+    use_fish = (engine == "fish") or (engine is None and bool(os.environ.get("FISH_API_KEY", "").strip()))
+    selected_voice = fish_voice or DEFAULT_FISH_VOICE
+    selected_model = fish_model or DEFAULT_FISH_MODEL
+
+    meta_store = load_stories_metadata()
+    story_key = make_story_key(band_name, song_title)
+    existing_record = meta_store["stories"].get(story_key)
+
+    existing_pair_slug, existing_audio_url = find_existing_catalog_pair(band_name, song_title)
+    if not out_mp3_path:
+        if existing_audio_url and existing_audio_url.startswith("audio/"):
+            out_mp3_path = os.path.join(PROJECT_ROOT, existing_audio_url)
+        else:
+            slug = existing_pair_slug or make_slug(band_name, song_title)
+            out_mp3_path = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_intro_{slug}.mp3")
+
+    rel_audio_file = os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/")
+
+    # 1. Preparar guion (nuevo, regenerado o reutilizado)
+    if mode == "regenerate_voice" and existing_record:
+        opening_id = existing_record.get("opening_id", 1)
+        apertura = existing_record["apertura"]
+        dev_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', existing_record["desarrollo"]) if s.strip()]
+        cierre = existing_record["cierre"]
+        angle_index = existing_record.get("angle_index", 1)
+        script_source = "voice_only_reuse"
+        cover = cover or existing_record.get("cover", "")
+        full_song_audio = full_song_audio or existing_record.get("full_song_audio")
+        album_name = album_name or existing_record.get("album", "")
+        year = year or existing_record.get("year", "")
+    else:
+        excl_openings = []
+        next_angle = 1
+        prev_summary = None
+        if existing_record and mode == "regenerate_story":
+            if existing_record.get("opening_id"):
+                excl_openings.append(existing_record["opening_id"])
+            next_angle = int(existing_record.get("angle_index", 1)) + 1
+            prev_summary = existing_record.get("desarrollo")
+
+        ai_script = generate_ai_story_script(
+            song_title, band_name, album_name, year,
+            angle=next_angle,
+            exclude_opening_ids=excl_openings,
+            previous_story_summary=prev_summary
+        )
+        opening_id = ai_script["opening_id"]
+        apertura = ai_script["apertura"]
+        dev_sentences = ai_script["dev_sentences"]
+        cierre = ai_script["cierre"]
+        angle_index = next_angle
+        script_source = ai_script["source"]
+
+    dual = build_dual_scripts(apertura, dev_sentences, cierre, model_name=selected_model)
+
+    print(f"\n🎙️ [ROCK RADIO AI] Iniciando '{song_title}' — {band_name} (modo={mode}, modelo={selected_model}, voz={selected_voice[:8]}...)", flush=True)
+    print(f"   Apertura #{opening_id}: {dual['apertura_clean']}", flush=True)
+
+    tmp_prefix = f"/tmp/rockradio_{pid}_{int(t_start*1000)}"
+    temp_files = []
+
+    try:
+        # 2. Síntesis inicial con Fish Audio
+        ap_mp3, dev_mp3_paths, ci_mp3 = await synthesize_segments(
+            dual["vocal_ap"], dual["vocal_dev_list"], dual["vocal_ci"],
+            tmp_prefix, temp_files,
+            use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model, job_id=job_id
+        )
+
+        # 3. Medir duración real y aplicar resumen/regeneración si > 45s (hasta 3 pases)
+        for pass_num in range(1, 4):
+            dur_ap = get_audio_duration(ap_mp3)
+            dur_devs = [get_audio_duration(p) for p in dev_mp3_paths]
+            dur_ci = get_audio_duration(ci_mp3)
+            gaps_total = 0.35 + max(0, len(dur_devs) - 1) * 0.30 + 0.45
+            voice_dur_est = dur_ap + sum(dur_devs) + dur_ci + gaps_total
+            predicted_final = INTRO_MUSIC_SEC + voice_dur_est + 0.6
+
+            if predicted_final <= SAFE_TARGET_TOTAL_SEC:
+                break
+
+            excess = predicted_final - (SAFE_TARGET_TOTAL_SEC - 1.0)
+            print(f"⏱️ [ROCK RADIO AI] Duración estimada {predicted_final:.2f}s excede límite (45s). Resumiendo anécdota (pase {pass_num})...", flush=True)
+            condensed_sents = condense_anecdote_text(dual["dev_sentences_clean"], song_title, band_name, excess_sec=excess)
+            if " ".join(condensed_sents) == " ".join(dual["dev_sentences_clean"]):
+                # Force single concise sentence if condensation couldn't reduce further
+                condensed_sents = [dual["dev_sentences_clean"][0]]
+
+            dual = build_dual_scripts(dual["apertura_clean"], condensed_sents, dual["cierre_clean"], model_name=selected_model)
+            dev_mp3_paths = await synthesize_anecdote_only(
+                dual["vocal_dev_list"], tmp_prefix, pass_num, temp_files,
+                use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
+            )
+
+        # 4. Masterización FFmpeg (5s intro musical + ducking 12-18dB + +2.8dB cierre + -1dBTP limiter)
+        bed_seek = 15.0 + ((angle_index - 1) * 8.0) % 40.0
+        tmp_out, voice_dur, actual_final_dur, (gap_ap, gap_sent, gap_ci) = master_radio_segment(
+            ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=bed_seek
+        )
+
+        # 5. Validación estricta del archivo generado antes de reemplazar el existente
+        if not os.path.exists(tmp_out) or os.path.getsize(tmp_out) < 10000:
+            raise RuntimeError("El archivo de audio generado está vacío o incompleto.")
+        if actual_final_dur <= 0 or actual_final_dur > MAX_TOTAL_DURATION_SEC:
+            raise RuntimeError(f"La duración final ({actual_final_dur:.2f}s) incumple el límite máximo absoluto de {MAX_TOTAL_DURATION_SEC}s.")
+
+        # Reemplazo atómico seguro (conserva anterior si ocurrió error arriba)
+        os.replace(tmp_out, out_mp3_path)
+
+        # 6. Calcular marcas de tiempo exactas (desplazadas +5.0s por la entrada instrumental)
+        dur_ap = get_audio_duration(ap_mp3)
+        dur_devs = [get_audio_duration(p) for p in dev_mp3_paths]
+        dur_ci = get_audio_duration(ci_mp3)
+
+        lyrics_timings = [
+            {
+                "start": 0.0,
+                "end": round(INTRO_MUSIC_SEC, 2),
+                "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+            }
+        ]
+        t_cur = INTRO_MUSIC_SEC
+        lyrics_timings.append({
+            "start": round(t_cur, 2),
+            "end": round(t_cur + dur_ap, 2),
+            "text": dual["apertura_clean"]
         })
-        curr_t = en + 0.45
+        t_cur += dur_ap + gap_ap
 
-    ci_start = round(curr_t - 0.45 + 0.65, 2)
-    intro_timings.append({
-        'start': ci_start,
-        'end': round(ci_start + dur_ci, 2),
-        'text': cierre
-    })
-    intro_end = ci_start
+        for idx, sent in enumerate(dual["dev_sentences_clean"]):
+            st = round(t_cur, 2)
+            en = round(t_cur + dur_devs[idx], 2)
+            lyrics_timings.append({"start": st, "end": en, "text": sent})
+            t_cur = en + gap_sent
 
-    story_alone_dur = round(ci_start - 0.65 - (dur_ap + 0.55), 2)
-    print(f"✓ [DJ FREDD SERVICE] Locución maestra generada en {elapsed:.2f}s | Duración total: {duration:.2f}s | Anécdota sola: {story_alone_dur:.2f}s", flush=True)
+        ci_start = round(t_cur - gap_sent + gap_ci, 2)
+        lyrics_timings.append({
+            "start": ci_start,
+            "end": round(min(actual_final_dur, ci_start + dur_ci), 2),
+            "text": dual["cierre_clean"]
+        })
 
-    # 8. Limpieza rigurosa de archivos temporales
-    for tmp_f in temp_files:
-        try:
-            if os.path.exists(tmp_f):
-                os.remove(tmp_f)
-        except Exception:
-            pass
+        # 7. Persistencia completa (Sección 11)
+        record = {
+            "song_title": song_title,
+            "band_name": band_name,
+            "album": album_name,
+            "year": year,
+            "cover": cover,
+            "full_song_audio": full_song_audio,
+            "visible_script": dual["visible_script"],
+            "vocal_script": dual["vocal_script"],
+            "apertura": dual["apertura_clean"],
+            "desarrollo": " ".join(dual["dev_sentences_clean"]),
+            "cierre": dual["cierre_clean"],
+            "opening_id": opening_id,
+            "opening_text": dual["apertura_clean"],
+            "fish_model": selected_model if use_fish else DEFAULT_VOICE,
+            "voice_reference_id": selected_voice if use_fish else DEFAULT_VOICE,
+            "voice_duration_sec": round(voice_dur, 2),
+            "final_duration_sec": round(actual_final_dur, 2),
+            "intro_music_sec": INTRO_MUSIC_SEC,
+            "audio_file": rel_audio_file,
+            "angle_index": angle_index,
+            "script_source": script_source,
+            "lyrics_timings": lyrics_timings,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "status": "completed"
+        }
 
-    return out_mp3_path, duration, elapsed, intro_timings, intro_end, full_script
+        meta_store["stories"][story_key] = record
+        meta_store["last_generated_key"] = story_key
+        recent = list(meta_store.get("recent_openings", []))
+        recent.append(opening_id)
+        meta_store["recent_openings"] = recent[-10:]
+        save_stories_metadata(meta_store)
 
+        # 8. Integrar en catálogo del reproductor (index.html + clones)
+        update_player_catalog(record)
+
+        elapsed = time.time() - t_start
+        print(f"✅ [ROCK RADIO AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | Voz: {voice_dur:.2f}s | Final: {actual_final_dur:.2f}s (<=45s) | Archivo: {rel_audio_file}", flush=True)
+        return record
+    finally:
+        for tf in temp_files:
+            try:
+                if os.path.exists(tf):
+                    os.remove(tf)
+            except Exception:
+                pass
+
+async def execute_ai_command(command_text, engine=None, fish_voice=None, fish_model=None):
+    """
+    Punto de entrada principal para comandos de IA en lenguaje natural.
+    """
+    parsed = parse_ai_command(command_text)
+    intent = parsed.get("intent")
+
+    if intent == "unknown":
+        return {"success": False, "status": "error", "message": "No pude entender el comando."}
+
+    if intent == "regenerate_voice":
+        meta_store = load_stories_metadata()
+        target_record = None
+        if parsed.get("target") == "last":
+            last_key = meta_store.get("last_generated_key")
+            if last_key:
+                target_record = meta_store["stories"].get(last_key)
+        else:
+            res_meta = resolve_song_metadata(parsed.get("song_query"), parsed.get("band_query"))
+            if res_meta.get("resolved"):
+                target_record = meta_store["stories"].get(res_meta["metadata"]["key"])
+
+        if not target_record:
+            return {"success": False, "status": "error", "message": "No existe una historia previa guardada para regenerar su voz."}
+
+        rec = await run_story_pipeline(
+            target_record["song_title"],
+            target_record["band_name"],
+            album_name=target_record.get("album", ""),
+            year=target_record.get("year", ""),
+            cover=target_record.get("cover", ""),
+            full_song_audio=target_record.get("full_song_audio"),
+            mode="regenerate_voice",
+            engine=engine,
+            fish_voice=fish_voice,
+            fish_model=fish_model
+        )
+        return {"success": True, "status": "completed", "intent": intent, "record": rec}
+
+    # generate or regenerate_story
+    res_meta = resolve_song_metadata(parsed.get("song_query"), parsed.get("band_query"))
+    if res_meta.get("ambiguous") or not res_meta.get("resolved"):
+        return {
+            "success": False,
+            "status": "ambiguous",
+            "intent": intent,
+            "message": res_meta.get("message"),
+            "candidates": res_meta.get("candidates", [])
+        }
+
+    md = res_meta["metadata"]
+    mode = "regenerate_story" if intent == "regenerate_story" else "generate"
+    rec = await run_story_pipeline(
+        md["song_title"],
+        md["band_name"],
+        album_name=md.get("album", ""),
+        year=md.get("year", ""),
+        cover=md.get("cover", ""),
+        full_song_audio=md.get("full_song_audio"),
+        mode=mode,
+        engine=engine,
+        fish_voice=fish_voice,
+        fish_model=fish_model
+    )
+    return {"success": True, "status": "completed", "intent": intent, "record": rec}
+
+# Wrapper compatible con llamadas heredadas
+async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None, engine=None, fish_voice=None):
+    t_start = time.time()
+    res_meta = resolve_song_metadata(song_title, band_name)
+    md = res_meta.get("metadata", {}) if res_meta.get("resolved") else {}
+    rec = await run_story_pipeline(
+        song_title, band_name,
+        album_name=md.get("album", ""),
+        year=md.get("year", ""),
+        cover=md.get("cover", ""),
+        full_song_audio=md.get("full_song_audio"),
+        mode="generate",
+        engine=engine,
+        fish_voice=fish_voice,
+        out_mp3_path=out_mp3_path,
+        job_id=job_id
+    )
+    elapsed = time.time() - t_start
+    ci_start = rec["lyrics_timings"][-1]["start"] if rec.get("lyrics_timings") else 0.0
+    return rec["audio_file"], rec["final_duration_sec"], elapsed, rec["lyrics_timings"], ci_start, rec["visible_script"]
+
+# ==============================================================================
+# 11. SERVIDOR API LOCAL (Sin credenciales expuestas en el cliente)
+# ==============================================================================
 def run_server(port=5055):
-    """
-    Servidor HTTP en puerto 5055 para la app web de Fred Rewind.
-    Atiende solicitudes de generación de locuciones, cancelación inmediata y sincronización de letras.
-    """
     class DjFreddAudioHandler(BaseHTTPRequestHandler):
         def _set_cors(self):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
             self.send_header('Access-Control-Allow-Headers', 'Content-Type, Accept')
+
+        def _send_json(self, code, payload):
+            self.send_response(code)
+            self._set_cors()
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(payload, ensure_ascii=False).encode('utf-8'))
 
         def do_OPTIONS(self):
             self.send_response(200)
@@ -1041,260 +1859,99 @@ def run_server(port=5055):
 
         def do_GET(self):
             if self.path in ('/api/status', '/status', '/'):
-                self.send_response(200)
-                self._set_cors()
-                self.send_header('Content-Type', 'application/json')
-                self.end_headers()
-                status_payload = {
+                caps = get_fish_model_capabilities(DEFAULT_FISH_MODEL)
+                self._send_json(200, {
                     'status': 'online',
-                    'service': 'Fred Rewind • Servicio Oficial de Audio con DJ Fredd',
-                    'voice': 'DJ Fredd',
-                    'voiceModel': 'es-US-AlonsoNeural (Español Latino Natural)',
-                    'musicBed': 'Slow Burn - Kevin MacLeod (CC-BY 4.0 Royalty-Free Commercial Instrumental Bed)',
-                    'engine': 'Edge-TTS + Master Radio FM Analog Chain + Colchón Instrumental',
-                    'lyricsSync': True,
+                    'service': 'Rock Radio • Fred Rewind AI Production Engine',
+                    'fishModel': caps['model'],
+                    'fishVoiceId': DEFAULT_FISH_VOICE,
+                    'capabilities': caps,
+                    'maxDurationSec': MAX_TOTAL_DURATION_SEC,
+                    'introMusicSec': INTRO_MUSIC_SEC,
                     'port': port,
-                    'activeJobsCount': len(ACTIVE_JOBS),
                     'timestamp': time.time()
-                }
-                self.wfile.write(json.dumps(status_payload).encode('utf-8'))
+                })
             else:
                 self.send_response(404)
                 self.end_headers()
 
         def do_POST(self):
-            if self.path == '/api/generate_audio':
-                length = int(self.headers.get('Content-Length', 0))
-                body = self.rfile.read(length)
+            length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(length) if length > 0 else b'{}'
+            try:
+                data = json.loads(body.decode('utf-8')) if body else {}
+            except Exception:
+                self._send_json(400, {'success': False, 'error': 'JSON inválido'})
+                return
+
+            if self.path in ('/api/execute_command', '/api/command'):
+                cmd_text = data.get('command') or data.get('prompt') or ''
                 try:
-                    data = json.loads(body.decode('utf-8'))
-                    text = data.get('text', '')
-                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
-                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
-                    track_id = str(data.get('track_id', 'custom_track')).replace(':', '_').replace('/', '_')
-                    job_id = data.get('job_id') or f"job_{int(time.time()*1000)}_{track_id}"
-                    album_name = data.get('album', '')
-                    year = data.get('year', '')
+                    res = asyncio.run(execute_ai_command(cmd_text))
+                    self._send_json(200 if res.get('success') else 422, res)
+                except Exception as e:
+                    self._send_json(500, {'success': False, 'status': 'error', 'error': str(e)})
 
-                    if not text:
-                        res = generate_ai_story_script(song_title, band_name, album_name, year)
-                        text = res['full_script']
-
-                    safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
-                    workspace_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"fredd_intro_{safe_slug}_{track_id}.mp3")
-
-                    with ACTIVE_JOBS_LOCK:
-                        ACTIVE_JOBS[job_id] = {
-                            'cancelled': False,
-                            'track_id': track_id,
-                            'temp_files': set(),
-                            'out_mp3_path': workspace_mp3,
-                            'created_at': time.time()
-                        }
-
-                    out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
-                        build_eddie_radio_narration(text, song_title, band_name, workspace_mp3, job_id=job_id)
-                    )
-
-                    is_job_cancelled = False
-                    with ACTIVE_JOBS_LOCK:
-                        if job_id in ACTIVE_JOBS:
-                            is_job_cancelled = ACTIVE_JOBS[job_id].get('cancelled', False)
-                            del ACTIVE_JOBS[job_id]
-
-                    if is_job_cancelled or not out_path or not os.path.exists(out_path):
-                        self.send_response(200)
-                        self._set_cors()
-                        self.send_header('Content-Type', 'application/json')
-                        self.end_headers()
-                        self.wfile.write(json.dumps({
-                            'success': False,
-                            'cancelled': True,
-                            'message': 'Generación cancelada por el usuario',
-                            'jobId': job_id
-                        }).encode('utf-8'))
-                        return
-
-                    with open(out_path, 'rb') as f:
+            elif self.path == '/api/generate_audio':
+                song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
+                band_name = data.get('band_name') or data.get('bandName') or 'Banda'
+                album_name = data.get('album', '')
+                year = data.get('year', '')
+                try:
+                    rec = asyncio.run(run_story_pipeline(
+                        song_title, band_name, album_name=album_name, year=year, mode="generate"
+                    ))
+                    full_path = os.path.join(PROJECT_ROOT, rec["audio_file"])
+                    with open(full_path, 'rb') as f:
                         b64_audio = base64.b64encode(f.read()).decode('utf-8')
-
-                    relative_url = f"audio/{os.path.basename(out_path)}"
-                    data_url = f"data:audio/mp3;base64,{b64_audio}"
-                    duration_fmt = f"{int(duration // 60)}:{int(duration % 60):02d}" if duration >= 60 else f"{int(round(duration))}s"
-
-                    self.send_response(200)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    resp = json.dumps({
+                    dur = rec["final_duration_sec"]
+                    self._send_json(200, {
                         'success': True,
-                        'audioUrl': data_url,
-                        'fileUrl': relative_url,
-                        'duration': duration_fmt,
-                        'durationSec': round(duration, 2),
-                        'elapsedSec': round(elapsed, 2),
-                        'voice': 'DJ Fredd (es-US-AlonsoNeural • Español Latino Natural + Colchón Instrumental)',
-                        'trackId': track_id,
-                        'jobId': job_id,
-                        'intro_timings': intro_timings,
-                        'intro_end': intro_end,
-                        'full_script': full_script
+                        'audioUrl': f"data:audio/mp3;base64,{b64_audio}",
+                        'fileUrl': rec["audio_file"],
+                        'duration': f"{int(round(dur))}s",
+                        'durationSec': dur,
+                        'intro_timings': rec["lyrics_timings"],
+                        'full_script': rec["visible_script"]
                     })
-                    self.wfile.write(resp.encode('utf-8'))
                 except Exception as e:
-                    import traceback
-                    traceback.print_exc()
-                    self.send_response(500)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
-
-            elif self.path in ('/api/cancel_generation', '/api/cancel'):
-                length = int(self.headers.get('Content-Length', 0))
-                body = self.rfile.read(length) if length > 0 else b'{}'
-                try:
-                    data = json.loads(body.decode('utf-8')) if body else {}
-                    target_job_id = data.get('job_id')
-                    target_track_id = data.get('track_id')
-                    cancelled_count = 0
-                    with ACTIVE_JOBS_LOCK:
-                        for jid, job in list(ACTIVE_JOBS.items()):
-                            if (target_job_id and jid == target_job_id) or (target_track_id and job.get('track_id') == target_track_id):
-                                job['cancelled'] = True
-                                cancelled_count += 1
-                                for tf in list(job.get('temp_files', set())):
-                                    try:
-                                        if os.path.exists(tf):
-                                            os.remove(tf)
-                                    except Exception:
-                                        pass
-                                out_p = job.get('out_mp3_path')
-                                if out_p and os.path.exists(out_p):
-                                    try:
-                                        os.remove(out_p)
-                                    except Exception:
-                                        pass
-                    print(f"🛑 [DJ FREDD SERVICE] Cancelación procesada para job: {target_job_id} / track: {target_track_id}. Total: {cancelled_count}", flush=True)
-                    self.send_response(200)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps({
-                        'success': True,
-                        'cancelled': True,
-                        'count': cancelled_count,
-                        'job_id': target_job_id
-                    }).encode('utf-8'))
-                except Exception as e:
-                    self.send_response(500)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+                    self._send_json(500, {'success': False, 'error': str(e)})
 
             elif self.path in ('/api/generate_story_text', '/api/story_text'):
-                length = int(self.headers.get('Content-Length', 0))
-                body = self.rfile.read(length) if length > 0 else b'{}'
-                try:
-                    data = json.loads(body.decode('utf-8')) if body else {}
-                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
-                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
-                    album_name = data.get('album', '')
-                    year = data.get('year', '')
-                    angle = int(data.get('angle', 1))
-
-                    story_res = generate_ai_story_script(song_title, band_name, album_name, year, angle)
-                    self.send_response(200)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps(story_res).encode('utf-8'))
-                except Exception as e:
-                    self.send_response(500)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
-
-            elif self.path in ('/api/resolve_full_song', '/api/full_song'):
-                length = int(self.headers.get('Content-Length', 0))
-                body = self.rfile.read(length) if length > 0 else b'{}'
-                try:
-                    data = json.loads(body.decode('utf-8')) if body else {}
-                    song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
-                    band_name = data.get('band_name') or data.get('bandName') or 'Banda'
-                    track_id = str(data.get('track_id', '')).replace(':', '_').replace('/', '_')
-
-                    safe_slug = re.sub(r'[^a-zA-Z0-9_]', '', f"{band_name}_{song_title}".replace(' ', '_').lower())[:40]
-                    target_mp3 = os.path.join(WORKSPACE_AUDIO_DIR, f"full_{safe_slug}.mp3")
-
-                    if not os.path.exists(target_mp3) or os.path.getsize(target_mp3) < 500000:
-                        yt_bin = "/Library/Frameworks/Python.framework/Versions/3.14/bin/yt-dlp"
-                        if not os.path.exists(yt_bin):
-                            yt_bin = "yt-dlp"
-                        query = f"ytsearch1:{band_name} {song_title} official audio"
-                        cmd = [
-                            yt_bin,
-                            "-x", "--audio-format", "mp3",
-                            "--audio-quality", "0",
-                            "--default-search", "ytsearch1",
-                            "-o", target_mp3,
-                            query
-                        ]
-                        print(f"  🔍 [DJ FREDD SERVICE] Obteniendo pista completa para '{song_title}' de {band_name}...", flush=True)
-                        subprocess.run(cmd, capture_output=True, timeout=90)
-
-                    if os.path.exists(target_mp3) and os.path.getsize(target_mp3) > 100000:
-                        dur = get_audio_duration(target_mp3)
-                        rel_url = f"audio/{os.path.basename(target_mp3)}"
-                        self.send_response(200)
-                        self._set_cors()
-                        self.send_header('Content-Type', 'application/json')
-                        self.end_headers()
-                        self.wfile.write(json.dumps({
-                            'success': True,
-                            'audioUrl': rel_url,
-                            'fileUrl': rel_url,
-                            'durationSec': dur
-                        }).encode('utf-8'))
-                    else:
-                        self.send_response(404)
-                        self._set_cors()
-                        self.send_header('Content-Type', 'application/json')
-                        self.end_headers()
-                        self.wfile.write(json.dumps({'error': 'No se pudo resolver el audio'}).encode('utf-8'))
-                except Exception as e:
-                    self.send_response(500)
-                    self._set_cors()
-                    self.send_header('Content-Type', 'application/json')
-                    self.end_headers()
-                    self.wfile.write(json.dumps({'error': str(e)}).encode('utf-8'))
+                song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
+                band_name = data.get('band_name') or data.get('bandName') or 'Banda'
+                album_name = data.get('album', '')
+                year = data.get('year', '')
+                angle = int(data.get('angle', 1))
+                res = generate_ai_story_script(song_title, band_name, album_name, year, angle)
+                self._send_json(200, res)
             else:
-                self.send_response(404)
-                self.end_headers()
+                self._send_json(404, {'error': 'Endpoint no encontrado'})
 
     server = ThreadingHTTPServer(('0.0.0.0', port), DjFreddAudioHandler)
-    print(f"🚀 [DJ FREDD SERVICE] Servidor de locuciones maestras en http://0.0.0.0:{port}/api/generate_audio", flush=True)
-    print(f"   Voz: DJ Fredd (es-US-AlonsoNeural • Español Latino Natural + Colchón Instrumental) | Sincronización activa", flush=True)
+    print(f"🚀 [ROCK RADIO AI] Servidor en http://0.0.0.0:{port} (Fish Audio {DEFAULT_FISH_MODEL} | Voz {DEFAULT_FISH_VOICE})", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
-        print("\nDeteniendo servidor de audio.")
+        print("\nDeteniendo servidor.")
 
+# ==============================================================================
+# 12. INTERFAZ CLI PRINCIPAL
+# ==============================================================================
 def main():
-    parser = argparse.ArgumentParser(description="Generador Oficial de Locuciones de DJ Fredd con Sincronización de Letras")
+    parser = argparse.ArgumentParser(description="Rock Radio — Motor de Historias IA y Fish Audio")
+    parser.add_argument("--command", "-c", help="Comando en lenguaje natural (ej: 'Generar historia de Tom Sawyer de Rush')")
     parser.add_argument("--song", help="Nombre de la canción")
     parser.add_argument("--band", help="Nombre de la banda o artista")
     parser.add_argument("--album", default="", help="Nombre del álbum")
     parser.add_argument("--year", default="", help="Año de lanzamiento")
-    parser.add_argument("--text", help="Texto o guion personalizado para la locución")
-    parser.add_argument("--angle", type=int, default=1, help="Ángulo narrativo (1, 2 o 3)")
+    parser.add_argument("--mode", choices=["generate", "regenerate_story", "regenerate_voice"], default="generate")
     parser.add_argument("--out", default=None, help="Ruta de salida del MP3")
-    parser.add_argument("--engine", choices=["fish", "edge"], default=None, help="Motor TTS: fish (Fish Audio) o edge (Edge-TTS)")
+    parser.add_argument("--engine", choices=["fish", "edge"], default=None, help="Motor TTS: fish o edge")
     parser.add_argument("--fish-voice", default=None, help="ID de voz en Fish Audio")
-    parser.add_argument("--serve", action="store_true", help="Iniciar servidor API local para la app web")
-    parser.add_argument("--port", type=int, default=5055, help="Puerto del servidor API local (default 5055)")
+    parser.add_argument("--fish-model", default=None, help="Modelo de Fish Audio")
+    parser.add_argument("--serve", action="store_true", help="Iniciar servidor API local")
+    parser.add_argument("--port", type=int, default=5055, help="Puerto del servidor API local")
 
     args = parser.parse_args()
 
@@ -1302,33 +1959,33 @@ def main():
         run_server(args.port)
         return
 
-    script_text = args.text
-    song_name = args.song or "Canción"
-    band_name = args.band or "Banda"
-
-    if not script_text:
-        _, _, _, script_text = get_master_eddie_script(song_name, band_name, args.album, args.year, args.angle)
-
-    out_file = args.out or f"/tmp/fredd_{band_name}_{song_name}.mp3".replace(" ", "_").lower()
-
-    print(f"=======================================================")
-    print(f"🎙️ FRED REWIND • DJ FREDD — LOCUCIÓN MAESTRA ESTANDARIZADA")
-    print(f"=======================================================")
-
-    out_path, duration, elapsed, intro_timings, intro_end, full_script = asyncio.run(
-        build_eddie_radio_narration(
-            script_text,
-            song_name,
-            band_name,
-            out_file,
+    if args.command:
+        res = asyncio.run(execute_ai_command(
+            args.command,
             engine=args.engine,
-            fish_voice=args.fish_voice
-        )
-    )
-    print(f"\n✓ Archivo generado: {out_path} ({duration:.2f}s en {elapsed:.2f}s, intro_end: {intro_end}s)")
-    print("\nMarcas de tiempo de la letra del Intro:")
-    for it in intro_timings:
-        print(f"  [{it['start']}s - {it['end']}s] {it['text']}")
+            fish_voice=args.fish_voice,
+            fish_model=args.fish_model
+        ))
+        print("\n" + json.dumps(res, ensure_ascii=False, indent=2))
+        if not res.get("success"):
+            sys.exit(1)
+        return
+
+    if args.song and args.band:
+        rec = asyncio.run(run_story_pipeline(
+            args.song, args.band,
+            album_name=args.album,
+            year=args.year,
+            mode=args.mode,
+            out_mp3_path=args.out,
+            engine=args.engine,
+            fish_voice=args.fish_voice,
+            fish_model=args.fish_model
+        ))
+        print("\n" + json.dumps(rec, ensure_ascii=False, indent=2))
+        return
+
+    parser.print_help()
 
 if __name__ == "__main__":
     main()
