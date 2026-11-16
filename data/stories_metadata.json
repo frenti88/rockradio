@@ -2,9 +2,11 @@
   "recent_openings": [
     9,
     7,
-    3
+    3,
+    4,
+    10
   ],
-  "last_generated_key": "rush::tom sawyer",
+  "last_generated_key": "kiss::detroit rock city",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -108,6 +110,110 @@
         }
       ],
       "created_at": "2026-11-16T17:55:39.827041+00:00",
+      "status": "completed"
+    },
+    "ac/dc::back in black": {
+      "song_title": "Back in Black",
+      "band_name": "AC/DC",
+      "album": "Back in Black (1980)",
+      "year": "1980",
+      "cover": "img/albums/acdc_1980_back_in_black.png",
+      "full_song_audio": "audio/full_acdc_back_in_black.mp3",
+      "visible_script": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Back in Black, de AC/DC. Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible. Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock. ¡Sube el volumen! ¡Esto es Back in Black de AC/DC, aquí en Rock Radio!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Back in Black, de AC/DC. [curious] Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible. Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock. [excited] ¡Sube el volumen! ¡Esto es Back in Black de AC/DC, aquí en Rock Radio!",
+      "apertura": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Back in Black, de AC/DC.",
+      "desarrollo": "Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible. Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock.",
+      "cierre": "¡Sube el volumen! ¡Esto es Back in Black de AC/DC, aquí en Rock Radio!",
+      "opening_id": 4,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Back in Black, de AC/DC.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 32.27,
+      "final_duration_sec": 38.3,
+      "intro_music_sec": 5.0,
+      "audio_file": "audio/eddie_intro_acdc_back_in_black.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 13.18,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Back in Black, de AC/DC."
+        },
+        {
+          "start": 13.53,
+          "end": 23.01,
+          "text": "Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible."
+        },
+        {
+          "start": 23.31,
+          "end": 31.98,
+          "text": "Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock."
+        },
+        {
+          "start": 32.43,
+          "end": 37.21,
+          "text": "¡Sube el volumen! ¡Esto es Back in Black de AC/DC, aquí en Rock Radio!"
+        }
+      ],
+      "created_at": "2026-11-16T18:07:46.793192+00:00",
+      "status": "completed"
+    },
+    "kiss::detroit rock city": {
+      "song_title": "Detroit Rock City",
+      "band_name": "KISS",
+      "album": "Destroyer (1976)",
+      "year": "1976",
+      "cover": "img/albums/kiss_1976_destroyer.png",
+      "full_song_audio": "audio/full_kiss_detroit_rock_city.mp3",
+      "visible_script": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Detroit Rock City. Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento. La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos. ¡Sube el volumen! ¡Esto es Detroit Rock City de KISS, aquí en Rock Radio!",
+      "vocal_script": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Detroit Rock City. [curious] Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento. La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos. [excited] ¡Sube el volumen! ¡Esto es Detroit Rock City de KISS, aquí en Rock Radio!",
+      "apertura": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Detroit Rock City.",
+      "desarrollo": "Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento. La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos.",
+      "cierre": "¡Sube el volumen! ¡Esto es Detroit Rock City de KISS, aquí en Rock Radio!",
+      "opening_id": 10,
+      "opening_text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Detroit Rock City.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 33.05,
+      "final_duration_sec": 39.08,
+      "intro_music_sec": 5.0,
+      "audio_file": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 13.91,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Detroit Rock City."
+        },
+        {
+          "start": 14.26,
+          "end": 26.43,
+          "text": "Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento."
+        },
+        {
+          "start": 26.73,
+          "end": 32.03,
+          "text": "La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos."
+        },
+        {
+          "start": 32.48,
+          "end": 37.99,
+          "text": "¡Sube el volumen! ¡Esto es Detroit Rock City de KISS, aquí en Rock Radio!"
+        }
+      ],
+      "created_at": "2026-11-16T18:08:16.214638+00:00",
       "status": "completed"
     }
   }
