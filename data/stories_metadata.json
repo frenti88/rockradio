@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    6,
     1,
     9,
     7,
@@ -9,9 +8,10 @@
     4,
     2,
     3,
-    3
+    3,
+    5
   ],
-  "last_generated_key": "duran duran::ordinary world",
+  "last_generated_key": "iron maiden::the number of the beast",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1015,6 +1015,118 @@
       "created_at": "2026-11-16T20:17:06.508600+00:00",
       "status": "completed",
       "song_duration_sec": 339
+    },
+    "iron maiden::the number of the beast": {
+      "song_title": "The Number of the Beast",
+      "band_name": "Iron Maiden",
+      "album": "The Number of the Beast (1982)",
+      "year": "1982",
+      "cover": "img/albums/iron_maiden_the_number_of_the_beast_2015_remaste.jpg",
+      "full_song_audio": null,
+      "visible_script": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal. Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson. Aquel grito de furia pura definió la historia del metal. ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal. [curious] Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson. [emotional] Aquel grito de furia pura definió la historia del metal. [excited] ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal.",
+      "paragraph_2": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+      "paragraph_3": "Aquel grito de furia pura definió la historia del metal. ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel grito de furia pura definió la historia del metal.",
+      "p3_closing": "¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.52,
+          "duration_sec": 10.519,
+          "text": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal.",
+          "vocal_text": "[warm, confident] Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.52,
+          "end": 27.43,
+          "duration_sec": 8.909,
+          "text": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+          "vocal_text": "[curious] Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 30.43,
+          "end": 41.29,
+          "duration_sec": 10.862,
+          "text": "Aquel grito de furia pura definió la historia del metal. ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel grito de furia pura definió la historia del metal. [excited] ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum The Number of the Beast (1982); compuesta por Steve Harris tras ver Damien: Omen II; grabada por Martin Birch en Battery Studios.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal.",
+      "desarrollo": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+      "cierre": "Aquel grito de furia pura definió la historia del metal. ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 5,
+      "opening_text": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 36.29,
+      "final_duration_sec": 42.53,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.6,
+        "p2_lufs": -21.3,
+        "p3_base_lufs": -18.2,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 4.06
+      },
+      "audio_file": "audio/fred_intro_iron_maiden_the_number_of_the_beast.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.52,
+          "text": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de Iron Maiden. Una pesadilla convertida en leyenda del metal."
+        },
+        {
+          "start": 15.52,
+          "end": 18.52,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.52,
+          "end": 27.43,
+          "text": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson."
+        },
+        {
+          "start": 27.43,
+          "end": 30.43,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 30.43,
+          "end": 41.29,
+          "text": "Aquel grito de furia pura definió la historia del metal. ¡Sube el volumen y escuchemos a The Number of the Beast, de Iron Maiden, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T21:23:18.642598+00:00",
+      "status": "completed",
+      "song_duration_sec": 291
     }
   }
 }

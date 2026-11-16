@@ -465,6 +465,22 @@ MASTER_CURATED_STORIES = {
             "historical_info": "Álbum Duran Duran / The Wedding Album (1993); letra de Simon Le Bon dedicada a su amigo David Miles; ganadora del premio Ivor Novello."
         }
     ],
+    "the number of the beast": [
+        {
+            "p1_hook": "Una pesadilla convertida en leyenda del metal.",
+            "p2_anecdote": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+            "p3_resolution": "Aquel grito de furia pura definió la historia del metal.",
+            "historical_info": "Álbum The Number of the Beast (1982); compuesta por Steve Harris tras ver Damien: Omen II; grabada por Martin Birch en Battery Studios."
+        }
+    ],
+    "number of the beast": [
+        {
+            "p1_hook": "Una pesadilla convertida en leyenda del metal.",
+            "p2_anecdote": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+            "p3_resolution": "Aquel grito de furia pura definió la historia del metal.",
+            "historical_info": "Álbum The Number of the Beast (1982); compuesta por Steve Harris tras ver Damien: Omen II; grabada por Martin Birch en Battery Studios."
+        }
+    ],
     "shout at the devil": [
         (
             "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
@@ -493,6 +509,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "The Number of the Beast",
+        "band_name": "Iron Maiden",
+        "album": "The Number of the Beast (1982)",
+        "year": "1982",
+        "cover": "img/albums/iron_maiden_the_number_of_the_beast_2015_remaste.jpg",
+        "duration_sec": 291
+    },
     {
         "song_title": "The Trooper",
         "band_name": "Iron Maiden",
@@ -1007,7 +1031,7 @@ def get_master_fred_script(song_title, band_name, album_name="", year="", angle=
     clean_key = normalize_text_key(song_title)
     angles_list = None
     for k, v in MASTER_CURATED_STORIES.items():
-        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key:
+        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)):
             angles_list = v if isinstance(v, list) else [v]
             break
 
@@ -1085,7 +1109,7 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
     p3_closing = select_closing_line(song_title, band_name, angle - 1)
 
     clean_key = normalize_text_key(song_title)
-    has_curated = any(normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key for k in MASTER_CURATED_STORIES)
+    has_curated = any(normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)) for k in MASTER_CURATED_STORIES)
 
     api_key = os.environ.get('OPENAI_API_KEY', '').strip()
     p1_hook = None
@@ -1096,7 +1120,7 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
 
     curated_count = 0
     for k, v in MASTER_CURATED_STORIES.items():
-        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key:
+        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)):
             curated_count = len(v) if isinstance(v, list) else 1
             break
 
@@ -1263,6 +1287,8 @@ ENGLISH_PHONETICS = [
     (r'\bTears for Fears\b', 'Tíars for Fíars'),
     (r'\bEverybody Wants to Rule the World\b', 'Évribadi Uónts tu Rul de Uérld'),
     (r'\bIron Maiden\b', 'Áiron Méiden'),
+    (r'\bThe Number of the Beast\b', 'De Námber of de Bíst'),
+    (r'\bNumber of the Beast\b', 'Námber of de Bíst'),
     (r'\bThe Trooper\b', 'De Trúper'),
     (r'\bAC/DC\b', 'Ei-Si Di-Si'),
     (r'\bBack in Black\b', 'Bak in Blák'),
@@ -2244,7 +2270,8 @@ async def execute_ai_command(command_text, engine=None, fish_voice=None, fish_mo
             mode="regenerate_voice",
             engine=engine,
             fish_voice=fish_voice,
-            fish_model=fish_model
+            fish_model=fish_model,
+            song_duration_sec=target_record.get("song_duration_sec")
         )
         return {"success": True, "status": "completed", "intent": intent, "record": rec}
 
@@ -2271,7 +2298,8 @@ async def execute_ai_command(command_text, engine=None, fish_voice=None, fish_mo
         mode=mode,
         engine=engine,
         fish_voice=fish_voice,
-        fish_model=fish_model
+        fish_model=fish_model,
+        song_duration_sec=md.get("duration_sec")
     )
     return {"success": True, "status": "completed", "intent": intent, "record": rec}
 
