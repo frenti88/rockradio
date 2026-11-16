@@ -7834,6 +7834,57 @@
         hasRealAudio: true,
         relatedIntroId: 'intro_kiss_detroit_rock_city',
         lyrics: []
+      },
+      {
+        id: 'intro_rush_tom_sawyer',
+        pairId: 'rush_tom_sawyer',
+        isIntro: true,
+        bandName: 'Rush',
+        songTitle: 'Tom Sawyer',
+        title: 'Intro: Tom Sawyer',
+        albumName: 'Moving Pictures (1981)',
+        year: '1981',
+        cover: 'img/albums/rush_1981_moving_pictures.png',
+        tag: 'Historia',
+        duration: 61,
+        durationSec: 60.66,
+        introSec: '61s',
+        summary: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd. A finales de 1980, en el idílico refugio de Le Studio en Morin-Heights, Quebec, Rush se propuso transformar la complejidad del rock progresivo en una descarga directa y futurista. Inspirado por un poema que le compartió el letrista Pye Dubois, el baterista Neil Peart reinterpretó al rebelde clásico de Mark Twain como un símbolo de individualismo y mente independiente para la era moderna. Geddy Lee introdujo el tema con el gruñido demoledor de un sintetizador Oberheim, abriendo paso a uno de los solos de batería más virtuosos e influyentes de todos los tiempos. Porque la música tiene memoria, la banda casi abandona la grabación debido a las dificultades técnicas para capturar la pista, sin sospechar que estaban inmortalizando el himno definitivo de su carrera. ¡Sube el volumen y escuchemos a Tom Sawyer aquí en Fred Rewind, de regreso al pasado!',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_intro_rush_tom_sawyer.mp3',
+        fileUrl: 'audio/eddie_intro_rush_tom_sawyer.mp3',
+        hasRealAudio: true,
+        relatedSongId: 'song_rush_tom_sawyer',
+        lyrics: [
+          { start: 0.0, end: 5.33, text: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.' },
+          { start: 5.88, end: 19.12, text: 'A finales de 1980, en el idílico refugio de Le Studio en Morin-Heights, Quebec, Rush se propuso transformar la complejidad del rock progresivo en una descarga directa y futurista.' },
+          { start: 19.57, end: 32.16, text: 'Inspirado por un poema que le compartió el letrista Pye Dubois, el baterista Neil Peart reinterpretó al rebelde clásico de Mark Twain como un símbolo de individualismo y mente independiente para la era moderna.' },
+          { start: 32.61, end: 42.72, text: 'Geddy Lee introdujo el tema con el gruñido demoledor de un sintetizador Oberheim, abriendo paso a uno de los solos de batería más virtuosos e influyentes de todos los tiempos.' },
+          { start: 43.17, end: 54.27, text: 'Porque la música tiene memoria, la banda casi abandona la grabación debido a las dificultades técnicas para capturar la pista, sin sospechar que estaban inmortalizando el himno definitivo de su carrera.' },
+          { start: 54.92, end: 60.43, text: '¡Sube el volumen y escuchemos a Tom Sawyer aquí en Fred Rewind, de regreso al pasado!' }
+        ]
+      },
+      {
+        id: 'song_rush_tom_sawyer',
+        pairId: 'rush_tom_sawyer',
+        isIntro: false,
+        bandName: 'Rush',
+        songTitle: 'Tom Sawyer',
+        title: 'Tom Sawyer',
+        albumName: 'Moving Pictures (1981)',
+        year: '1981',
+        cover: 'img/albums/rush_1981_moving_pictures.png',
+        tag: '',
+        duration: 272,
+        durationSec: 272.04,
+        introSec: '',
+        summary: 'Canción original completa (Rush — Tom Sawyer)',
+        status: 'con_audio',
+        audioUrl: 'audio/full_rush_tom_sawyer.mp3',
+        fileUrl: 'audio/full_rush_tom_sawyer.mp3',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_rush_tom_sawyer',
+        lyrics: []
       }
     ];
 
@@ -7843,10 +7894,10 @@
     // DJ Fredd Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjEddieCustomTracks() {
       try {
-        if (!localStorage.getItem('dj_fredd_reset_v9_clean')) {
+        if (!localStorage.getItem('dj_fredd_reset_v10_clean')) {
           localStorage.removeItem('dj_eddie_custom_tracks_v2');
           localStorage.removeItem('dj_fredd_deleted_pairs');
-          localStorage.setItem('dj_fredd_reset_v9_clean', 'true');
+          localStorage.setItem('dj_fredd_reset_v10_clean', 'true');
           return [];
         }
         const raw = localStorage.getItem('dj_eddie_custom_tracks_v2');

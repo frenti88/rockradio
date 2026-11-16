@@ -161,6 +161,12 @@ MASTER_CURATED_STORIES = {
         "En el estudio de grabación, Geddy Lee asumió un audaz protagonismo con el sintetizador Oberheim, marcando un giro de modernidad y frescura sonora para el trío canadiense. "
         "Con la icónica y cavernosa voz del locutor Mark Dailey pronunciando el título de la canción en los compases de respiro, la pieza se convirtió en un refugio eterno para los espíritus independientes."
     ),
+    "tom sawyer": (
+        "A finales de 1980, en el idílico refugio de Le Studio en Morin-Heights, Quebec, Rush se propuso transformar la complejidad del rock progresivo en una descarga directa y futurista. "
+        "Inspirado por un poema que le compartió el letrista Pye Dubois, el baterista Neil Peart reinterpretó al rebelde clásico de Mark Twain como un símbolo de individualismo y mente independiente para la era moderna. "
+        "Geddy Lee introdujo el tema con el gruñido demoledor de un sintetizador Oberheim, abriendo paso a uno de los solos de batería más virtuosos e influyentes de todos los tiempos. "
+        "Porque la música tiene memoria, la banda casi abandona la grabación debido a las dificultades técnicas para capturar la pista, sin sospechar que estaban inmortalizando el himno definitivo de su carrera."
+    ),
     "shout at the devil": (
         "A comienzos de 1983, inmerso en la atmósfera salvaje de Sunset Strip en Los Ángeles, Nikki Sixx escribió este clásico en su precario apartamento, inspirado por su curiosidad hacia el misticismo y los textos arcanos. "
         "Originalmente planeada bajo el título de Gritar con el Diablo, la banda aceptó modificarla a Gritarle al Diablo ante la preocupación de los productores por una censura radiofónica inminente. "
