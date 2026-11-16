@@ -7885,6 +7885,57 @@
         hasRealAudio: true,
         relatedIntroId: 'intro_rush_tom_sawyer',
         lyrics: []
+      },
+      {
+        id: 'intro_tff_everybody_wants_to_rule_the_world',
+        pairId: 'tff_everybody_wants_to_rule_the_world',
+        isIntro: true,
+        bandName: 'Tears for Fears',
+        songTitle: 'Everybody Wants to Rule the World',
+        title: 'Intro: Everybody Wants to Rule the World',
+        albumName: 'Songs from the Big Chair (1985)',
+        year: '1985',
+        cover: 'img/albums/tff_1985_songs_from_the_big_chair.png',
+        tag: 'Historia',
+        duration: 55,
+        durationSec: 54.62,
+        introSec: '55s',
+        summary: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd. Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. El productor Chris Hughes sentía que el álbum necesitaba con urgencia un tema luminoso y dinámico para equilibrar la densidad introspectiva de los demás cortes. En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible fusionando guitarras de doce cuerdas y sintetizadores en un compás galopante. Porque la música tiene memoria, con una lírica penetrante sobre la fragilidad del poder y el anhelo de control universal, la canción conquistó el número uno planetario convirtiéndose en la banda sonora definitiva de una década. ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World aquí en Fred Rewind, de regreso al pasado!',
+        status: 'con_audio',
+        audioUrl: 'audio/eddie_intro_tff_everybody_wants_to_rule_the_world.mp3',
+        fileUrl: 'audio/eddie_intro_tff_everybody_wants_to_rule_the_world.mp3',
+        hasRealAudio: true,
+        relatedSongId: 'song_tff_everybody_wants_to_rule_the_world',
+        lyrics: [
+          { start: 0.0, end: 5.3, text: 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fredd.' },
+          { start: 5.85, end: 14.53, text: 'Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair.' },
+          { start: 14.98, end: 23.47, text: 'El productor Chris Hughes sentía que el álbum necesitaba con urgencia un tema luminoso y dinámico para equilibrar la densidad introspectiva de los demás cortes.' },
+          { start: 23.92, end: 34.5, text: 'En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible fusionando guitarras de doce cuerdas y sintetizadores en un compás galopante.' },
+          { start: 34.95, end: 47.67, text: 'Porque la música tiene memoria, con una lírica penetrante sobre la fragilidad del poder y el anhelo de control universal, la canción conquistó el número uno planetario convirtiéndose en la banda sonora definitiva de una década.' },
+          { start: 48.32, end: 54.41, text: '¡Sube el volumen y escuchemos a Everybody Wants to Rule the World aquí en Fred Rewind, de regreso al pasado!' }
+        ]
+      },
+      {
+        id: 'song_tff_everybody_wants_to_rule_the_world',
+        pairId: 'tff_everybody_wants_to_rule_the_world',
+        isIntro: false,
+        bandName: 'Tears for Fears',
+        songTitle: 'Everybody Wants to Rule the World',
+        title: 'Everybody Wants to Rule the World',
+        albumName: 'Songs from the Big Chair (1985)',
+        year: '1985',
+        cover: 'img/albums/tff_1985_songs_from_the_big_chair.png',
+        tag: '',
+        duration: 251,
+        durationSec: 250.63,
+        introSec: '',
+        summary: 'Canción original completa (Tears for Fears — Everybody Wants to Rule the World)',
+        status: 'con_audio',
+        audioUrl: 'audio/full_tears_for_fears_everybody_wants_to_rule_the_w.mp3',
+        fileUrl: 'audio/full_tears_for_fears_everybody_wants_to_rule_the_w.mp3',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_tff_everybody_wants_to_rule_the_world',
+        lyrics: []
       }
     ];
 
@@ -7894,10 +7945,10 @@
     // DJ Fredd Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjEddieCustomTracks() {
       try {
-        if (!localStorage.getItem('dj_fredd_reset_v10_clean')) {
+        if (!localStorage.getItem('dj_fredd_reset_v11_clean')) {
           localStorage.removeItem('dj_eddie_custom_tracks_v2');
           localStorage.removeItem('dj_fredd_deleted_pairs');
-          localStorage.setItem('dj_fredd_reset_v10_clean', 'true');
+          localStorage.setItem('dj_fredd_reset_v11_clean', 'true');
           return [];
         }
         const raw = localStorage.getItem('dj_eddie_custom_tracks_v2');

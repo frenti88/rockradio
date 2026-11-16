@@ -180,9 +180,9 @@ MASTER_CURATED_STORIES = {
     ),
     "everybody wants to rule the world": (
         "Esta joya del pop rock británico fue la última en incorporarse a las sesiones de 1985 para el disco Songs from the Big Chair. "
-        "El productor Chris Hughes sentía que el álbum necesitaba un tema luminoso y dinámico para equilibrar la densidad temática de los demás cortes. "
-        "En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible con guitarras de doce cuerdas y sintetizadores en compás de doce por ocho. "
-        "Con una lírica penetrante sobre la sed insaciable de poder político y el destino común, la canción conquistó el número uno planetario de forma arrolladora."
+        "El productor Chris Hughes sentía que el álbum necesitaba con urgencia un tema luminoso y dinámico para equilibrar la densidad introspectiva de los demás cortes. "
+        "En una sola tarde de inspiración, Roland Orzabal compuso una base rítmica irresistible fusionando guitarras de doce cuerdas y sintetizadores en un compás galopante. "
+        "Porque la música tiene memoria, con una lírica penetrante sobre la fragilidad del poder y el anhelo de control universal, la canción conquistó el número uno planetario convirtiéndose en la banda sonora definitiva de una década."
     ),
     "help": (
         "En 1965, durante la cumbre de la Beatlemanía, The Beatles filmaban su segunda película entre las Bahamas y Londres. "
