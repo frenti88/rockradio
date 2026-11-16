@@ -462,7 +462,7 @@
       "band_name": "Queen",
       "album": "The Works (1984)",
       "year": "1984",
-      "cover": "img/albums/queen_1980_the_game.png",
+      "cover": "img/albums/queen_1984_the_works.jpg",
       "full_song_audio": null,
       "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros. En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV. Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
       "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros. [curious] En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV. [emotional] Su coro de palmas sincronizadas hizo historia en Live Aid. [excited] ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
@@ -566,14 +566,15 @@
         }
       ],
       "created_at": "2026-11-16T18:54:49.490710+00:00",
-      "status": "completed"
+      "status": "completed",
+      "song_duration_sec": 348
     },
     "dokken::dream warriors": {
       "song_title": "Dream Warriors",
       "band_name": "Dokken",
       "album": "Back for the Attack (1987)",
       "year": "1987",
-      "cover": "img/albums/motley_crue_1987_girls.png",
+      "cover": "img/albums/dokken_1987_back_for_the_attack.jpg",
       "full_song_audio": null,
       "visible_script": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine. En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip. La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
       "vocal_script": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine. [curious] En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip. [emotional] La alianza con el cine llevó al grupo a lo más alto de MTV. [excited] ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
@@ -677,7 +678,8 @@
         }
       ],
       "created_at": "2026-11-16T18:55:13.241511+00:00",
-      "status": "completed"
+      "status": "completed",
+      "song_duration_sec": 282
     },
     "def leppard::hysteria": {
       "song_title": "Hysteria",
@@ -795,7 +797,7 @@
       "band_name": "The Cars",
       "album": "Heartbeat City (1984)",
       "year": "1984",
-      "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+      "cover": "img/albums/the_cars_1984_heartbeat_city.jpg",
       "full_song_audio": null,
       "visible_script": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada. En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable. El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
       "vocal_script": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada. [curious] En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable. [emotional] El tema dio nombre al disco más ambicioso de la banda. [excited] ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
@@ -899,14 +901,15 @@
         }
       ],
       "created_at": "2026-11-16T18:55:54.279337+00:00",
-      "status": "completed"
+      "status": "completed",
+      "song_duration_sec": 271
     },
     "duran duran::ordinary world": {
       "song_title": "Ordinary World",
       "band_name": "Duran Duran",
       "album": "Duran Duran (The Wedding Album) (1993)",
       "year": "1993",
-      "cover": "img/albums/tff_1993_elemental.png",
+      "cover": "img/albums/duran_duran_1993_wedding_album.jpg",
       "full_song_audio": null,
       "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
       "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. [curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. [emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
@@ -1010,7 +1013,8 @@
         }
       ],
       "created_at": "2026-11-16T18:56:16.573212+00:00",
-      "status": "completed"
+      "status": "completed",
+      "song_duration_sec": 339
     }
   }
 }

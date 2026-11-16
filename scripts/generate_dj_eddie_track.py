@@ -34,6 +34,7 @@ import array
 import unicodedata
 import urllib.request
 import urllib.error
+import urllib.parse
 from datetime import datetime, timezone
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
@@ -521,7 +522,7 @@ SUPPLEMENTAL_VERIFIED_TRACKS = [
         "band_name": "Queen",
         "album": "The Works (1984)",
         "year": "1984",
-        "cover": "img/albums/queen_1980_the_game.png",
+        "cover": "img/albums/queen_1984_the_works.jpg",
         "duration_sec": 348
     },
     {
@@ -529,7 +530,7 @@ SUPPLEMENTAL_VERIFIED_TRACKS = [
         "band_name": "Dokken",
         "album": "Back for the Attack (1987)",
         "year": "1987",
-        "cover": "img/albums/motley_crue_1987_girls.png",
+        "cover": "img/albums/dokken_1987_back_for_the_attack.jpg",
         "duration_sec": 282
     },
     {
@@ -537,7 +538,7 @@ SUPPLEMENTAL_VERIFIED_TRACKS = [
         "band_name": "The Cars",
         "album": "Heartbeat City (1984)",
         "year": "1984",
-        "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+        "cover": "img/albums/the_cars_1984_heartbeat_city.jpg",
         "duration_sec": 271
     },
     {
@@ -545,7 +546,7 @@ SUPPLEMENTAL_VERIFIED_TRACKS = [
         "band_name": "Duran Duran",
         "album": "Duran Duran (The Wedding Album) (1993)",
         "year": "1993",
-        "cover": "img/albums/tff_1993_elemental.png",
+        "cover": "img/albums/duran_duran_1993_wedding_album.jpg",
         "duration_sec": 339
     }
 ]
@@ -713,6 +714,72 @@ def load_project_catalog_metadata():
 
     return catalog
 
+def fetch_real_album_cover(band_name, song_title, album_name="", year=""):
+    """
+    Descarga la carátula oficial del álbum desde iTunes Search API (600x600)
+    y la guarda en img/albums/ para evitar usar portadas genéricas.
+    Retorna (rel_cover_path, detected_album, detected_year, detected_duration_sec).
+    """
+    try:
+        term = f"{band_name} {song_title}".strip()
+        url = f"https://itunes.apple.com/search?term={urllib.parse.quote(term)}&entity=song&limit=10"
+        req = urllib.request.Request(url, headers={"User-Agent": "RockRadio/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        results = data.get("results") or []
+        if not results:
+            return None, album_name, year, None
+
+        b_norm = normalize_text_key(band_name)
+        s_norm = normalize_text_key(song_title)
+        a_norm = normalize_text_key(re.sub(r"\(\d{4}\)", "", album_name or ""))
+
+        def score_hit(r):
+            sc = 0
+            r_b = normalize_text_key(r.get("artistName", ""))
+            r_s = normalize_text_key(r.get("trackName", ""))
+            r_a = normalize_text_key(r.get("collectionName", ""))
+            if b_norm and (r_b == b_norm or b_norm in r_b or r_b in b_norm):
+                sc += 50
+            if s_norm and (r_s == s_norm or s_norm in r_s):
+                sc += 40
+            if a_norm and a_norm in r_a:
+                sc += 30
+            if any(w in r_a for w in ("greatest hits", "best of", "essential", "anthology", "live", "collection")):
+                sc -= 15
+            return sc
+
+        results.sort(key=score_hit, reverse=True)
+        hit = results[0]
+        art = hit.get("artworkUrl100") or ""
+        if not art:
+            return None, album_name, year, None
+        art_600 = art.replace("100x100bb", "600x600bb")
+
+        det_album = album_name or hit.get("collectionName", "")
+        det_year = year or (hit.get("releaseDate", "")[:4] if hit.get("releaseDate") else "")
+        if det_album and det_year and det_year not in det_album:
+            det_album = f"{det_album} ({det_year})"
+        det_dur = int(round((hit.get("trackTimeMillis") or 0) / 1000)) or None
+
+        albums_dir = os.path.join(PROJECT_ROOT, "img", "albums")
+        os.makedirs(albums_dir, exist_ok=True)
+        album_slug = make_slug(band_name, re.sub(r"\(\d{4}\)", "", det_album or song_title))
+        fname = f"{album_slug}.jpg"
+        out_path = os.path.join(albums_dir, fname)
+        if not os.path.exists(out_path) or os.path.getsize(out_path) < 5000:
+            img_req = urllib.request.Request(art_600, headers={"User-Agent": "RockRadio/1.0"})
+            with urllib.request.urlopen(img_req, timeout=15) as ir:
+                img_bytes = ir.read()
+            if len(img_bytes) > 5000:
+                with open(out_path, "wb") as f:
+                    f.write(img_bytes)
+        if os.path.exists(out_path) and os.path.getsize(out_path) > 5000:
+            return f"img/albums/{fname}", det_album, det_year, det_dur
+    except Exception as e:
+        print(f"⚠️ No se pudo descargar carátula real para {band_name} - {song_title}: {e}", flush=True)
+    return None, album_name, year, None
+
 def resolve_song_metadata(song_query, band_query=None):
     """
     Identifica canción y artista usando metadatos disponibles.
@@ -770,6 +837,19 @@ def resolve_song_metadata(song_query, band_query=None):
     if matches:
         matches.sort(key=lambda x: x[0], reverse=True)
         best = dict(matches[0][1])
+        cov = best.get("cover") or ""
+        if not cov or "kiss_1976_destroyer" in cov or not os.path.exists(os.path.join(PROJECT_ROOT, cov)):
+            real_cov, det_alb, det_yr, det_dur = fetch_real_album_cover(
+                best["band_name"], best["song_title"], best.get("album", ""), best.get("year", "")
+            )
+            if real_cov:
+                best["cover"] = real_cov
+            if det_alb and not best.get("album"):
+                best["album"] = det_alb
+            if det_yr and not best.get("year"):
+                best["year"] = det_yr
+            if det_dur and not best.get("duration_sec"):
+                best["duration_sec"] = det_dur
         return {"resolved": True, "ambiguous": False, "metadata": best}
 
     # If both song and band were explicitly provided by user (e.g. a new song not yet in static catalog),
@@ -777,6 +857,7 @@ def resolve_song_metadata(song_query, band_query=None):
     if song_query and band_query:
         clean_song = song_query.strip()
         clean_band = band_query.strip()
+        real_cov, det_alb, det_yr, det_dur = fetch_real_album_cover(clean_band, clean_song)
         return {
             "resolved": True,
             "ambiguous": False,
@@ -784,10 +865,10 @@ def resolve_song_metadata(song_query, band_query=None):
                 "key": make_story_key(clean_band, clean_song),
                 "song_title": clean_song,
                 "band_name": clean_band,
-                "album": "",
-                "year": "",
-                "cover": "img/albums/kiss_1976_destroyer.png",
-                "duration_sec": 240,
+                "album": det_alb or "",
+                "year": det_yr or "",
+                "cover": real_cov or "img/albums/kiss_1976_destroyer.png",
+                "duration_sec": det_dur or 240,
                 "full_song_audio": None
             }
         }
@@ -1742,31 +1823,39 @@ def update_player_catalog(story_record):
 
     entries_to_write = [intro_obj]
     full_song_audio = story_record.get("full_song_audio")
-    if full_song_audio and os.path.exists(os.path.join(PROJECT_ROOT, full_song_audio)):
+    has_local_full = bool(full_song_audio and os.path.exists(os.path.join(PROJECT_ROOT, full_song_audio)))
+    if has_local_full:
         song_dur = get_audio_duration(os.path.join(PROJECT_ROOT, full_song_audio))
-        song_obj = {
-            "id": song_id,
-            "pairId": pair_slug,
-            "isIntro": False,
-            "bandName": story_record["band_name"],
-            "songTitle": story_record["song_title"],
-            "title": story_record["song_title"],
-            "albumName": album_display,
-            "year": year_str,
-            "cover": story_record.get("cover") or "img/albums/kiss_1976_destroyer.png",
-            "tag": "",
-            "duration": int(round(song_dur)),
-            "durationSec": round(song_dur, 2),
-            "introSec": "",
-            "summary": f"Canción original completa ({story_record['band_name']} — {story_record['song_title']})",
-            "status": "con_audio",
-            "audioUrl": full_song_audio,
-            "fileUrl": full_song_audio,
-            "hasRealAudio": True,
-            "relatedIntroId": intro_id,
-            "lyrics": []
-        }
-        entries_to_write.append(song_obj)
+        song_audio_url = full_song_audio
+        song_summary = f"Canción original completa ({story_record['band_name']} — {story_record['song_title']})"
+    else:
+        song_dur = float(story_record.get("song_duration_sec") or 240)
+        song_audio_url = ""
+        song_summary = f"Canción original desde Spotify ({story_record['band_name']} — {story_record['song_title']})"
+
+    song_obj = {
+        "id": song_id,
+        "pairId": pair_slug,
+        "isIntro": False,
+        "bandName": story_record["band_name"],
+        "songTitle": story_record["song_title"],
+        "title": story_record["song_title"],
+        "albumName": album_display,
+        "year": year_str,
+        "cover": story_record.get("cover") or "img/albums/kiss_1976_destroyer.png",
+        "tag": "",
+        "duration": int(round(song_dur)),
+        "durationSec": round(song_dur, 2),
+        "introSec": "",
+        "summary": song_summary,
+        "status": "con_audio",
+        "audioUrl": song_audio_url,
+        "fileUrl": song_audio_url,
+        "hasRealAudio": True,
+        "relatedIntroId": intro_id,
+        "lyrics": []
+    }
+    entries_to_write.append(song_obj)
 
     # Locate BASE_DJ_EDDIE_TRACKS = [ ... ];
     m_arr = re.search(r"(const BASE_DJ_EDDIE_TRACKS\s*=\s*\[)([\s\S]*?)(\n\s*\];)", html)

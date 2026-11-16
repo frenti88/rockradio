@@ -7948,7 +7948,7 @@
         title: 'Intro: Radio Ga Ga',
         albumName: 'The Works (1984)',
         year: '1984',
-        cover: 'img/albums/queen_1980_the_game.png',
+        cover: 'img/albums/queen_1984_the_works.jpg',
         tag: 'Historia',
         duration: 42,
         durationSec: 42.34,
@@ -7977,7 +7977,7 @@
         title: 'Intro: Dream Warriors',
         albumName: 'Back for the Attack (1987)',
         year: '1987',
-        cover: 'img/albums/motley_crue_1987_girls.png',
+        cover: 'img/albums/dokken_1987_back_for_the_attack.jpg',
         tag: 'Historia',
         duration: 43,
         durationSec: 43.47,
@@ -8057,7 +8057,7 @@
         title: 'Intro: Heartbeat City',
         albumName: 'Heartbeat City (1984)',
         year: '1984',
-        cover: 'img/albums/tff_1985_songs_from_the_big_chair.png',
+        cover: 'img/albums/the_cars_1984_heartbeat_city.jpg',
         tag: 'Historia',
         duration: 43,
         durationSec: 42.71,
@@ -8086,7 +8086,7 @@
         title: 'Intro: Ordinary World',
         albumName: 'Duran Duran (The Wedding Album) (1993)',
         year: '1993',
-        cover: 'img/albums/tff_1993_elemental.png',
+        cover: 'img/albums/duran_duran_1993_wedding_album.jpg',
         tag: 'Historia',
         duration: 44,
         durationSec: 44.3,
@@ -8105,6 +8105,94 @@
           { start: 29.54, end: 32.54, text: '🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado...' },
           { start: 32.54, end: 43.05, text: 'Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!' }
         ]
+      },
+      {
+        id: 'song_queen_radio_ga_ga',
+        pairId: 'queen_radio_ga_ga',
+        isIntro: false,
+        bandName: 'Queen',
+        songTitle: 'Radio Ga Ga',
+        title: 'Radio Ga Ga',
+        albumName: 'The Works (1984)',
+        year: '1984',
+        cover: 'img/albums/queen_1984_the_works.jpg',
+        tag: '',
+        duration: 348,
+        durationSec: 348.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Queen — Radio Ga Ga)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_queen_radio_ga_ga',
+        lyrics: []
+      },
+      {
+        id: 'song_dokken_dream_warriors',
+        pairId: 'dokken_dream_warriors',
+        isIntro: false,
+        bandName: 'Dokken',
+        songTitle: 'Dream Warriors',
+        title: 'Dream Warriors',
+        albumName: 'Back for the Attack (1987)',
+        year: '1987',
+        cover: 'img/albums/dokken_1987_back_for_the_attack.jpg',
+        tag: '',
+        duration: 282,
+        durationSec: 282.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Dokken — Dream Warriors)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_dokken_dream_warriors',
+        lyrics: []
+      },
+      {
+        id: 'song_the_cars_heartbeat_city',
+        pairId: 'the_cars_heartbeat_city',
+        isIntro: false,
+        bandName: 'The Cars',
+        songTitle: 'Heartbeat City',
+        title: 'Heartbeat City',
+        albumName: 'Heartbeat City (1984)',
+        year: '1984',
+        cover: 'img/albums/the_cars_1984_heartbeat_city.jpg',
+        tag: '',
+        duration: 271,
+        durationSec: 271.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (The Cars — Heartbeat City)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_the_cars_heartbeat_city',
+        lyrics: []
+      },
+      {
+        id: 'song_duran_duran_ordinary_world',
+        pairId: 'duran_duran_ordinary_world',
+        isIntro: false,
+        bandName: 'Duran Duran',
+        songTitle: 'Ordinary World',
+        title: 'Ordinary World',
+        albumName: 'Duran Duran (The Wedding Album) (1993)',
+        year: '1993',
+        cover: 'img/albums/duran_duran_1993_wedding_album.jpg',
+        tag: '',
+        duration: 339,
+        durationSec: 339.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Duran Duran — Ordinary World)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_duran_duran_ordinary_world',
+        lyrics: []
       }
     ];
 
@@ -8114,10 +8202,10 @@
     // DJ Fredd Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjEddieCustomTracks() {
       try {
-        if (!localStorage.getItem('dj_fredd_reset_v34_clean')) {
+        if (!localStorage.getItem('dj_fredd_reset_v38_clean')) {
           localStorage.removeItem('dj_eddie_custom_tracks_v2');
           localStorage.removeItem('dj_fredd_deleted_pairs');
-          localStorage.setItem('dj_fredd_reset_v34_clean', 'true');
+          localStorage.setItem('dj_fredd_reset_v38_clean', 'true');
           return [];
         }
         const raw = localStorage.getItem('dj_eddie_custom_tracks_v2');
@@ -8418,8 +8506,38 @@
       throw lastError || new Error(`No se pudo conectar al servicio de audio de DJ Eddie (${endpoint})`);
     }
 
-    // Automatic Full Song Resolver via Local Service (ensures 100% full song playback from Spotify)
+    // Automatic Full Song Resolver (Local Service -> Spotify Web API -> iTunes Public Fallback)
     async function resolveFullSongForTrack(songItemId, songTitle, bandName) {
+      const applyResolvedToCatalog = (payload) => {
+        const updateItem = (t) => {
+          if (!t) return;
+          if (payload.audioUrl) {
+            t.audioUrl = payload.audioUrl;
+            t.fileUrl = payload.audioUrl;
+            t._resolvedAudioUrl = payload.audioUrl;
+            t.hasRealAudio = true;
+          }
+          if (payload.uri) t.uri = payload.uri;
+          if (payload.spotifyId) t.spotifyId = payload.spotifyId;
+          if (payload.durationSec) t.duration = Math.round(payload.durationSec);
+          if (payload.cover && (!t.cover || t.cover.includes('kiss_1976_destroyer'))) t.cover = payload.cover;
+        };
+        const customTracks = getDjEddieCustomTracks();
+        const cIdx = customTracks.findIndex(t => t.id === songItemId || t.pairId === songItemId);
+        if (cIdx !== -1) {
+          updateItem(customTracks[cIdx]);
+          saveDjEddieCustomTracks(customTracks);
+        }
+        if (typeof djEddieQueue !== 'undefined' && Array.isArray(djEddieQueue)) {
+          const qItem = djEddieQueue.find(t => t.id === songItemId);
+          if (qItem) updateItem(qItem);
+        }
+        if (typeof BASE_DJ_EDDIE_TRACKS !== 'undefined' && Array.isArray(BASE_DJ_EDDIE_TRACKS)) {
+          const bItem = BASE_DJ_EDDIE_TRACKS.find(t => t.id === songItemId);
+          if (bItem) updateItem(bItem);
+        }
+      };
+
       try {
         const data = await callEddieApi('/api/resolve_full_song', {
           song_title: songTitle,
@@ -8427,21 +8545,70 @@
           track_id: songItemId
         });
         if (data && data.audioUrl) {
-          const customTracks = getDjEddieCustomTracks();
-          const idx = customTracks.findIndex(t => t.id === songItemId || t.pairId === songItemId);
-          if (idx !== -1) {
-            customTracks[idx].audioUrl = data.audioUrl;
-            customTracks[idx].fileUrl = data.audioUrl;
-            customTracks[idx].duration = Math.round(data.durationSec || customTracks[idx].duration);
-            saveDjEddieCustomTracks(customTracks);
-            buildDjEddieCatalog();
-            renderDjEddiePlaylistSongs();
-          }
+          applyResolvedToCatalog({ audioUrl: data.audioUrl, durationSec: data.durationSec });
           return data.audioUrl;
         }
       } catch (e) {
-        console.warn('resolveFullSongForTrack notice:', e);
+        // Local backend not running in static hosting; continue to Spotify / public resolvers
       }
+
+      // 2. Spotify Web API search (when user is connected with Spotify OAuth)
+      try {
+        if (typeof getValidSpotifyToken === 'function') {
+          const token = await getValidSpotifyToken();
+          if (token) {
+            const spQ = encodeURIComponent(`track:${songTitle} artist:${bandName}`);
+            const spRes = await fetch(`https://api.spotify.com/v1/search?q=${spQ}&type=track&limit=1`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (spRes.ok) {
+              const spJson = await spRes.json();
+              const spTrack = spJson.tracks && spJson.tracks.items && spJson.tracks.items[0];
+              if (spTrack) {
+                const spCover = (spTrack.album && spTrack.album.images && spTrack.album.images[0])
+                  ? spTrack.album.images[0].url : '';
+                applyResolvedToCatalog({
+                  audioUrl: spTrack.preview_url || '',
+                  uri: spTrack.uri || '',
+                  spotifyId: spTrack.id || '',
+                  durationSec: spTrack.duration_ms ? Math.round(spTrack.duration_ms / 1000) : null,
+                  cover: spCover
+                });
+                if (typeof spotifySdkDeviceId !== 'undefined' && spotifySdkDeviceId && spTrack.uri) {
+                  return spTrack.uri;
+                }
+                if (spTrack.preview_url) {
+                  return spTrack.preview_url;
+                }
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Spotify track resolution notice:', e);
+      }
+
+      // 3. Official public catalog preview fallback (iTunes Search API)
+      try {
+        const q = encodeURIComponent(`${bandName} ${songTitle}`);
+        const itRes = await fetch(`https://itunes.apple.com/search?term=${q}&entity=song&limit=3`);
+        if (itRes.ok) {
+          const itJson = await itRes.json();
+          const hit = (itJson.results || []).find(r => r.previewUrl);
+          if (hit && hit.previewUrl) {
+            const art = hit.artworkUrl100 ? hit.artworkUrl100.replace('100x100bb', '600x600bb') : '';
+            applyResolvedToCatalog({
+              audioUrl: hit.previewUrl,
+              durationSec: hit.trackTimeMillis ? Math.round(hit.trackTimeMillis / 1000) : null,
+              cover: art
+            });
+            return hit.previewUrl;
+          }
+        }
+      } catch (e) {
+        console.warn('Public preview fallback notice:', e);
+      }
+
       return null;
     }
 
@@ -9478,7 +9645,10 @@
             }
           }
         }
-        // Pure voice intro narrated by Eddie (no background music)
+        // Pre-resolve original song from Spotify/catalog while story is playing
+        if (item.relatedSongId) {
+          resolveFullSongForTrack(item.relatedSongId, item.songTitle, item.bandName).catch(() => {});
+        }
         const srcUrl = (window.__eddieAudioCache && window.__eddieAudioCache[item.pairId]) || item.audioUrl;
         spotifyAudio.src = srcUrl;
         spotifyAudio.currentTime = 0;
@@ -9487,35 +9657,59 @@
         // Normal song unmodified from Spotify (reproduced 100% complete)
         let directAudioUrl = item.audioUrl || item.fileUrl || item.previewUrl || item._resolvedAudioUrl || null;
 
+        const playResolvedResult = (resolved) => {
+          if (!isDjEddieActive || djEddieIndex !== index) return;
+          if (resolved && !String(resolved).startsWith('spotify:')) {
+            item.audioUrl = resolved;
+            item.fileUrl = resolved;
+            item._resolvedAudioUrl = resolved;
+            spotifyAudio.src = resolved;
+            spotifyAudio.currentTime = 0;
+            spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play full track notice:', e));
+          } else if (spotifySdkDeviceId && (item.uri || (resolved && String(resolved).startsWith('spotify:')))) {
+            const targetUri = item.uri || resolved;
+            getValidSpotifyToken().then(t => {
+              if (t) {
+                fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+                  method: 'PUT',
+                  headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ uris: [targetUri] })
+                }).then(() => updatePlayUI(true)).catch(() => {});
+              }
+            });
+          } else {
+            showAppToast({
+              title: 'Conecta Spotify para pista completa',
+              desc: `No se encontró audio directo para «${item.songTitle}». Conecta tu cuenta de Spotify arriba para reproducirla completa.`,
+              type: 'info',
+              icon: '🟢',
+              duration: 5000
+            });
+          }
+        };
+
         if (directAudioUrl) {
           spotifyAudio.src = directAudioUrl;
           spotifyAudio.currentTime = 0;
           spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play notice:', e));
+        } else if (spotifySdkDeviceId && item.uri) {
+          playResolvedResult(item.uri);
         } else {
           showAppToast({
-            title: 'Cargando pista completa',
-            desc: `Obteniendo «${item.songTitle}» de Spotify...`,
+            title: 'Cargando canción original',
+            desc: `Buscando «${item.songTitle}» de ${item.bandName} en Spotify...`,
             type: 'info',
             icon: '🎵',
-            duration: 4000
+            duration: 3500
           });
-          resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(fullUrl => {
-            if (fullUrl && isDjEddieActive && djEddieIndex === index) {
-              item.audioUrl = fullUrl;
-              item.fileUrl = fullUrl;
-              item._resolvedAudioUrl = fullUrl;
-              spotifyAudio.src = fullUrl;
-              spotifyAudio.currentTime = 0;
-              spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play full track notice:', e));
-            }
-          });
+          resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(playResolvedResult);
         }
 
         const isFullFile = directAudioUrl && directAudioUrl.includes('audio/full_');
         if (directAudioUrl && !isFullFile) {
           // Resolve full song file in background and seamlessly continue full track
           resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(fullUrl => {
-            if (fullUrl && isDjEddieActive && djEddieIndex === index) {
+            if (fullUrl && !String(fullUrl).startsWith('spotify:') && isDjEddieActive && djEddieIndex === index) {
               const curPos = spotifyAudio.currentTime;
               const wasPlaying = !spotifyAudio.paused;
               item.audioUrl = fullUrl;
@@ -11674,6 +11868,7 @@
 
     function initSpotifyWebPlaybackSDK() {
       if (window.Spotify || document.getElementById('spotify-player-sdk-script')) return;
+      let sdkActiveTrackUri = null;
       window.onSpotifyWebPlaybackSDKReady = () => {
         spotifySdkPlayer = new window.Spotify.Player({
           name: 'Rock Radio Web Player',
@@ -11690,7 +11885,25 @@
         });
 
         spotifySdkPlayer.addListener('player_state_changed', (state) => {
-          if (!state || GlobalAudioPlayer.source !== 'spotify') return;
+          const isDjSongSdk = GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive && djEddieQueue[djEddieIndex] && !djEddieQueue[djEddieIndex].isIntro;
+          if (!state || (GlobalAudioPlayer.source !== 'spotify' && !isDjSongSdk)) return;
+          if (!state.paused && state.position > 500 && state.track_window && state.track_window.current_track) {
+            sdkActiveTrackUri = state.track_window.current_track.uri;
+          }
+          const finishedNaturally = state.paused && state.position === 0 && sdkActiveTrackUri &&
+            state.track_window && Array.isArray(state.track_window.previous_tracks) &&
+            state.track_window.previous_tracks.some(t => t.uri === sdkActiveTrackUri);
+          if (finishedNaturally) {
+            sdkActiveTrackUri = null;
+            GlobalAudioPlayer.spotifyIsPlaying = false;
+            stopSpotifyProgressSimulation();
+            if (isDjSongSdk) {
+              nextDjEddieTrack();
+            } else {
+              GlobalAudioPlayer.next();
+            }
+            return;
+          }
           GlobalAudioPlayer.spotifyIsPlaying = !state.paused;
           updatePlayUI(!state.paused);
           if (state.duration > 0) {
