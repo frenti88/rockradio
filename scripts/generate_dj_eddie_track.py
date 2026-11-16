@@ -1542,7 +1542,7 @@ def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
         "equalizer=f=380:width_type=o:width=1.2:g=-1.5,"
         "equalizer=f=3000:width_type=o:width=1.1:g=2.0,"
         "deesser=i=0.25:m=0.5:f=0.5:s=o,"
-        "acompressor=threshold=-18dB:ratio=3:attack=15:release=120:makeup=1.2,"
+        "acompressor=threshold=-20dB:ratio=3.2:attack=8:release=90:makeup=1.8,"
         "silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,"
         "areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,areverse,"
         "afade=t=in:st=0:d=0.015,"
@@ -1558,14 +1558,14 @@ def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
 def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=15.0):
     """
     Pipeline de masterización cinematográfica en 3 párrafos y mezcla continua:
-    1. Procesa P1, P2 y P3 con la misma cadena vocal y normaliza su timbre/volumen base (~ -20.0 LUFS).
-    2. Aplica aumento progresivo en P3 (+2.8 dB con rampa raised-cosine + presencia 3.2 kHz sobre el cierre).
+    1. Procesa P1, P2 y P3 con la misma cadena vocal y normaliza su timbre/volumen base (~ -13.5 LUFS, +40% voz).
+    2. Aplica aumento progresivo en P3 (+2.6 dB con rampa raised-cosine + presencia 3.2 kHz sobre el cierre).
     3. Ensambla pausas exactas de 3.000s entre P1->P2 y P2->P3 mediante WAV PCM de precisión por muestra.
     4. Mezcla sobre una única base musical continua (0:00 a fin) sin reinicios ni cortes:
        - 0:00–0:05 música sola al 100%
        - Lookahead sidechain ducking (150ms anticipado, attack=200ms, release=450ms, reducción ~12–18dB)
        - Recuperación progresiva durante las dos pausas de 3.0s y transición final suave
-       - Limitador True Peak final a -1.0 dBTP
+       - Limitador True Peak final a -0.8 dBTP
     """
     p1_core = f"{tmp_prefix}_p1_core.wav"
     p2_core = f"{tmp_prefix}_p2_core.wav"
@@ -1586,16 +1586,16 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
     _process_paragraph_to_core_wav(p2_mp3, p2_core, 0.0)
     _process_paragraph_to_core_wav(p3_mp3, p3_core, 0.0)
 
-    # Igualar sonoridad base (LUFS) para coherencia de timbre entre los 3 segmentos
-    target_lufs = -17.5
+    # Igualar sonoridad base (LUFS) para coherencia de timbre entre los 3 segmentos (+40% volumen vocal)
+    target_lufs = -13.5
     p1_lufs = get_integrated_lufs(p1_core)
     p2_lufs = get_integrated_lufs(p2_core)
     p3_base_lufs = get_integrated_lufs(p3_core)
 
-    g1 = max(-4.0, min(8.0, target_lufs - p1_lufs))
-    g2 = max(-4.0, min(8.0, target_lufs - p2_lufs))
-    # Como P3 recibe un realce progresivo en el cierre, ajustamos su base ~0.6 dB abajo para mantener headroom limpio
-    g3 = max(-4.0, min(7.0, target_lufs - p3_base_lufs - 0.6))
+    g1 = max(-4.0, min(13.0, target_lufs - p1_lufs))
+    g2 = max(-4.0, min(13.0, target_lufs - p2_lufs))
+    # Como P3 recibe un realce progresivo en el cierre, ajustamos su base ~0.8 dB abajo para mantener headroom limpio
+    g3 = max(-4.0, min(12.0, target_lufs - p3_base_lufs - 0.8))
 
     _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
     _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
@@ -1633,9 +1633,10 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
 
     has_bed = os.path.exists(DEFAULT_MUSIC_BED) and os.path.getsize(DEFAULT_MUSIC_BED) > 10000
 
-    # Voz principal retrasada exactamente 5.000s (0:00-0:05 música sola)
+    # Voz principal retrasada exactamente 5.000s (0:00-0:05 música sola) con control limpio de picos
     delayed_voice_mix = (
         f"[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+        f"alimiter=limit=-1.2dB:attack=5:release=50:asc=true:level=false,"
         f"adelay={int(INTRO_MUSIC_SEC * 1000)}|{int(INTRO_MUSIC_SEC * 1000)},"
         f"apad=whole_dur={total_target_dur:.3f},"
         f"atrim=0:{total_target_dur:.3f}[vox_mix]"
@@ -1656,10 +1657,10 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
             f"[1:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
             f"atrim=start={bed_seek_sec}:duration={total_target_dur:.3f},asetpts=PTS-STARTPTS,"
             f"afade=t=in:st=0:d=0.40,afade=t=out:st={fade_out_start:.3f}:d={actual_fade_dur:.3f},"
-            f"highpass=f=95,lowpass=f=9000,volume=0.30[bed_pre];"
+            f"highpass=f=95,lowpass=f=9000,volume=0.336[bed_pre];"
             f"[bed_pre][vox_sc]sidechaincompress=threshold=0.014:ratio=3.2:attack=200:release=450:level_sc=2.8[bed_ducked];"
             f"[vox_mix][bed_ducked]amix=inputs=2:duration=first:normalize=0,"
-            f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
+            f"alimiter=limit=-0.8dB:attack=5:release=50:asc=true:level=false[aout]"
         )
         cmd = [
             FFMPEG_BIN, "-y",
@@ -1674,7 +1675,7 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
     else:
         filter_complex = (
             f"{delayed_voice_mix},"
-            f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
+            f"alimiter=limit=-0.8dB:attack=5:release=50:asc=true:level=false[aout]"
         )
         cmd = [
             FFMPEG_BIN, "-y",
@@ -1920,7 +1921,8 @@ async def run_story_pipeline(
     fish_voice=None,
     fish_model=None,
     out_mp3_path=None,
-    job_id=None
+    job_id=None,
+    song_duration_sec=None
 ):
     """
     Ejecuta el flujo completo de 15 pasos con validación estricta de <= 45.0s,
@@ -1935,6 +1937,8 @@ async def run_story_pipeline(
     meta_store = load_stories_metadata()
     story_key = make_story_key(band_name, song_title)
     existing_record = meta_store["stories"].get(story_key)
+    if song_duration_sec is None and existing_record:
+        song_duration_sec = existing_record.get("song_duration_sec")
 
     existing_pair_slug, existing_audio_url = find_existing_catalog_pair(band_name, song_title)
     if not out_mp3_path:
@@ -2176,6 +2180,8 @@ async def run_story_pipeline(
             "created_at": datetime.now(timezone.utc).isoformat(),
             "status": "completed"
         }
+        if song_duration_sec is not None:
+            record["song_duration_sec"] = song_duration_sec
 
         meta_store["stories"][story_key] = record
         meta_store["last_generated_key"] = story_key

@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    7,
     6,
     1,
     9,
@@ -9,6 +8,7 @@
     10,
     4,
     2,
+    3,
     3
   ],
   "last_generated_key": "duran duran::ordinary world",
@@ -32,26 +32,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 15.02,
-          "duration_sec": 10.022,
+          "end": 17.59,
+          "duration_sec": 12.594,
           "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Tom Sawyer. Todo comenzó en el invierno de 1980.",
           "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Tom Sawyer. Todo comenzó en el invierno de 1980."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 18.02,
-          "end": 26.34,
-          "duration_sec": 8.325,
+          "start": 20.59,
+          "end": 28.47,
+          "duration_sec": 7.879,
           "text": "En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
           "vocal_text": "[curious] En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 29.34,
-          "end": 39.11,
-          "duration_sec": 9.769,
+          "start": 31.47,
+          "end": 40.89,
+          "duration_sec": 9.425,
           "text": "Ese cruce de técnica y rebeldía selló su himno definitivo. ¡Sube el volumen y escuchemos a Tom Sawyer, de Rush, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Ese cruce de técnica y rebeldía selló su himno definitivo. [excited] ¡Sube el volumen y escuchemos a Tom Sawyer, de Rush, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -76,19 +76,19 @@
       "opening_text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Tom Sawyer.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 34.12,
-      "final_duration_sec": 40.36,
+      "voice_duration_sec": 35.9,
+      "final_duration_sec": 42.14,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -23.3,
-        "p2_lufs": -22.0,
-        "p3_base_lufs": -23.0,
+        "p1_lufs": -21.4,
+        "p2_lufs": -19.8,
+        "p3_base_lufs": -20.4,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.945
+        "p3_ramp_split_sec": 4.088
       },
       "audio_file": "audio/eddie_intro_rush_tom_sawyer.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -97,31 +97,31 @@
         },
         {
           "start": 5.0,
-          "end": 15.02,
+          "end": 17.59,
           "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Tom Sawyer. Todo comenzó en el invierno de 1980."
         },
         {
-          "start": 15.02,
-          "end": 18.02,
+          "start": 17.59,
+          "end": 20.59,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 18.02,
-          "end": 26.34,
+          "start": 20.59,
+          "end": 28.47,
           "text": "En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim."
         },
         {
-          "start": 26.34,
-          "end": 29.34,
+          "start": 28.47,
+          "end": 31.47,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 29.34,
-          "end": 39.11,
+          "start": 31.47,
+          "end": 40.89,
           "text": "Ese cruce de técnica y rebeldía selló su himno definitivo. ¡Sube el volumen y escuchemos a Tom Sawyer, de Rush, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:38:59.766410+00:00",
+      "created_at": "2026-11-16T20:13:08.698010+00:00",
       "status": "completed"
     },
     "tears for fears::everybody wants to rule the world": {
@@ -143,26 +143,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 15.25,
-          "duration_sec": 10.25,
+          "end": 16.31,
+          "duration_sec": 11.314,
           "text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Everybody Wants to Rule the World, de Tears for Fears. Un clásico que casi ni se graba.",
           "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Everybody Wants to Rule the World, de Tears for Fears. Un clásico que casi ni se graba."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 18.25,
-          "end": 28.65,
-          "duration_sec": 10.4,
+          "start": 19.31,
+          "end": 29.07,
+          "duration_sec": 9.764,
           "text": "Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
           "vocal_text": "[curious] Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 31.65,
-          "end": 42.0,
-          "duration_sec": 10.353,
+          "start": 32.07,
+          "end": 43.24,
+          "duration_sec": 11.17,
           "text": "Aquella sesión improvisada alcanzó el número uno mundial. ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Aquella sesión improvisada alcanzó el número uno mundial. [excited] ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -187,19 +187,19 @@
       "opening_text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Everybody Wants to Rule the World, de Tears for Fears.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 37.0,
-      "final_duration_sec": 43.23,
+      "voice_duration_sec": 38.25,
+      "final_duration_sec": 44.49,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -23.1,
-        "p2_lufs": -23.0,
-        "p3_base_lufs": -21.8,
+        "p1_lufs": -20.6,
+        "p2_lufs": -20.9,
+        "p3_base_lufs": -19.9,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.133
+        "p3_ramp_split_sec": 3.934
       },
       "audio_file": "audio/eddie_intro_tff_everybody_wants_to_rule_the_world.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -208,31 +208,31 @@
         },
         {
           "start": 5.0,
-          "end": 15.25,
+          "end": 16.31,
           "text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Everybody Wants to Rule the World, de Tears for Fears. Un clásico que casi ni se graba."
         },
         {
-          "start": 15.25,
-          "end": 18.25,
+          "start": 16.31,
+          "end": 19.31,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 18.25,
-          "end": 28.65,
+          "start": 19.31,
+          "end": 29.07,
           "text": "Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde."
         },
         {
-          "start": 28.65,
-          "end": 31.65,
+          "start": 29.07,
+          "end": 32.07,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 31.65,
-          "end": 42.0,
+          "start": 32.07,
+          "end": 43.24,
           "text": "Aquella sesión improvisada alcanzó el número uno mundial. ¡Sube el volumen y escuchemos a Everybody Wants to Rule the World, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:39:22.263312+00:00",
+      "created_at": "2026-11-16T20:13:40.409931+00:00",
       "status": "completed"
     },
     "ac/dc::back in black": {
@@ -254,26 +254,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 14.7,
-          "duration_sec": 9.697,
+          "end": 15.64,
+          "duration_sec": 10.639,
           "text": "Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de Back in Black. Nacida tras el golpe más duro del grupo.",
           "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de Back in Black. Nacida tras el golpe más duro del grupo."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 17.7,
-          "end": 25.44,
-          "duration_sec": 7.738,
+          "start": 18.64,
+          "end": 27.03,
+          "duration_sec": 8.39,
           "text": "Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo.",
           "vocal_text": "[curious] Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 28.44,
-          "end": 38.23,
-          "duration_sec": 9.786,
+          "start": 30.03,
+          "end": 39.07,
+          "duration_sec": 9.038,
           "text": "Su respuesta fue un rugido eterno de hard rock. ¡Sube el volumen y escuchemos a Back in Black, de AC/DC, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Su respuesta fue un rugido eterno de hard rock. [excited] ¡Sube el volumen y escuchemos a Back in Black, de AC/DC, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -298,19 +298,19 @@
       "opening_text": "Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de Back in Black.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 33.22,
-      "final_duration_sec": 39.47,
+      "voice_duration_sec": 34.07,
+      "final_duration_sec": 40.31,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -23.6,
-        "p2_lufs": -21.6,
-        "p3_base_lufs": -23.3,
+        "p1_lufs": -21.6,
+        "p2_lufs": -20.3,
+        "p3_base_lufs": -20.5,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.206
+        "p3_ramp_split_sec": 3.164
       },
       "audio_file": "audio/eddie_intro_acdc_back_in_black.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -319,31 +319,31 @@
         },
         {
           "start": 5.0,
-          "end": 14.7,
+          "end": 15.64,
           "text": "Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de Back in Black. Nacida tras el golpe más duro del grupo."
         },
         {
-          "start": 14.7,
-          "end": 17.7,
+          "start": 15.64,
+          "end": 18.64,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 17.7,
-          "end": 25.44,
+          "start": 18.64,
+          "end": 27.03,
           "text": "Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo."
         },
         {
-          "start": 25.44,
-          "end": 28.44,
+          "start": 27.03,
+          "end": 30.03,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 28.44,
-          "end": 38.23,
+          "start": 30.03,
+          "end": 39.07,
           "text": "Su respuesta fue un rugido eterno de hard rock. ¡Sube el volumen y escuchemos a Back in Black, de AC/DC, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:39:40.438718+00:00",
+      "created_at": "2026-11-16T20:14:00.074345+00:00",
       "status": "completed"
     },
     "kiss::detroit rock city": {
@@ -365,26 +365,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 14.32,
-          "duration_sec": 9.32,
+          "end": 14.27,
+          "duration_sec": 9.274,
           "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a KISS. Una tragedia real llevada al estudio.",
           "vocal_text": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a KISS. Una tragedia real llevada al estudio."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 17.32,
-          "end": 25.4,
-          "duration_sec": 8.076,
+          "start": 17.27,
+          "end": 26.12,
+          "duration_sec": 8.851,
           "text": "En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto.",
           "vocal_text": "[curious] En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 28.4,
-          "end": 37.36,
-          "duration_sec": 8.959,
+          "start": 29.12,
+          "end": 39.28,
+          "duration_sec": 10.161,
           "text": "Desde entonces abre sus shows como un rito infaltable. ¡Sube el volumen y escuchemos a Detroit Rock City, de KISS, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Desde entonces abre sus shows como un rito infaltable. [excited] ¡Sube el volumen y escuchemos a Detroit Rock City, de KISS, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -409,19 +409,19 @@
       "opening_text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a KISS.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 32.36,
-      "final_duration_sec": 38.58,
+      "voice_duration_sec": 34.29,
+      "final_duration_sec": 40.52,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -25.2,
-        "p2_lufs": -23.0,
-        "p3_base_lufs": -22.8,
+        "p1_lufs": -21.7,
+        "p2_lufs": -19.2,
+        "p3_base_lufs": -20.3,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.328
+        "p3_ramp_split_sec": 3.554
       },
       "audio_file": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -430,31 +430,31 @@
         },
         {
           "start": 5.0,
-          "end": 14.32,
+          "end": 14.27,
           "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a KISS. Una tragedia real llevada al estudio."
         },
         {
-          "start": 14.32,
-          "end": 17.32,
+          "start": 14.27,
+          "end": 17.27,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 17.32,
-          "end": 25.4,
+          "start": 17.27,
+          "end": 26.12,
           "text": "En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto."
         },
         {
-          "start": 25.4,
-          "end": 28.4,
+          "start": 26.12,
+          "end": 29.12,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 28.4,
-          "end": 37.36,
+          "start": 29.12,
+          "end": 39.28,
           "text": "Desde entonces abre sus shows como un rito infaltable. ¡Sube el volumen y escuchemos a Detroit Rock City, de KISS, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:40:00.169304+00:00",
+      "created_at": "2026-11-16T20:14:20.056490+00:00",
       "status": "completed"
     },
     "queen::radio ga ga": {
@@ -476,26 +476,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 15.98,
-          "duration_sec": 10.979,
+          "end": 17.04,
+          "duration_sec": 12.038,
           "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros.",
           "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 18.98,
-          "end": 28.72,
-          "duration_sec": 9.74,
+          "start": 20.04,
+          "end": 30.72,
+          "duration_sec": 10.678,
           "text": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
           "vocal_text": "[curious] En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 31.72,
-          "end": 41.1,
-          "duration_sec": 9.384,
+          "start": 33.72,
+          "end": 42.99,
+          "duration_sec": 9.275,
           "text": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Su coro de palmas sincronizadas hizo historia en Live Aid. [excited] ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -520,19 +520,19 @@
       "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 36.1,
-      "final_duration_sec": 42.34,
+      "voice_duration_sec": 37.99,
+      "final_duration_sec": 44.23,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -25.8,
-        "p2_lufs": -24.2,
-        "p3_base_lufs": -23.5,
+        "p1_lufs": -21.2,
+        "p2_lufs": -21.4,
+        "p3_base_lufs": -19.1,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.653
+        "p3_ramp_split_sec": 3.989
       },
       "audio_file": "audio/eddie_intro_queen_radio_ga_ga.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -541,31 +541,31 @@
         },
         {
           "start": 5.0,
-          "end": 15.98,
+          "end": 17.04,
           "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros."
         },
         {
-          "start": 15.98,
-          "end": 18.98,
+          "start": 17.04,
+          "end": 20.04,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 18.98,
-          "end": 28.72,
+          "start": 20.04,
+          "end": 30.72,
           "text": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV."
         },
         {
-          "start": 28.72,
-          "end": 31.72,
+          "start": 30.72,
+          "end": 33.72,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 31.72,
-          "end": 41.1,
+          "start": 33.72,
+          "end": 42.99,
           "text": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:54:49.490710+00:00",
+      "created_at": "2026-11-16T20:14:43.496953+00:00",
       "status": "completed",
       "song_duration_sec": 348
     },
@@ -588,26 +588,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 15.35,
-          "duration_sec": 10.35,
+          "end": 16.44,
+          "duration_sec": 11.442,
           "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine.",
           "vocal_text": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 18.35,
-          "end": 30.09,
-          "duration_sec": 11.745,
+          "start": 19.44,
+          "end": 30.7,
+          "duration_sec": 11.261,
           "text": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
           "vocal_text": "[curious] En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 33.09,
-          "end": 42.23,
-          "duration_sec": 9.137,
+          "start": 33.7,
+          "end": 43.39,
+          "duration_sec": 9.689,
           "text": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] La alianza con el cine llevó al grupo a lo más alto de MTV. [excited] ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -632,19 +632,19 @@
       "opening_text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 37.23,
-      "final_duration_sec": 43.47,
+      "voice_duration_sec": 38.39,
+      "final_duration_sec": 44.64,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -24.1,
-        "p2_lufs": -23.2,
-        "p3_base_lufs": -24.0,
+        "p1_lufs": -21.2,
+        "p2_lufs": -20.9,
+        "p3_base_lufs": -20.0,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 3.089
+        "p3_ramp_split_sec": 3.865
       },
       "audio_file": "audio/eddie_intro_dokken_dream_warriors.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -653,31 +653,31 @@
         },
         {
           "start": 5.0,
-          "end": 15.35,
+          "end": 16.44,
           "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine."
         },
         {
-          "start": 15.35,
-          "end": 18.35,
+          "start": 16.44,
+          "end": 19.44,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 18.35,
-          "end": 30.09,
+          "start": 19.44,
+          "end": 30.7,
           "text": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip."
         },
         {
-          "start": 30.09,
-          "end": 33.09,
+          "start": 30.7,
+          "end": 33.7,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 33.09,
-          "end": 42.23,
+          "start": 33.7,
+          "end": 43.39,
           "text": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:55:13.241511+00:00",
+      "created_at": "2026-11-16T20:15:09.041324+00:00",
       "status": "completed",
       "song_duration_sec": 282
     },
@@ -700,26 +700,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 17.04,
-          "duration_sec": 12.039,
+          "end": 16.35,
+          "duration_sec": 11.35,
           "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia.",
           "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 20.04,
-          "end": 29.2,
-          "duration_sec": 9.161,
+          "start": 19.35,
+          "end": 28.38,
+          "duration_sec": 9.027,
           "text": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
           "vocal_text": "[curious] Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 32.2,
-          "end": 40.75,
-          "duration_sec": 8.553,
+          "start": 31.38,
+          "end": 41.66,
+          "duration_sec": 10.276,
           "text": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] El título reflejó la emoción imparable de aquel regreso. [excited] ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -744,19 +744,19 @@
       "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 35.75,
-      "final_duration_sec": 42.0,
+      "voice_duration_sec": 36.65,
+      "final_duration_sec": 42.89,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -23.1,
-        "p2_lufs": -24.2,
-        "p3_base_lufs": -22.2,
+        "p1_lufs": -21.6,
+        "p2_lufs": -21.2,
+        "p3_base_lufs": -19.4,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 2.982
+        "p3_ramp_split_sec": 3.828
       },
       "audio_file": "audio/eddie_intro_def_leppard_hysteria.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -765,31 +765,31 @@
         },
         {
           "start": 5.0,
-          "end": 17.04,
+          "end": 16.35,
           "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia."
         },
         {
-          "start": 17.04,
-          "end": 20.04,
+          "start": 16.35,
+          "end": 19.35,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 20.04,
-          "end": 29.2,
+          "start": 19.35,
+          "end": 28.38,
           "text": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange."
         },
         {
-          "start": 29.2,
-          "end": 32.2,
+          "start": 28.38,
+          "end": 31.38,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 32.2,
-          "end": 40.75,
+          "start": 31.38,
+          "end": 41.66,
           "text": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:55:33.763950+00:00",
+      "created_at": "2026-11-16T20:15:32.566658+00:00",
       "status": "completed"
     },
     "the cars::heartbeat city": {
@@ -811,26 +811,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 15.69,
-          "duration_sec": 10.688,
+          "end": 16.51,
+          "duration_sec": 11.506,
           "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada.",
           "vocal_text": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 18.69,
-          "end": 29.35,
-          "duration_sec": 10.663,
+          "start": 19.51,
+          "end": 31.21,
+          "duration_sec": 11.702,
           "text": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
           "vocal_text": "[curious] En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 32.35,
-          "end": 41.48,
-          "duration_sec": 9.129,
+          "start": 34.21,
+          "end": 43.77,
+          "duration_sec": 9.557,
           "text": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] El tema dio nombre al disco más ambicioso de la banda. [excited] ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -839,7 +839,7 @@
         "intro_music": 5.0,
         "pause_after_p1": 3.0,
         "pause_after_p2": 3.0,
-        "outro_fade": 1.15
+        "outro_fade": 0.785
       },
       "historical_info": "Álbum Heartbeat City (1984), escrita por Ric Ocasek y producida por Mutt Lange en Battery Studios de Londres; interpretada en Live Aid (1985).",
       "expressive_instructions": {
@@ -855,19 +855,19 @@
       "opening_text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 36.48,
-      "final_duration_sec": 42.71,
+      "voice_duration_sec": 38.77,
+      "final_duration_sec": 44.64,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -24.5,
-        "p2_lufs": -23.6,
-        "p3_base_lufs": -21.7,
+        "p1_lufs": -20.2,
+        "p2_lufs": -20.2,
+        "p3_base_lufs": -20.8,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 2.839
+        "p3_ramp_split_sec": 3.179
       },
       "audio_file": "audio/eddie_intro_the_cars_heartbeat_city.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -876,31 +876,31 @@
         },
         {
           "start": 5.0,
-          "end": 15.69,
+          "end": 16.51,
           "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada."
         },
         {
-          "start": 15.69,
-          "end": 18.69,
+          "start": 16.51,
+          "end": 19.51,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 18.69,
-          "end": 29.35,
+          "start": 19.51,
+          "end": 31.21,
           "text": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable."
         },
         {
-          "start": 29.35,
-          "end": 32.35,
+          "start": 31.21,
+          "end": 34.21,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 32.35,
-          "end": 41.48,
+          "start": 34.21,
+          "end": 43.77,
           "text": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:55:54.279337+00:00",
+      "created_at": "2026-11-16T20:15:56.146832+00:00",
       "status": "completed",
       "song_duration_sec": 271
     },
@@ -911,10 +911,10 @@
       "year": "1993",
       "cover": "img/albums/duran_duran_1993_wedding_album.jpg",
       "full_song_audio": null,
-      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
-      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. [curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. [emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial. Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. [curious] En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial. [emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
       "paragraph_1": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
-      "paragraph_2": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "paragraph_2": "En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial.",
       "paragraph_3": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
       "p3_resolution": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello.",
       "p3_closing": "¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
@@ -923,26 +923,26 @@
           "id": "paragraph_1",
           "role": "presentacion",
           "start": 5.0,
-          "end": 16.48,
-          "duration_sec": 11.483,
+          "end": 16.92,
+          "duration_sec": 11.916,
           "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
           "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa."
         },
         {
           "id": "paragraph_2",
           "role": "desarrollo",
-          "start": 19.48,
-          "end": 29.54,
-          "duration_sec": 10.06,
-          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
-          "vocal_text": "[curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial."
+          "start": 19.92,
+          "end": 28.6,
+          "duration_sec": 8.676,
+          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial.",
+          "vocal_text": "[curious] En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial."
         },
         {
           "id": "paragraph_3",
           "role": "desenlace_cierre",
-          "start": 32.54,
-          "end": 43.05,
-          "duration_sec": 10.514,
+          "start": 31.6,
+          "end": 42.37,
+          "duration_sec": 10.766,
           "text": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
           "vocal_text": "[emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!"
         }
@@ -961,25 +961,25 @@
         "paragraph_3": "[emotional] -> [excited]"
       },
       "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
-      "desarrollo": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "desarrollo": "En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial.",
       "cierre": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
       "opening_id": 3,
       "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran.",
       "fish_model": "s2.1-pro-free",
       "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
-      "voice_duration_sec": 38.06,
-      "final_duration_sec": 44.3,
+      "voice_duration_sec": 37.36,
+      "final_duration_sec": 43.6,
       "intro_music_sec": 5.0,
       "audio_metrics": {
-        "p1_lufs": -23.9,
-        "p2_lufs": -22.2,
-        "p3_base_lufs": -23.8,
+        "p1_lufs": -20.3,
+        "p2_lufs": -20.2,
+        "p3_base_lufs": -20.1,
         "closing_boost_db": 2.6,
-        "p3_ramp_split_sec": 4.179
+        "p3_ramp_split_sec": 4.1
       },
       "audio_file": "audio/eddie_intro_duran_duran_ordinary_world.mp3",
       "angle_index": 1,
-      "script_source": "curated_master",
+      "script_source": "voice_only_reuse",
       "lyrics_timings": [
         {
           "start": 0.0,
@@ -988,31 +988,31 @@
         },
         {
           "start": 5.0,
-          "end": 16.48,
+          "end": 16.92,
           "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa."
         },
         {
-          "start": 16.48,
-          "end": 19.48,
+          "start": 16.92,
+          "end": 19.92,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 19.48,
-          "end": 29.54,
-          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial."
+          "start": 19.92,
+          "end": 28.6,
+          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por su amigo David Miles, impulsando su regreso al top tres mundial."
         },
         {
-          "start": 29.54,
-          "end": 32.54,
+          "start": 28.6,
+          "end": 31.6,
           "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
         },
         {
-          "start": 32.54,
-          "end": 43.05,
+          "start": 31.6,
+          "end": 42.37,
           "text": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!"
         }
       ],
-      "created_at": "2026-11-16T18:56:16.573212+00:00",
+      "created_at": "2026-11-16T20:17:06.508600+00:00",
       "status": "completed",
       "song_duration_sec": 339
     }
