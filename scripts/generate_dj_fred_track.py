@@ -999,7 +999,7 @@ def select_closing_line(song_title, band_name, angle_idx=0):
     template = CLOSING_TEMPLATES[angle_idx % len(CLOSING_TEMPLATES)]
     return template.format(song=song_title, band=band_name)
 
-def get_master_eddie_script(song_title, band_name, album_name="", year="", angle=1, opening_text=None):
+def get_master_fred_script(song_title, band_name, album_name="", year="", angle=1, opening_text=None):
     """
     Construye el guion maestro estructurado en 3 párrafos claros y concisos
     (<= 45s totales considerando 5s intro + dos pausas musicales de 3s + transición final).
@@ -1156,7 +1156,7 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
             print(f"⚠️ [ROCK RADIO AI] Usando catálogo curado por: {e}", flush=True)
 
     if not p2_anecdote:
-        master = get_master_eddie_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
+        master = get_master_fred_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
         p1_hook = master["p1_hook"]
         p2_anecdote = master["paragraph_2"]
         p3_resolution = master["p3_resolution"]
@@ -1257,7 +1257,7 @@ condense_anecdote_text = condense_paragraph_text
 ENGLISH_PHONETICS = [
     (r'\bFred Rewind\b', 'Fred Riuáind'),
     (r'\bRock Radio\b', 'Rok Réidio'),
-    (r'\bDJ Fredd\b', 'Dí-yéi Fred'),
+    (r'\bDJ Fredd?\b', 'Dí-yéi Fred'),
     (r'\bRush\b', 'Rásh'),
     (r'\bTom Sawyer\b', 'Tom Sóyer'),
     (r'\bTears for Fears\b', 'Tíars for Fíars'),
@@ -1711,13 +1711,13 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
 # 9. INTEGRACIÓN SEGURA EN EL CATÁLOGO DEL REPRODUCTOR (index.html + Clones)
 # ==============================================================================
 def find_existing_catalog_pair(band_name, song_title):
-    """Busca un par existente en BASE_DJ_EDDIE_TRACKS por bandName y songTitle normalizados."""
+    """Busca un par existente en BASE_DJ_FRED_TRACKS por bandName y songTitle normalizados."""
     if not os.path.exists(INDEX_HTML_PATH):
         return None, None
     try:
         with open(INDEX_HTML_PATH, "r", encoding="utf-8") as f:
             html = f.read()
-        m_arr = re.search(r"const BASE_DJ_EDDIE_TRACKS\s*=\s*\[([\s\S]*?)\n\s*\];", html)
+        m_arr = re.search(r"const BASE_DJ_FRED_TRACKS\s*=\s*\[([\s\S]*?)\n\s*\];", html)
         if not m_arr:
             return None, None
         arr_body = m_arr.group(1)
@@ -1739,7 +1739,7 @@ def find_existing_catalog_pair(band_name, song_title):
 
 def update_player_catalog(story_record):
     """
-    Integra o actualiza la historia y canción en BASE_DJ_EDDIE_TRACKS dentro de index.html
+    Integra o actualiza la historia y canción en BASE_DJ_FRED_TRACKS dentro de index.html
     y sincroniza rock45.html, kiss.html y kiss-podcast.html sin tocar botones ni UI del reproductor.
     """
     if not os.path.exists(INDEX_HTML_PATH):
@@ -1858,14 +1858,14 @@ def update_player_catalog(story_record):
     }
     entries_to_write.append(song_obj)
 
-    # Locate BASE_DJ_EDDIE_TRACKS = [ ... ];
-    m_arr = re.search(r"(const BASE_DJ_EDDIE_TRACKS\s*=\s*\[)([\s\S]*?)(\n\s*\];)", html)
+    # Locate BASE_DJ_FRED_TRACKS = [ ... ];
+    m_arr = re.search(r"(const BASE_DJ_FRED_TRACKS\s*=\s*\[)([\s\S]*?)(\n\s*\];)", html)
     if not m_arr:
         return False
 
     arr_body = m_arr.group(2)
 
-    # Replace or insert each object cleanly inside BASE_DJ_EDDIE_TRACKS (keeping intro -> song paired)
+    # Replace or insert each object cleanly inside BASE_DJ_FRED_TRACKS (keeping intro -> song paired)
     for entry in entries_to_write:
         js_text = format_js_entry(entry)
         obj_pat = re.compile(
@@ -1889,10 +1889,10 @@ def update_player_catalog(story_record):
     new_html = html[:m_arr.start(2)] + arr_body + html[m_arr.end(2):]
 
     # Increment clean reset key so returning browsers pick up regenerated base story duration & lyrics
-    reset_m = re.search(r"dj_fredd_reset_v(\d+)_clean", new_html)
+    reset_m = re.search(r"dj_fred_reset_v(\d+)_clean", new_html)
     if reset_m:
         next_ver = int(reset_m.group(1)) + 1
-        new_html = re.sub(r"dj_fredd_reset_v\d+_clean", f"dj_fredd_reset_v{next_ver}_clean", new_html)
+        new_html = re.sub(r"dj_fred_reset_v\d+_clean", f"dj_fred_reset_v{next_ver}_clean", new_html)
 
     tmp_html = f"{INDEX_HTML_PATH}.tmp"
     with open(tmp_html, "w", encoding="utf-8") as f:
@@ -1946,7 +1946,7 @@ async def run_story_pipeline(
             out_mp3_path = os.path.join(PROJECT_ROOT, existing_audio_url)
         else:
             slug = existing_pair_slug or make_slug(band_name, song_title)
-            out_mp3_path = os.path.join(WORKSPACE_AUDIO_DIR, f"eddie_intro_{slug}.mp3")
+            out_mp3_path = os.path.join(WORKSPACE_AUDIO_DIR, f"fred_intro_{slug}.mp3")
 
     rel_audio_file = os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/")
 
@@ -2276,7 +2276,7 @@ async def execute_ai_command(command_text, engine=None, fish_voice=None, fish_mo
     return {"success": True, "status": "completed", "intent": intent, "record": rec}
 
 # Wrapper compatible con llamadas heredadas
-async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None, engine=None, fish_voice=None):
+async def build_fred_radio_narration(text, song_title="Rock Classic", band_name="Rock Band", out_mp3_path=None, job_id=None, engine=None, fish_voice=None):
     t_start = time.time()
     res_meta = resolve_song_metadata(song_title, band_name)
     md = res_meta.get("metadata", {}) if res_meta.get("resolved") else {}
@@ -2300,9 +2300,22 @@ async def build_eddie_radio_narration(text, song_title="Rock Classic", band_name
 # 11. SERVIDOR API LOCAL (Sin credenciales expuestas en el cliente)
 # ==============================================================================
 def run_server(port=5055):
-    class DjFreddAudioHandler(BaseHTTPRequestHandler):
+    MAX_BODY_BYTES = 65536
+
+    class DjFredAudioHandler(BaseHTTPRequestHandler):
+        def _allowed_origin(self):
+            origin = self.headers.get('Origin', '')
+            if re.match(r'^http://(localhost|127\.0\.0\.1)(:\d+)?$', origin):
+                return origin
+            if origin in ('https://www.rockradio.lat', 'https://rockradio.lat'):
+                return origin
+            return None
+
         def _set_cors(self):
-            self.send_header('Access-Control-Allow-Origin', '*')
+            allowed = self._allowed_origin()
+            if allowed:
+                self.send_header('Access-Control-Allow-Origin', allowed)
+                self.send_header('Vary', 'Origin')
             self.send_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
             self.send_header('Access-Control-Allow-Headers', 'Content-Type, Accept')
 
@@ -2310,6 +2323,7 @@ def run_server(port=5055):
             self.send_response(code)
             self._set_cors()
             self.send_header('Content-Type', 'application/json')
+            self.send_header('X-Content-Type-Options', 'nosniff')
             self.end_headers()
             self.wfile.write(json.dumps(payload, ensure_ascii=False).encode('utf-8'))
 
@@ -2337,27 +2351,38 @@ def run_server(port=5055):
                 self.end_headers()
 
         def do_POST(self):
-            length = int(self.headers.get('Content-Length', 0))
+            try:
+                length = int(self.headers.get('Content-Length', 0))
+            except (TypeError, ValueError):
+                self._send_json(400, {'success': False, 'error': 'Content-Length inválido'})
+                return
+            if length < 0 or length > MAX_BODY_BYTES:
+                self._send_json(413, {'success': False, 'error': 'Cuerpo de solicitud excede el límite permitido'})
+                return
             body = self.rfile.read(length) if length > 0 else b'{}'
             try:
                 data = json.loads(body.decode('utf-8')) if body else {}
             except Exception:
                 self._send_json(400, {'success': False, 'error': 'JSON inválido'})
                 return
+            if not isinstance(data, dict):
+                self._send_json(400, {'success': False, 'error': 'Formato JSON inválido'})
+                return
 
             if self.path in ('/api/execute_command', '/api/command'):
-                cmd_text = data.get('command') or data.get('prompt') or ''
+                cmd_text = str(data.get('command') or data.get('prompt') or '')[:500]
                 try:
                     res = asyncio.run(execute_ai_command(cmd_text))
                     self._send_json(200 if res.get('success') else 422, res)
                 except Exception as e:
-                    self._send_json(500, {'success': False, 'status': 'error', 'error': str(e)})
+                    print(f"❌ [API execute_command] Error interno: {e}", flush=True)
+                    self._send_json(500, {'success': False, 'status': 'error', 'error': 'Error interno en el servidor'})
 
             elif self.path == '/api/generate_audio':
-                song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
-                band_name = data.get('band_name') or data.get('bandName') or 'Banda'
-                album_name = data.get('album', '')
-                year = data.get('year', '')
+                song_title = str(data.get('song_title') or data.get('songTitle') or 'Canción de Rock')[:120]
+                band_name = str(data.get('band_name') or data.get('bandName') or 'Banda')[:120]
+                album_name = str(data.get('album', ''))[:120]
+                year = str(data.get('year', ''))[:16]
                 try:
                     rec = asyncio.run(run_story_pipeline(
                         song_title, band_name, album_name=album_name, year=year, mode="generate"
@@ -2376,21 +2401,25 @@ def run_server(port=5055):
                         'full_script': rec["visible_script"]
                     })
                 except Exception as e:
-                    self._send_json(500, {'success': False, 'error': str(e)})
+                    print(f"❌ [API generate_audio] Error interno: {e}", flush=True)
+                    self._send_json(500, {'success': False, 'error': 'Error interno al generar audio'})
 
             elif self.path in ('/api/generate_story_text', '/api/story_text'):
-                song_title = data.get('song_title') or data.get('songTitle') or 'Canción de Rock'
-                band_name = data.get('band_name') or data.get('bandName') or 'Banda'
-                album_name = data.get('album', '')
-                year = data.get('year', '')
-                angle = int(data.get('angle', 1))
+                song_title = str(data.get('song_title') or data.get('songTitle') or 'Canción de Rock')[:120]
+                band_name = str(data.get('band_name') or data.get('bandName') or 'Banda')[:120]
+                album_name = str(data.get('album', ''))[:120]
+                year = str(data.get('year', ''))[:16]
+                try:
+                    angle = max(1, min(100, int(data.get('angle', 1))))
+                except (TypeError, ValueError):
+                    angle = 1
                 res = generate_ai_story_script(song_title, band_name, album_name, year, angle)
                 self._send_json(200, res)
             else:
                 self._send_json(404, {'error': 'Endpoint no encontrado'})
 
-    server = ThreadingHTTPServer(('0.0.0.0', port), DjFreddAudioHandler)
-    print(f"🚀 [ROCK RADIO AI] Servidor en http://0.0.0.0:{port} (Fish Audio {DEFAULT_FISH_MODEL} | Voz {DEFAULT_FISH_VOICE})", flush=True)
+    server = ThreadingHTTPServer(('127.0.0.1', port), DjFredAudioHandler)
+    print(f"🚀 [ROCK RADIO AI] Servidor en http://127.0.0.1:{port} (Fish Audio {DEFAULT_FISH_MODEL} | Voz {DEFAULT_FISH_VOICE})", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -1,6 +1,6 @@
-# 🎸 Rock Radio en 45 Segundos
+# 🎸 Rock Radio — Fred Rewind
 
-Plataforma interactiva de audio cápsulas de 45 segundos con diseño fiel al reproductor de escritorio de Spotify. Conecta la energía del Hard Rock, Heavy Metal y Rock Clásico con narración profesional de locutores y sincronización visual en tiempo real.
+Plataforma interactiva de historias musicales en 45 segundos con diseño estilo Spotify Desktop. Conecta la historia del Rock Clásico, Hard Rock y Heavy Metal con narración de **DJ Fred** (*"De vuelta al pasado"*) antes de cada canción original completa.
 
 🌐 **Sitio Web:** [https://www.rockradio.lat](https://www.rockradio.lat)
 
@@ -8,21 +8,16 @@ Plataforma interactiva de audio cápsulas de 45 segundos con diseño fiel al rep
 
 ## ⚡ Características Principales
 
-- **Interfaz Estilo Spotify Desktop:** Reproductor en barra inferior, barra lateral de navegación, vista de artista con cabecera dinámica, lista de episodios/pistas y panel derecho de historia sincronizada.
-- **Narración DJ con Auto-Ducking:** Cápsulas de 45 segundos con música de fondo atenuada automáticamente durante la locución.
-- **Múltiples Voces Profesionales:**
-  - 🎙️ **Jorge** (Voz Principal Enérgica)
-  - 🎙️ **Dalia** (Voz Femenina Dinámica)
-  - 🎙️ **Alonso** (Voz Clásica Radial)
-- **Historia Sincronizada:** Letras e historia narrada palabra por palabra con resaltado dinámico sincronizado al audio.
-- **Discografía Real & Integrantes:** Datos verificados de álbumes con carátulas oficiales en alta resolución e integrantes con fotografías reales.
-- **Sección de Configuración:** Selección de locutor preferido y personalización del efecto ducking.
-- **Controles de Audio Avanzados:** Mute/unmute desde el icono de volumen, barra deslizadora reactiva y atajos de teclado.
+- **Interfaz Estilo Spotify Desktop & PWA:** Reproductor unificado en barra inferior, barra lateral de navegación, estanterías dinámicas de Spotify, vista de artista y panel de historia sincronizada.
+- **Fred Rewind (DJ Fred):** Narración en 3 párrafos con pausas instrumentales de 3 segundos, música de fondo continua con auto-ducking (-14 dB) y cierre progresivo de hasta 45 segundos.
+- **Integración con Spotify Web API & SDK (OAuth PKCE):** Búsqueda en el catálogo de Spotify, playlists del usuario, canciones favoritas y reproducción de pistas originales después de cada historia.
+- **Generación con IA & Fish Audio:** Investigación de anécdotas verificables con OpenAI (`gpt-4o-mini`) y síntesis de voz de DJ Fred con Fish Audio desde [`scripts/generate_dj_fred_track.py`](scripts/generate_dj_fred_track.py).
+- **Discografía Real & Carátulas Oficiales:** Portadas auténticas de álbumes e integrantes con fotografías reales.
 
 ---
 
 ## 🛠️ Tecnologías
 
-- **Frontend:** HTML5, CSS3 moderno con variables personalizadas Spotify, JavaScript modular (ES6+).
-- **Audio:** Web Audio API, MP3 estéreo optimizado para streaming de baja latencia.
-- **Hosting & CDN:** Vercel Edge Network.
+- **Frontend:** HTML5, CSS3, JavaScript (ES6+), Service Worker PWA.
+- **Backend / Generación:** Node.js serverless ([`api/generate_story_text.js`](api/generate_story_text.js)), Python + FFmpeg + Fish Audio + OpenAI ([`scripts/generate_dj_fred_track.py`](scripts/generate_dj_fred_track.py)).
+- **Hosting & CDN:** Vercel.

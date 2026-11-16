@@ -86,7 +86,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 4.088
       },
-      "audio_file": "audio/eddie_intro_rush_tom_sawyer.mp3",
+      "audio_file": "audio/fred_intro_rush_tom_sawyer.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -197,7 +197,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.934
       },
-      "audio_file": "audio/eddie_intro_tff_everybody_wants_to_rule_the_world.mp3",
+      "audio_file": "audio/fred_intro_tff_everybody_wants_to_rule_the_world.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -308,7 +308,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.164
       },
-      "audio_file": "audio/eddie_intro_acdc_back_in_black.mp3",
+      "audio_file": "audio/fred_intro_acdc_back_in_black.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -419,7 +419,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.554
       },
-      "audio_file": "audio/eddie_intro_kiss_detroit_rock_city.mp3",
+      "audio_file": "audio/fred_intro_kiss_detroit_rock_city.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -530,7 +530,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.989
       },
-      "audio_file": "audio/eddie_intro_queen_radio_ga_ga.mp3",
+      "audio_file": "audio/fred_intro_queen_radio_ga_ga.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -642,7 +642,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.865
       },
-      "audio_file": "audio/eddie_intro_dokken_dream_warriors.mp3",
+      "audio_file": "audio/fred_intro_dokken_dream_warriors.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -754,7 +754,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.828
       },
-      "audio_file": "audio/eddie_intro_def_leppard_hysteria.mp3",
+      "audio_file": "audio/fred_intro_def_leppard_hysteria.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -865,7 +865,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 3.179
       },
-      "audio_file": "audio/eddie_intro_the_cars_heartbeat_city.mp3",
+      "audio_file": "audio/fred_intro_the_cars_heartbeat_city.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [
@@ -977,7 +977,7 @@
         "closing_boost_db": 2.6,
         "p3_ramp_split_sec": 4.1
       },
-      "audio_file": "audio/eddie_intro_duran_duran_ordinary_world.mp3",
+      "audio_file": "audio/fred_intro_duran_duran_ordinary_world.mp3",
       "angle_index": 1,
       "script_source": "voice_only_reuse",
       "lyrics_timings": [

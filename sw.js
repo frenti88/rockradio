@@ -1,12 +1,12 @@
 // Rock Radio — Fred Rewind Service Worker (PWA)
-const CACHE_NAME = 'rockradio-pwa-v1';
+const CACHE_NAME = 'rockradio-pwa-v2';
 
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
-  '/manifest.json',
   '/favicon.ico',
+  '/icons/favicon.png',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
   '/icons/icon-180.png',
@@ -19,7 +19,6 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Use individual caching so missing non-critical assets don't fail install
       return Promise.allSettled(
         PRECACHE_ASSETS.map((url) =>
           cache.add(url).catch((err) => {
@@ -38,7 +37,6 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((name) => {
           if (name !== CACHE_NAME) {
-            console.log('[SW] Clearing old cache:', name);
             return caches.delete(name);
           }
         })
@@ -50,17 +48,13 @@ self.addEventListener('activate', (event) => {
 // Fetch Event
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-
-  // Only handle GET requests
-  if (req.method !== 'GET') {
-    return;
-  }
+  if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // 1. Audio files & range requests: pass through directly to network
-  // Streaming audio with HTTP 206 Partial Content should not be intercepted
+  // Never cache API calls or streaming audio range requests
   if (
+    url.pathname.startsWith('/api/') ||
     url.pathname.endsWith('.mp3') ||
     url.pathname.includes('/audio/') ||
     req.headers.has('range')
@@ -68,7 +62,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. Navigation requests (HTML pages): Network-first with Cache fallback
+  // Navigation requests (HTML pages): Network-first with Cache fallback
   if (req.mode === 'navigate') {
     event.respondWith(
       fetch(req)
@@ -80,15 +74,13 @@ self.addEventListener('fetch', (event) => {
           return networkResp;
         })
         .catch(() => {
-          return caches.match('/index.html').then((cachedHtml) => {
-            return cachedHtml || caches.match('/');
-          });
+          return caches.match('/index.html').then((cachedHtml) => cachedHtml || caches.match('/'));
         })
     );
     return;
   }
 
-  // 3. Static assets & same-origin requests: Stale-While-Revalidate
+  // Static assets & same-origin requests: Stale-While-Revalidate
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(req).then((cachedResp) => {
@@ -108,7 +100,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 4. External resources (Google Fonts, CDN images): Cache-first with network fallback
+  // External Google Fonts: Cache-first with network fallback
   if (url.hostname.includes('googleapis.com') || url.hostname.includes('gstatic.com')) {
     event.respondWith(
       caches.match(req).then((cachedResp) => {
@@ -122,11 +114,9 @@ self.addEventListener('fetch', (event) => {
         }).catch(() => cachedResp);
       })
     );
-    return;
   }
 });
 
-// Listen for message events (e.g. update prompts)
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();

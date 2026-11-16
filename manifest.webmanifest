@@ -2,7 +2,7 @@
   "id": "/?source=pwa",
   "name": "Rock Radio — Fred Rewind",
   "short_name": "Rock Radio",
-  "description": "Fred Rewind con DJ Fredd — Historias del rock clásico y reproductor de alta fidelidad.",
+  "description": "Fred Rewind con DJ Fred — Historias del rock clásico y reproductor de alta fidelidad.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -45,7 +45,7 @@
     {
       "name": "Fred Rewind",
       "short_name": "Fred Rewind",
-      "description": "Historias y narraciones de DJ Fredd",
+      "description": "Historias y narraciones de DJ Fred",
       "url": "/?jump=fred-rewind&source=pwa",
       "icons": [
         {
