@@ -7228,15 +7228,15 @@
       if (modalTrackFormatGroup) modalTrackFormatGroup.style.display = 'none';
 
       // Update Global Player State
+      GlobalAudioPlayer.playbackSeq++;
       GlobalAudioPlayer.source = isDjEddieActive ? 'djeddie' : 'artist';
+      GlobalAudioPlayer.activeEngine = 'audio';
       GlobalAudioPlayer.spotifyIsPlaying = false;
       stopSpotifyProgressSimulation();
       if (spotifyIframeController) {
         try { spotifyIframeController.pause(); } catch(e){}
       }
-      if (spotifySdkPlayer) {
-        try { spotifySdkPlayer.pause(); } catch(e){}
-      }
+      GlobalAudioPlayer.stopSpotifySdk();
 
       // Update Player Bar
       const barThumbImg = document.getElementById('barThumbImg');
@@ -8511,7 +8511,8 @@
       const applyResolvedToCatalog = (payload) => {
         const updateItem = (t) => {
           if (!t) return;
-          if (payload.audioUrl) {
+          const hasLocalFull = t.audioUrl && String(t.audioUrl).includes('audio/full_');
+          if (payload.audioUrl && (!hasLocalFull || String(payload.audioUrl).includes('audio/full_'))) {
             t.audioUrl = payload.audioUrl;
             t.fileUrl = payload.audioUrl;
             t._resolvedAudioUrl = payload.audioUrl;
@@ -9268,7 +9269,9 @@
       }
       catalog.forEach((item, idx) => {
         const isCurrentTrack = (isDjEddieActive && djEddieIndex === idx);
-        const isAudioActive = !spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0);
+        const isAudioActive = (GlobalAudioPlayer.activeEngine === 'sdk')
+          ? GlobalAudioPlayer.spotifyIsPlaying
+          : (!spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0));
         const isPlayingNow = isCurrentTrack && isAudioActive;
 
         const row = document.createElement('div');
@@ -9605,11 +9608,13 @@
       isDjEddieActive = true;
 
       const item = djEddieQueue[djEddieIndex];
+      const seqToken = ++GlobalAudioPlayer.playbackSeq;
 
       GlobalAudioPlayer.source = 'djeddie';
       GlobalAudioPlayer.spotifyIsPlaying = false;
       stopSpotifyProgressSimulation();
-      if (spotifySdkPlayer) { try { spotifySdkPlayer.pause(); } catch(e){} }
+      GlobalAudioPlayer.stopHtmlAudio();
+      GlobalAudioPlayer.stopSpotifySdk();
 
       // Update Player Footer Bar
       const barThumbImg = document.getElementById('barThumbImg');
@@ -9644,7 +9649,7 @@
           : `Sonando: ${item.songTitle} — ${item.bandName} (Canción completa)`;
       }
 
-      // Audio Source Selection:
+      // Audio Source Selection (strictly single-engine: HTML <audio> OR Spotify SDK, never both):
       if (item.isIntro) {
         if (!item.hasRealAudio || !item.audioUrl) {
           if (window.__eddieAudioCache && window.__eddieAudioCache[item.pairId]) {
@@ -9674,34 +9679,26 @@
           resolveFullSongForTrack(item.relatedSongId, item.songTitle, item.bandName).catch(() => {});
         }
         const srcUrl = (window.__eddieAudioCache && window.__eddieAudioCache[item.pairId]) || item.audioUrl;
-        spotifyAudio.src = srcUrl;
-        spotifyAudio.currentTime = 0;
-        spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn(e));
+        GlobalAudioPlayer.playViaHtmlAudio(srcUrl, seqToken);
       } else {
-        // Normal song unmodified from Spotify (reproduced 100% complete)
-        let directAudioUrl = item.audioUrl || item.fileUrl || item.previewUrl || item._resolvedAudioUrl || null;
+        // Original song after story: prioritize full Spotify track via SDK when connected, else single HTML audio fallback
+        const getDirectFallbackUrl = () => item.audioUrl || item.fileUrl || item.previewUrl || item._resolvedAudioUrl || null;
 
-        const playResolvedResult = (resolved) => {
-          if (!isDjEddieActive || djEddieIndex !== index) return;
-          if (resolved && !String(resolved).startsWith('spotify:')) {
-            item.audioUrl = resolved;
-            item.fileUrl = resolved;
-            item._resolvedAudioUrl = resolved;
-            spotifyAudio.src = resolved;
-            spotifyAudio.currentTime = 0;
-            spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play full track notice:', e));
-          } else if (spotifySdkDeviceId && (item.uri || (resolved && String(resolved).startsWith('spotify:')))) {
-            const targetUri = item.uri || resolved;
-            getValidSpotifyToken().then(t => {
-              if (t) {
-                fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
-                  method: 'PUT',
-                  headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ uris: [targetUri] })
-                }).then(() => updatePlayUI(true)).catch(() => {});
-              }
-            });
+        const playFallbackHtmlOrToast = (resolvedUrl) => {
+          if (seqToken !== GlobalAudioPlayer.playbackSeq || !isDjEddieActive || djEddieIndex !== index) return;
+          const cleanUrl = (resolvedUrl && !String(resolvedUrl).startsWith('spotify:'))
+            ? resolvedUrl
+            : getDirectFallbackUrl();
+          if (cleanUrl && !String(cleanUrl).startsWith('spotify:')) {
+            if (!item.audioUrl || !String(item.audioUrl).includes('audio/full_')) {
+              item.audioUrl = cleanUrl;
+              item.fileUrl = cleanUrl;
+            }
+            item._resolvedAudioUrl = cleanUrl;
+            GlobalAudioPlayer.playViaHtmlAudio(cleanUrl, seqToken);
           } else {
+            GlobalAudioPlayer.spotifyIsPlaying = false;
+            updatePlayUI(false);
             showAppToast({
               title: 'Conecta Spotify para pista completa',
               desc: `No se encontró audio directo para «${item.songTitle}». Conecta tu cuenta de Spotify arriba para reproducirla completa.`,
@@ -9712,53 +9709,47 @@
           }
         };
 
-        if (directAudioUrl) {
-          spotifyAudio.src = directAudioUrl;
-          spotifyAudio.currentTime = 0;
-          spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => console.warn('Play notice:', e));
-        } else if (spotifySdkDeviceId && item.uri) {
-          playResolvedResult(item.uri);
-        } else {
-          showAppToast({
-            title: 'Cargando canción original',
-            desc: `Buscando «${item.songTitle}» de ${item.bandName} en Spotify...`,
-            type: 'info',
-            icon: '🎵',
-            duration: 3500
-          });
-          resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(playResolvedResult);
-        }
+        if (spotifySdkDeviceId) {
+          const launchSpotifyTrack = (targetUri) => {
+            if (seqToken !== GlobalAudioPlayer.playbackSeq || !isDjEddieActive || djEddieIndex !== index) return;
+            GlobalAudioPlayer.playViaSpotifySdk(targetUri, (item.duration || 180) * 1000, seqToken, () => {
+              playFallbackHtmlOrToast(getDirectFallbackUrl());
+            });
+          };
 
-        const isFullFile = directAudioUrl && directAudioUrl.includes('audio/full_');
-        if (directAudioUrl && !isFullFile) {
-          // Resolve full song file in background and seamlessly continue full track
-          resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(fullUrl => {
-            if (fullUrl && !String(fullUrl).startsWith('spotify:') && isDjEddieActive && djEddieIndex === index) {
-              const curPos = spotifyAudio.currentTime;
-              const wasPlaying = !spotifyAudio.paused;
-              item.audioUrl = fullUrl;
-              item.fileUrl = fullUrl;
-              item._resolvedAudioUrl = fullUrl;
-              if (wasPlaying && curPos < 25) {
-                spotifyAudio.src = fullUrl;
-                spotifyAudio.currentTime = curPos;
-                spotifyAudio.play().catch(() => {});
+          if (item.uri) {
+            launchSpotifyTrack(item.uri);
+          } else {
+            showAppToast({
+              title: 'Cargando canción original',
+              desc: `Buscando «${item.songTitle}» de ${item.bandName} en Spotify...`,
+              type: 'info',
+              icon: '🎵',
+              duration: 3000
+            });
+            resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(resolved => {
+              if (seqToken !== GlobalAudioPlayer.playbackSeq || !isDjEddieActive || djEddieIndex !== index) return;
+              if (item.uri || (resolved && String(resolved).startsWith('spotify:'))) {
+                launchSpotifyTrack(item.uri || resolved);
+              } else {
+                playFallbackHtmlOrToast(resolved);
               }
-            }
-          });
-        }
-
-        // Spotify Web Playback SDK integration
-        if (spotifySdkDeviceId && item.uri) {
-          getValidSpotifyToken().then(t => {
-            if (t) {
-              fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ uris: [item.uri] })
-              }).catch(() => {});
-            }
-          });
+            });
+          }
+        } else {
+          const directAudioUrl = getDirectFallbackUrl();
+          if (directAudioUrl) {
+            GlobalAudioPlayer.playViaHtmlAudio(directAudioUrl, seqToken);
+          } else {
+            showAppToast({
+              title: 'Cargando canción original',
+              desc: `Buscando «${item.songTitle}» de ${item.bandName} en Spotify...`,
+              type: 'info',
+              icon: '🎵',
+              duration: 3000
+            });
+            resolveFullSongForTrack(item.id, item.songTitle, item.bandName).then(playFallbackHtmlOrToast);
+          }
         }
       }
 
@@ -10792,17 +10783,97 @@
     // ========================================================
     const GlobalAudioPlayer = {
       source: 'djeddie', // 'djeddie' | 'local45' | 'spotify'
+      activeEngine: 'audio', // 'audio' | 'sdk' (strictly mutually exclusive)
+      playbackSeq: 0,
+      sdkActiveTrackUri: null,
       spotifyTrack: null,
       spotifyQueue: [],
       spotifyIndex: 0,
       spotifyIsPlaying: false,
       spotifyDurationMs: 180000,
       spotifyPositionMs: 0,
+
+      stopHtmlAudio() {
+        try {
+          if (!spotifyAudio.paused) spotifyAudio.pause();
+          spotifyAudio.currentTime = 0;
+          if (spotifyAudio.getAttribute('src')) {
+            spotifyAudio.removeAttribute('src');
+            spotifyAudio.load();
+          }
+        } catch(e) {}
+      },
+
+      stopSpotifySdk() {
+        this.sdkActiveTrackUri = null;
+        if (spotifySdkPlayer) {
+          try { spotifySdkPlayer.pause(); } catch(e) {}
+        }
+      },
+
+      playViaHtmlAudio(srcUrl, seqToken = this.playbackSeq) {
+        if (!srcUrl || seqToken !== this.playbackSeq) return;
+        this.stopSpotifySdk();
+        this.activeEngine = 'audio';
+        this.spotifyIsPlaying = false;
+        stopSpotifyProgressSimulation();
+        spotifyAudio.src = srcUrl;
+        spotifyAudio.playbackRate = 1.0;
+        spotifyAudio.currentTime = 0;
+        spotifyAudio.play().then(() => {
+          if (seqToken === this.playbackSeq) updatePlayUI(true);
+        }).catch(e => console.warn('Audio play notice:', e));
+      },
+
+      playViaSpotifySdk(targetUri, durationMs = 180000, seqToken = this.playbackSeq, onFallback = null) {
+        if (!spotifySdkDeviceId || !targetUri) {
+          if (onFallback) onFallback();
+          return;
+        }
+        this.stopHtmlAudio();
+        this.activeEngine = 'sdk';
+        this.sdkActiveTrackUri = null;
+        this.spotifyDurationMs = durationMs || 180000;
+        this.spotifyPositionMs = 0;
+        this.spotifyIsPlaying = true;
+        startSpotifyProgressSimulation();
+        updatePlayUI(true);
+
+        getValidSpotifyToken().then(t => {
+          if (seqToken !== this.playbackSeq) return;
+          if (!t) {
+            this.spotifyIsPlaying = false;
+            stopSpotifyProgressSimulation();
+            if (onFallback) onFallback();
+            else updatePlayUI(false);
+            return;
+          }
+          fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uris: [targetUri] })
+          }).then(res => {
+            if (seqToken !== this.playbackSeq) return;
+            if (!res.ok) {
+              this.spotifyIsPlaying = false;
+              stopSpotifyProgressSimulation();
+              if (onFallback) onFallback();
+              else updatePlayUI(false);
+            }
+          }).catch(() => {
+            if (seqToken !== this.playbackSeq) return;
+            this.spotifyIsPlaying = false;
+            stopSpotifyProgressSimulation();
+            if (onFallback) onFallback();
+            else updatePlayUI(false);
+          });
+        });
+      },
       
       playSpotify(track, queue = [], index = -1) {
-        if (!spotifyAudio.paused) {
-          spotifyAudio.pause();
-        }
+        const seqToken = ++this.playbackSeq;
+        this.stopHtmlAudio();
+        this.stopSpotifySdk();
 
         this.source = 'spotify';
         this.spotifyTrack = track;
@@ -10851,50 +10922,38 @@
 
         updatePlayUI(true);
 
-        // Audio Execution Strategy (100% Unified in Footer Bar — Canción Completa):
-        const directAudioUrl = track.audioUrl || track.preview_url || track._resolvedAudioUrl || null;
-        if (directAudioUrl) {
-          spotifyAudio.src = directAudioUrl;
-          spotifyAudio.currentTime = 0;
-          spotifyAudio.play().catch(e => console.warn('Preview play notice:', e));
-        }
-
-        // Automatic full song resolution for complete playback
-        resolveFullSongForTrack(track.id, track.name, artistNames).then(fullUrl => {
-          if (fullUrl && GlobalAudioPlayer.source === 'spotify' && GlobalAudioPlayer.spotifyTrack && GlobalAudioPlayer.spotifyTrack.id === track.id) {
-            track.audioUrl = fullUrl;
-            track._resolvedAudioUrl = fullUrl;
-            const curPos = spotifyAudio.currentTime;
-            spotifyAudio.src = fullUrl;
-            spotifyAudio.currentTime = curPos;
-            if (GlobalAudioPlayer.spotifyIsPlaying) {
-              spotifyAudio.play().catch(() => {});
-            }
+        const playFallbackHtml = () => {
+          if (seqToken !== this.playbackSeq || GlobalAudioPlayer.source !== 'spotify') return;
+          const directAudioUrl = track.audioUrl || track.preview_url || track._resolvedAudioUrl || null;
+          if (directAudioUrl && !String(directAudioUrl).startsWith('spotify:')) {
+            this.playViaHtmlAudio(directAudioUrl, seqToken);
+          } else {
+            resolveFullSongForTrack(track.id, track.name, artistNames).then(fullUrl => {
+              if (seqToken !== this.playbackSeq || GlobalAudioPlayer.source !== 'spotify' || !GlobalAudioPlayer.spotifyTrack || GlobalAudioPlayer.spotifyTrack.id !== track.id) return;
+              if (fullUrl && !String(fullUrl).startsWith('spotify:')) {
+                track.audioUrl = fullUrl;
+                track._resolvedAudioUrl = fullUrl;
+                this.playViaHtmlAudio(fullUrl, seqToken);
+              }
+            });
           }
-        });
+        };
 
-        // Headless Spotify Web Playback SDK (For authenticated Premium users — no extra UI)
+        // Strictly single-engine: Spotify Web Playback SDK when ready, else HTML audio fallback
         if (spotifySdkDeviceId && track.uri) {
-          getValidSpotifyToken().then(t => {
-            if (t) {
-              fetch(`https://api.spotify.com/v1/me/player/play?device_id=${spotifySdkDeviceId}`, {
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${t}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ uris: [track.uri] })
-              }).catch(() => {});
-            }
-          });
+          this.playViaSpotifySdk(track.uri, this.spotifyDurationMs, seqToken, playFallbackHtml);
+        } else {
+          playFallbackHtml();
+          startSpotifyProgressSimulation();
         }
-
-        startSpotifyProgressSimulation();
       },
 
       togglePlay() {
-        // Universal Source of Truth: Is audio actively playing?
-        const isAudioActive = !spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0);
+        // Universal Source of Truth: Is audio actively playing in either engine?
+        const isHtmlActive = !spotifyAudio.paused && !spotifyAudio.ended && (spotifyAudio.currentTime > 0 || spotifyAudio.duration > 0);
 
-        if (isAudioActive || this.spotifyIsPlaying) {
-          // Unconditional Pause across all audio sources
+        if (isHtmlActive || this.spotifyIsPlaying) {
+          // Unconditional Pause across both audio engines
           if (!spotifyAudio.paused) {
             spotifyAudio.pause();
           }
@@ -10905,24 +10964,32 @@
           stopSpotifyProgressSimulation();
           updatePlayUI(false);
         } else {
-          // Resume / Start Playback
-          if (this.source === 'spotify' && this.spotifyTrack) {
+          // Resume exclusively the active engine
+          if (this.activeEngine === 'sdk' && spotifySdkPlayer && spotifySdkDeviceId) {
+            this.stopHtmlAudio();
             this.spotifyIsPlaying = true;
+            try { spotifySdkPlayer.resume(); } catch(e) {}
+            startSpotifyProgressSimulation();
+            updatePlayUI(true);
+            return;
+          }
+          if (this.source === 'spotify' && this.spotifyTrack) {
             const directUrl = this.spotifyTrack.audioUrl || this.spotifyTrack.preview_url || this.spotifyTrack._resolvedAudioUrl;
-            if (directUrl && (!spotifyAudio.src || spotifyAudio.src.endsWith('/') || spotifyAudio.src === window.location.href)) {
+            if (directUrl && !String(directUrl).startsWith('spotify:') && (!spotifyAudio.src || spotifyAudio.src.endsWith('/') || spotifyAudio.src === window.location.href)) {
               spotifyAudio.src = directUrl;
             }
             if (spotifyAudio.src && !spotifyAudio.src.endsWith('/') && spotifyAudio.src !== window.location.href) {
+              this.stopSpotifySdk();
+              this.activeEngine = 'audio';
               spotifyAudio.play().then(() => updatePlayUI(true)).catch(() => {});
+            } else {
+              this.playSpotify(this.spotifyTrack, this.spotifyQueue, this.spotifyIndex);
             }
-            if (spotifySdkPlayer) {
-              try { spotifySdkPlayer.resume(); } catch(e) {}
-            }
-            startSpotifyProgressSimulation();
-            updatePlayUI(true);
           } else {
-            // DJ Eddie or Local Band Audio
+            // DJ Eddie or Local Band Audio (HTML audio)
             if (spotifyAudio.src && !spotifyAudio.src.endsWith('/') && spotifyAudio.src !== window.location.href) {
+              this.stopSpotifySdk();
+              this.activeEngine = 'audio';
               spotifyAudio.play().then(() => updatePlayUI(true)).catch(e => {
                 console.warn('Resume error:', e);
                 if (isDjEddieActive && djEddieQueue.length) {
@@ -10973,14 +11040,11 @@
 
       seek(pct) {
         pct = Math.max(0, Math.min(1, pct));
-        if (this.source === 'spotify') {
+        if (this.activeEngine === 'sdk' || (this.source === 'spotify' && spotifySdkDeviceId && !spotifyAudio.src)) {
           const durMs = this.spotifyDurationMs || 180000;
           this.spotifyPositionMs = pct * durMs;
           const curSec = Math.floor(this.spotifyPositionMs / 1000);
 
-          if (this.spotifyTrack && (this.spotifyTrack.preview_url || this.spotifyTrack._resolvedAudioUrl) && spotifyAudio.duration) {
-            spotifyAudio.currentTime = pct * spotifyAudio.duration;
-          }
           if (spotifySdkPlayer) {
             try { spotifySdkPlayer.seek(Math.floor(this.spotifyPositionMs)); } catch(e){}
           }
@@ -11001,7 +11065,7 @@
           if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
           if (modalTimeCurrent) modalTimeCurrent.textContent = formatTime(curSec);
         } else {
-          const dur = spotifyAudio.duration || 44.95;
+          const dur = spotifyAudio.duration || (this.spotifyDurationMs / 1000) || 44.95;
           spotifyAudio.currentTime = pct * dur;
         }
       }
@@ -11012,10 +11076,10 @@
     function startSpotifyProgressSimulation() {
       if (spotifyProgressInterval) clearInterval(spotifyProgressInterval);
       spotifyProgressInterval = setInterval(() => {
-        if (GlobalAudioPlayer.source !== 'spotify' || !GlobalAudioPlayer.spotifyIsPlaying) return;
+        if ((GlobalAudioPlayer.source !== 'spotify' && GlobalAudioPlayer.activeEngine !== 'sdk') || !GlobalAudioPlayer.spotifyIsPlaying) return;
 
-        // If native audio is actively playing preview_url or resolved stream, timeupdate event handles the sync
-        if (GlobalAudioPlayer.spotifyTrack && (GlobalAudioPlayer.spotifyTrack.preview_url || GlobalAudioPlayer.spotifyTrack._resolvedAudioUrl) && !spotifyAudio.paused) {
+        // If native HTML audio is actively playing, timeupdate event handles the sync
+        if (GlobalAudioPlayer.activeEngine === 'audio' && !spotifyAudio.paused) {
           return;
         }
 
@@ -11892,7 +11956,6 @@
 
     function initSpotifyWebPlaybackSDK() {
       if (window.Spotify || document.getElementById('spotify-player-sdk-script')) return;
-      let sdkActiveTrackUri = null;
       window.onSpotifyWebPlaybackSDKReady = () => {
         spotifySdkPlayer = new window.Spotify.Player({
           name: 'Rock Radio Web Player',
@@ -11910,15 +11973,15 @@
 
         spotifySdkPlayer.addListener('player_state_changed', (state) => {
           const isDjSongSdk = GlobalAudioPlayer.source === 'djeddie' && isDjEddieActive && djEddieQueue[djEddieIndex] && !djEddieQueue[djEddieIndex].isIntro;
-          if (!state || (GlobalAudioPlayer.source !== 'spotify' && !isDjSongSdk)) return;
+          if (!state || GlobalAudioPlayer.activeEngine !== 'sdk' || (GlobalAudioPlayer.source !== 'spotify' && !isDjSongSdk)) return;
           if (!state.paused && state.position > 500 && state.track_window && state.track_window.current_track) {
-            sdkActiveTrackUri = state.track_window.current_track.uri;
+            GlobalAudioPlayer.sdkActiveTrackUri = state.track_window.current_track.uri;
           }
-          const finishedNaturally = state.paused && state.position === 0 && sdkActiveTrackUri &&
+          const finishedNaturally = state.paused && state.position === 0 && GlobalAudioPlayer.sdkActiveTrackUri &&
             state.track_window && Array.isArray(state.track_window.previous_tracks) &&
-            state.track_window.previous_tracks.some(t => t.uri === sdkActiveTrackUri);
+            state.track_window.previous_tracks.some(t => t.uri === GlobalAudioPlayer.sdkActiveTrackUri);
           if (finishedNaturally) {
-            sdkActiveTrackUri = null;
+            GlobalAudioPlayer.sdkActiveTrackUri = null;
             GlobalAudioPlayer.spotifyIsPlaying = false;
             stopSpotifyProgressSimulation();
             if (isDjSongSdk) {
@@ -11987,10 +12050,12 @@
     }
 
     async function playSpotifyContext(entityType, entityId, entityUri, title, subtitle, imgUrl) {
-      if (!spotifyAudio.paused) {
-        spotifyAudio.pause();
-        updatePlayUI(false);
-      }
+      GlobalAudioPlayer.playbackSeq++;
+      GlobalAudioPlayer.stopHtmlAudio();
+      GlobalAudioPlayer.source = 'spotify';
+      GlobalAudioPlayer.activeEngine = 'sdk';
+      GlobalAudioPlayer.spotifyIsPlaying = true;
+      isDjEddieActive = false;
 
       if (spotifySdkDeviceId && entityUri) {
         const token = await getValidSpotifyToken();
