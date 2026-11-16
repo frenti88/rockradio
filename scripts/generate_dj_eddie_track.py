@@ -425,10 +425,44 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "hysteria": [
-        (
-            "La gestación de Hysteria en 1987 estuvo marcada por el accidente donde el baterista Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos. "
-            "Inspirado por ese ejemplo, Phil Collen rasgueó los acordes cristalinos que el productor Mutt Lange convirtió en la joya del álbum."
-        )
+        {
+            "p1_hook": "Una canción forjada en pura perseverancia.",
+            "p2_anecdote": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+            "p3_resolution": "El título reflejó la emoción imparable de aquel regreso.",
+            "historical_info": "Álbum Hysteria (1987), recuperación de Rick Allen con batería electrónica Simmons/pedales, producción de Robert John 'Mutt' Lange y guitarras de Phil Collen."
+        }
+    ],
+    "radio ga ga": [
+        {
+            "p1_hook": "Una frase infantil que conquistó estadios enteros.",
+            "p2_anecdote": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+            "p3_resolution": "Su coro de palmas sincronizadas hizo historia en Live Aid.",
+            "historical_info": "Álbum The Works (1984); escrita por Roger Taylor a partir de una frase de su hijo Felix; icónica presentación en Live Aid Wembley (1985)."
+        }
+    ],
+    "dream warriors": [
+        {
+            "p1_hook": "Un himno de metal nacido directo de las pesadillas del cine.",
+            "p2_anecdote": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+            "p3_resolution": "La alianza con el cine llevó al grupo a lo más alto de MTV.",
+            "historical_info": "Álbum Back for the Attack (1987) y banda sonora de A Nightmare on Elm Street 3: Dream Warriors (1987) con Robert Englund en el video."
+        }
+    ],
+    "heartbeat city": [
+        {
+            "p1_hook": "El pulso electrónico que definió una época dorada.",
+            "p2_anecdote": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+            "p3_resolution": "El tema dio nombre al disco más ambicioso de la banda.",
+            "historical_info": "Álbum Heartbeat City (1984), escrita por Ric Ocasek y producida por Mutt Lange en Battery Studios de Londres; interpretada en Live Aid (1985)."
+        }
+    ],
+    "ordinary world": [
+        {
+            "p1_hook": "El renacimiento más emotivo de los años noventa.",
+            "p2_anecdote": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+            "p3_resolution": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello.",
+            "historical_info": "Álbum Duran Duran / The Wedding Album (1993); letra de Simon Le Bon dedicada a su amigo David Miles; ganadora del premio Ivor Novello."
+        }
     ],
     "shout at the devil": [
         (
@@ -481,6 +515,38 @@ SUPPLEMENTAL_VERIFIED_TRACKS = [
         "year": "1992",
         "cover": "img/albums/metallica_1984_ride_the_lightning.png",
         "duration_sec": 438
+    },
+    {
+        "song_title": "Radio Ga Ga",
+        "band_name": "Queen",
+        "album": "The Works (1984)",
+        "year": "1984",
+        "cover": "img/albums/queen_1980_the_game.png",
+        "duration_sec": 348
+    },
+    {
+        "song_title": "Dream Warriors",
+        "band_name": "Dokken",
+        "album": "Back for the Attack (1987)",
+        "year": "1987",
+        "cover": "img/albums/motley_crue_1987_girls.png",
+        "duration_sec": 282
+    },
+    {
+        "song_title": "Heartbeat City",
+        "band_name": "The Cars",
+        "album": "Heartbeat City (1984)",
+        "year": "1984",
+        "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+        "duration_sec": 271
+    },
+    {
+        "song_title": "Ordinary World",
+        "band_name": "Duran Duran",
+        "album": "Duran Duran (The Wedding Album) (1993)",
+        "year": "1993",
+        "cover": "img/albums/tff_1993_elemental.png",
+        "duration_sec": 339
     }
 ]
 
@@ -656,6 +722,14 @@ def resolve_song_metadata(song_query, band_query=None):
     catalog = load_project_catalog_metadata()
     s_norm = normalize_text_key(song_query)
     b_norm = normalize_text_key(band_query) if band_query else ""
+    band_aliases = {
+        "deff leppard": "def leppard",
+        "def lepard": "def leppard",
+        "tears for fear": "tears for fears",
+        "ac dc": "ac/dc"
+    }
+    if b_norm in band_aliases:
+        b_norm = normalize_text_key(band_aliases[b_norm])
 
     if not s_norm:
         return {"resolved": False, "ambiguous": True, "message": "No se especificó el nombre de la canción.", "candidates": []}

@@ -1,17 +1,17 @@
 {
   "recent_openings": [
     7,
-    3,
-    4,
-    10,
-    8,
-    7,
     6,
     1,
     9,
-    7
+    7,
+    3,
+    10,
+    4,
+    2,
+    3
   ],
-  "last_generated_key": "kiss::detroit rock city",
+  "last_generated_key": "duran duran::ordinary world",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -455,6 +455,561 @@
         }
       ],
       "created_at": "2026-11-16T18:40:00.169304+00:00",
+      "status": "completed"
+    },
+    "queen::radio ga ga": {
+      "song_title": "Radio Ga Ga",
+      "band_name": "Queen",
+      "album": "The Works (1984)",
+      "year": "1984",
+      "cover": "img/albums/queen_1980_the_game.png",
+      "full_song_audio": null,
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros. En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV. Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros. [curious] En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV. [emotional] Su coro de palmas sincronizadas hizo historia en Live Aid. [excited] ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros.",
+      "paragraph_2": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+      "paragraph_3": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su coro de palmas sincronizadas hizo historia en Live Aid.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.98,
+          "duration_sec": 10.979,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros.",
+          "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.98,
+          "end": 28.72,
+          "duration_sec": 9.74,
+          "text": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+          "vocal_text": "[curious] En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 31.72,
+          "end": 41.1,
+          "duration_sec": 9.384,
+          "text": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su coro de palmas sincronizadas hizo historia en Live Aid. [excited] ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum The Works (1984); escrita por Roger Taylor a partir de una frase de su hijo Felix; icónica presentación en Live Aid Wembley (1985).",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros.",
+      "desarrollo": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+      "cierre": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 3,
+      "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 36.1,
+      "final_duration_sec": 42.34,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -25.8,
+        "p2_lufs": -24.2,
+        "p3_base_lufs": -23.5,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.653
+      },
+      "audio_file": "audio/eddie_intro_queen_radio_ga_ga.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.98,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1984 con Queen. Una frase infantil que conquistó estadios enteros."
+        },
+        {
+          "start": 15.98,
+          "end": 18.98,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.98,
+          "end": 28.72,
+          "text": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV."
+        },
+        {
+          "start": 28.72,
+          "end": 31.72,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 31.72,
+          "end": 41.1,
+          "text": "Su coro de palmas sincronizadas hizo historia en Live Aid. ¡Sube el volumen y escuchemos a Radio Ga Ga, de Queen, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T18:54:49.490710+00:00",
+      "status": "completed"
+    },
+    "dokken::dream warriors": {
+      "song_title": "Dream Warriors",
+      "band_name": "Dokken",
+      "album": "Back for the Attack (1987)",
+      "year": "1987",
+      "cover": "img/albums/motley_crue_1987_girls.png",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine. En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip. La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine. [curious] En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip. [emotional] La alianza con el cine llevó al grupo a lo más alto de MTV. [excited] ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine.",
+      "paragraph_2": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+      "paragraph_3": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "La alianza con el cine llevó al grupo a lo más alto de MTV.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.35,
+          "duration_sec": 10.35,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine.",
+          "vocal_text": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.35,
+          "end": 30.09,
+          "duration_sec": 11.745,
+          "text": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+          "vocal_text": "[curious] En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 33.09,
+          "end": 42.23,
+          "duration_sec": 9.137,
+          "text": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] La alianza con el cine llevó al grupo a lo más alto de MTV. [excited] ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Back for the Attack (1987) y banda sonora de A Nightmare on Elm Street 3: Dream Warriors (1987) con Robert Englund en el video.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine.",
+      "desarrollo": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+      "cierre": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 10,
+      "opening_text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.23,
+      "final_duration_sec": 43.47,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -24.1,
+        "p2_lufs": -23.2,
+        "p3_base_lufs": -24.0,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.089
+      },
+      "audio_file": "audio/eddie_intro_dokken_dream_warriors.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.35,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dream Warriors. Un himno de metal nacido directo de las pesadillas del cine."
+        },
+        {
+          "start": 15.35,
+          "end": 18.35,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.35,
+          "end": 30.09,
+          "text": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip."
+        },
+        {
+          "start": 30.09,
+          "end": 33.09,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 33.09,
+          "end": 42.23,
+          "text": "La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T18:55:13.241511+00:00",
+      "status": "completed"
+    },
+    "def leppard::hysteria": {
+      "song_title": "Hysteria",
+      "band_name": "Def Leppard",
+      "album": "Hysteria (1987)",
+      "year": "1987",
+      "cover": "img/albums/def_leppard_1987_hysteria.png",
+      "full_song_audio": "audio/full_def_leppard_hysteria.mp3",
+      "visible_script": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia. Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange. El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia. [curious] Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange. [emotional] El título reflejó la emoción imparable de aquel regreso. [excited] ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia.",
+      "paragraph_2": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+      "paragraph_3": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "El título reflejó la emoción imparable de aquel regreso.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 17.04,
+          "duration_sec": 12.039,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 20.04,
+          "end": 29.2,
+          "duration_sec": 9.161,
+          "text": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+          "vocal_text": "[curious] Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.2,
+          "end": 40.75,
+          "duration_sec": 8.553,
+          "text": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] El título reflejó la emoción imparable de aquel regreso. [excited] ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Hysteria (1987), recuperación de Rick Allen con batería electrónica Simmons/pedales, producción de Robert John 'Mutt' Lange y guitarras de Phil Collen.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia.",
+      "desarrollo": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+      "cierre": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 4,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 35.75,
+      "final_duration_sec": 42.0,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -23.1,
+        "p2_lufs": -24.2,
+        "p3_base_lufs": -22.2,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.982
+      },
+      "audio_file": "audio/eddie_intro_def_leppard_hysteria.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 17.04,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Hysteria, de Def Leppard. Una canción forjada en pura perseverancia."
+        },
+        {
+          "start": 17.04,
+          "end": 20.04,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 20.04,
+          "end": 29.2,
+          "text": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange."
+        },
+        {
+          "start": 29.2,
+          "end": 32.2,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.2,
+          "end": 40.75,
+          "text": "El título reflejó la emoción imparable de aquel regreso. ¡Sube el volumen y escuchemos a Hysteria, de Def Leppard, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T18:55:33.763950+00:00",
+      "status": "completed"
+    },
+    "the cars::heartbeat city": {
+      "song_title": "Heartbeat City",
+      "band_name": "The Cars",
+      "album": "Heartbeat City (1984)",
+      "year": "1984",
+      "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada. En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable. El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada. [curious] En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable. [emotional] El tema dio nombre al disco más ambicioso de la banda. [excited] ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada.",
+      "paragraph_2": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+      "paragraph_3": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "El tema dio nombre al disco más ambicioso de la banda.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.69,
+          "duration_sec": 10.688,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada.",
+          "vocal_text": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.69,
+          "end": 29.35,
+          "duration_sec": 10.663,
+          "text": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+          "vocal_text": "[curious] En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.35,
+          "end": 41.48,
+          "duration_sec": 9.129,
+          "text": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] El tema dio nombre al disco más ambicioso de la banda. [excited] ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Heartbeat City (1984), escrita por Ric Ocasek y producida por Mutt Lange en Battery Studios de Londres; interpretada en Live Aid (1985).",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada.",
+      "desarrollo": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+      "cierre": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 2,
+      "opening_text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 36.48,
+      "final_duration_sec": 42.71,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -24.5,
+        "p2_lufs": -23.6,
+        "p3_base_lufs": -21.7,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.839
+      },
+      "audio_file": "audio/eddie_intro_the_cars_heartbeat_city.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.69,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Heartbeat City de The Cars. El pulso electrónico que definió una época dorada."
+        },
+        {
+          "start": 15.69,
+          "end": 18.69,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.69,
+          "end": 29.35,
+          "text": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable."
+        },
+        {
+          "start": 29.35,
+          "end": 32.35,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.35,
+          "end": 41.48,
+          "text": "El tema dio nombre al disco más ambicioso de la banda. ¡Sube el volumen y escuchemos a Heartbeat City, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T18:55:54.279337+00:00",
+      "status": "completed"
+    },
+    "duran duran::ordinary world": {
+      "song_title": "Ordinary World",
+      "band_name": "Duran Duran",
+      "album": "Duran Duran (The Wedding Album) (1993)",
+      "year": "1993",
+      "cover": "img/albums/tff_1993_elemental.png",
+      "full_song_audio": null,
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa. [curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial. [emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
+      "paragraph_2": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "paragraph_3": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.48,
+          "duration_sec": 11.483,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
+          "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.48,
+          "end": 29.54,
+          "duration_sec": 10.06,
+          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+          "vocal_text": "[curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.54,
+          "end": 43.05,
+          "duration_sec": 10.514,
+          "text": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Duran Duran / The Wedding Album (1993); letra de Simon Le Bon dedicada a su amigo David Miles; ganadora del premio Ivor Novello.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa.",
+      "desarrollo": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "cierre": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 3,
+      "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 38.06,
+      "final_duration_sec": 44.3,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -23.9,
+        "p2_lufs": -22.2,
+        "p3_base_lufs": -23.8,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 4.179
+      },
+      "audio_file": "audio/eddie_intro_duran_duran_ordinary_world.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.48,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1993 con Duran Duran. El renacimiento más emotivo de los años noventa."
+        },
+        {
+          "start": 16.48,
+          "end": 19.48,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.48,
+          "end": 29.54,
+          "text": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial."
+        },
+        {
+          "start": 29.54,
+          "end": 32.54,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.54,
+          "end": 43.05,
+          "text": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-16T18:56:16.573212+00:00",
       "status": "completed"
     }
   }
