@@ -7969,6 +7969,28 @@
         ]
       },
       {
+        id: 'song_queen_radio_ga_ga',
+        pairId: 'queen_radio_ga_ga',
+        isIntro: false,
+        bandName: 'Queen',
+        songTitle: 'Radio Ga Ga',
+        title: 'Radio Ga Ga',
+        albumName: 'The Works (1984)',
+        year: '1984',
+        cover: 'img/albums/queen_1984_the_works.jpg',
+        tag: '',
+        duration: 348,
+        durationSec: 348.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Queen — Radio Ga Ga)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_queen_radio_ga_ga',
+        lyrics: []
+      },
+      {
         id: 'intro_dokken_dream_warriors',
         pairId: 'dokken_dream_warriors',
         isIntro: true,
@@ -7996,6 +8018,28 @@
           { start: 30.09, end: 33.09, text: '🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado...' },
           { start: 33.09, end: 42.23, text: 'La alianza con el cine llevó al grupo a lo más alto de MTV. ¡Sube el volumen y escuchemos a Dream Warriors, de Dokken, aquí en Rock Radio, de vuelta al pasado!' }
         ]
+      },
+      {
+        id: 'song_dokken_dream_warriors',
+        pairId: 'dokken_dream_warriors',
+        isIntro: false,
+        bandName: 'Dokken',
+        songTitle: 'Dream Warriors',
+        title: 'Dream Warriors',
+        albumName: 'Back for the Attack (1987)',
+        year: '1987',
+        cover: 'img/albums/dokken_1987_back_for_the_attack.jpg',
+        tag: '',
+        duration: 282,
+        durationSec: 282.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Dokken — Dream Warriors)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_dokken_dream_warriors',
+        lyrics: []
       },
       {
         id: 'intro_def_leppard_hysteria',
@@ -8078,6 +8122,28 @@
         ]
       },
       {
+        id: 'song_the_cars_heartbeat_city',
+        pairId: 'the_cars_heartbeat_city',
+        isIntro: false,
+        bandName: 'The Cars',
+        songTitle: 'Heartbeat City',
+        title: 'Heartbeat City',
+        albumName: 'Heartbeat City (1984)',
+        year: '1984',
+        cover: 'img/albums/the_cars_1984_heartbeat_city.jpg',
+        tag: '',
+        duration: 271,
+        durationSec: 271.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (The Cars — Heartbeat City)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_the_cars_heartbeat_city',
+        lyrics: []
+      },
+      {
         id: 'intro_duran_duran_ordinary_world',
         pairId: 'duran_duran_ordinary_world',
         isIntro: true,
@@ -8105,72 +8171,6 @@
           { start: 29.54, end: 32.54, text: '🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado...' },
           { start: 32.54, end: 43.05, text: 'Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¡Sube el volumen y escuchemos a Ordinary World, de Duran Duran, aquí en Rock Radio, de vuelta al pasado!' }
         ]
-      },
-      {
-        id: 'song_queen_radio_ga_ga',
-        pairId: 'queen_radio_ga_ga',
-        isIntro: false,
-        bandName: 'Queen',
-        songTitle: 'Radio Ga Ga',
-        title: 'Radio Ga Ga',
-        albumName: 'The Works (1984)',
-        year: '1984',
-        cover: 'img/albums/queen_1984_the_works.jpg',
-        tag: '',
-        duration: 348,
-        durationSec: 348.0,
-        introSec: '',
-        summary: 'Canción original desde Spotify (Queen — Radio Ga Ga)',
-        status: 'con_audio',
-        audioUrl: '',
-        fileUrl: '',
-        hasRealAudio: true,
-        relatedIntroId: 'intro_queen_radio_ga_ga',
-        lyrics: []
-      },
-      {
-        id: 'song_dokken_dream_warriors',
-        pairId: 'dokken_dream_warriors',
-        isIntro: false,
-        bandName: 'Dokken',
-        songTitle: 'Dream Warriors',
-        title: 'Dream Warriors',
-        albumName: 'Back for the Attack (1987)',
-        year: '1987',
-        cover: 'img/albums/dokken_1987_back_for_the_attack.jpg',
-        tag: '',
-        duration: 282,
-        durationSec: 282.0,
-        introSec: '',
-        summary: 'Canción original desde Spotify (Dokken — Dream Warriors)',
-        status: 'con_audio',
-        audioUrl: '',
-        fileUrl: '',
-        hasRealAudio: true,
-        relatedIntroId: 'intro_dokken_dream_warriors',
-        lyrics: []
-      },
-      {
-        id: 'song_the_cars_heartbeat_city',
-        pairId: 'the_cars_heartbeat_city',
-        isIntro: false,
-        bandName: 'The Cars',
-        songTitle: 'Heartbeat City',
-        title: 'Heartbeat City',
-        albumName: 'Heartbeat City (1984)',
-        year: '1984',
-        cover: 'img/albums/the_cars_1984_heartbeat_city.jpg',
-        tag: '',
-        duration: 271,
-        durationSec: 271.0,
-        introSec: '',
-        summary: 'Canción original desde Spotify (The Cars — Heartbeat City)',
-        status: 'con_audio',
-        audioUrl: '',
-        fileUrl: '',
-        hasRealAudio: true,
-        relatedIntroId: 'intro_the_cars_heartbeat_city',
-        lyrics: []
       },
       {
         id: 'song_duran_duran_ordinary_world',
@@ -9105,7 +9105,31 @@
         }
         return copy;
       });
-      const list = [...base, ...custom];
+      const rawList = [...base, ...custom];
+      const pairedList = [];
+      const visitedIds = new Set();
+      rawList.forEach(item => {
+        if (!item || visitedIds.has(item.id)) return;
+        if (item.isIntro) {
+          pairedList.push(item);
+          visitedIds.add(item.id);
+          const matchSong = rawList.find(x =>
+            x && !x.isIntro && !visitedIds.has(x.id) &&
+            ((item.relatedSongId && x.id === item.relatedSongId) || (item.pairId && x.pairId === item.pairId))
+          );
+          if (matchSong) {
+            pairedList.push(matchSong);
+            visitedIds.add(matchSong.id);
+          }
+        }
+      });
+      rawList.forEach(item => {
+        if (item && !visitedIds.has(item.id)) {
+          pairedList.push(item);
+          visitedIds.add(item.id);
+        }
+      });
+      const list = pairedList;
 
       djEddieQueue = list;
       const songCount = list.filter(x => !x.isIntro).length || (list.length / 2);

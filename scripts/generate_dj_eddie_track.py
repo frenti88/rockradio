@@ -1864,16 +1864,24 @@ def update_player_catalog(story_record):
 
     arr_body = m_arr.group(2)
 
-    # Replace or append each object cleanly inside BASE_DJ_EDDIE_TRACKS
+    # Replace or insert each object cleanly inside BASE_DJ_EDDIE_TRACKS (keeping intro -> song paired)
     for entry in entries_to_write:
         js_text = format_js_entry(entry)
-        # Match existing object block starting with id: '<entry_id>'
         obj_pat = re.compile(
             r"\n\s*\{\s*\n\s*id:\s*'" + re.escape(entry["id"]) + r"'[\s\S]*?\n\s*\}(?=,|\s*$)",
             re.MULTILINE
         )
         if obj_pat.search(arr_body):
             arr_body = obj_pat.sub("\n" + js_text, arr_body, count=1)
+        elif not entry["isIntro"] and entry.get("relatedIntroId"):
+            intro_pat = re.compile(
+                r"(\n\s*\{\s*\n\s*id:\s*'" + re.escape(entry["relatedIntroId"]) + r"'[\s\S]*?\n\s*\})(,|\s*$)",
+                re.MULTILINE
+            )
+            if intro_pat.search(arr_body):
+                arr_body = intro_pat.sub(lambda m: m.group(1) + ",\n" + js_text + m.group(2), arr_body, count=1)
+            else:
+                arr_body = arr_body.rstrip() + ",\n" + js_text
         else:
             arr_body = arr_body.rstrip() + ",\n" + js_text
 
