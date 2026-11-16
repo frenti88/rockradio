@@ -28,6 +28,9 @@ import time
 import random
 import threading
 import shutil
+import math
+import wave
+import array
 import unicodedata
 import urllib.request
 import urllib.error
@@ -56,9 +59,10 @@ FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffm
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
 INTRO_MUSIC_SEC = 5.0
-OUTRO_MUSIC_TAIL_SEC = 1.0
+PAUSE_MUSIC_SEC = 3.0
+OUTRO_MUSIC_TAIL_SEC = 1.2
 MAX_TOTAL_DURATION_SEC = 45.0
-SAFE_TARGET_TOTAL_SEC = 44.5  # Margen para padding de frames MP3 garantizando <= 45.00s reales
+SAFE_TARGET_TOTAL_SEC = 44.6  # Margen para padding de frames MP3 garantizando <= 45.00s reales
 
 DEFAULT_VOICE = "es-US-AlonsoNeural"
 DEFAULT_MUSIC_BED = os.path.join(WORKSPACE_AUDIO_DIR, "fred_rewind_rock_bed.mp3")
@@ -148,9 +152,9 @@ DYNAMIC_OPENINGS = [
 ]
 
 CLOSING_TEMPLATES = [
-    "¡Sube el volumen! ¡Esto es {song} de {band}, aquí en Rock Radio!",
-    "¡Sube el volumen y disfruta {song} con {band}, de vuelta al pasado!",
-    "¡Dale fuerza a los altavoces! ¡Escuchemos a {song} de {band} en Rock Radio!"
+    "¡Sube el volumen y escuchemos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!",
+    "¡Sube el volumen! Escuchemos juntos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!",
+    "¡Dale volumen y escuchemos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!"
 ]
 
 # ==============================================================================
@@ -170,6 +174,7 @@ def get_fish_model_capabilities(model_name):
         "supports_inline_xml_tags": is_drama3,  # <emphasis>, <forceful>, <soft>, etc. solo Drama 3
         "opening_tag": "[warm, confident]",
         "story_tag": "[curious]",
+        "resolution_tag": "[emotional]",
         "closing_tag": "[excited]"
     }
 
@@ -182,119 +187,152 @@ def strip_vocal_tags(text):
     clean = re.sub(r'\s+', ' ', clean).strip()
     return clean
 
-def build_dual_scripts(apertura, dev_sentences, cierre, model_name=DEFAULT_FISH_MODEL):
+def build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=DEFAULT_FISH_MODEL):
     """
-    Genera exactamente dos versiones sincronizadas con idéntico contenido hablado:
-    - visible_script: texto limpio sin etiquetas para subtítulos y persistencia.
-    - vocal_script: texto con directivas emocionales compatibles con el modelo activo de Fish Audio.
+    Estructura el guion en tres bloques narrativos identificables con separación semántica:
+    - paragraph_1: apertura y contexto inicial
+    - paragraph_2: desarrollo de la anécdota histórica
+    - paragraph_3: desenlace + cierre emotivo progresivo
+    Genera texto visible limpio y texto vocal expresivo con exactamente las mismas palabras habladas.
     """
     caps = get_fish_model_capabilities(model_name)
-    clean_ap = strip_vocal_tags(apertura)
-    clean_dev = [strip_vocal_tags(s) for s in dev_sentences if strip_vocal_tags(s)]
-    clean_ci = strip_vocal_tags(cierre)
+    clean_p1 = strip_vocal_tags(paragraph_1)
+    clean_p2 = strip_vocal_tags(paragraph_2)
+    clean_p3_res = strip_vocal_tags(p3_resolution)
+    clean_p3_close = strip_vocal_tags(p3_closing)
+    clean_p3 = f"{clean_p3_res} {clean_p3_close}".strip()
 
-    visible_script = f"{clean_ap} {' '.join(clean_dev)} {clean_ci}".strip()
+    visible_script = " ".join([x for x in (clean_p1, clean_p2, clean_p3) if x]).strip()
 
     if caps["supports_bracket_tags"]:
-        vocal_ap = f"{caps['opening_tag']} {clean_ap}"
-        vocal_dev_list = []
-        for idx, sent in enumerate(clean_dev):
-            if idx == 0:
-                vocal_dev_list.append(f"{caps['story_tag']} {sent}")
-            else:
-                vocal_dev_list.append(sent)
+        vocal_p1 = f"{caps['opening_tag']} {clean_p1}"
+        vocal_p2 = f"{caps['story_tag']} {clean_p2}"
         if caps["supports_inline_xml_tags"]:
-            vocal_ci = f"{caps['closing_tag']} <forceful>{clean_ci}</forceful>"
+            close_part = f"{caps['closing_tag']} <forceful>{clean_p3_close}</forceful>"
         else:
-            vocal_ci = f"{caps['closing_tag']} {clean_ci}"
+            close_part = f"{caps['closing_tag']} {clean_p3_close}"
+        if clean_p3_res:
+            vocal_p3 = f"{caps['resolution_tag']} {clean_p3_res} {close_part}".strip()
+        else:
+            vocal_p3 = close_part
     else:
-        vocal_ap = clean_ap
-        vocal_dev_list = list(clean_dev)
-        vocal_ci = clean_ci
+        vocal_p1 = clean_p1
+        vocal_p2 = clean_p2
+        vocal_p3 = clean_p3
 
-    vocal_script = f"{vocal_ap} {' '.join(vocal_dev_list)} {vocal_ci}".strip()
+    vocal_script = " ".join([x for x in (vocal_p1, vocal_p2, vocal_p3) if x]).strip()
     return {
         "visible_script": visible_script,
         "vocal_script": vocal_script,
-        "apertura_clean": clean_ap,
-        "dev_sentences_clean": clean_dev,
-        "cierre_clean": clean_ci,
-        "vocal_ap": vocal_ap,
-        "vocal_dev_list": vocal_dev_list,
-        "vocal_ci": vocal_ci
+        "p1_clean": clean_p1,
+        "p2_clean": clean_p2,
+        "p3_clean": clean_p3,
+        "p3_res_clean": clean_p3_res,
+        "p3_close_clean": clean_p3_close,
+        "vocal_p1": vocal_p1,
+        "vocal_p2": vocal_p2,
+        "vocal_p3": vocal_p3,
+        "expressive_instructions": {
+            "model": caps["model"],
+            "paragraph_1": caps["opening_tag"] if caps["supports_bracket_tags"] else "natural",
+            "paragraph_2": caps["story_tag"] if caps["supports_bracket_tags"] else "narrative",
+            "paragraph_3": f"{caps['resolution_tag']} -> {caps['closing_tag']}" if caps["supports_bracket_tags"] else "progressive_emotional"
+        }
     }
 
 # ==============================================================================
-# 3. ANÉCDOTAS HISTÓRICAS VERIFICABLES MULTI-ÁNGULO (Concisas: 38-52 palabras)
+# 3. ANÉCDOTAS HISTÓRICAS VERIFICABLES MULTI-ÁNGULO (3 Párrafos <= 45s total)
 # ==============================================================================
 MASTER_CURATED_STORIES = {
     "tom sawyer": [
-        (
-            "A finales de 1980, en Le Studio de Quebec, Neil Peart transformó un poema del letrista Pye Dubois en un retrato del espíritu independiente, reinterpretando al clásico personaje de Mark Twain. "
-            "Mientras Geddy Lee abría la pista con el gruñido icónico de su sintetizador Oberheim, Rush fusionó complejidad progresiva con fuerza directa."
-        ),
-        (
-            "Durante las sesiones de Moving Pictures en Quebec, capturar la energía exacta de Tom Sawyer resultó tan exigente que la banda casi descarta la grabación en la consola. "
-            "Todo cambió cuando Neil Peart ejecutó en el estudio sus legendarios redobles explosivos, convirtiendo aquel desafío técnico en el himno definitivo del trío canadiense."
-        ),
-        (
-            "En el invierno de 1980 en Morin-Heights, Alex Lifeson grabó sus acordes cortantes en apenas unas tomas mientras el grupo exploraba compases asimétricos en siete por ocho. "
-            "La mezcla perfecta entre la rebeldía literaria de la letra y una base rítmica implacable consolidó a Rush en la cima del rock mundial."
-        )
+        {
+            "p1_hook": "Todo comenzó en el invierno de 1980.",
+            "p2_anecdote": "En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
+            "p3_resolution": "Ese cruce de técnica y rebeldía selló su himno definitivo.",
+            "historical_info": "Sesiones de Moving Pictures (1980-1981) en Le Studio, Morin-Heights, Quebec; letra de Neil Peart y Pye Dubois; sintetizador Oberheim de Geddy Lee."
+        },
+        {
+            "p1_hook": "Una pista tan exigente que casi queda fuera.",
+            "p2_anecdote": "En Moving Pictures, el trío luchó por capturar su energía exacta hasta que Neil Peart grabó sus redobles explosivos.",
+            "p3_resolution": "Aquel desafío técnico se volvió su clásico inmortal.",
+            "historical_info": "Complejidad de grabación en consola durante Moving Pictures (1981) y la histórica toma de batería de Neil Peart."
+        },
+        {
+            "p1_hook": "Un reto rítmico que rompió las reglas.",
+            "p2_anecdote": "En Morin-Heights, Alex Lifeson grabó acordes cortantes en siete por ocho, fundiendo rock progresivo con fuerza directa.",
+            "p3_resolution": "Esa fórmula única los llevó a la cima mundial.",
+            "historical_info": "Compás asimétrico en 7/8 y guitarras de Alex Lifeson grabadas en Le Studio para Moving Pictures (1981)."
+        }
     ],
     "everybody wants to rule the world": [
-        (
-            "Fue la última canción en sumarse a Songs from the Big Chair en 1985, cuando el productor Chris Hughes pidió un tema luminoso para equilibrar el álbum. "
-            "En una sola tarde, Roland Orzabal tejió un pulso hipnótico con guitarras de doce cuerdas y sintetizadores que conquistó el número uno mundial."
-        ),
-        (
-            "Compuesta bajo las tensiones de la Guerra Fría en 1985, Curt Smith y Roland Orzabal ocultaron una profunda reflexión sobre la sed de poder político tras una melodía vibrante y optimista. "
-            "Originalmente grabada como un corte de transición rápida, terminó coronándose como el himno definitivo de Tears for Fears."
-        ),
-        (
-            "Aunque la banda temía que su aire ligero desentonara con la densidad del disco, la grabación en estudio sorprendió por la elegancia de sus coros y su inolvidable solo final de guitarra. "
-            "Lanzada en marzo de 1985, la canción catapultó a Tears for Fears al estrellato internacional."
-        )
+        {
+            "p1_hook": "Un clásico que casi ni se graba.",
+            "p2_anecdote": "Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
+            "p3_resolution": "Aquella sesión improvisada alcanzó el número uno mundial.",
+            "historical_info": "Grabación de última hora en 1985 para Songs from the Big Chair tras petición del productor Chris Hughes; guitarras de 12 cuerdas y ritmo shuffle de Roland Orzabal."
+        },
+        {
+            "p1_hook": "Su brillo oculta una oscura advertencia.",
+            "p2_anecdote": "En plena Guerra Fría de 1985, Curt Smith y Roland Orzabal escondieron una crítica al poder tras una melodía vibrante.",
+            "p3_resolution": "Ese contraste inolvidable definió toda una era.",
+            "historical_info": "Composición de Curt Smith y Roland Orzabal en plena Guerra Fría (1985), contrastando crítica política con sonoridad luminosa."
+        },
+        {
+            "p1_hook": "Nadie en cabina imaginó este éxito.",
+            "p2_anecdote": "Aunque el dúo temía que desentonara con la densidad del álbum, sus coros y el solo final brillaron al instante.",
+            "p3_resolution": "En marzo de 1985 conquistó las listas globales.",
+            "historical_info": "Lanzamiento de marzo de 1985 y contraste tonal dentro de Songs from the Big Chair."
+        }
     ],
     "the trooper": [
-        (
-            "Inspirada en la carga de la Brigada Ligera durante la batalla de Balaclava en 1854, Steve Harris escribió este clásico de 1983 desde la perspectiva de un soldado en pleno combate. "
-            "Con las guitarras gemelas de Dave Murray y Adrian Smith en galope implacable, nació uno de los himnos eternos de Iron Maiden."
-        ),
-        (
-            "Para el álbum Piece of Mind de 1983 en las Bahamas, Bruce Dickinson desató toda su potencia vocal sin utilizar trucos de estudio sobre la épica composición de Steve Harris. "
-            "La icónica portada del sencillo con Eddie alzando la bandera en el campo de batalla selló la mística inmortal de la canción."
-        )
+        {
+            "p1_hook": "Inspirada en una batalla del siglo diecinueve.",
+            "p2_anecdote": "Basada en Balaclava en 1854, Steve Harris escribió este clásico en 1983 desde la mirada cruda de un soldado en combate.",
+            "p3_resolution": "Las guitarras gemelas al galope sellaron un himno eterno.",
+            "historical_info": "Batalla de Balaclava (1854, Guerra de Crimea) y poema de Tennyson; guitarras de Dave Murray y Adrian Smith en Piece of Mind (1983)."
+        },
+        {
+            "p1_hook": "Grabada en Bahamas sin trucos en cabina.",
+            "p2_anecdote": "Para Piece of Mind en 1983, Bruce Dickinson desató toda su potencia vocal sobre la épica historia de Steve Harris.",
+            "p3_resolution": "Su mística sigue intacta en cada escenario.",
+            "historical_info": "Sesiones en Compass Point Studios, Bahamas (1983), con Bruce Dickinson y la célebre portada de Eddie."
+        }
     ],
     "africa": [
-        (
-            "En 1982, tras ver un documental nocturno, David Paich imaginó el continente africano y grabó junto a Jeff Porcaro marimbas y congas artesanales para el álbum Toto IV. "
-            "Aunque estuvo a punto de quedar fuera del disco, se convirtió en el único número uno mundial del grupo."
-        ),
-        (
-            "Para capturar el pulso orgánico de Africa en 1982, el baterista Jeff Porcaro combinó percusiones reales en múltiples pistas sin recurrir a cajas de ritmos programadas. "
-            "Coronada por seis voces en armonía perfecta durante el estribillo, la canción se alzó como una cumbre del estudio californiano."
-        )
+        {
+            "p1_hook": "Una canción nacida en plena madrugada.",
+            "p2_anecdote": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+            "p3_resolution": "Casi queda fuera y terminó siendo número uno.",
+            "historical_info": "Inspiración nocturna de David Paich en 1982 y grabación acústica multipista con Jeff Porcaro para Toto IV."
+        }
     ],
     "back in black": [
-        (
-            "Tras perder a su cantante Bon Scott a inicios de 1980, Malcolm y Angus Young honraron su memoria con el tributo más vigoroso posible. "
-            "Con Brian Johnson al micrófono en Bahamas y una campana de bronce de dos mil libras, descargaron un riff inmortal que definió el álbum más vendido del hard rock."
-        ),
-        (
-            "En abril de 1980 en los estudios Compass Point, AC/DC canalizó el duelo por Bon Scott en composiciones cargadas de gratitud y resiliencia. "
-            "Con apenas seis semanas de grabación junto al productor Mutt Lange, el álbum emergió con una pegada monolítica que transformó la historia del rock."
-        )
+        {
+            "p1_hook": "Nacida tras el golpe más duro del grupo.",
+            "p2_anecdote": "Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo.",
+            "p3_resolution": "Su respuesta fue un rugido eterno de hard rock.",
+            "historical_info": "Homenaje póstumo a Bon Scott en Compass Point, Bahamas (1980), debutando Brian Johnson junto al productor Mutt Lange."
+        },
+        {
+            "p1_hook": "Seis semanas frenéticas que hicieron historia.",
+            "p2_anecdote": "En abril de 1980 junto a Mutt Lange, AC/DC canalizó el duelo por Bon Scott en riffs monolíticos cargados de fuerza.",
+            "p3_resolution": "El grupo volvió más sólido que nunca.",
+            "historical_info": "Sesiones de abril-mayo de 1980 con Mutt Lange logrando el álbum más vendido del hard rock."
+        }
     ],
     "detroit rock city": [
-        (
-            "Para el álbum Destroyer de 1976, el productor Bob Ezrin llevó a KISS a un nivel cinematográfico incorporando sonidos reales de autos, radio y un choque violento. "
-            "La letra nació de la trágica noticia de un fanático que perdió la vida viajando a uno de sus conciertos."
-        ),
-        (
-            "Coronada por el legendario duelo de guitarras armonizadas entre Paul Stanley y Ace Frehley en los estudios Record Plant de Nueva York en 1976, la pista fue pensada como una historia trágica sobre el poder visceral del rock en vivo. "
-            "Desde entonces abre los conciertos de la banda como un rito infaltable."
-        )
+        {
+            "p1_hook": "Una tragedia real llevada al estudio.",
+            "p2_anecdote": "En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto.",
+            "p3_resolution": "Desde entonces abre sus shows como un rito infaltable.",
+            "historical_info": "Álbum Destroyer (1976), producción de Bob Ezrin con efectos reales de automóvil inspirada en un accidente verídico."
+        },
+        {
+            "p1_hook": "Un duelo eléctrico al límite en Nueva York.",
+            "p2_anecdote": "En Record Plant en 1976, Paul Stanley y Ace Frehley grabaron guitarras armonizadas en homenaje a la devoción por el vivo.",
+            "p3_resolution": "Cada acorde conserva intacta aquella descarga.",
+            "historical_info": "Record Plant Studios en Nueva York (1976) y armonías gemelas de Paul Stanley y Ace Frehley."
+        }
     ],
     "bohemian rhapsody": [
         (
@@ -808,7 +846,8 @@ def select_closing_line(song_title, band_name, angle_idx=0):
 
 def get_master_eddie_script(song_title, band_name, album_name="", year="", angle=1, opening_text=None):
     """
-    Construye el guion maestro conciso (aprox 65-85 palabras totales para cumplir <= 45s con 5s de música).
+    Construye el guion maestro estructurado en 3 párrafos claros y concisos
+    (<= 45s totales considerando 5s intro + dos pausas musicales de 3s + transición final).
     """
     clean_key = normalize_text_key(song_title)
     angles_list = None
@@ -817,52 +856,87 @@ def get_master_eddie_script(song_title, band_name, album_name="", year="", angle
             angles_list = v if isinstance(v, list) else [v]
             break
 
+    p1_hook = ""
+    p2_anecdote = ""
+    p3_resolution = ""
+    historical_info = ""
+
     if angles_list:
         idx = (max(1, int(angle)) - 1) % len(angles_list)
-        dev_story = angles_list[idx]
-    else:
-        year_str = f"En {year}, " if year else ""
-        album_str = f"para el álbum {album_name}" if album_name else "durante una etapa clave de su carrera"
-        if angle % 3 == 1:
-            dev_story = (
-                f"{year_str}{album_str}, {band_name} buscó capturar un sonido eléctrico directo en el estudio sobre cinta analógica. "
-                f"La química del grupo convirtió aquellas intensas sesiones en un clásico perdurable que marcó a toda una generación."
-            )
-        elif angle % 3 == 2:
-            dev_story = (
-                f"{year_str}impulsada por un riff inolvidable de {band_name} {album_str}, la banda apostó por la fuerza rítmica y la emoción directa. "
-                f"La toma definitiva conservó tanta energía viva que rápidamente conquistó los diales de todo el mundo."
-            )
+        entry = angles_list[idx]
+        if isinstance(entry, dict):
+            p1_hook = entry.get("p1_hook", "").strip()
+            p2_anecdote = entry.get("p2_anecdote", "").strip()
+            p3_resolution = entry.get("p3_resolution", "").strip()
+            historical_info = entry.get("historical_info", "").strip()
         else:
-            dev_story = (
-                f"{year_str}destacada como pieza esencial de {band_name} {album_str}, esta grabación nació del perfeccionismo instrumental en cabina. "
-                f"Cada compás consolidó una identidad sonora tan poderosa que sigue resonando intacta hoy."
-            )
+            sents = [s.strip() for s in re.split(r'(?<=[.!?])\s+', str(entry).strip()) if s.strip()]
+            if len(sents) >= 2:
+                p2_anecdote = " ".join(sents[:-1])
+                p3_resolution = sents[-1]
+            else:
+                p2_anecdote = str(entry).strip()
+            historical_info = str(entry).strip()
+    else:
+        year_str = f"en {year}" if year else "en una etapa clave"
+        album_str = f"para {album_name}" if album_name else "en el estudio"
+        if angle % 3 == 1:
+            p1_hook = "Una sesión eléctrica que marcó toda una época."
+            p2_anecdote = f"Grabada sobre cinta analógica {year_str} {album_str}, {band_name} buscó capturar toda su química en directo sin artificios."
+            p3_resolution = "Ese impulso honesto se convirtió en un clásico inolvidable."
+        elif angle % 3 == 2:
+            p1_hook = "Un riff nacido de pura intensidad en cabina."
+            p2_anecdote = f"Impulsada {year_str} {album_str}, {band_name} apostó por la pegada rítmica y una interpretación sin concesiones."
+            p3_resolution = "Su fuerza conquistó de inmediato los diales del mundo."
+        else:
+            p1_hook = "La historia detrás de una toma definitiva."
+            p2_anecdote = f"Construida {year_str} {album_str}, {band_name} pulió cada compás hasta alcanzar una identidad sonora arrolladora."
+            p3_resolution = "Hoy sigue resonando con la misma energía original."
+        historical_info = f"Metadatos del proyecto: {band_name} — {song_title} ({album_name or 'Clásico'}, {year or 'Rock'})."
 
     if not opening_text:
         _, opening_text = select_dynamic_opening(song_title, band_name, year)
-    cierre = select_closing_line(song_title, band_name, angle - 1)
-    full_script = f"{opening_text} {dev_story} {cierre}"
-    return opening_text, dev_story, cierre, full_script
+
+    paragraph_1 = f"{opening_text} {p1_hook}".strip() if p1_hook else opening_text
+    paragraph_2 = p2_anecdote.strip()
+    p3_closing = select_closing_line(song_title, band_name, angle - 1)
+    paragraph_3 = f"{p3_resolution} {p3_closing}".strip() if p3_resolution else p3_closing
+    full_script = " ".join([x for x in (paragraph_1, paragraph_2, paragraph_3) if x]).strip()
+
+    return {
+        "opening_text": opening_text,
+        "p1_hook": p1_hook,
+        "paragraph_1": paragraph_1,
+        "paragraph_2": paragraph_2,
+        "p3_resolution": p3_resolution,
+        "p3_closing": p3_closing,
+        "paragraph_3": paragraph_3,
+        "historical_info": historical_info,
+        "full_script": full_script
+    }
 
 def generate_ai_story_script(song_title, band_name, album_name="", year="", angle=1, exclude_opening_ids=None, force_opening_id=None, previous_story_summary=None):
     """
-    Investiga/redacta una anécdota histórica real y verificable en español de 38-52 palabras
-    (total 65-85 palabras contando apertura dinámica y cierre emotivo) para respetar el límite estricto de 45s.
+    Redacta la historia radial en exactamente 3 párrafos semánticos (<= 45s incluyendo 5s intro + dos pausas de 3s):
+    - Párrafo 1: Apertura dinámica + contexto/gancho de curiosidad (sin adelantar la anécdota)
+    - Párrafo 2: Desarrollo de la anécdota histórica verificable
+    - Párrafo 3: Desenlace emocional + frase de cierre intensa
     """
     opening_id, apertura = select_dynamic_opening(
         song_title, band_name, year,
         exclude_ids=exclude_opening_ids,
         force_opening_id=force_opening_id
     )
-    cierre = select_closing_line(song_title, band_name, angle - 1)
+    p3_closing = select_closing_line(song_title, band_name, angle - 1)
 
     clean_key = normalize_text_key(song_title)
     has_curated = any(normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key for k in MASTER_CURATED_STORIES)
 
-    # Use OpenAI only if OPENAI_API_KEY is available AND either not in curated catalog OR regenerating beyond curated angles
     api_key = os.environ.get('OPENAI_API_KEY', '').strip()
-    dev_story = None
+    p1_hook = None
+    p2_anecdote = None
+    p3_resolution = None
+    historical_info = ""
     source = "curated_master"
 
     curated_count = 0
@@ -876,87 +950,114 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
         try:
             system_prompt = (
                 "Eres Fred, cronista y locutor experto de rock clásico en 'Rock Radio: De vuelta al pasado'. "
-                "Escribes anécdotas reales, verificables y fascinantes de grabación, origen de letras o contexto histórico. "
-                "REGLA ESTRICTA DE VERACIDAD: Nunca inventes fechas, personas ni acontecimientos falsos."
+                "Escribes guiones radiales en 3 párrafos claros con hechos históricos reales y verificables. "
+                "REGLA ESTRICTA DE VERACIDAD: Nunca inventes fechas, nombres ni anécdotas falsas."
             )
             avoid_note = f"\nEvita repetir el enfoque previo: {previous_story_summary}\n" if previous_story_summary else ""
             user_prompt = (
-                f"Redacta ÚNICAMENTE el párrafo de anécdota histórica (sin saludo inicial ni cierre) para la canción "
-                f"'{song_title}' de '{band_name}' (Álbum: '{album_name or 'Clásico'}', Año: '{year or 'Época Clásica'}').\n"
+                f"Genera en JSON estricto los bloques narrativos para '{song_title}' de '{band_name}' "
+                f"(Álbum: '{album_name or 'Clásico'}', Año: '{year or 'Época Clásica'}').\n"
+                f"La apertura fija que irá antes de p1_hook es: \"{apertura}\"\n"
+                f"El cierre fijo que irá después de p3_resolution es: \"{p3_closing}\"\n"
                 f"{avoid_note}"
-                "REQUISITOS ESTRICTOS:\n"
-                "- Exactamente 2 oraciones completas, claras y vívidas.\n"
-                "- Entre 38 y 48 palabras en total (crítico para no superar 45 segundos con la música).\n"
-                "- Solo hechos reales y verificables de grabación, composición, letras o contexto.\n"
-                "- Sin etiquetas entre corchetes ni comillas ni markdown."
+                "Devuelve ÚNICAMENTE un objeto JSON con estas 4 claves:\n"
+                "{\n"
+                '  "p1_hook": "1 frase breve de 5 a 8 palabras que despierte curiosidad sin adelantar la anécdota",\n'
+                '  "p2_anecdote": "1 oración completa y vívida de 18 a 25 palabras con la anécdota real principal",\n'
+                '  "p3_resolution": "1 frase emocional de 7 a 11 palabras con el desenlace que conecta con el cierre",\n'
+                '  "historical_info": "Resumen breve del dato histórico verificado"\n'
+                "}\n"
+                "Sin etiquetas entre corchetes ni markdown."
             )
             payload = {
                 "model": "gpt-4o-mini",
+                "response_format": {"type": "json_object"},
                 "messages": [
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_prompt}
                 ],
-                "temperature": 0.65,
-                "max_tokens": 180
+                "temperature": 0.6,
+                "max_tokens": 240
             }
             req = urllib.request.Request(
                 "https://api.openai.com/v1/chat/completions",
                 data=json.dumps(payload).encode("utf-8"),
-                headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json"
-                },
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
                 method="POST"
             )
             with urllib.request.urlopen(req, timeout=20) as resp:
                 resp_data = json.loads(resp.read().decode("utf-8"))
-                raw_dev = resp_data["choices"][0]["message"]["content"].strip().strip('"\' ')
-                raw_dev = strip_vocal_tags(raw_dev)
-                if 25 <= len(raw_dev.split()) <= 65:
-                    dev_story = raw_dev
+                parsed = json.loads(resp_data["choices"][0]["message"]["content"])
+                cand_hook = strip_vocal_tags(parsed.get("p1_hook", ""))
+                cand_anec = strip_vocal_tags(parsed.get("p2_anecdote", ""))
+                cand_res = strip_vocal_tags(parsed.get("p3_resolution", ""))
+                if 10 <= len(cand_anec.split()) <= 32 and cand_res:
+                    p1_hook = cand_hook
+                    p2_anecdote = cand_anec
+                    p3_resolution = cand_res
+                    historical_info = strip_vocal_tags(parsed.get("historical_info", ""))
                     source = "openai_gpt_4o_mini"
         except Exception as e:
             print(f"⚠️ [ROCK RADIO AI] Usando catálogo curado por: {e}", flush=True)
 
-    if not dev_story:
-        _, dev_story, _, _ = get_master_eddie_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
+    if not p2_anecdote:
+        master = get_master_eddie_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
+        p1_hook = master["p1_hook"]
+        p2_anecdote = master["paragraph_2"]
+        p3_resolution = master["p3_resolution"]
+        historical_info = master["historical_info"]
 
-    sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', dev_story) if s.strip()]
-    full_script = f"{apertura} {' '.join(sentences)} {cierre}"
+    paragraph_1 = f"{apertura} {p1_hook}".strip() if p1_hook else apertura
+    paragraph_2 = p2_anecdote.strip()
+    paragraph_3 = f"{p3_resolution} {p3_closing}".strip() if p3_resolution else p3_closing
+    full_script = " ".join([x for x in (paragraph_1, paragraph_2, paragraph_3) if x]).strip()
     total_words = len(full_script.split())
 
     return {
         "success": True,
         "opening_id": opening_id,
-        "apertura": apertura,
-        "desarrollo": " ".join(sentences),
-        "dev_sentences": sentences,
-        "cierre": cierre,
+        "opening_text": apertura,
+        "p1_hook": p1_hook or "",
+        "paragraph_1": paragraph_1,
+        "paragraph_2": paragraph_2,
+        "p3_resolution": p3_resolution or "",
+        "p3_closing": p3_closing,
+        "paragraph_3": paragraph_3,
+        "historical_info": historical_info,
+        "apertura": paragraph_1,
+        "desarrollo": paragraph_2,
+        "cierre": paragraph_3,
         "full_script": full_script,
         "source": source,
         "words": total_words,
-        "duration_est_sec": round(5.0 + total_words / 2.1 + 1.0, 1)
+        "duration_est_sec": round(INTRO_MUSIC_SEC + (PAUSE_MUSIC_SEC * 2) + total_words / 2.25 + OUTRO_MUSIC_TAIL_SEC, 1)
     }
 
-def condense_anecdote_text(dev_sentences, song_title, band_name, excess_sec=3.0):
+def condense_paragraph_text(text, song_title, band_name, role_label="anécdota", excess_sec=2.0):
     """
-    Si el segmento supera los 45s, resume limpiamente la anécdota conservando sentido histórico
-    y oraciones completas, sin cortar frases a la mitad ni acelerar la voz.
+    Si el segmento supera los 45s (incluyendo intro de 5s y dos pausas de 3s), resume limpiamente
+    el párrafo indicado conservando hechos reales y oraciones completas, sin acelerar ni cortar frases.
     """
-    text = " ".join(dev_sentences).strip()
+    text = (text or "").strip()
+    if not text:
+        return ""
+    words = text.split()
+    if len(words) <= 10:
+        return text
+
     api_key = os.environ.get('OPENAI_API_KEY', '').strip()
-    target_words = max(24, int(len(text.split()) - max(6, excess_sec * 2.2)))
+    target_words = max(10, int(len(words) - max(4, excess_sec * 2.2)))
 
     if api_key:
         try:
             payload = {
                 "model": "gpt-4o-mini",
                 "messages": [
-                    {"role": "system", "content": "Resume textos de locución radial en español conservando todos los hechos históricos reales en oraciones completas."},
-                    {"role": "user", "content": f"Resume esta anécdota sobre '{song_title}' de {band_name} a máximo {target_words} palabras, en 1 o 2 oraciones completas y naturales:\n\n{text}"}
+                    {"role": "system", "content": "Resume textos de locución radial en español conservando hechos reales y una oración completa natural."},
+                    {"role": "user", "content": f"Condensa este bloque ({role_label}) sobre '{song_title}' de {band_name} a máximo {target_words} palabras en 1 oración completa y natural:\n\n{text}"}
                 ],
-                "temperature": 0.3,
-                "max_tokens": 130
+                "temperature": 0.25,
+                "max_tokens": 110
             }
             req = urllib.request.Request(
                 "https://api.openai.com/v1/chat/completions",
@@ -967,32 +1068,33 @@ def condense_anecdote_text(dev_sentences, song_title, band_name, excess_sec=3.0)
             with urllib.request.urlopen(req, timeout=15) as resp:
                 resp_data = json.loads(resp.read().decode("utf-8"))
                 short = strip_vocal_tags(resp_data["choices"][0]["message"]["content"].strip().strip('"\' '))
-                if 16 <= len(short.split()) < len(text.split()):
-                    return [s.strip() for s in re.split(r'(?<=[.!?])\s+', short) if s.strip()]
+                if 8 <= len(short.split()) < len(words):
+                    if not short.endswith(('.', '!', '?')):
+                        short += '.'
+                    return short
         except Exception as e:
-            print(f"⚠️ [CONDENSE] Fallo OpenAI al resumir, aplicando compresión sintáctica limpia: {e}", flush=True)
+            print(f"⚠️ [CONDENSE] Fallo OpenAI al resumir {role_label}, aplicando compresión sintáctica limpia: {e}", flush=True)
 
-    # Rule-based clean clause condensation (always leaves complete grammatical sentences)
-    if len(dev_sentences) > 2:
-        return dev_sentences[:2]
+    # Rule-based clean sentence/clause condensation (always leaves complete grammatical sentences)
+    sents = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
+    if len(sents) > 1:
+        return sents[0]
 
-    # Shorten longer sentence by removing parenthetical / secondary subordinate clause after comma
-    new_sentences = []
-    for sent in dev_sentences:
-        clauses = [c.strip() for c in sent.split(",") if c.strip()]
-        if len(clauses) >= 3 and len(sent.split()) > 20:
-            # Drop the middle explanatory clause if grammatically clean, or keep main clauses
-            reduced = f"{clauses[0]}, {clauses[-1]}"
-            if not reduced.endswith(('.', '!', '?')):
-                reduced += "."
-            new_sentences.append(reduced)
-        else:
-            new_sentences.append(sent)
+    clauses = [c.strip() for c in text.split(",") if c.strip()]
+    if len(clauses) >= 3:
+        reduced = f"{clauses[0]}, {clauses[-1]}"
+        if not reduced.endswith(('.', '!', '?')):
+            reduced += "."
+        return reduced
+    if len(clauses) == 2 and len(words) > 16:
+        # Keep the richer clause if complete enough
+        candidate = clauses[1] if len(clauses[1].split()) >= len(clauses[0].split()) else clauses[0]
+        if not candidate.endswith(('.', '!', '?')):
+            candidate += "."
+        return candidate
+    return text
 
-    if " ".join(new_sentences) == text and len(dev_sentences) > 1:
-        # Keep the richer single complete sentence if still over budget
-        return [dev_sentences[0]]
-    return new_sentences
+condense_anecdote_text = condense_paragraph_text
 
 # ==============================================================================
 # 7. DICCIONARIO FONÉTICO DE RESPALDO (PARA EDGE-TTS SI FALTAN CREDENCIALES)
@@ -1027,20 +1129,19 @@ def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band", y
     text = (text or "").strip()
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
     if len(sentences) >= 3:
-        apertura = sentences[0]
-        # Check if opening consists of two short sentences ("Rock Radio: De vuelta al pasado. Soy Fred...")
+        p1 = sentences[0]
         if len(sentences) >= 4 and ("Rock Radio" in sentences[0] or "De vuelta al pasado" in sentences[0]) and len(sentences[0].split()) <= 8:
-            apertura = f"{sentences[0]} {sentences[1]}"
-            cierre = sentences[-1]
-            dev_sentences = sentences[2:-1]
+            p1 = f"{sentences[0]} {sentences[1]}"
+            p3 = sentences[-1]
+            p2 = " ".join(sentences[2:-1])
         else:
-            cierre = sentences[-1]
-            dev_sentences = sentences[1:-1]
-        if dev_sentences:
-            return apertura, dev_sentences, cierre, f"{apertura} {' '.join(dev_sentences)} {cierre}"
+            p3 = sentences[-1]
+            p2 = " ".join(sentences[1:-1])
+        if p2:
+            return p1, p2, p3, f"{p1} {p2} {p3}"
 
     res = generate_ai_story_script(song_title, band_name, year=year)
-    return res["apertura"], res["dev_sentences"], res["cierre"], res["full_script"]
+    return res["paragraph_1"], res["paragraph_2"], res["paragraph_3"], res["full_script"]
 
 # ==============================================================================
 # 8. MOTOR FISH AUDIO & DSP FFMPEG (Secciones 6, 7 y 8)
@@ -1141,11 +1242,25 @@ async def synthesize_fish_audio_tts(sem, text, out_mp3_path, reference_id=DEFAUL
     async with sem:
         await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, reference_id, model)
 
-async def synthesize_segments(ap_text, dev_texts, ci_text, tmp_prefix, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, job_id=None):
-    ap_mp3 = f"{tmp_prefix}_ap.mp3"
-    ci_mp3 = f"{tmp_prefix}_ci.mp3"
-    dev_mp3_paths = [f"{tmp_prefix}_dev_{idx}.mp3" for idx in range(len(dev_texts))]
-    new_temps = [ap_mp3, ci_mp3] + dev_mp3_paths
+async def synthesize_single_segment(text, out_mp3_path, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, is_closing=False):
+    if use_fish:
+        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, fish_voice, fish_model)
+    else:
+        if edge_tts is None:
+            raise RuntimeError("edge_tts no está instalado y FISH_API_KEY no está disponible.")
+        pitch = "+2Hz" if is_closing else "+0Hz"
+        await edge_tts.Communicate(apply_english_phonetics(text), DEFAULT_VOICE, rate="+0%", pitch=pitch).save(out_mp3_path)
+    return out_mp3_path
+
+async def synthesize_segments(p1_text, p2_text, p3_text, tmp_prefix, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, job_id=None):
+    """
+    Envía exactamente 3 solicitudes separadas a Fish Audio (paragraph_1, paragraph_2, paragraph_3)
+    usando la misma voz (reference_id) y configuraciones consistentes.
+    """
+    p1_mp3 = f"{tmp_prefix}_p1.mp3"
+    p2_mp3 = f"{tmp_prefix}_p2.mp3"
+    p3_mp3 = f"{tmp_prefix}_p3.mp3"
+    new_temps = [p1_mp3, p2_mp3, p3_mp3]
     temp_files.extend(new_temps)
 
     if job_id:
@@ -1153,95 +1268,119 @@ async def synthesize_segments(ap_text, dev_texts, ci_text, tmp_prefix, temp_file
             if job_id in ACTIVE_JOBS:
                 ACTIVE_JOBS[job_id]['temp_files'].update(new_temps)
 
-    tasks = []
     if use_fish:
         sem = asyncio.Semaphore(1)
-        tasks.append(synthesize_fish_audio_tts(sem, ap_text, ap_mp3, reference_id=fish_voice, model=fish_model))
-        for idx, s_text in enumerate(dev_texts):
-            tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=fish_voice, model=fish_model))
-        tasks.append(synthesize_fish_audio_tts(sem, ci_text, ci_mp3, reference_id=fish_voice, model=fish_model))
+        await synthesize_fish_audio_tts(sem, p1_text, p1_mp3, reference_id=fish_voice, model=fish_model)
+        await synthesize_fish_audio_tts(sem, p2_text, p2_mp3, reference_id=fish_voice, model=fish_model)
+        await synthesize_fish_audio_tts(sem, p3_text, p3_mp3, reference_id=fish_voice, model=fish_model)
     else:
-        if edge_tts is None:
-            raise RuntimeError("edge_tts no está instalado y FISH_API_KEY no está disponible.")
-        tasks.append(edge_tts.Communicate(apply_english_phonetics(ap_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(ap_mp3))
-        for idx, s_text in enumerate(dev_texts):
-            tasks.append(edge_tts.Communicate(apply_english_phonetics(s_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
-        tasks.append(edge_tts.Communicate(apply_english_phonetics(ci_text), DEFAULT_VOICE, rate="+0%", pitch="+2Hz").save(ci_mp3))
+        await synthesize_single_segment(p1_text, p1_mp3, use_fish=False, is_closing=False)
+        await synthesize_single_segment(p2_text, p2_mp3, use_fish=False, is_closing=False)
+        await synthesize_single_segment(p3_text, p3_mp3, use_fish=False, is_closing=True)
 
-    await asyncio.gather(*tasks)
-    return ap_mp3, dev_mp3_paths, ci_mp3
+    return p1_mp3, p2_mp3, p3_mp3
 
-async def synthesize_anecdote_only(dev_texts, tmp_prefix, pass_num, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL):
-    dev_mp3_paths = [f"{tmp_prefix}_dev_p{pass_num}_{idx}.mp3" for idx in range(len(dev_texts))]
-    temp_files.extend(dev_mp3_paths)
-    tasks = []
-    if use_fish:
-        sem = asyncio.Semaphore(1)
-        for idx, s_text in enumerate(dev_texts):
-            tasks.append(synthesize_fish_audio_tts(sem, s_text, dev_mp3_paths[idx], reference_id=fish_voice, model=fish_model))
+def _get_wav_duration(wav_path):
+    with wave.open(wav_path, "rb") as w:
+        return w.getnframes() / float(w.getframerate())
+
+def _make_silence_wav(duration_sec, out_wav_path, sample_rate=44100, channels=2):
+    n_frames = max(1, int(round(duration_sec * sample_rate)))
+    with wave.open(out_wav_path, "wb") as w:
+        w.setnchannels(channels)
+        w.setsampwidth(2)
+        w.setframerate(sample_rate)
+        w.writeframes(b"\x00" * (n_frames * channels * 2))
+
+def _concat_wavs(wav_paths, out_wav_path):
+    with wave.open(wav_paths[0], "rb") as w0:
+        params = w0.getparams()
+    with wave.open(out_wav_path, "wb") as out_w:
+        out_w.setparams(params)
+        for p in wav_paths:
+            with wave.open(p, "rb") as wi:
+                out_w.writeframes(wi.readframes(wi.getnframes()))
+
+def _apply_progressive_closing_ramp(in_wav, eq_wav, out_wav, p3_res_clean, p3_close_clean, boost_db=2.8):
+    """
+    Aplica un incremento progresivo y natural en Párrafo 3 (desenlace -> cierre emotivo)
+    mediante rampa raised-cosine exacta por muestra + mezcla suave del realce de presencia (3.2 kHz),
+    evitando saltos de volumen y conservando margen limpio antes del limitador final.
+    """
+    with wave.open(in_wav, "rb") as wi, wave.open(eq_wav, "rb") as we:
+        params = wi.getparams()
+        sr = wi.getframerate()
+        ch = wi.getnchannels()
+        n_frames = wi.getnframes()
+        raw_in = array.array("h", wi.readframes(n_frames))
+        raw_eq = array.array("h", we.readframes(we.getnframes()))
+
+    n_pairs = min(len(raw_in), len(raw_eq)) // ch
+    if n_pairs <= 0:
+        shutil.copyfile(in_wav, out_wav)
+        return 0.0
+
+    # Localizar pausa natural entre el desenlace y el cierre icónico
+    total_chars = max(1, len(p3_res_clean) + len(p3_close_clean) + 1)
+    if p3_res_clean and len(p3_res_clean) >= 6:
+        est_frac = len(p3_res_clean) / total_chars
+        win = max(1, int(0.02 * sr))
+        search_start = max(1, int((max(0.10, est_frac - 0.16)) * n_pairs))
+        search_end = min(n_pairs - win - 1, int((min(0.84, est_frac + 0.16)) * n_pairs))
+        best_frame = int(est_frac * n_pairs)
+        min_energy = float("inf")
+        for f_idx in range(search_start, max(search_start + 1, search_end), win):
+            s0 = f_idx * ch
+            s1 = min(len(raw_in), (f_idx + win) * ch)
+            energy = sum(abs(raw_in[k]) for k in range(s0, s1))
+            if energy < min_energy:
+                min_energy = energy
+                best_frame = f_idx
+        ramp_start = max(0, best_frame - int(0.25 * sr))
+        ramp_end = min(n_pairs - 1, best_frame + int(0.55 * sr))
+        t_split_sec = round(best_frame / float(sr), 3)
     else:
-        for idx, s_text in enumerate(dev_texts):
-            tasks.append(edge_tts.Communicate(apply_english_phonetics(s_text), DEFAULT_VOICE, rate="+0%", pitch="+0Hz").save(dev_mp3_paths[idx]))
-    await asyncio.gather(*tasks)
-    return dev_mp3_paths
+        ramp_start = 0
+        ramp_end = min(n_pairs - 1, int(0.80 * sr))
+        t_split_sec = 0.0
 
-def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=15.0):
+    ramp_len = max(1, ramp_end - ramp_start)
+    max_linear = 10.0 ** (boost_db / 20.0)
+    out_arr = array.array("h", [0] * (n_pairs * ch))
+
+    for i in range(n_pairs):
+        if i <= ramp_start:
+            smooth = 0.0
+        elif i >= ramp_end:
+            smooth = 1.0
+        else:
+            alpha = (i - ramp_start) / float(ramp_len)
+            smooth = 0.5 * (1.0 - math.cos(math.pi * alpha))
+
+        gain = 1.0 + (max_linear - 1.0) * smooth if smooth <= 0.0 else (10.0 ** ((boost_db * smooth) / 20.0))
+        base_idx = i * ch
+        for c in range(ch):
+            idx = base_idx + c
+            blended = raw_in[idx] * (1.0 - smooth) + raw_eq[idx] * smooth
+            val = int(round(blended * gain))
+            if val > 32760:
+                val = 32760
+            elif val < -32760:
+                val = -32760
+            out_arr[idx] = val
+
+    with wave.open(out_wav, "wb") as wo:
+        wo.setparams(params)
+        wo.writeframes(out_arr.tobytes())
+
+    return t_split_sec
+
+def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
     """
-    Pipeline de masterización y mezcla profesional con FFmpeg:
-    1. Pausas orgánicas de cabina: 0.35s tras apertura, 0.30s entre oraciones, 0.45s antes del cierre.
-    2. Cadena vocal unificada: highpass 80Hz, EQ correctiva (380Hz), presencia 2-4kHz (3kHz), de-esser, compresión 3:1.
-    3. Medición EBU R128 real del cuerpo vs cierre y refuerzo determinístico en el cierre (+2.8 dB percibidos + 1.4 dB @ 3.2 kHz),
-       sin cambios bruscos ni clipping ni aplastamiento por el limitador.
-    4. Entrada instrumental de exactamente 5.0 segundos sin voz (adelay=5000|5000 en voz).
-    5. Sidechain ducking de música durante la voz (~12-18dB reducción, attack=180ms, release=450ms).
-    6. Transición final suave y limitación True Peak a -1.0 dBTP.
+    Aplica la cadena vocal unificada y recorta únicamente silencio digital muerto (<-50dB)
+    para preservar pausas musicales exactas de 3.0s entre párrafos.
     """
-    sil_ap_mp3 = f"{tmp_prefix}_sil_ap.mp3"
-    sil_sent_mp3 = f"{tmp_prefix}_sil_sent.mp3"
-    sil_ci_mp3 = f"{tmp_prefix}_sil_ci.mp3"
-    pre_ci_txt = f"{tmp_prefix}_pre_ci.txt"
-    pre_ci_mp3 = f"{tmp_prefix}_pre_ci.mp3"
-    pre_ci_wav = f"{tmp_prefix}_pre_ci_m.wav"
-    ci_base_wav = f"{tmp_prefix}_ci_b.wav"
-    ci_mast_wav = f"{tmp_prefix}_ci_m.wav"
-    voice_concat_txt = f"{tmp_prefix}_vm_concat.txt"
-    voice_master_wav = f"{tmp_prefix}_voice_m.wav"
-    temp_files.extend([
-        sil_ap_mp3, sil_sent_mp3, sil_ci_mp3, pre_ci_txt, pre_ci_mp3,
-        pre_ci_wav, ci_base_wav, ci_mast_wav, voice_concat_txt, voice_master_wav
-    ])
-
-    gap_ap = 0.35
-    gap_sent = 0.30
-    gap_ci = 0.45
-    make_silence_mp3(gap_ap, sil_ap_mp3)
-    make_silence_mp3(gap_sent, sil_sent_mp3)
-    make_silence_mp3(gap_ci, sil_ci_mp3)
-
-    pre_ci_list = [ap_mp3, sil_ap_mp3]
-    for idx, dev_p in enumerate(dev_mp3_paths):
-        pre_ci_list.append(dev_p)
-        if idx < len(dev_mp3_paths) - 1:
-            pre_ci_list.append(sil_sent_mp3)
-    pre_ci_list.append(sil_ci_mp3)
-
-    with open(pre_ci_txt, "w", encoding="utf-8") as f:
-        for c in pre_ci_list:
-            f.write(f"file '{c}'\n")
-
-    subprocess.run([
-        FFMPEG_BIN, "-y",
-        "-f", "concat", "-safe", "0", "-i", pre_ci_txt,
-        "-c", "copy",
-        pre_ci_mp3
-    ], capture_output=True, check=True)
-
-    # Cadena vocal estandarizada (mismo procesamiento para cuerpo y cierre con margen de ~4 dB para el boost):
-    # - highpass 80Hz
-    # - EQ correctiva (-1.5dB @ 380Hz)
-    # - Presencia vocal suave 2-4kHz (+2.0dB @ 3000Hz)
-    # - De-esser para controlar sibilancias
-    # - Compresión 3:1 (threshold -18dB, ratio 3, attack 15ms, release 120ms, makeup 1.2dB)
+    gain_filter = f",volume={norm_gain_db:+.2f}dB" if abs(norm_gain_db) >= 0.05 else ""
     vocal_core = (
         "aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
         "highpass=f=80,"
@@ -1249,50 +1388,89 @@ def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix
         "equalizer=f=3000:width_type=o:width=1.1:g=2.0,"
         "deesser=i=0.25:m=0.5:f=0.5:s=o,"
         "acompressor=threshold=-18dB:ratio=3:attack=15:release=120:makeup=1.2,"
-        "volume=1.02"
+        "silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,"
+        "areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,areverse,"
+        "afade=t=in:st=0:d=0.015,"
+        f"areverse,afade=t=in:st=0:d=0.015,areverse{gain_filter}"
     )
-
     subprocess.run([
-        FFMPEG_BIN, "-y", "-i", pre_ci_mp3,
+        FFMPEG_BIN, "-y", "-i", in_mp3,
         "-af", vocal_core,
         "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
-        pre_ci_wav
+        out_wav
     ], capture_output=True, check=True)
 
+def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=15.0):
+    """
+    Pipeline de masterización cinematográfica en 3 párrafos y mezcla continua:
+    1. Procesa P1, P2 y P3 con la misma cadena vocal y normaliza su timbre/volumen base (~ -20.0 LUFS).
+    2. Aplica aumento progresivo en P3 (+2.8 dB con rampa raised-cosine + presencia 3.2 kHz sobre el cierre).
+    3. Ensambla pausas exactas de 3.000s entre P1->P2 y P2->P3 mediante WAV PCM de precisión por muestra.
+    4. Mezcla sobre una única base musical continua (0:00 a fin) sin reinicios ni cortes:
+       - 0:00–0:05 música sola al 100%
+       - Lookahead sidechain ducking (150ms anticipado, attack=200ms, release=450ms, reducción ~12–18dB)
+       - Recuperación progresiva durante las dos pausas de 3.0s y transición final suave
+       - Limitador True Peak final a -1.0 dBTP
+    """
+    p1_core = f"{tmp_prefix}_p1_core.wav"
+    p2_core = f"{tmp_prefix}_p2_core.wav"
+    p3_core = f"{tmp_prefix}_p3_core.wav"
+    p1_norm = f"{tmp_prefix}_p1_norm.wav"
+    p2_norm = f"{tmp_prefix}_p2_norm.wav"
+    p3_norm = f"{tmp_prefix}_p3_norm.wav"
+    p3_eq = f"{tmp_prefix}_p3_eq.wav"
+    p3_mast = f"{tmp_prefix}_p3_mast.wav"
+    sil_pause_wav = f"{tmp_prefix}_sil_pause3s.wav"
+    voice_master_wav = f"{tmp_prefix}_voice_m.wav"
+    temp_files.extend([
+        p1_core, p2_core, p3_core, p1_norm, p2_norm, p3_norm,
+        p3_eq, p3_mast, sil_pause_wav, voice_master_wav
+    ])
+
+    _process_paragraph_to_core_wav(p1_mp3, p1_core, 0.0)
+    _process_paragraph_to_core_wav(p2_mp3, p2_core, 0.0)
+    _process_paragraph_to_core_wav(p3_mp3, p3_core, 0.0)
+
+    # Igualar sonoridad base (LUFS) para coherencia de timbre entre los 3 segmentos
+    target_lufs = -17.5
+    p1_lufs = get_integrated_lufs(p1_core)
+    p2_lufs = get_integrated_lufs(p2_core)
+    p3_base_lufs = get_integrated_lufs(p3_core)
+
+    g1 = max(-4.0, min(8.0, target_lufs - p1_lufs))
+    g2 = max(-4.0, min(8.0, target_lufs - p2_lufs))
+    # Como P3 recibe un realce progresivo en el cierre, ajustamos su base ~0.6 dB abajo para mantener headroom limpio
+    g3 = max(-4.0, min(7.0, target_lufs - p3_base_lufs - 0.6))
+
+    _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
+    _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
+    _process_paragraph_to_core_wav(p3_mp3, p3_norm, g3)
+
+    # Preparar copia con presencia @ 3.2 kHz para mezcla progresiva hacia el cierre
     subprocess.run([
-        FFMPEG_BIN, "-y", "-i", ci_mp3,
-        "-af", vocal_core,
+        FFMPEG_BIN, "-y", "-i", p3_norm,
+        "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.4",
         "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
-        ci_base_wav
+        p3_eq
     ], capture_output=True, check=True)
 
-    # Medición EBU R128 de cuerpo y cierre para lograr +2.8 dB de presencia adicional percibida en el cierre
-    body_lufs = get_integrated_lufs(pre_ci_wav)
-    ci_lufs = get_integrated_lufs(ci_base_wav)
-    boost_db = round(max(1.8, min(4.2, (body_lufs - ci_lufs) + 2.8)), 2)
+    boost_db = 2.6
+    t_split_p3 = _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_res_clean, p3_close_clean, boost_db=boost_db)
 
-    subprocess.run([
-        FFMPEG_BIN, "-y", "-i", ci_base_wav,
-        "-af", f"afade=t=in:st=0:d=0.025,volume={boost_db:.2f}dB,equalizer=f=3200:width_type=o:width=1.0:g=1.4",
-        "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
-        ci_mast_wav
-    ], capture_output=True, check=True)
+    _make_silence_wav(PAUSE_MUSIC_SEC, sil_pause_wav)
+    _concat_wavs([p1_norm, sil_pause_wav, p2_norm, sil_pause_wav, p3_mast], voice_master_wav)
 
-    with open(voice_concat_txt, "w", encoding="utf-8") as f:
-        f.write(f"file '{pre_ci_wav}'\n")
-        f.write(f"file '{ci_mast_wav}'\n")
+    dur_p1 = _get_wav_duration(p1_norm)
+    dur_p2 = _get_wav_duration(p2_norm)
+    dur_p3 = _get_wav_duration(p3_mast)
+    voice_dur = _get_wav_duration(voice_master_wav)
 
-    subprocess.run([
-        FFMPEG_BIN, "-y",
-        "-f", "concat", "-safe", "0", "-i", voice_concat_txt,
-        "-c", "copy",
-        voice_master_wav
-    ], capture_output=True, check=True)
-
-    voice_dur = get_audio_duration(voice_master_wav)
-    tail_dur = min(OUTRO_MUSIC_TAIL_SEC, max(0.3, SAFE_TARGET_TOTAL_SEC - INTRO_MUSIC_SEC - voice_dur))
+    tail_dur = min(OUTRO_MUSIC_TAIL_SEC, max(0.35, SAFE_TARGET_TOTAL_SEC - INTRO_MUSIC_SEC - voice_dur))
     total_target_dur = min(SAFE_TARGET_TOTAL_SEC, round(INTRO_MUSIC_SEC + voice_dur + tail_dur, 3))
-    fade_out_start = round(max(INTRO_MUSIC_SEC + voice_dur - 0.15, total_target_dur - tail_dur), 3)
+    fade_out_start = round(max(INTRO_MUSIC_SEC + voice_dur + 0.05, total_target_dur - tail_dur), 3)
+    if fade_out_start >= total_target_dur - 0.15:
+        fade_out_start = round(max(INTRO_MUSIC_SEC + voice_dur - 0.10, total_target_dur - tail_dur), 3)
+    actual_fade_dur = round(max(0.25, total_target_dur - fade_out_start), 3)
 
     tmp_out = f"{out_mp3_path}.tmp.mp3"
     temp_files.append(tmp_out)
@@ -1300,28 +1478,31 @@ def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix
 
     has_bed = os.path.exists(DEFAULT_MUSIC_BED) and os.path.getsize(DEFAULT_MUSIC_BED) > 10000
 
-    # Exactamente 5.000 segundos de retardo (adelay=5000|5000) para entrada instrumental pura
-    delayed_voice_chain = (
+    # Voz principal retrasada exactamente 5.000s (0:00-0:05 música sola)
+    delayed_voice_mix = (
         f"[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
         f"adelay={int(INTRO_MUSIC_SEC * 1000)}|{int(INTRO_MUSIC_SEC * 1000)},"
         f"apad=whole_dur={total_target_dur:.3f},"
-        f"atrim=0:{total_target_dur:.3f}"
+        f"atrim=0:{total_target_dur:.3f}[vox_mix]"
+    )
+    # Señal sidechain anticipada 150ms (4850ms) para atenuación suave ANTES de cada entrada de Fred
+    lookahead_ms = max(0, int(INTRO_MUSIC_SEC * 1000) - 150)
+    delayed_voice_sc = (
+        f"[0:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
+        f"adelay={lookahead_ms}|{lookahead_ms},"
+        f"apad=whole_dur={total_target_dur:.3f},"
+        f"atrim=0:{total_target_dur:.3f}[vox_sc]"
     )
 
     if has_bed:
-        # Música de fondo:
-        # - Empieza en bed_seek_sec (ej. 15s donde la instrumentación es constante y rica)
-        # - 5s iniciales sin voz al 100% del nivel introductorio (fade-in 0.35s)
-        # - Sidechain ducking durante la locución (reducción ~12-18dB, attack=180ms, release=450ms)
-        # - Transición final suave sin silencios abruptos
-        # - Limitador True Peak final a -1.0dB
         filter_complex = (
-            f"{delayed_voice_chain},asplit=2[vox_mix][vox_sc];"
+            f"{delayed_voice_mix};"
+            f"{delayed_voice_sc};"
             f"[1:a]aresample=44100,aformat=sample_fmts=fltp:channel_layouts=stereo,"
             f"atrim=start={bed_seek_sec}:duration={total_target_dur:.3f},asetpts=PTS-STARTPTS,"
-            f"afade=t=in:st=0:d=0.35,afade=t=out:st={fade_out_start:.3f}:d={tail_dur:.3f},"
-            f"highpass=f=100,lowpass=f=8500,volume=0.38[bed_pre];"
-            f"[bed_pre][vox_sc]sidechaincompress=threshold=0.015:ratio=4.0:attack=180:release=450:level_sc=3.2[bed_ducked];"
+            f"afade=t=in:st=0:d=0.40,afade=t=out:st={fade_out_start:.3f}:d={actual_fade_dur:.3f},"
+            f"highpass=f=95,lowpass=f=9000,volume=0.30[bed_pre];"
+            f"[bed_pre][vox_sc]sidechaincompress=threshold=0.014:ratio=3.2:attack=200:release=450:level_sc=2.8[bed_ducked];"
             f"[vox_mix][bed_ducked]amix=inputs=2:duration=first:normalize=0,"
             f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
         )
@@ -1336,7 +1517,10 @@ def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix
             tmp_out
         ]
     else:
-        filter_complex = f"{delayed_voice_chain},alimiter=limit=-1.0dB:attack=5:release=50[aout]"
+        filter_complex = (
+            f"{delayed_voice_mix},"
+            f"alimiter=limit=-1.0dB:attack=5:release=50[aout]"
+        )
         cmd = [
             FFMPEG_BIN, "-y",
             "-i", voice_master_wav,
@@ -1349,7 +1533,23 @@ def master_radio_segment(ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix
 
     subprocess.run(cmd, capture_output=True, check=True)
     actual_dur = get_audio_duration(tmp_out)
-    return tmp_out, voice_dur, actual_dur, (gap_ap, gap_sent, gap_ci)
+
+    return {
+        "tmp_out": tmp_out,
+        "voice_dur": voice_dur,
+        "actual_dur": actual_dur,
+        "dur_p1": round(dur_p1, 3),
+        "dur_p2": round(dur_p2, 3),
+        "dur_p3": round(dur_p3, 3),
+        "pause_1_sec": PAUSE_MUSIC_SEC,
+        "pause_2_sec": PAUSE_MUSIC_SEC,
+        "tail_dur": round(actual_fade_dur, 3),
+        "t_split_p3_sec": t_split_p3,
+        "p1_lufs": round(p1_lufs, 2),
+        "p2_lufs": round(p2_lufs, 2),
+        "p3_base_lufs": round(p3_base_lufs, 2),
+        "closing_boost_db": boost_db
+    }
 
 # ==============================================================================
 # 9. INTEGRACIÓN SEGURA EN EL CATÁLOGO DEL REPRODUCTOR (index.html + Clones)
@@ -1575,12 +1775,15 @@ async def run_story_pipeline(
 
     rel_audio_file = os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/")
 
-    # 1. Preparar guion (nuevo, regenerado o reutilizado)
+    # 1. Preparar guion estructurado en 3 párrafos (nuevo, regenerado o reutilizado)
     if mode == "regenerate_voice" and existing_record:
         opening_id = existing_record.get("opening_id", 1)
-        apertura = existing_record["apertura"]
-        dev_sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', existing_record["desarrollo"]) if s.strip()]
-        cierre = existing_record["cierre"]
+        opening_text = existing_record.get("opening_text") or existing_record.get("apertura", "")
+        paragraph_1 = existing_record.get("paragraph_1") or existing_record.get("apertura", "")
+        paragraph_2 = existing_record.get("paragraph_2") or existing_record.get("desarrollo", "")
+        p3_resolution = existing_record.get("p3_resolution", "")
+        p3_closing = existing_record.get("p3_closing") or existing_record.get("cierre", "")
+        historical_info = existing_record.get("historical_info", "")
         angle_index = existing_record.get("angle_index", 1)
         script_source = "voice_only_reuse"
         cover = cover or existing_record.get("cover", "")
@@ -1595,7 +1798,7 @@ async def run_story_pipeline(
             if existing_record.get("opening_id"):
                 excl_openings.append(existing_record["opening_id"])
             next_angle = int(existing_record.get("angle_index", 1)) + 1
-            prev_summary = existing_record.get("desarrollo")
+            prev_summary = existing_record.get("paragraph_2") or existing_record.get("desarrollo")
 
         ai_script = generate_ai_story_script(
             song_title, band_name, album_name, year,
@@ -1604,58 +1807,96 @@ async def run_story_pipeline(
             previous_story_summary=prev_summary
         )
         opening_id = ai_script["opening_id"]
-        apertura = ai_script["apertura"]
-        dev_sentences = ai_script["dev_sentences"]
-        cierre = ai_script["cierre"]
+        opening_text = ai_script["opening_text"]
+        paragraph_1 = ai_script["paragraph_1"]
+        paragraph_2 = ai_script["paragraph_2"]
+        p3_resolution = ai_script["p3_resolution"]
+        p3_closing = ai_script["p3_closing"]
+        historical_info = ai_script["historical_info"]
         angle_index = next_angle
         script_source = ai_script["source"]
 
-    dual = build_dual_scripts(apertura, dev_sentences, cierre, model_name=selected_model)
+    dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
 
     print(f"\n🎙️ [ROCK RADIO AI] Iniciando '{song_title}' — {band_name} (modo={mode}, modelo={selected_model}, voz={selected_voice[:8]}...)", flush=True)
-    print(f"   Apertura #{opening_id}: {dual['apertura_clean']}", flush=True)
+    print(f"   Apertura #{opening_id}: {opening_text}", flush=True)
 
     tmp_prefix = f"/tmp/rockradio_{pid}_{int(t_start*1000)}"
     temp_files = []
 
     try:
-        # 2. Síntesis inicial con Fish Audio
-        ap_mp3, dev_mp3_paths, ci_mp3 = await synthesize_segments(
-            dual["vocal_ap"], dual["vocal_dev_list"], dual["vocal_ci"],
+        # 2. Síntesis inicial con Fish Audio (estrictamente 3 llamadas: P1, P2, P3)
+        p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
+            dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
             tmp_prefix, temp_files,
             use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model, job_id=job_id
         )
 
-        # 3. Medir duración real y aplicar resumen/regeneración si > 45s (hasta 3 pases)
+        # 3. Medir duración real descontando intro (5s) + dos pausas musicales (3s + 3s) + transición final
         for pass_num in range(1, 4):
-            dur_ap = get_audio_duration(ap_mp3)
-            dur_devs = [get_audio_duration(p) for p in dev_mp3_paths]
-            dur_ci = get_audio_duration(ci_mp3)
-            gaps_total = 0.35 + max(0, len(dur_devs) - 1) * 0.30 + 0.45
-            voice_dur_est = dur_ap + sum(dur_devs) + dur_ci + gaps_total
-            predicted_final = INTRO_MUSIC_SEC + voice_dur_est + 0.6
+            dur_p1_raw = get_audio_duration(p1_mp3)
+            dur_p2_raw = get_audio_duration(p2_mp3)
+            dur_p3_raw = get_audio_duration(p3_mp3)
+            # Restar ~0.35s estimados de aire muerto por segmento al recortar <-50dB
+            speech_est = max(0.0, dur_p1_raw - 0.15) + max(0.0, dur_p2_raw - 0.15) + max(0.0, dur_p3_raw - 0.15)
+            predicted_final = INTRO_MUSIC_SEC + PAUSE_MUSIC_SEC * 2 + speech_est + 0.55
 
             if predicted_final <= SAFE_TARGET_TOTAL_SEC:
                 break
 
-            excess = predicted_final - (SAFE_TARGET_TOTAL_SEC - 1.0)
-            print(f"⏱️ [ROCK RADIO AI] Duración estimada {predicted_final:.2f}s excede límite (45s). Resumiendo anécdota (pase {pass_num})...", flush=True)
-            condensed_sents = condense_anecdote_text(dual["dev_sentences_clean"], song_title, band_name, excess_sec=excess)
-            if " ".join(condensed_sents) == " ".join(dual["dev_sentences_clean"]):
-                # Force single concise sentence if condensation couldn't reduce further
-                condensed_sents = [dual["dev_sentences_clean"][0]]
+            excess = predicted_final - (SAFE_TARGET_TOTAL_SEC - 1.2)
+            print(f"⏱️ [ROCK RADIO AI] Duración estimada {predicted_final:.2f}s excede límite (45s). Condensando sin acelerar (pase {pass_num})...", flush=True)
 
-            dual = build_dual_scripts(dual["apertura_clean"], condensed_sents, dual["cierre_clean"], model_name=selected_model)
-            dev_mp3_paths = await synthesize_anecdote_only(
-                dual["vocal_dev_list"], tmp_prefix, pass_num, temp_files,
-                use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
-            )
+            if pass_num == 1:
+                new_p2 = condense_paragraph_text(dual["p2_clean"], song_title, band_name, role_label="párrafo 2 (anécdota)", excess_sec=excess)
+                if new_p2 != dual["p2_clean"]:
+                    dual = build_dual_scripts(dual["p1_clean"], new_p2, dual["p3_res_clean"], dual["p3_close_clean"], model_name=selected_model)
+                    p2_new = f"{tmp_prefix}_p2_c{pass_num}.mp3"
+                    temp_files.append(p2_new)
+                    await synthesize_single_segment(dual["vocal_p2"], p2_new, use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model)
+                    p2_mp3 = p2_new
+                    continue
 
-        # 4. Masterización FFmpeg (5s intro musical + ducking 12-18dB + +2.8dB cierre + -1dBTP limiter)
+            # Si aún excede o P2 no redujo suficiente, simplificar gancho de P1 o desenlace de P3 preservando oraciones completas
+            new_p1 = opening_text if len(dual["p1_clean"]) > len(opening_text) else dual["p1_clean"]
+            new_res = condense_paragraph_text(dual["p3_res_clean"], song_title, band_name, role_label="párrafo 3 (desenlace)", excess_sec=excess) if pass_num >= 3 else dual["p3_res_clean"]
+            if pass_num >= 3 and new_res == dual["p3_res_clean"]:
+                new_res = ""
+
+            p1_changed = new_p1 != dual["p1_clean"]
+            p3_changed = new_res != dual["p3_res_clean"]
+            if not p1_changed and not p3_changed:
+                new_p2_short = condense_paragraph_text(dual["p2_clean"], song_title, band_name, role_label="párrafo 2 (anécdota)", excess_sec=excess + 2.0)
+                if new_p2_short != dual["p2_clean"]:
+                    dual = build_dual_scripts(new_p1, new_p2_short, new_res, dual["p3_close_clean"], model_name=selected_model)
+                    p2_new = f"{tmp_prefix}_p2_c{pass_num}.mp3"
+                    temp_files.append(p2_new)
+                    await synthesize_single_segment(dual["vocal_p2"], p2_new, use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model)
+                    p2_mp3 = p2_new
+                continue
+
+            dual = build_dual_scripts(new_p1, dual["p2_clean"], new_res, dual["p3_close_clean"], model_name=selected_model)
+            if p1_changed:
+                p1_new = f"{tmp_prefix}_p1_c{pass_num}.mp3"
+                temp_files.append(p1_new)
+                await synthesize_single_segment(dual["vocal_p1"], p1_new, use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model)
+                p1_mp3 = p1_new
+            if p3_changed:
+                p3_new = f"{tmp_prefix}_p3_c{pass_num}.mp3"
+                temp_files.append(p3_new)
+                await synthesize_single_segment(dual["vocal_p3"], p3_new, use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model, is_closing=True)
+                p3_mp3 = p3_new
+
+        # 4. Masterización FFmpeg/Python (5s intro + dos pausas de 3s + ducking lookahead + cierre progresivo + -1dBTP)
         bed_seek = 15.0 + ((angle_index - 1) * 8.0) % 40.0
-        tmp_out, voice_dur, actual_final_dur, (gap_ap, gap_sent, gap_ci) = master_radio_segment(
-            ap_mp3, dev_mp3_paths, ci_mp3, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=bed_seek
+        mix_info = master_radio_segment(
+            p1_mp3, p2_mp3, p3_mp3,
+            dual["p3_res_clean"], dual["p3_close_clean"],
+            out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=bed_seek
         )
+        tmp_out = mix_info["tmp_out"]
+        voice_dur = mix_info["voice_dur"]
+        actual_final_dur = mix_info["actual_dur"]
 
         # 5. Validación estricta del archivo generado antes de reemplazar el existente
         if not os.path.exists(tmp_out) or os.path.getsize(tmp_out) < 10000:
@@ -1666,40 +1907,53 @@ async def run_story_pipeline(
         # Reemplazo atómico seguro (conserva anterior si ocurrió error arriba)
         os.replace(tmp_out, out_mp3_path)
 
-        # 6. Calcular marcas de tiempo exactas (desplazadas +5.0s por la entrada instrumental)
-        dur_ap = get_audio_duration(ap_mp3)
-        dur_devs = [get_audio_duration(p) for p in dev_mp3_paths]
-        dur_ci = get_audio_duration(ci_mp3)
+        # 6. Calcular marcas de tiempo exactas (5s intro + P1 + 3s pausa + P2 + 3s pausa + P3)
+        dur_p1 = mix_info["dur_p1"]
+        dur_p2 = mix_info["dur_p2"]
+        dur_p3 = mix_info["dur_p3"]
+        p1_start = round(INTRO_MUSIC_SEC, 2)
+        p1_end = round(p1_start + dur_p1, 2)
+        pause1_end = round(p1_end + PAUSE_MUSIC_SEC, 2)
+        p2_start = pause1_end
+        p2_end = round(p2_start + dur_p2, 2)
+        pause2_end = round(p2_end + PAUSE_MUSIC_SEC, 2)
+        p3_start = pause2_end
+        p3_end = round(min(actual_final_dur, p3_start + dur_p3), 2)
 
         lyrics_timings = [
             {
                 "start": 0.0,
-                "end": round(INTRO_MUSIC_SEC, 2),
+                "end": p1_start,
                 "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+            },
+            {
+                "start": p1_start,
+                "end": p1_end,
+                "text": dual["p1_clean"]
+            },
+            {
+                "start": p1_end,
+                "end": pause1_end,
+                "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+            },
+            {
+                "start": p2_start,
+                "end": p2_end,
+                "text": dual["p2_clean"]
+            },
+            {
+                "start": p2_end,
+                "end": pause2_end,
+                "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+            },
+            {
+                "start": p3_start,
+                "end": p3_end,
+                "text": dual["p3_clean"]
             }
         ]
-        t_cur = INTRO_MUSIC_SEC
-        lyrics_timings.append({
-            "start": round(t_cur, 2),
-            "end": round(t_cur + dur_ap, 2),
-            "text": dual["apertura_clean"]
-        })
-        t_cur += dur_ap + gap_ap
 
-        for idx, sent in enumerate(dual["dev_sentences_clean"]):
-            st = round(t_cur, 2)
-            en = round(t_cur + dur_devs[idx], 2)
-            lyrics_timings.append({"start": st, "end": en, "text": sent})
-            t_cur = en + gap_sent
-
-        ci_start = round(t_cur - gap_sent + gap_ci, 2)
-        lyrics_timings.append({
-            "start": ci_start,
-            "end": round(min(actual_final_dur, ci_start + dur_ci), 2),
-            "text": dual["cierre_clean"]
-        })
-
-        # 7. Persistencia completa (Sección 11)
+        # 7. Persistencia completa con separación semántica (Sección 7)
         record = {
             "song_title": song_title,
             "band_name": band_name,
@@ -1709,16 +1963,41 @@ async def run_story_pipeline(
             "full_song_audio": full_song_audio,
             "visible_script": dual["visible_script"],
             "vocal_script": dual["vocal_script"],
-            "apertura": dual["apertura_clean"],
-            "desarrollo": " ".join(dual["dev_sentences_clean"]),
-            "cierre": dual["cierre_clean"],
+            "paragraph_1": dual["p1_clean"],
+            "paragraph_2": dual["p2_clean"],
+            "paragraph_3": dual["p3_clean"],
+            "p3_resolution": dual["p3_res_clean"],
+            "p3_closing": dual["p3_close_clean"],
+            "paragraphs": [
+                {"id": "paragraph_1", "role": "presentacion", "start": p1_start, "end": p1_end, "duration_sec": dur_p1, "text": dual["p1_clean"], "vocal_text": dual["vocal_p1"]},
+                {"id": "paragraph_2", "role": "desarrollo", "start": p2_start, "end": p2_end, "duration_sec": dur_p2, "text": dual["p2_clean"], "vocal_text": dual["vocal_p2"]},
+                {"id": "paragraph_3", "role": "desenlace_cierre", "start": p3_start, "end": p3_end, "duration_sec": dur_p3, "text": dual["p3_clean"], "vocal_text": dual["vocal_p3"]}
+            ],
+            "pauses_sec": {
+                "intro_music": INTRO_MUSIC_SEC,
+                "pause_after_p1": PAUSE_MUSIC_SEC,
+                "pause_after_p2": PAUSE_MUSIC_SEC,
+                "outro_fade": mix_info["tail_dur"]
+            },
+            "historical_info": historical_info,
+            "expressive_instructions": dual["expressive_instructions"],
+            "apertura": dual["p1_clean"],
+            "desarrollo": dual["p2_clean"],
+            "cierre": dual["p3_clean"],
             "opening_id": opening_id,
-            "opening_text": dual["apertura_clean"],
+            "opening_text": opening_text,
             "fish_model": selected_model if use_fish else DEFAULT_VOICE,
             "voice_reference_id": selected_voice if use_fish else DEFAULT_VOICE,
             "voice_duration_sec": round(voice_dur, 2),
             "final_duration_sec": round(actual_final_dur, 2),
             "intro_music_sec": INTRO_MUSIC_SEC,
+            "audio_metrics": {
+                "p1_lufs": mix_info["p1_lufs"],
+                "p2_lufs": mix_info["p2_lufs"],
+                "p3_base_lufs": mix_info["p3_base_lufs"],
+                "closing_boost_db": mix_info["closing_boost_db"],
+                "p3_ramp_split_sec": mix_info["t_split_p3_sec"]
+            },
             "audio_file": rel_audio_file,
             "angle_index": angle_index,
             "script_source": script_source,
@@ -1738,7 +2017,12 @@ async def run_story_pipeline(
         update_player_catalog(record)
 
         elapsed = time.time() - t_start
-        print(f"✅ [ROCK RADIO AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | Voz: {voice_dur:.2f}s | Final: {actual_final_dur:.2f}s (<=45s) | Archivo: {rel_audio_file}", flush=True)
+        print(
+            f"✅ [ROCK RADIO AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | "
+            f"P1: {dur_p1:.2f}s -> [3.0s] -> P2: {dur_p2:.2f}s -> [3.0s] -> P3: {dur_p3:.2f}s | "
+            f"Final: {actual_final_dur:.2f}s (<=45s) | Archivo: {rel_audio_file}",
+            flush=True
+        )
         return record
     finally:
         for tf in temp_files:
