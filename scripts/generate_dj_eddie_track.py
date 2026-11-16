@@ -780,130 +780,6 @@ def fetch_real_album_cover(band_name, song_title, album_name="", year=""):
         print(f"⚠️ No se pudo descargar carátula real para {band_name} - {song_title}: {e}", flush=True)
     return None, album_name, year, None
 
-GENRE_BEDS_DIR = os.path.join(WORKSPACE_AUDIO_DIR, "beds")
-
-GENRE_SONG_OVERRIDES = {
-    "queen::radio ga ga": "arena_rock_80s",
-    "queen::bohemian rhapsody": "prog_rock",
-    "def leppard::hysteria": "arena_rock_80s",
-    "duran duran::ordinary world": "pop_rock_90s",
-    "the cars::heartbeat city": "synth_pop_80s",
-    "tears for fears::everybody wants to rule the world": "synth_pop_80s",
-    "rush::tom sawyer": "prog_rock",
-    "dokken::dream warriors": "heavy_metal",
-    "ac/dc::back in black": "hard_rock",
-    "kiss::detroit rock city": "hard_rock",
-}
-
-GENRE_ARTIST_MAP = {
-    "ac/dc": "hard_rock",
-    "kiss": "hard_rock",
-    "led zeppelin": "hard_rock",
-    "guns n roses": "hard_rock",
-    "van halen": "hard_rock",
-    "aerosmith": "hard_rock",
-    "deep purple": "hard_rock",
-    "alice cooper": "hard_rock",
-    "scorpions": "hard_rock",
-    "rush": "prog_rock",
-    "pink floyd": "prog_rock",
-    "yes": "prog_rock",
-    "genesis": "prog_rock",
-    "tears for fears": "synth_pop_80s",
-    "the cars": "synth_pop_80s",
-    "alphaville": "synth_pop_80s",
-    "depeche mode": "synth_pop_80s",
-    "new order": "synth_pop_80s",
-    "a ha": "synth_pop_80s",
-    "queen": "arena_rock_80s",
-    "def leppard": "arena_rock_80s",
-    "bon jovi": "arena_rock_80s",
-    "journey": "arena_rock_80s",
-    "toto": "arena_rock_80s",
-    "motley crue": "arena_rock_80s",
-    "foreigner": "arena_rock_80s",
-    "europe": "arena_rock_80s",
-    "dokken": "heavy_metal",
-    "iron maiden": "heavy_metal",
-    "metallica": "heavy_metal",
-    "black sabbath": "heavy_metal",
-    "judas priest": "heavy_metal",
-    "megadeth": "heavy_metal",
-    "ozzy osbourne": "heavy_metal",
-    "dio": "heavy_metal",
-    "duran duran": "pop_rock_90s",
-    "u2": "pop_rock_90s",
-    "the police": "pop_rock_90s",
-    "the beatles": "pop_rock_90s",
-    "eagles": "pop_rock_90s",
-    "r e m": "pop_rock_90s",
-}
-
-def _map_itunes_genre_to_bed(primary_genre, year=""):
-    g = normalize_text_key(primary_genre)
-    y = int(year) if (year and str(year).isdigit()) else 0
-    if any(k in g for k in ("metal", "thrash")):
-        return "heavy_metal"
-    if any(k in g for k in ("hard rock", "classic rock", "blues rock", "glam")):
-        return "hard_rock"
-    if any(k in g for k in ("prog", "psychedelic", "art rock")):
-        return "prog_rock"
-    if any(k in g for k in ("synth", "electronic", "new wave", "disco", "dance")):
-        return "synth_pop_80s"
-    if any(k in g for k in ("arena", "hair")):
-        return "arena_rock_80s"
-    if any(k in g for k in ("pop", "alternative", "indie")):
-        return "synth_pop_80s" if (1980 <= y <= 1988) else "pop_rock_90s"
-    return "hard_rock"
-
-def detect_genre_music_bed(band_name, song_title, album_name="", year="", explicit_genre=""):
-    """
-    Determina la base instrumental libre de derechos acorde al género/época de la canción.
-    Retorna (genre_key, abs_bed_path).
-    """
-    genre_key = explicit_genre.strip() if explicit_genre else ""
-    if not genre_key:
-        sk = make_story_key(band_name, song_title)
-        if sk in GENRE_SONG_OVERRIDES:
-            genre_key = GENRE_SONG_OVERRIDES[sk]
-    if not genre_key:
-        bn = normalize_text_key(band_name)
-        if bn in GENRE_ARTIST_MAP:
-            genre_key = GENRE_ARTIST_MAP[bn]
-    if not genre_key:
-        # Consulta automática en iTunes Search API para cualquier canción nueva
-        try:
-            term = f"{band_name} {song_title}".strip()
-            url = f"https://itunes.apple.com/search?term={urllib.parse.quote(term)}&entity=song&limit=3"
-            req = urllib.request.Request(url, headers={"User-Agent": "RockRadio/1.0"})
-            with urllib.request.urlopen(req, timeout=8) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-            res = data.get("results") or []
-            if res:
-                pg = res[0].get("primaryGenreName", "")
-                ry = (res[0].get("releaseDate", "")[:4] if res[0].get("releaseDate") else year)
-                genre_key = _map_itunes_genre_to_bed(pg, ry)
-        except Exception:
-            pass
-    if not genre_key:
-        genre_key = "hard_rock"
-
-    bed_path = os.path.join(GENRE_BEDS_DIR, f"bed_{genre_key}.mp3")
-    if not os.path.exists(bed_path) or os.path.getsize(bed_path) < 50000:
-        try:
-            scripts_dir = os.path.dirname(os.path.abspath(__file__))
-            if scripts_dir not in sys.path:
-                sys.path.insert(0, scripts_dir)
-            import generate_genre_beds
-            bed_path = generate_genre_beds.build_bed_file(genre_key)
-        except Exception as e:
-            print(f"⚠️ No se pudo generar base instrumental '{genre_key}': {e}", flush=True)
-            bed_path = DEFAULT_MUSIC_BED
-
-    if not os.path.exists(bed_path) or os.path.getsize(bed_path) < 10000:
-        bed_path = DEFAULT_MUSIC_BED
-    return genre_key, bed_path
-
 def resolve_song_metadata(song_query, band_query=None):
     """
     Identifica canción y artista usando metadatos disponibles.
@@ -1679,7 +1555,7 @@ def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
         out_wav
     ], capture_output=True, check=True)
 
-def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=0.0, bed_path=None):
+def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=15.0):
     """
     Pipeline de masterización cinematográfica en 3 párrafos y mezcla continua:
     1. Procesa P1, P2 y P3 con la misma cadena vocal y normaliza su timbre/volumen base (~ -20.0 LUFS).
@@ -1755,8 +1631,7 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
     temp_files.append(tmp_out)
     os.makedirs(os.path.dirname(os.path.abspath(out_mp3_path)), exist_ok=True)
 
-    active_bed = bed_path or DEFAULT_MUSIC_BED
-    has_bed = os.path.exists(active_bed) and os.path.getsize(active_bed) > 10000
+    has_bed = os.path.exists(DEFAULT_MUSIC_BED) and os.path.getsize(DEFAULT_MUSIC_BED) > 10000
 
     # Voz principal retrasada exactamente 5.000s (0:00-0:05 música sola)
     delayed_voice_mix = (
@@ -1789,7 +1664,7 @@ def master_radio_segment(p1_mp3, p2_mp3, p3_mp3, p3_res_clean, p3_close_clean, o
         cmd = [
             FFMPEG_BIN, "-y",
             "-i", voice_master_wav,
-            "-stream_loop", "-1", "-i", active_bed,
+            "-i", DEFAULT_MUSIC_BED,
             "-filter_complex", filter_complex,
             "-map", "[aout]",
             "-codec:a", "libmp3lame",
@@ -2045,9 +1920,7 @@ async def run_story_pipeline(
     fish_voice=None,
     fish_model=None,
     out_mp3_path=None,
-    job_id=None,
-    explicit_genre="",
-    song_duration_sec=None
+    job_id=None
 ):
     """
     Ejecuta el flujo completo de 15 pasos con validación estricta de <= 45.0s,
@@ -2062,8 +1935,6 @@ async def run_story_pipeline(
     meta_store = load_stories_metadata()
     story_key = make_story_key(band_name, song_title)
     existing_record = meta_store["stories"].get(story_key)
-    if song_duration_sec is None and existing_record:
-        song_duration_sec = existing_record.get("song_duration_sec")
 
     existing_pair_slug, existing_audio_url = find_existing_catalog_pair(band_name, song_title)
     if not out_mp3_path:
@@ -2187,18 +2058,12 @@ async def run_story_pipeline(
                 await synthesize_single_segment(dual["vocal_p3"], p3_new, use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model, is_closing=True)
                 p3_mp3 = p3_new
 
-        # 4. Selección de base instrumental acorde al género y masterización FFmpeg/Python
-        genre_key, bed_path = detect_genre_music_bed(
-            band_name, song_title, album_name=album_name, year=year, explicit_genre=explicit_genre
-        )
-        bed_seek = 0.0 if bed_path != DEFAULT_MUSIC_BED else (15.0 + ((angle_index - 1) * 8.0) % 40.0)
-        rel_bed_file = os.path.relpath(bed_path, PROJECT_ROOT).replace("\\", "/")
-        print(f"   🎵 Base instrumental ({genre_key}): {rel_bed_file}", flush=True)
-
+        # 4. Masterización FFmpeg/Python (5s intro + dos pausas de 3s + ducking lookahead + cierre progresivo + -1dBTP)
+        bed_seek = 15.0 + ((angle_index - 1) * 8.0) % 40.0
         mix_info = master_radio_segment(
             p1_mp3, p2_mp3, p3_mp3,
             dual["p3_res_clean"], dual["p3_close_clean"],
-            out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=bed_seek, bed_path=bed_path
+            out_mp3_path, tmp_prefix, temp_files, bed_seek_sec=bed_seek
         )
         tmp_out = mix_info["tmp_out"]
         voice_dur = mix_info["voice_dur"]
@@ -2267,8 +2132,6 @@ async def run_story_pipeline(
             "year": year,
             "cover": cover,
             "full_song_audio": full_song_audio,
-            "music_genre": genre_key,
-            "music_bed": rel_bed_file,
             "visible_script": dual["visible_script"],
             "vocal_script": dual["vocal_script"],
             "paragraph_1": dual["p1_clean"],
@@ -2313,8 +2176,6 @@ async def run_story_pipeline(
             "created_at": datetime.now(timezone.utc).isoformat(),
             "status": "completed"
         }
-        if song_duration_sec is not None:
-            record["song_duration_sec"] = song_duration_sec
 
         meta_store["stories"][story_key] = record
         meta_store["last_generated_key"] = story_key
@@ -2329,7 +2190,7 @@ async def run_story_pipeline(
         elapsed = time.time() - t_start
         print(
             f"✅ [ROCK RADIO AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | "
-            f"Género: {genre_key} | P1: {dur_p1:.2f}s -> [3.0s] -> P2: {dur_p2:.2f}s -> [3.0s] -> P3: {dur_p3:.2f}s | "
+            f"P1: {dur_p1:.2f}s -> [3.0s] -> P2: {dur_p2:.2f}s -> [3.0s] -> P3: {dur_p3:.2f}s | "
             f"Final: {actual_final_dur:.2f}s (<=45s) | Archivo: {rel_audio_file}",
             flush=True
         )
