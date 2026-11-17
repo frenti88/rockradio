@@ -8955,7 +8955,6 @@
             statusBadgeHtml = `<span class="dj-status-badge running">📜 Guion generado</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <button class="dj-action-btn view-script-btn" type="button" title="Consultar el guion oficial de Fred Rewind">📜 Ver guion</button>
                 <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
               </div>
             `;
@@ -8965,7 +8964,6 @@
             actionsHtml = `
               <div class="dj-col-actions">
                 <span class="dj-live-elapsed" data-pair-id="${safePairId}">⏳ ${formatTime(elSec)}</span>
-                <button class="dj-action-btn view-script-btn" type="button" title="Consultar el guion oficial de Fred Rewind">📜 Ver guion</button>
                 <button class="dj-action-btn cancel-gen" type="button" title="Detener generación de la historia">⏹️ Detener generación</button>
               </div>
             `;
@@ -8999,8 +8997,6 @@
                     ? '<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
                     : '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
                 </button>
-                <button class="dj-action-btn view-script-btn" type="button" title="Consultar el guion oficial de Fred Rewind">📜 Ver guion</button>
-                <button class="dj-action-btn regen-story" type="button" title="Regenerar historia con DJ Fred">🔄 Regenerar historia</button>
                 <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind">🗑️</button>
               </div>
             `;
@@ -9040,25 +9036,11 @@
           </div>
         `;
 
-        const viewScriptBtn = row.querySelector('.view-script-btn');
-        if (viewScriptBtn) {
-          viewScriptBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openFredScriptModal(item);
-          });
-        }
         const genStoryBtn = row.querySelector('.gen-story');
         if (genStoryBtn) {
           genStoryBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             startStoryGeneration(item.pairId || item.id, false);
-          });
-        }
-        const regenStoryBtn = row.querySelector('.regen-story');
-        if (regenStoryBtn) {
-          regenStoryBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            startStoryGeneration(item.pairId || item.id, true);
           });
         }
         const retryGenBtn = row.querySelector('.retry-gen');
