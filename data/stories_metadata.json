@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    1,
     9,
     7,
     3,
@@ -9,9 +8,10 @@
     2,
     3,
     3,
-    5
+    5,
+    7
   ],
-  "last_generated_key": "iron maiden::the number of the beast",
+  "last_generated_key": "toto::africa",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1127,6 +1127,118 @@
       "created_at": "2026-11-16T21:23:18.642598+00:00",
       "status": "completed",
       "song_duration_sec": 291
+    },
+    "toto::africa": {
+      "song_title": "Africa",
+      "band_name": "Toto",
+      "album": "Toto IV (1982)",
+      "year": "1982",
+      "cover": "img/albums/toto_1982_toto_iv.png",
+      "full_song_audio": null,
+      "visible_script": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada. En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV. Casi queda fuera y terminó siendo número uno. ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada. [curious] En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV. [emotional] Casi queda fuera y terminó siendo número uno. [excited] ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada.",
+      "paragraph_2": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+      "paragraph_3": "Casi queda fuera y terminó siendo número uno. ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Casi queda fuera y terminó siendo número uno.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 14.26,
+          "duration_sec": 9.259,
+          "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada.",
+          "vocal_text": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 17.26,
+          "end": 27.45,
+          "duration_sec": 10.192,
+          "text": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+          "vocal_text": "[curious] En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 30.45,
+          "end": 38.49,
+          "duration_sec": 8.04,
+          "text": "Casi queda fuera y terminó siendo número uno. ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Casi queda fuera y terminó siendo número uno. [excited] ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Inspiración nocturna de David Paich en 1982 y grabación acústica multipista con Jeff Porcaro para Toto IV.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada.",
+      "desarrollo": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+      "cierre": "Casi queda fuera y terminó siendo número uno. ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 7,
+      "opening_text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 33.49,
+      "final_duration_sec": 39.73,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -22.0,
+        "p2_lufs": -21.7,
+        "p3_base_lufs": -20.8,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.494
+      },
+      "audio_file": "audio/fred_intro_toto_africa.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 14.26,
+          "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Toto. Una canción nacida en plena madrugada."
+        },
+        {
+          "start": 14.26,
+          "end": 17.26,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 17.26,
+          "end": 27.45,
+          "text": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV."
+        },
+        {
+          "start": 27.45,
+          "end": 30.45,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 30.45,
+          "end": 38.49,
+          "text": "Casi queda fuera y terminó siendo número uno. ¡Sube el volumen y escuchemos a Africa, de Toto, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-17T22:55:40.970886+00:00",
+      "status": "completed",
+      "song_duration_sec": 295
     }
   }
 }
