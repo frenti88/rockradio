@@ -8935,8 +8935,8 @@
               </div>
             `;
           } else {
-            // 'con_audio' (Historia y audio disponibles)
-            statusBadgeHtml = `<span class="dj-intro-pill">Historia y audio disponibles</span>`;
+            // 'con_audio' (Historia)
+            statusBadgeHtml = `<span class="dj-intro-pill">Historia</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
                 <div class="dj-dur-box">
@@ -8969,13 +8969,6 @@
           `;
         }
 
-        const scriptPreviewHtml = (item.isIntro && item.summary)
-          ? `<div class="dj-script-preview ${['generando_audio', 'investigando_cancion', 'generando_historia', 'guion_generado'].includes(item.status) ? 'is-generating' : ''}" title="${escapeHtmlStr(item.summary)}">
-              <span class="dj-script-text">"${escapeHtmlStr(item.summary)}"</span>
-              <button class="dj-copy-script-mini" type="button" title="Copiar guion oficial de Fred Rewind">📋 Copiar</button>
-            </div>`
-          : '';
-
         row.innerHTML = `
           <div class="dj-col-num">${isPlayingNow ? '🔊' : (idx + 1)}</div>
           <div class="dj-col-title-cell">
@@ -8988,7 +8981,6 @@
                 <span>${escapeHtmlStr(item.bandName)}</span>
                 ${statusBadgeHtml}
               </div>
-              ${scriptPreviewHtml}
             </div>
           </div>
           <div class="dj-col-year">${escapeHtmlStr(String(item.year || ''))}</div>
@@ -9002,30 +8994,6 @@
           viewScriptBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             openFredScriptModal(item);
-          });
-        }
-        const scriptPreviewEl = row.querySelector('.dj-script-preview');
-        if (scriptPreviewEl) {
-          scriptPreviewEl.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openFredScriptModal(item);
-          });
-        }
-        const copyScriptMiniBtn = row.querySelector('.dj-copy-script-mini');
-        if (copyScriptMiniBtn) {
-          copyScriptMiniBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (item.summary) {
-              if (navigator.clipboard) {
-                navigator.clipboard.writeText(item.summary).then(() => {
-                  showAppToast('Guion oficial copiado al portapapeles', 'success');
-                }).catch(() => {
-                  showAppToast('Guion copiado', 'success');
-                });
-              } else {
-                showAppToast('Guion copiado', 'success');
-              }
-            }
           });
         }
         const genStoryBtn = row.querySelector('.gen-story');
