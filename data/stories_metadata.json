@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    9,
     7,
     3,
     10,
@@ -9,9 +8,10 @@
     3,
     3,
     5,
-    7
+    7,
+    2
   ],
-  "last_generated_key": "toto::africa",
+  "last_generated_key": "bon jovi::livin on a prayer",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1239,6 +1239,118 @@
       "created_at": "2026-11-17T22:55:40.970886+00:00",
       "status": "completed",
       "song_duration_sec": 295
+    },
+    "bon jovi::livin on a prayer": {
+      "song_title": "Livin' on a Prayer",
+      "band_name": "Bon Jovi",
+      "album": "Slippery When Wet (1986)",
+      "year": "1986",
+      "cover": "img/albums/bon_jovi_1986_slippery_when_wet.jpg",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado. En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina. Aquel giro en el estudio los llevó a la cima mundial. ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado. [curious] En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina. [emotional] Aquel giro en el estudio los llevó a la cima mundial. [excited] ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado.",
+      "paragraph_2": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina.",
+      "paragraph_3": "Aquel giro en el estudio los llevó a la cima mundial. ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel giro en el estudio los llevó a la cima mundial.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.74,
+          "duration_sec": 10.738,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado.",
+          "vocal_text": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.74,
+          "end": 28.31,
+          "duration_sec": 9.572,
+          "text": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina.",
+          "vocal_text": "[curious] En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 31.31,
+          "end": 40.15,
+          "duration_sec": 8.842,
+          "text": "Aquel giro en el estudio los llevó a la cima mundial. ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel giro en el estudio los llevó a la cima mundial. [excited] ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Slippery When Wet (1986); compuesta por Jon Bon Jovi, Richie Sambora y Desmond Child; guitarra con talk box de Sambora.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado.",
+      "desarrollo": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina.",
+      "cierre": "Aquel giro en el estudio los llevó a la cima mundial. ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 2,
+      "opening_text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 35.15,
+      "final_duration_sec": 41.4,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.7,
+        "p2_lufs": -19.8,
+        "p3_base_lufs": -19.7,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.073
+      },
+      "audio_file": "audio/fred_intro_bon_jovi_livin_on_a_prayer.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.74,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Livin' on a Prayer de Bon Jovi. Un himno obrero que casi queda descartado."
+        },
+        {
+          "start": 15.74,
+          "end": 18.74,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.74,
+          "end": 28.31,
+          "text": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina."
+        },
+        {
+          "start": 28.31,
+          "end": 31.31,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 31.31,
+          "end": 40.15,
+          "text": "Aquel giro en el estudio los llevó a la cima mundial. ¡Sube el volumen y escuchemos a Livin' on a Prayer, de Bon Jovi, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-17T23:47:29.723265+00:00",
+      "status": "completed",
+      "song_duration_sec": 249
     }
   }
 }

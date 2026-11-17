@@ -481,6 +481,22 @@ MASTER_CURATED_STORIES = {
             "historical_info": "Álbum The Number of the Beast (1982); compuesta por Steve Harris tras ver Damien: Omen II; grabada por Martin Birch en Battery Studios."
         }
     ],
+    "livin' on a prayer": [
+        {
+            "p1_hook": "Un himno obrero que casi queda descartado.",
+            "p2_anecdote": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina.",
+            "p3_resolution": "Aquel giro en el estudio los llevó a la cima mundial.",
+            "historical_info": "Álbum Slippery When Wet (1986); compuesta por Jon Bon Jovi, Richie Sambora y Desmond Child; guitarra con talk box de Sambora."
+        }
+    ],
+    "living on a prayer": [
+        {
+            "p1_hook": "Un himno obrero que casi queda descartado.",
+            "p2_anecdote": "En 1986, Jon Bon Jovi dudaba de la maqueta original, pero Richie Sambora sumó su legendario talk box y creó a Tommy y Gina.",
+            "p3_resolution": "Aquel giro en el estudio los llevó a la cima mundial.",
+            "historical_info": "Álbum Slippery When Wet (1986); compuesta por Jon Bon Jovi, Richie Sambora y Desmond Child; guitarra con talk box de Sambora."
+        }
+    ],
     "shout at the devil": [
         (
             "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
@@ -509,6 +525,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Livin' on a Prayer",
+        "band_name": "Bon Jovi",
+        "album": "Slippery When Wet (1986)",
+        "year": "1986",
+        "cover": "img/albums/bon_jovi_1986_slippery_when_wet.jpg",
+        "duration_sec": 249
+    },
     {
         "song_title": "The Number of the Beast",
         "band_name": "Iron Maiden",
@@ -817,10 +841,16 @@ def resolve_song_metadata(song_query, band_query=None):
         "deff leppard": "def leppard",
         "def lepard": "def leppard",
         "tears for fear": "tears for fears",
-        "ac dc": "ac/dc"
+        "ac dc": "ac/dc",
+        "bonjovi": "bon jovi"
+    }
+    song_aliases = {
+        "living on a prayer": "livin on a prayer"
     }
     if b_norm in band_aliases:
         b_norm = normalize_text_key(band_aliases[b_norm])
+    if s_norm in song_aliases:
+        s_norm = normalize_text_key(song_aliases[s_norm])
 
     if not s_norm:
         return {"resolved": False, "ambiguous": True, "message": "No se especificó el nombre de la canción.", "candidates": []}
