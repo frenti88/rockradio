@@ -652,11 +652,27 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Su explosión final definió Appetite for Destruction.",
             "historical_info": "Álbum Appetite for Destruction (1987); escrita en 1986 en la parte trasera de una furgoneta regresando de San Francisco a Los Ángeles."
         }
+    ],
+    "van halen::dreams": [
+        {
+            "p1_hook": "El vuelo sinfónico que inauguró una nueva era.",
+            "p2_anecdote": "En 1986, con Sammy Hagar recién llegado a la banda, Eddie Van Halen compuso la melodía al teclado en su estudio cinco mil ciento cincuenta y Hagar escribió la letra inspirado en la sensación de alcanzar lo imposible, acompañando luego a los Blue Angels de la Marina en su famoso videoclip.",
+            "p3_resolution": "Sus agudos y sintetizadores llevaron a Van Halen a otro nivel.",
+            "historical_info": "Álbum 5150 (1986); compuesta por Eddie Van Halen y Sammy Hagar; grabada en 5150 Studios con teclados Oberheim."
+        }
     ]
 }
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Dreams",
+        "band_name": "Van Halen",
+        "album": "5150 (1986)",
+        "year": "1986",
+        "cover": "img/albums/van_halen_1986_5150.jpg",
+        "duration_sec": 294
+    },
     {
         "song_title": "Paradise City",
         "band_name": "Guns N' Roses",
@@ -1318,21 +1334,31 @@ def select_closing_line(song_title, band_name, angle_idx=0):
     template = CLOSING_TEMPLATES[angle_idx % len(CLOSING_TEMPLATES)]
     return template.format(song=song_title, band=band_name)
 
-def find_curated_story_entry(song_title):
+def find_curated_story_entry(song_title, band_name=""):
     """
-    Busca la historia curada para una canción, priorizando coincidencias exactas
-    y límites de palabra para evitar colisiones erróneas (ej: 'one' dentro de 'money for nothing').
+    Busca la historia curada para una canción, priorizando coincidencia por banda::canción,
+    luego coincidencias exactas y límites de palabra para evitar colisiones erróneas.
     """
     clean_key = normalize_text_key(song_title)
+    clean_band = normalize_text_key(band_name) if band_name else ""
+    if clean_band:
+        composed = f"{clean_band}::{clean_key}"
+        for k, v in MASTER_CURATED_STORIES.items():
+            if normalize_text_key(k) == composed or k.lower().strip() == composed:
+                return v if isinstance(v, list) else [v]
     no_space_clean = clean_key.replace(" ", "")
     # 1. Coincidencia exacta o sin espacios (para manejar 'don t' vs 'dont')
     for k, v in MASTER_CURATED_STORIES.items():
+        if "::" in k:
+            continue
         nk = normalize_text_key(k)
         if nk == clean_key or (len(no_space_clean) >= 6 and nk.replace(" ", "") == no_space_clean):
             return v if isinstance(v, list) else [v]
     # 2. Coincidencia con límites de palabra (whole word)
     padded_clean = f" {clean_key} "
     for k, v in MASTER_CURATED_STORIES.items():
+        if "::" in k:
+            continue
         nk = normalize_text_key(k)
         if len(nk) >= 4 and f" {nk} " in padded_clean:
             return v if isinstance(v, list) else [v]
@@ -2784,7 +2810,7 @@ async def generate_voice_only_radio_intro(
         out_mp3_path = os.path.join(WORKSPACE_AUDIO_DIR, f"fred_voice_{slug}.mp3")
     os.makedirs(os.path.dirname(out_mp3_path), exist_ok=True)
 
-    curated = find_curated_story_entry(song_title)
+    curated = find_curated_story_entry(song_title, band_name)
     if curated and isinstance(curated[0], dict):
         entry = curated[0]
         p1_hook = entry.get("p1_hook", "").strip()
