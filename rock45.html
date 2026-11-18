@@ -49,10 +49,12 @@
       --sp-black: #000000;
       --sp-dark-base: #121212;
       --sp-card-base: #181818;
+      --sp-surface-elevated: #242424;
       --sp-card-hover: #282828;
       --sp-border: rgba(255, 255, 255, 0.08);
       --sp-green: #1db954;
       --sp-green-hover: #1ed760;
+      --sp-green-active: #169c46;
       --sp-text-white: #ffffff;
       --sp-text-muted: #b3b3b3;
       --sp-text-subtle: #727272;
@@ -1169,211 +1171,143 @@
       box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
     }
 
-    /* DJ Fred Hero Interactive Banner (Spotify AI DJ / DJ Livi Style) */
+    /* DJ Fredd Hero Section — Spotify Encore Design System */
     .dj-fred-hero-section {
-      padding: 8px 24px 20px;
+      padding: 20px 24px 24px;
+      background: linear-gradient(180deg, var(--sp-card-base) 0%, var(--sp-dark-base) 100%);
     }
-    .dj-fred-hero-card {
-      position: relative;
-      border-radius: 14px;
-      padding: 24px 28px;
-      background: radial-gradient(circle at 82% 50%, rgba(16, 185, 129, 0.32) 0%, rgba(37, 99, 235, 0.38) 38%, rgba(18, 24, 38, 0.96) 100%);
-      border: 1px solid rgba(52, 211, 153, 0.32);
+    .dj-fred-hero-inner {
+      max-width: 680px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
     }
-    .dj-fred-left {
-      flex: 1;
-      min-width: 0;
-      z-index: 2;
-    }
-    .dj-fred-badge-row {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(52, 211, 153, 0.45);
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #34d399;
-      margin-bottom: 10px;
-    }
-    .dj-fred-live-dot {
-      width: 8px;
-      height: 8px;
+    .dj-fred-avatar {
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-      animation: djPulseDot 1.6s infinite ease-in-out;
-    }
-    @keyframes djPulseDot {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: 0.65; }
-    }
-    .dj-fred-title {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #ffffff;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-    .dj-fred-desc {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.85);
-      max-width: 620px;
-      line-height: 1.45;
-      margin-bottom: 14px;
-    }
-    .dj-fred-now-playing-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.5);
+      background: var(--sp-surface-elevated);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      color: #e5e7eb;
-      margin-bottom: 16px;
-    }
-    .dj-fred-actions-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    .btn-dj-fred-play {
-      background: #1ed760;
-      color: #000000;
-      border: none;
-      border-radius: 9999px;
-      padding: 11px 22px;
-      font-size: 0.88rem;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(30, 215, 96, 0.35);
-      transition: transform 0.15s ease, background 0.15s ease;
-    }
-    .btn-dj-fred-play:hover {
-      background: #1fdf64;
-      transform: scale(1.04);
-    }
-    .btn-dj-fred-next {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 9999px;
-      padding: 10px 18px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: background 0.15s ease, transform 0.15s ease;
-    }
-    .btn-dj-fred-next:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.02);
-    }
-    .dj-fred-voice-pills {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px;
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .dj-voice-mini-btn {
-      background: transparent;
-      color: #b3b3b3;
-      border: none;
-      border-radius: 9999px;
-      padding: 5px 11px;
-      font-size: 0.74rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .dj-voice-mini-btn.active {
-      background: #1ed760;
-      color: #000000;
-    }
-
-    /* Animated AI Orb (DJ Livi / DJ Fred Visual Ring) */
-    .dj-fred-orb-wrap {
-      width: 126px;
-      height: 126px;
-      border-radius: 50%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      cursor: pointer;
-      z-index: 2;
-    }
-    .dj-fred-orb-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, #1ed760, #3b82f6, #06b6d4, #10b981, #1ed760);
-      animation: djOrbSpin 6s linear infinite;
-      box-shadow: 0 0 32px rgba(16, 185, 129, 0.55), inset 0 0 18px rgba(59, 130, 246, 0.6);
-    }
-    .dj-fred-orb-inner {
-      position: relative;
-      width: 92px;
-      height: 92px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #1e293b 0%, #090d16 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-weight: 900;
-      font-size: 0.75rem;
+      color: var(--sp-text-white);
+      font-weight: 800;
+      font-size: 0.5625rem;
       letter-spacing: 0.06em;
-      border: 2px solid rgba(255, 255, 255, 0.18);
+      line-height: 1;
+      margin-bottom: 16px;
+      flex-shrink: 0;
     }
     .dj-fred-orb-waves {
       display: flex;
       align-items: flex-end;
       gap: 3px;
-      height: 18px;
+      height: 14px;
       margin-bottom: 4px;
     }
     .dj-fred-orb-waves span {
-      width: 3.5px;
-      background: #1ed760;
+      width: 3px;
+      background: var(--sp-green-hover);
       border-radius: 2px;
-      animation: djWaveAnim 1.1s infinite ease-in-out;
+      animation: djWaveAnim 1.2s infinite ease-in-out;
     }
-    .dj-fred-orb-waves span:nth-child(1) { height: 8px; animation-delay: 0s; }
-    .dj-fred-orb-waves span:nth-child(2) { height: 16px; animation-delay: 0.2s; }
-    .dj-fred-orb-waves span:nth-child(3) { height: 12px; animation-delay: 0.4s; }
-    .dj-fred-orb-waves span:nth-child(4) { height: 18px; animation-delay: 0.1s; }
-    @keyframes djOrbSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    .dj-fred-orb-waves span:nth-child(1) { height: 6px; animation-delay: 0s; }
+    .dj-fred-orb-waves span:nth-child(2) { height: 13px; animation-delay: 0.2s; }
+    .dj-fred-orb-waves span:nth-child(3) { height: 9px; animation-delay: 0.4s; }
+    .dj-fred-orb-waves span:nth-child(4) { height: 14px; animation-delay: 0.1s; }
     @keyframes djWaveAnim {
-      0%, 100% { transform: scaleY(0.45); }
-      50% { transform: scaleY(1.1); }
+      0%, 100% { transform: scaleY(0.5); }
+      50% { transform: scaleY(1); }
+    }
+    .dj-fred-brand {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--sp-green-hover);
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .dj-fred-title {
+      font-size: clamp(1.75rem, 3.2vw, 2.375rem);
+      font-weight: 800;
+      color: var(--sp-text-white);
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 8px;
+    }
+    .dj-fred-subtitle {
+      font-size: clamp(1rem, 1.5vw, 1.1875rem);
+      font-weight: 600;
+      color: var(--sp-text-white);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .dj-fred-desc {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      color: var(--sp-text-muted);
+      max-width: 56ch;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .dj-fred-actions-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+    }
+    .btn-dj-fred-play {
+      background: var(--sp-green-hover);
+      color: var(--sp-black);
+      border: none;
+      border-radius: 9999px;
+      min-height: 44px;
+      padding: 12px 28px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+    }
+    .btn-dj-fred-play:hover:not(:disabled) {
+      background: #3be477;
+      transform: scale(1.02);
+    }
+    .btn-dj-fred-play:active:not(:disabled) {
+      background: var(--sp-green-active);
+      transform: scale(0.98);
+    }
+    .btn-dj-fred-play:focus-visible {
+      outline: 2px solid var(--sp-text-white);
+      outline-offset: 3px;
+    }
+    .btn-dj-fred-play:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .dj-fred-meta {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--sp-text-muted);
+      line-height: 1.4;
+      margin: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .dj-fred-orb-waves span,
+      .btn-dj-fred-play {
+        animation: none !important;
+        transition: none !important;
+      }
     }
 
     /* Spotify Home Shelves Container */
@@ -1544,25 +1478,23 @@
         padding: 8px 14px 4px;
       }
       .dj-fred-hero-section {
-        padding: 8px 14px 16px;
+        padding: 16px 16px 20px;
       }
-      .dj-fred-hero-card {
-        flex-direction: column-reverse;
-        align-items: flex-start;
-        padding: 18px;
-        gap: 14px;
-      }
-      .dj-fred-orb-wrap {
-        width: 86px;
-        height: 86px;
-      }
-      .dj-fred-orb-inner {
-        width: 64px;
-        height: 64px;
-        font-size: 0.62rem;
+      .dj-fred-avatar {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 12px;
       }
       .dj-fred-title {
-        font-size: 1.45rem;
+        font-size: 1.625rem;
+      }
+      .dj-fred-desc {
+        font-size: 0.875rem;
+        margin-bottom: 16px;
+      }
+      .btn-dj-fred-play {
+        width: 100%;
+        max-width: 340px;
       }
       .spotify-home-shelves {
         padding: 4px 14px 20px;
@@ -3540,14 +3472,6 @@
       width: 15px;
       height: 15px;
       fill: currentColor;
-    }
-    .dj-fred-hero-card {
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-    .dj-fred-hero-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 44px rgba(16, 185, 129, 0.22);
     }
 
     @media (max-width: 900px) {
@@ -5817,38 +5741,30 @@
         </div>
       </section>
 
-      <!-- HERO INTERACTIVO: DJ FRED — LA RADIO DE LA IA (Estilo DJ Livi de Spotify) -->
-      <section class="dj-fred-hero-section" id="djFredHeroSection">
-        <div class="dj-fred-hero-card">
-          <div class="dj-fred-left">
-            <div class="dj-fred-badge-row">
-              <span class="dj-fred-live-dot"></span>
-              <span>FRED REWIND • EN VIVO</span>
+      <!-- SECCIÓN DJ FREDD — FRED REWIND (Spotify Encore) -->
+      <section class="dj-fred-hero-section" id="djFredHeroSection" aria-labelledby="djFredHeroTitle">
+        <div class="dj-fred-hero-inner">
+          <div class="dj-fred-avatar" aria-hidden="true">
+            <div class="dj-fred-orb-waves">
+              <span></span><span></span><span></span><span></span>
             </div>
-            <h2 class="dj-fred-title">Hola, soy DJ Fred</h2>
-            <p class="dj-fred-desc" id="djFredHeroDesc">
-              Tu locutor de rock en Fred Rewind: De regreso al pasado. <em>"La música tiene memoria."</em> Cada canción conserva una historia irrepetible y mi trabajo es mantenerla viva, contando la anécdota real antes de soltar cada clásico completo al 100%.
-            </p>
-            <div class="dj-fred-now-playing-pill" id="djFredNowPlayingPill">
-              <span>🎙️ Fred Rewind: <strong id="djFredCurrentStatus">Clásicos con Historia Real listos para sonar</strong></span>
-            </div>
-            <div class="dj-fred-actions-row">
-              <button class="btn-dj-fred-play" id="btnStartDjFred" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <span id="btnStartDjFredLabel">Ver listado de canciones</span>
-              </button>
-            </div>
+            <span>DJ FREDD</span>
           </div>
-
-          <!-- Orbe de IA Interactivo estilo DJ Livi -->
-          <div class="dj-fred-orb-wrap" id="djFredOrbBtn" title="Toca para iniciar o cambiar mezcla de DJ Fred">
-            <div class="dj-fred-orb-ring"></div>
-            <div class="dj-fred-orb-inner">
-              <div class="dj-fred-orb-waves">
-                <span></span><span></span><span></span><span></span>
-              </div>
-              <span>DJ FRED</span>
-            </div>
+          <p class="dj-fred-brand">Fred Rewind</p>
+          <h2 class="dj-fred-title" id="djFredHeroTitle">La música tiene memoria.</h2>
+          <p class="dj-fred-subtitle">Soy DJ Fredd</p>
+          <p class="dj-fred-desc" id="djFredHeroDesc">
+            Vuelvo al pasado para contarte la historia que vive detrás de cada clásico. Antes de que suene la canción, te acompaño con esa anécdota que huele a radio, noche y recuerdos.
+          </p>
+          <div class="dj-fred-actions-row">
+            <button class="btn-dj-fred-play" id="btnStartDjFred" type="button">
+              <span id="btnStartDjFredLabel">Explorar canciones</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+            <p class="dj-fred-meta" id="djFredSongCount"><span id="djFredAvailableCount">28</span> canciones disponibles</p>
           </div>
         </div>
       </section>
@@ -9590,8 +9506,8 @@
       const songCount = list.filter(x => !x.isIntro).length || (list.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
       if (countEl) countEl.textContent = `${songCount} canciones con Historia de DJ Fred`;
-      const btnStartLabel = document.getElementById('btnStartDjFredLabel');
-      if (btnStartLabel) btnStartLabel.textContent = `Ver listado de canciones (${songCount})`;
+      const availCountEl = document.getElementById('djFredAvailableCount');
+      if (availCountEl) availCountEl.textContent = String(songCount);
       const shelfMoreBtn = document.querySelector('[data-filterjump="djfred"]');
       if (shelfMoreBtn) shelfMoreBtn.textContent = `Mostrar todo (${songCount})`;
       return list;
@@ -11134,8 +11050,8 @@
         djRow.innerHTML = '';
         const moreBtn = document.querySelector('[data-filterjump="djfred"]');
         if (moreBtn) moreBtn.textContent = `Mostrar todo (${catalog.length})`;
-        const startBtnLabel = document.getElementById('btnStartDjFredLabel');
-        if (startBtnLabel) startBtnLabel.textContent = `Ver listado de canciones (${catalog.length})`;
+        const availCountEl = document.getElementById('djFredAvailableCount');
+        if (availCountEl) availCountEl.textContent = String(catalog.length);
 
         const mainDjCard = document.createElement('div');
         mainDjCard.className = 'home-sp-card' + (isDjFredActive ? ' active-playing' : '');
@@ -13090,25 +13006,9 @@
       });
     });
 
-    const djHeroCardEl = document.querySelector('.dj-fred-hero-card');
-    if (djHeroCardEl) {
-      djHeroCardEl.addEventListener('click', () => {
-        openDjFredPlaylistView();
-      });
-    }
-
     const btnStartDjFred = document.getElementById('btnStartDjFred');
     if (btnStartDjFred) {
-      btnStartDjFred.addEventListener('click', (e) => {
-        e.stopPropagation();
-        openDjFredPlaylistView();
-      });
-    }
-
-    const djFredOrbBtn = document.getElementById('djFredOrbBtn');
-    if (djFredOrbBtn) {
-      djFredOrbBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      btnStartDjFred.addEventListener('click', () => {
         openDjFredPlaylistView();
       });
     }
