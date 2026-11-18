@@ -5734,13 +5734,6 @@
         </div>
       </section>
 
-      <!-- 3. Accesos Rápidos estilo Spotify Home (Incluye DJ Fred IA + Favoritos) -->
-      <section class="spotify-quick-banners-section" id="spotifyQuickBannersSection">
-        <div class="spotify-quick-banners-grid" id="spotifyQuickBannersGrid">
-          <!-- Rendered via JS -->
-        </div>
-      </section>
-
       <!-- SECCIÓN DJ FREDD — FRED REWIND (Spotify Encore) -->
       <section class="dj-fred-hero-section" id="djFredHeroSection" aria-labelledby="djFredHeroTitle">
         <div class="dj-fred-hero-inner">
@@ -10164,27 +10157,7 @@
     }
     function renderQuickBanners() {
       const container = document.getElementById('spotifyQuickBannersGrid');
-      if (!container) return;
-      container.innerHTML = '';
-
-      // Tile: DJ Fred (La Radio de la IA) -> Opens Song List View!
-      const djTile = document.createElement('div');
-      djTile.className = 'spotify-quick-banner-card' + (currentAppView === 'djfred' || isDjFredActive ? ' active' : '');
-      djTile.style.background = 'linear-gradient(90deg, rgba(37,99,235,0.42) 0%, rgba(16,185,129,0.28) 100%)';
-      djTile.style.borderColor = 'rgba(52, 211, 153, 0.45)';
-      djTile.innerHTML = `
-        <div class="quick-banner-thumb" style="background: radial-gradient(circle, #1ed760 0%, #1e3a8a 100%); display:flex; align-items:center; justify-content:center; font-size:1.35rem;">
-          <span>🤖</span>
-        </div>
-        <div class="quick-banner-name" style="color:#6ee7b7;">Fred Rewind • DJ Fred</div>
-        <button class="quick-banner-play-btn" title="Abrir listado de canciones de DJ Fred">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-      `;
-      djTile.addEventListener('click', () => {
-        openDjFredPlaylistView();
-      });
-      container.appendChild(djTile);
+      if (container) container.innerHTML = '';
     }
 
     // ========================================================
