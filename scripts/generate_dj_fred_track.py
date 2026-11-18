@@ -660,11 +660,27 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Sus agudos y sintetizadores llevaron a Van Halen a otro nivel.",
             "historical_info": "Álbum 5150 (1986); compuesta por Eddie Van Halen y Sammy Hagar; grabada en 5150 Studios con teclados Oberheim."
         }
+    ],
+    "is this love": [
+        {
+            "p1_hook": "Una balada pensada originalmente para otra voz legendaria.",
+            "p2_anecdote": "En 1986, durante unas vacaciones en el sur de Francia, David Coverdale y el guitarrista John Sykes compusieron este tema pensando en ofrecerlo a Tina Turner. Al escuchar la magia de sus guitarras y el teclado atmosférico, su discográfica insistió en guardarlo para Whitesnake.",
+            "p3_resolution": "Se convirtió en el mayor clásico romántico de la banda.",
+            "historical_info": "Álbum Whitesnake (1987); escrita por David Coverdale y John Sykes en el sur de Francia."
+        }
     ]
 }
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Is This Love",
+        "band_name": "Whitesnake",
+        "album": "Whitesnake (1987)",
+        "year": "1987",
+        "cover": "img/albums/whitesnake_1987_whitesnake.jpg",
+        "duration_sec": 285
+    },
     {
         "song_title": "Dreams",
         "band_name": "Van Halen",
