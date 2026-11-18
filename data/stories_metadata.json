@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    7,
     3,
     10,
     4,
@@ -9,9 +8,10 @@
     3,
     5,
     7,
-    2
+    2,
+    3
   ],
-  "last_generated_key": "bon jovi::livin on a prayer",
+  "last_generated_key": "cinderella::nobodys fool",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1351,6 +1351,118 @@
       "created_at": "2026-11-17T23:47:29.723265+00:00",
       "status": "completed",
       "song_duration_sec": 249
+    },
+    "cinderella::nobodys fool": {
+      "song_title": "Nobody's Fool",
+      "band_name": "Cinderella",
+      "album": "Night Songs (1986)",
+      "year": "1986",
+      "cover": "img/albums/cinderella_1986_night_songs.jpg",
+      "full_song_audio": null,
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo. Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable. Aquel himno impulsó a Night Songs al triple platino. ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo. [curious] Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable. [emotional] Aquel himno impulsó a Night Songs al triple platino. [excited] ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo.",
+      "paragraph_2": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+      "paragraph_3": "Aquel himno impulsó a Night Songs al triple platino. ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel himno impulsó a Night Songs al triple platino.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 17.04,
+          "duration_sec": 12.038,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo.",
+          "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 20.04,
+          "end": 31.02,
+          "duration_sec": 10.976,
+          "text": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+          "vocal_text": "[curious] Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 34.02,
+          "end": 43.63,
+          "duration_sec": 9.608,
+          "text": "Aquel himno impulsó a Night Songs al triple platino. ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel himno impulsó a Night Songs al triple platino. [excited] ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 0.928
+      },
+      "historical_info": "Álbum Night Songs (1986); escrita por Tom Keifer; producida por Andy Johns tras el descubrimiento del grupo por Jon Bon Jovi en 1985.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo.",
+      "desarrollo": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+      "cierre": "Aquel himno impulsó a Night Songs al triple platino. ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 3,
+      "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 38.62,
+      "final_duration_sec": 44.64,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.4,
+        "p2_lufs": -21.1,
+        "p3_base_lufs": -20.3,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.627
+      },
+      "audio_file": "audio/fred_intro_cinderella_nobodys_fool.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 17.04,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1986 con Cinderella. La balada que transformó la historia del grupo."
+        },
+        {
+          "start": 17.04,
+          "end": 20.04,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 20.04,
+          "end": 31.02,
+          "text": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable."
+        },
+        {
+          "start": 31.02,
+          "end": 34.02,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 34.02,
+          "end": 43.63,
+          "text": "Aquel himno impulsó a Night Songs al triple platino. ¡Sube el volumen y escuchemos a Nobody's Fool, de Cinderella, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-17T23:59:51.367650+00:00",
+      "status": "completed",
+      "song_duration_sec": 289
     }
   }
 }

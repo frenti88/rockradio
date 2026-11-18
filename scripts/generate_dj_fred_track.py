@@ -497,6 +497,22 @@ MASTER_CURATED_STORIES = {
             "historical_info": "Álbum Slippery When Wet (1986); compuesta por Jon Bon Jovi, Richie Sambora y Desmond Child; guitarra con talk box de Sambora."
         }
     ],
+    "nobody's fool": [
+        {
+            "p1_hook": "La balada que transformó la historia del grupo.",
+            "p2_anecdote": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+            "p3_resolution": "Aquel himno impulsó a Night Songs al triple platino.",
+            "historical_info": "Álbum Night Songs (1986); escrita por Tom Keifer; producida por Andy Johns tras el descubrimiento del grupo por Jon Bon Jovi en 1985."
+        }
+    ],
+    "nobodys fool": [
+        {
+            "p1_hook": "La balada que transformó la historia del grupo.",
+            "p2_anecdote": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+            "p3_resolution": "Aquel himno impulsó a Night Songs al triple platino.",
+            "historical_info": "Álbum Night Songs (1986); escrita por Tom Keifer; producida por Andy Johns tras el descubrimiento del grupo por Jon Bon Jovi en 1985."
+        }
+    ],
     "shout at the devil": [
         (
             "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
@@ -525,6 +541,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Nobody's Fool",
+        "band_name": "Cinderella",
+        "album": "Night Songs (1986)",
+        "year": "1986",
+        "cover": "img/albums/cinderella_1986_night_songs.jpg",
+        "duration_sec": 289
+    },
     {
         "song_title": "Livin' on a Prayer",
         "band_name": "Bon Jovi",
