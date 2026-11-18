@@ -1,17 +1,17 @@
 {
   "recent_openings": [
     8,
-    2,
-    3,
-    4,
-    6,
-    8,
     10,
     3,
     1,
-    6
+    6,
+    8,
+    4,
+    2,
+    7,
+    10
   ],
-  "last_generated_key": "dire straits::money for nothing",
+  "last_generated_key": "fleetwood mac::dreams",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -2471,6 +2471,566 @@
       "created_at": "2026-11-18T01:14:36.475187+00:00",
       "status": "completed",
       "song_duration_sec": 248
+    },
+    "foreigner::urgent": {
+      "song_title": "Urgent",
+      "band_name": "Foreigner",
+      "album": "4 (1981)",
+      "year": "1981",
+      "cover": "img/albums/foreigner_1981_4.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario. En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas. Aquel estallido de saxo convirtió al tema en un éxito arrollador. ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario. [curious] En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas. [emotional] Aquel estallido de saxo convirtió al tema en un éxito arrollador. [excited] ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario.",
+      "paragraph_2": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+      "paragraph_3": "Aquel estallido de saxo convirtió al tema en un éxito arrollador. ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel estallido de saxo convirtió al tema en un éxito arrollador.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 17.07,
+          "duration_sec": 12.073,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 20.07,
+          "end": 30.23,
+          "duration_sec": 10.16,
+          "text": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+          "vocal_text": "[curious] En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 33.23,
+          "end": 42.77,
+          "duration_sec": 9.545,
+          "text": "Aquel estallido de saxo convirtió al tema en un éxito arrollador. ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel estallido de saxo convirtió al tema en un éxito arrollador. [excited] ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum 4 (1981); compuesta por Mick Jones; producido por Mutt Lange; solo de saxofón por Junior Walker.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario.",
+      "desarrollo": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+      "cierre": "Aquel estallido de saxo convirtió al tema en un éxito arrollador. ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 8,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.78,
+      "final_duration_sec": 44.02,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.0,
+        "p2_lufs": -20.7,
+        "p3_base_lufs": -20.7,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 4.27
+      },
+      "audio_file": "audio/fred_intro_foreigner_urgent.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 17.07,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Urgent. Un ritmo urgente impulsado por un saxofón legendario."
+        },
+        {
+          "start": 17.07,
+          "end": 20.07,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 20.07,
+          "end": 30.23,
+          "text": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas."
+        },
+        {
+          "start": 30.23,
+          "end": 33.23,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 33.23,
+          "end": 42.77,
+          "text": "Aquel estallido de saxo convirtió al tema en un éxito arrollador. ¡Sube el volumen y escuchemos a Urgent, de Foreigner, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:31:45.918730+00:00",
+      "status": "completed",
+      "song_duration_sec": 271
+    },
+    "survivor::eye of the tiger": {
+      "song_title": "Eye of the Tiger",
+      "band_name": "Survivor",
+      "album": "Eye of the Tiger (1982)",
+      "year": "1982",
+      "cover": "img/albums/survivor_1982_eye_of_the_tiger.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring. Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película. Esa energía implacable conquistó la cima de los rankings mundiales. ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring. [curious] Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película. [emotional] Esa energía implacable conquistó la cima de los rankings mundiales. [excited] ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring.",
+      "paragraph_2": "Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+      "paragraph_3": "Esa energía implacable conquistó la cima de los rankings mundiales. ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Esa energía implacable conquistó la cima de los rankings mundiales.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.73,
+          "duration_sec": 11.731,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.73,
+          "end": 29.75,
+          "duration_sec": 10.015,
+          "text": "Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+          "vocal_text": "[curious] Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.75,
+          "end": 42.87,
+          "duration_sec": 10.115,
+          "text": "Esa energía implacable conquistó la cima de los rankings mundiales. ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Esa energía implacable conquistó la cima de los rankings mundiales. [excited] ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Eye of the Tiger (1982); compuesta por Frankie Sullivan y Jim Peterik para la película Rocky III a petición de Sylvester Stallone.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring.",
+      "desarrollo": "Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+      "cierre": "Esa energía implacable conquistó la cima de los rankings mundiales. ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 4,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.86,
+      "final_duration_sec": 44.09,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.2,
+        "p2_lufs": -20.8,
+        "p3_base_lufs": -19.9,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.785
+      },
+      "audio_file": "audio/fred_intro_survivor_eye_of_the_tiger.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.73,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Eye of the Tiger, de Survivor. El himno definitivo de la perseverancia en el ring."
+        },
+        {
+          "start": 16.73,
+          "end": 19.73,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.73,
+          "end": 29.75,
+          "text": "Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película."
+        },
+        {
+          "start": 29.75,
+          "end": 32.75,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.75,
+          "end": 42.87,
+          "text": "Esa energía implacable conquistó la cima de los rankings mundiales. ¡Sube el volumen y escuchemos a Eye of the Tiger, de Survivor, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:32:13.999639+00:00",
+      "status": "completed",
+      "song_duration_sec": 245
+    },
+    "phil collins::don t lose my number": {
+      "song_title": "Don't Lose My Number",
+      "band_name": "Phil Collins",
+      "album": "No Jacket Required (1985)",
+      "year": "1985",
+      "cover": "img/albums/phil_collins_1985_no_jacket_required.jpg",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano. En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police. Su pegada rítmica lo consagró en las radios de todo el planeta. ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano. [curious] En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police. [emotional] Su pegada rítmica lo consagró en las radios de todo el planeta. [excited] ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano.",
+      "paragraph_2": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+      "paragraph_3": "Su pegada rítmica lo consagró en las radios de todo el planeta. ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su pegada rítmica lo consagró en las radios de todo el planeta.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.97,
+          "duration_sec": 11.968,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano.",
+          "vocal_text": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.97,
+          "end": 29.36,
+          "duration_sec": 9.389,
+          "text": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+          "vocal_text": "[curious] En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.36,
+          "end": 42.44,
+          "duration_sec": 10.076,
+          "text": "Su pegada rítmica lo consagró en las radios de todo el planeta. ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su pegada rítmica lo consagró en las radios de todo el planeta. [excited] ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum No Jacket Required (1985); producida por Phil Collins y Hugh Padgham; videoclip dirigido por Jim Yukich.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano.",
+      "desarrollo": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+      "cierre": "Su pegada rítmica lo consagró en las radios de todo el planeta. ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 2,
+      "opening_text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.43,
+      "final_duration_sec": 43.68,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.1,
+        "p2_lufs": -19.7,
+        "p3_base_lufs": -20.8,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.235
+      },
+      "audio_file": "audio/fred_intro_phil_collins_dont_lose_my_number.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.97,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Don't Lose My Number de Phil Collins. Un ritmo trepidante nacido de la improvisación en el piano."
+        },
+        {
+          "start": 16.97,
+          "end": 19.97,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.97,
+          "end": 29.36,
+          "text": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police."
+        },
+        {
+          "start": 29.36,
+          "end": 32.36,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.36,
+          "end": 42.44,
+          "text": "Su pegada rítmica lo consagró en las radios de todo el planeta. ¡Sube el volumen y escuchemos a Don't Lose My Number, de Phil Collins, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:32:34.926715+00:00",
+      "status": "completed",
+      "song_duration_sec": 289
+    },
+    "ramones::pet sematary": {
+      "song_title": "Pet Sematary",
+      "band_name": "Ramones",
+      "album": "Brain Drain (1989)",
+      "year": "1989",
+      "cover": "img/albums/ramones_1989_brain_drain.jpg",
+      "full_song_audio": null,
+      "visible_script": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine. En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora. La canción fue el mayor éxito radial de los Ramones en los ochenta. ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine. [curious] En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora. [emotional] La canción fue el mayor éxito radial de los Ramones en los ochenta. [excited] ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine.",
+      "paragraph_2": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+      "paragraph_3": "La canción fue el mayor éxito radial de los Ramones en los ochenta. ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "La canción fue el mayor éxito radial de los Ramones en los ochenta.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.55,
+          "duration_sec": 10.549,
+          "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine.",
+          "vocal_text": "[warm, confident] Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.55,
+          "end": 28.98,
+          "duration_sec": 10.431,
+          "text": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+          "vocal_text": "[curious] En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 31.98,
+          "end": 42.15,
+          "duration_sec": 10.17,
+          "text": "La canción fue el mayor éxito radial de los Ramones en los ochenta. ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] La canción fue el mayor éxito radial de los Ramones en los ochenta. [excited] ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Brain Drain (1989); escrita por Dee Dee Ramone y Daniel Rey para la adaptación de Stephen King.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine.",
+      "desarrollo": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+      "cierre": "La canción fue el mayor éxito radial de los Ramones en los ochenta. ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 7,
+      "opening_text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.15,
+      "final_duration_sec": 43.39,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.2,
+        "p2_lufs": -20.5,
+        "p3_base_lufs": -20.3,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 4.338
+      },
+      "audio_file": "audio/fred_intro_ramones_pet_sematary.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.55,
+          "text": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a Ramones. Punk rock nacido de una pesadilla literaria en Maine."
+        },
+        {
+          "start": 15.55,
+          "end": 18.55,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.55,
+          "end": 28.98,
+          "text": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora."
+        },
+        {
+          "start": 28.98,
+          "end": 31.98,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 31.98,
+          "end": 42.15,
+          "text": "La canción fue el mayor éxito radial de los Ramones en los ochenta. ¡Sube el volumen y escuchemos a Pet Sematary, de Ramones, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:32:54.948844+00:00",
+      "status": "completed",
+      "song_duration_sec": 210
+    },
+    "fleetwood mac::dreams": {
+      "song_title": "Dreams",
+      "band_name": "Fleetwood Mac",
+      "album": "Rumours (1977)",
+      "year": "1977",
+      "cover": "img/albums/fleetwood_mac_1977_rumours.jpg",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours. En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo. Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours. [curious] En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo. [emotional] Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. [excited] ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours.",
+      "paragraph_2": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+      "paragraph_3": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.97,
+          "duration_sec": 10.974,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours.",
+          "vocal_text": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.97,
+          "end": 28.48,
+          "duration_sec": 9.514,
+          "text": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+          "vocal_text": "[curious] En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 31.48,
+          "end": 42.11,
+          "duration_sec": 10.631,
+          "text": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. [excited] ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Rumours (1977); escrita por Stevie Nicks; grabada en Record Plant (Sausalito, California).",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours.",
+      "desarrollo": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+      "cierre": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 10,
+      "opening_text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 37.12,
+      "final_duration_sec": 43.36,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.6,
+        "p2_lufs": -21.5,
+        "p3_base_lufs": -19.9,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 4.773
+      },
+      "audio_file": "audio/fred_intro_fleetwood_mac_dreams.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.97,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Dreams. La magia de diez minutos que definió a Rumours."
+        },
+        {
+          "start": 15.97,
+          "end": 18.97,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.97,
+          "end": 28.48,
+          "text": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo."
+        },
+        {
+          "start": 28.48,
+          "end": 31.48,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 31.48,
+          "end": 42.11,
+          "text": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. ¡Sube el volumen y escuchemos a Dreams, de Fleetwood Mac, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:33:14.038489+00:00",
+      "status": "completed",
+      "song_duration_sec": 257
     }
   }
 }

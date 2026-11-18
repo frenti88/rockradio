@@ -602,11 +602,91 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Su riff de Les Paul marcó la historia del rock.",
             "historical_info": "Álbum Brothers in Arms (1985); escrita por Mark Knopfler y Sting; grabada en Montserrat."
         }
+    ],
+    "urgent": [
+        {
+            "p1_hook": "Un ritmo urgente impulsado por un saxofón legendario.",
+            "p2_anecdote": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+            "p3_resolution": "Aquel estallido de saxo convirtió al tema en un éxito arrollador.",
+            "historical_info": "Álbum 4 (1981); compuesta por Mick Jones; producido por Mutt Lange; solo de saxofón por Junior Walker."
+        }
+    ],
+    "eye of the tiger": [
+        {
+            "p1_hook": "El himno definitivo de la perseverancia en el ring.",
+            "p2_anecdote": "En 1982, Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+            "p3_resolution": "Esa energía implacable conquistó la cima de los rankings mundiales.",
+            "historical_info": "Álbum Eye of the Tiger (1982); compuesta por Frankie Sullivan y Jim Peterik para la película Rocky III a petición de Sylvester Stallone."
+        }
+    ],
+    "dont lose my number": [
+        {
+            "p1_hook": "Un ritmo trepidante nacido de la improvisación en el piano.",
+            "p2_anecdote": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+            "p3_resolution": "Su pegada rítmica lo consagró en las radios de todo el planeta.",
+            "historical_info": "Álbum No Jacket Required (1985); producida por Phil Collins y Hugh Padgham; videoclip dirigido por Jim Yukich."
+        }
+    ],
+    "pet sematary": [
+        {
+            "p1_hook": "Punk rock nacido de una pesadilla literaria en Maine.",
+            "p2_anecdote": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+            "p3_resolution": "La canción fue el mayor éxito radial de los Ramones en los ochenta.",
+            "historical_info": "Álbum Brain Drain (1989); escrita por Dee Dee Ramone y Daniel Rey para la adaptación de Stephen King."
+        }
+    ],
+    "dreams": [
+        {
+            "p1_hook": "La magia de diez minutos que definió a Rumours.",
+            "p2_anecdote": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+            "p3_resolution": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100.",
+            "historical_info": "Álbum Rumours (1977); escrita por Stevie Nicks; grabada en Record Plant (Sausalito, California)."
+        }
     ]
 }
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Urgent",
+        "band_name": "Foreigner",
+        "album": "4 (1981)",
+        "year": "1981",
+        "cover": "img/albums/foreigner_1981_4.jpg",
+        "duration_sec": 271
+    },
+    {
+        "song_title": "Eye of the Tiger",
+        "band_name": "Survivor",
+        "album": "Eye of the Tiger (1982)",
+        "year": "1982",
+        "cover": "img/albums/survivor_1982_eye_of_the_tiger.jpg",
+        "duration_sec": 245
+    },
+    {
+        "song_title": "Don't Lose My Number",
+        "band_name": "Phil Collins",
+        "album": "No Jacket Required (1985)",
+        "year": "1985",
+        "cover": "img/albums/phil_collins_1985_no_jacket_required.jpg",
+        "duration_sec": 289
+    },
+    {
+        "song_title": "Pet Sematary",
+        "band_name": "Ramones",
+        "album": "Brain Drain (1989)",
+        "year": "1989",
+        "cover": "img/albums/ramones_1989_brain_drain.jpg",
+        "duration_sec": 210
+    },
+    {
+        "song_title": "Dreams",
+        "band_name": "Fleetwood Mac",
+        "album": "Rumours (1977)",
+        "year": "1977",
+        "cover": "img/albums/fleetwood_mac_1977_rumours.jpg",
+        "duration_sec": 257
+    },
     {
         "song_title": "Shout",
         "band_name": "Tears for Fears",
@@ -1007,7 +1087,10 @@ def resolve_song_metadata(song_query, band_query=None):
         "bonjovi": "bon jovi"
     }
     song_aliases = {
-        "living on a prayer": "livin on a prayer"
+        "living on a prayer": "livin on a prayer",
+        "dont loose my number": "don t lose my number",
+        "dont lose my number": "don t lose my number",
+        "don t loose my number": "don t lose my number"
     }
     if b_norm in band_aliases:
         b_norm = normalize_text_key(band_aliases[b_norm])
@@ -1221,9 +1304,11 @@ def find_curated_story_entry(song_title):
     y límites de palabra para evitar colisiones erróneas (ej: 'one' dentro de 'money for nothing').
     """
     clean_key = normalize_text_key(song_title)
-    # 1. Coincidencia exacta
+    no_space_clean = clean_key.replace(" ", "")
+    # 1. Coincidencia exacta o sin espacios (para manejar 'don t' vs 'dont')
     for k, v in MASTER_CURATED_STORIES.items():
-        if normalize_text_key(k) == clean_key:
+        nk = normalize_text_key(k)
+        if nk == clean_key or (len(no_space_clean) >= 6 and nk.replace(" ", "") == no_space_clean):
             return v if isinstance(v, list) else [v]
     # 2. Coincidencia con límites de palabra (whole word)
     padded_clean = f" {clean_key} "
