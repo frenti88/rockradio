@@ -513,6 +513,14 @@ MASTER_CURATED_STORIES = {
             "historical_info": "Álbum Night Songs (1986); escrita por Tom Keifer; producida por Andy Johns tras el descubrimiento del grupo por Jon Bon Jovi en 1985."
         }
     ],
+    "high hopes": [
+        {
+            "p1_hook": "Un adiós nostálgico cargado de memoria.",
+            "p2_anecdote": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+            "p3_resolution": "Las campanas finales sellaron la última gran obra de estudio.",
+            "historical_info": "Álbum The Division Bell (1994); escrita por David Gilmour y Polly Samson; grabada en el estudio flotante Astoria."
+        }
+    ],
     "shout at the devil": [
         (
             "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
@@ -541,6 +549,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "High Hopes",
+        "band_name": "Pink Floyd",
+        "album": "The Division Bell (1994)",
+        "year": "1994",
+        "cover": "img/albums/pink_floyd_1994_the_division_bell.jpg",
+        "duration_sec": 511
+    },
     {
         "song_title": "Nobody's Fool",
         "band_name": "Cinderella",
@@ -999,9 +1015,9 @@ def parse_ai_command(command_text):
         song_q, band_q = _split_song_and_band(payload)
         return {"intent": "regenerate_story", "song_query": song_q, "band_query": band_q, "raw": raw}
 
-    # Check story generation ("Generar historia de...", "Genera una historia de...", "Quiero la historia de...", etc.)
+    # Check story generation ("Generar historia de...", "Agrega la historia de...", etc.)
     gen_m = re.match(
-        r"^(?:por favor\s+)?(?:genera[r]?|crea[r]?|haz|quiero|dame|escribe|narra)\s+(?:una\s+|la\s+|el\s+)?(?:nueva\s+)?historia\s+(?:de\s+|de\s+la\s+cancion\s+|sobre\s+|para\s+)?(.+)$",
+        r"^(?:por favor\s+)?(?:genera[r]?|agrega[r]?|añade|añadir|publica[r]?|crea[r]?|haz|quiero|dame|escribe|narra)\s+(?:una\s+|la\s+|el\s+)?(?:nueva\s+)?historia\s+(?:de\s+|de\s+la\s+cancion\s+|sobre\s+|para\s+)?(.+)$",
         raw,
         re.IGNORECASE
     )

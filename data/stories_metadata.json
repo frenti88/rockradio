@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    3,
     10,
     4,
     2,
@@ -9,9 +8,10 @@
     5,
     7,
     2,
-    3
+    3,
+    4
   ],
-  "last_generated_key": "cinderella::nobodys fool",
+  "last_generated_key": "pink floyd::high hopes",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1463,6 +1463,118 @@
       "created_at": "2026-11-17T23:59:51.367650+00:00",
       "status": "completed",
       "song_duration_sec": 289
+    },
+    "pink floyd::high hopes": {
+      "song_title": "High Hopes",
+      "band_name": "Pink Floyd",
+      "album": "The Division Bell (1994)",
+      "year": "1994",
+      "cover": "img/albums/pink_floyd_1994_the_division_bell.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria. En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel. Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria. [curious] En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel. [emotional] Las campanas finales sellaron la última gran obra de estudio. [excited] ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria.",
+      "paragraph_2": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+      "paragraph_3": "Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Las campanas finales sellaron la última gran obra de estudio.",
+      "p3_closing": "¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.31,
+          "duration_sec": 10.311,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.31,
+          "end": 28.51,
+          "duration_sec": 10.197,
+          "text": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+          "vocal_text": "[curious] En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 31.51,
+          "end": 40.92,
+          "duration_sec": 9.407,
+          "text": "Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Las campanas finales sellaron la última gran obra de estudio. [excited] ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum The Division Bell (1994); escrita por David Gilmour y Polly Samson; grabada en el estudio flotante Astoria.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria.",
+      "desarrollo": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+      "cierre": "Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 4,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 35.92,
+      "final_duration_sec": 42.16,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.2,
+        "p2_lufs": -20.4,
+        "p3_base_lufs": -19.9,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.859
+      },
+      "audio_file": "audio/fred_intro_pink_floyd_high_hopes.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.31,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria."
+        },
+        {
+          "start": 15.31,
+          "end": 18.31,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.31,
+          "end": 28.51,
+          "text": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel."
+        },
+        {
+          "start": 28.51,
+          "end": 31.51,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 31.51,
+          "end": 40.92,
+          "text": "Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T00:29:05.687373+00:00",
+      "status": "completed",
+      "song_duration_sec": 511
     }
   }
 }

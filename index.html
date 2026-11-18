@@ -7923,6 +7923,57 @@
         hasRealAudio: true,
         relatedIntroId: 'intro_cinderella_nobodys_fool',
         lyrics: []
+      },
+      {
+        id: 'intro_pink_floyd_high_hopes',
+        pairId: 'pink_floyd_high_hopes',
+        isIntro: true,
+        bandName: 'Pink Floyd',
+        songTitle: 'High Hopes',
+        title: 'Intro: High Hopes',
+        albumName: 'The Division Bell (1994)',
+        year: '1994',
+        cover: 'img/albums/pink_floyd_1994_the_division_bell.jpg',
+        tag: 'Historia',
+        duration: 42,
+        durationSec: 42.16,
+        introSec: '42s',
+        summary: 'Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria. En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel. Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!',
+        status: 'con_audio',
+        audioUrl: 'audio/fred_intro_pink_floyd_high_hopes.mp3',
+        fileUrl: 'audio/fred_intro_pink_floyd_high_hopes.mp3',
+        hasRealAudio: true,
+        relatedSongId: 'song_pink_floyd_high_hopes',
+        lyrics: [
+          { start: 0.0, end: 5.0, text: '🎸 📻 Intro musical — Rock Radio: De vuelta al pasado...' },
+          { start: 5.0, end: 15.31, text: 'Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con High Hopes, de Pink Floyd. Un adiós nostálgico cargado de memoria.' },
+          { start: 15.31, end: 18.31, text: '🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado...' },
+          { start: 18.31, end: 28.51, text: 'En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.' },
+          { start: 28.51, end: 31.51, text: '🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado...' },
+          { start: 31.51, end: 40.92, text: 'Las campanas finales sellaron la última gran obra de estudio. ¡Sube el volumen y escuchemos a High Hopes, de Pink Floyd, aquí en Rock Radio, de vuelta al pasado!' }
+        ]
+      },
+      {
+        id: 'song_pink_floyd_high_hopes',
+        pairId: 'pink_floyd_high_hopes',
+        isIntro: false,
+        bandName: 'Pink Floyd',
+        songTitle: 'High Hopes',
+        title: 'High Hopes',
+        albumName: 'The Division Bell (1994)',
+        year: '1994',
+        cover: 'img/albums/pink_floyd_1994_the_division_bell.jpg',
+        tag: '',
+        duration: 511,
+        durationSec: 511.0,
+        introSec: '',
+        summary: 'Canción original desde Spotify (Pink Floyd — High Hopes)',
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        relatedIntroId: 'intro_pink_floyd_high_hopes',
+        lyrics: []
       }
     ];
 
@@ -7932,13 +7983,13 @@
     // DJ Fred Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjFredCustomTracks() {
       try {
-        if (!localStorage.getItem('dj_fred_reset_v74_clean')) {
+        if (!localStorage.getItem('dj_fred_reset_v75_clean')) {
           localStorage.removeItem('dj_fred_custom_tracks_v2');
           localStorage.removeItem('dj_fredd_deleted_pairs');
           localStorage.removeItem('dj_fredd_reset_v67_clean');
           localStorage.removeItem('dj_fred_custom_tracks_v2');
           localStorage.removeItem('dj_fred_deleted_pairs');
-          localStorage.setItem('dj_fred_reset_v74_clean', 'true');
+          localStorage.setItem('dj_fred_reset_v75_clean', 'true');
           return [];
         }
         const raw = localStorage.getItem('dj_fred_custom_tracks_v2');
