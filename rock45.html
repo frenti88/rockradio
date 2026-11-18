@@ -8597,6 +8597,35 @@
         hasRealAudio: true,
         relatedIntroId: 'intro_led_zeppelin_stairway_to_heaven',
         lyrics: []
+      },
+      {
+        id: 'song_guns_n_roses_paradise_city',
+        pairId: 'guns_n_roses_paradise_city',
+        isIntro: false,
+        radioOverlay: true,
+        bandName: "Guns N' Roses",
+        songTitle: 'Paradise City',
+        title: 'Paradise City',
+        albumName: 'Appetite for Destruction (1987)',
+        year: '1987',
+        cover: 'img/albums/guns_n_roses_1987_appetite.png',
+        tag: 'Historia',
+        duration: 406,
+        durationSec: 406.0,
+        introSec: '33s',
+        voiceAudioUrl: 'audio/fred_voice_guns_n_roses_paradise_city.mp3',
+        voiceDurationSec: 33.31,
+        summary: "Fred Rewind: Paradise City, de Guns N' Roses. El himno nacido en una furgoneta rumbo a casa. En 1986, tras tocar en San Francisco, viajaban agotados en la parte trasera de su furgoneta rentada tocando guitarras acústicas. Slash lanzó el riff inicial y Axl Rose empezó a improvisar sobre escapar hacia la ciudad del paraíso, votando juntos por mantener el famoso estribillo. Su explosión final definió Appetite for Destruction. ¡Sube el volumen, que ya suena Paradise City!",
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        lyrics: [
+          { start: 0.0, end: 2.6, text: "🎸 Intro musical suave — Paradise City (Guns N' Roses)" },
+          { start: 2.6, end: 11.5, text: "Fred Rewind: Paradise City, de Guns N' Roses. El himno nacido en una furgoneta rumbo a casa." },
+          { start: 11.5, end: 26.5, text: "En 1986, tras tocar en San Francisco, viajaban agotados en la parte trasera de su furgoneta rentada tocando guitarras acústicas. Slash lanzó el riff inicial y Axl Rose empezó a improvisar sobre escapar hacia la ciudad del paraíso, votando juntos por mantener el famoso estribillo." },
+          { start: 26.5, end: 33.5, text: "Su explosión final definió Appetite for Destruction. ¡Sube el volumen, que ya suena Paradise City!" }
+        ]
       }
     ];
 
@@ -9727,7 +9756,10 @@
             `;
           }
         } else {
-          // Canción original de Spotify sin modificaciones
+          // Canción original de Spotify (con o sin overlay de historia tradicional)
+          if (item.radioOverlay) {
+            statusBadgeHtml = `<span class="dj-intro-pill">Historia</span>`;
+          }
           actionsHtml = `
             <div class="dj-col-actions">
               <span class="dj-dur-text">${formatTime(item.duration)}</span>
@@ -10019,9 +10051,23 @@
         if (spotifySdkDeviceId) {
           const launchSpotifyTrack = (targetUri) => {
             if (seqToken !== GlobalAudioPlayer.playbackSeq || !isDjFredActive || djFredIndex !== index) return;
-            GlobalAudioPlayer.playViaSpotifySdk(targetUri, (item.duration || 180) * 1000, seqToken, () => {
-              playFallbackHtmlOrToast(getDirectFallbackUrl());
-            });
+            if (item.radioOverlay && item.voiceAudioUrl) {
+              if (barArtist) {
+                barArtist.innerHTML = `<span class="player-source-badge djfred">🎙️ HISTORIA</span> ${escapeHtmlStr(item.bandName)}`;
+              }
+              GlobalAudioPlayer.playViaSpotifySdk(targetUri, (item.duration || 180) * 1000, seqToken, () => {
+                playFallbackHtmlOrToast(item.voiceAudioUrl || getDirectFallbackUrl());
+              });
+              GlobalAudioPlayer.startRadioOverlay(item.voiceAudioUrl, seqToken, () => {
+                if (seqToken === GlobalAudioPlayer.playbackSeq && isDjFredActive && djFredIndex === index && barArtist) {
+                  barArtist.textContent = item.bandName;
+                }
+              });
+            } else {
+              GlobalAudioPlayer.playViaSpotifySdk(targetUri, (item.duration || 180) * 1000, seqToken, () => {
+                playFallbackHtmlOrToast(getDirectFallbackUrl());
+              });
+            }
           };
 
           if (item.uri) {
@@ -11077,6 +11123,9 @@
     // ========================================================
     // UNIFIED GLOBAL AUDIO PLAYER ENGINE (DJ FRED + SPOTIFY)
     // ========================================================
+    const radioVoiceAudio = new Audio();
+    radioVoiceAudio.preload = 'auto';
+
     const GlobalAudioPlayer = {
       source: 'djfred', // 'djfred' | 'local45' | 'spotify'
       activeEngine: 'audio', // 'audio' | 'sdk' (strictly mutually exclusive)
@@ -11088,8 +11137,96 @@
       spotifyIsPlaying: false,
       spotifyDurationMs: 180000,
       spotifyPositionMs: 0,
+      radioOverlayTimer: null,
+      radioRampInterval: null,
+      radioOverlayActive: false,
 
-      stopHtmlAudio() {
+      stopRadioOverlay() {
+        if (this.radioOverlayTimer) {
+          clearTimeout(this.radioOverlayTimer);
+          this.radioOverlayTimer = null;
+        }
+        if (this.radioRampInterval) {
+          clearInterval(this.radioRampInterval);
+          this.radioRampInterval = null;
+        }
+        this.radioOverlayActive = false;
+        try {
+          if (!radioVoiceAudio.paused) radioVoiceAudio.pause();
+          radioVoiceAudio.onended = null;
+          radioVoiceAudio.onerror = null;
+          radioVoiceAudio.currentTime = 0;
+          if (radioVoiceAudio.getAttribute('src')) {
+            radioVoiceAudio.removeAttribute('src');
+            radioVoiceAudio.load();
+          }
+        } catch (e) {}
+        if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
+          try { spotifySdkPlayer.setVolume(1.0).catch(() => {}); } catch (e) {}
+        }
+      },
+
+      startRadioOverlay(voiceUrl, seqToken = this.playbackSeq, onComplete = null) {
+        this.stopRadioOverlay();
+        const cleanVoiceUrl = sanitizeUrl(voiceUrl, '');
+        if (!cleanVoiceUrl || seqToken !== this.playbackSeq) return;
+        this.radioOverlayActive = true;
+
+        // Bajar suavemente la canción de fondo mientras suena la historia (estilo radio tradicional)
+        if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
+          try { spotifySdkPlayer.setVolume(0.20).catch(() => {}); } catch (e) {}
+        }
+
+        const rampUpSongVolume = () => {
+          if (this.radioRampInterval) clearInterval(this.radioRampInterval);
+          let step = 0;
+          const totalSteps = 18; // ~1.8s subida suave
+          const startVol = 0.20;
+          const endVol = 1.0;
+          this.radioRampInterval = setInterval(() => {
+            if (seqToken !== this.playbackSeq) {
+              clearInterval(this.radioRampInterval);
+              this.radioRampInterval = null;
+              return;
+            }
+            step++;
+            const progress = step / totalSteps;
+            const vol = Math.min(endVol, startVol + (endVol - startVol) * progress);
+            if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
+              try { spotifySdkPlayer.setVolume(vol).catch(() => {}); } catch (e) {}
+            }
+            if (step >= totalSteps) {
+              clearInterval(this.radioRampInterval);
+              this.radioRampInterval = null;
+              this.radioOverlayActive = false;
+              if (typeof onComplete === 'function') onComplete();
+            }
+          }, 100);
+        };
+
+        // Esperar ~2.6s de intro musical de la propia canción antes de entrar la voz
+        this.radioOverlayTimer = setTimeout(() => {
+          if (seqToken !== this.playbackSeq || !this.spotifyIsPlaying) return;
+          radioVoiceAudio.src = cleanVoiceUrl;
+          radioVoiceAudio.volume = 1.0;
+          radioVoiceAudio.currentTime = 0;
+          radioVoiceAudio.onended = () => {
+            if (seqToken !== this.playbackSeq) return;
+            rampUpSongVolume();
+          };
+          radioVoiceAudio.onerror = () => {
+            if (seqToken !== this.playbackSeq) return;
+            rampUpSongVolume();
+          };
+          radioVoiceAudio.play().catch(err => {
+            console.warn('Radio voice overlay play notice (posible restricción móvil):', err);
+            rampUpSongVolume();
+          });
+        }, 2600);
+      },
+
+      stopHtmlAudio(keepRadioOverlay = false) {
+        if (!keepRadioOverlay) this.stopRadioOverlay();
         try {
           if (!spotifyAudio.paused) spotifyAudio.pause();
           spotifyAudio.currentTime = 0;
@@ -11101,6 +11238,7 @@
       },
 
       stopSpotifySdk() {
+        this.stopRadioOverlay();
         this.sdkActiveTrackUri = null;
         if (spotifySdkPlayer) {
           try { spotifySdkPlayer.pause(); } catch(e) {}
@@ -11247,6 +11385,9 @@
           if (!spotifyAudio.paused) {
             spotifyAudio.pause();
           }
+          if (this.radioOverlayActive && !radioVoiceAudio.paused) {
+            try { radioVoiceAudio.pause(); } catch(e) {}
+          }
           if (spotifySdkPlayer) {
             try { spotifySdkPlayer.pause(); } catch(e) {}
           }
@@ -11256,9 +11397,12 @@
         } else {
           // Resume exclusively the active engine
           if (this.activeEngine === 'sdk' && spotifySdkPlayer && spotifySdkDeviceId) {
-            this.stopHtmlAudio();
+            this.stopHtmlAudio(true);
             this.spotifyIsPlaying = true;
             try { spotifySdkPlayer.resume(); } catch(e) {}
+            if (this.radioOverlayActive && radioVoiceAudio.src && radioVoiceAudio.paused && !radioVoiceAudio.ended) {
+              try { radioVoiceAudio.play().catch(() => {}); } catch(e) {}
+            }
             startSpotifyProgressSimulation();
             updatePlayUI(true);
             return;

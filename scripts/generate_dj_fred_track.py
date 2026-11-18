@@ -644,11 +644,27 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100.",
             "historical_info": "Álbum Rumours (1977); escrita por Stevie Nicks; grabada en Record Plant (Sausalito, California)."
         }
+    ],
+    "paradise city": [
+        {
+            "p1_hook": "El himno nacido en una furgoneta rumbo a casa.",
+            "p2_anecdote": "En 1986, tras tocar en San Francisco, viajaban agotados en la parte trasera de su furgoneta rentada tocando guitarras acústicas. Slash lanzó el riff inicial y Axl Rose empezó a improvisar sobre escapar hacia la ciudad del paraíso, votando juntos por mantener el famoso estribillo.",
+            "p3_resolution": "Su explosión final definió Appetite for Destruction.",
+            "historical_info": "Álbum Appetite for Destruction (1987); escrita en 1986 en la parte trasera de una furgoneta regresando de San Francisco a Los Ángeles."
+        }
     ]
 }
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Paradise City",
+        "band_name": "Guns N' Roses",
+        "album": "Appetite for Destruction (1987)",
+        "year": "1987",
+        "cover": "img/albums/guns_n_roses_1987_appetite.png",
+        "duration_sec": 406
+    },
     {
         "song_title": "Urgent",
         "band_name": "Foreigner",
@@ -2747,6 +2763,131 @@ def run_server(port=5055):
 # ==============================================================================
 # 12. INTERFAZ CLI PRINCIPAL
 # ==============================================================================
+async def generate_voice_only_radio_intro(
+    song_title,
+    band_name,
+    out_mp3_path=None,
+    fish_voice=None,
+    fish_model=None
+):
+    """
+    Genera únicamente la pista vocal masterizada (sin cama musical de fondo)
+    optimizada para sonar sobre la melodía suave de la propia canción en Spotify
+    en modo radio tradicional (<= 40.0s, bienvenida mínima, historia protagonista).
+    """
+    selected_voice = fish_voice or DEFAULT_FISH_VOICE
+    selected_model = fish_model or DEFAULT_FISH_MODEL
+    use_fish = bool(os.environ.get("FISH_API_KEY", "").strip())
+
+    slug = make_slug(band_name, song_title)
+    if not out_mp3_path:
+        out_mp3_path = os.path.join(WORKSPACE_AUDIO_DIR, f"fred_voice_{slug}.mp3")
+    os.makedirs(os.path.dirname(out_mp3_path), exist_ok=True)
+
+    curated = find_curated_story_entry(song_title)
+    if curated and isinstance(curated[0], dict):
+        entry = curated[0]
+        p1_hook = entry.get("p1_hook", "").strip()
+        p2_anecdote = entry.get("p2_anecdote", "").strip()
+        p3_resolution = entry.get("p3_resolution", "").strip()
+        historical_info = entry.get("historical_info", "").strip()
+    else:
+        p1_hook = "La historia detrás de este clásico inolvidable."
+        p2_anecdote = f"{band_name} grabó {song_title} buscando capturar toda su energía cruda en el estudio."
+        p3_resolution = "Una toma que quedó grabada para siempre en la historia del rock."
+        historical_info = f"{band_name} — {song_title}"
+
+    # Bienvenida ultra breve para priorizar la historia (<= 40s total)
+    opening_short = f"Fred Rewind: {song_title}, de {band_name}."
+    paragraph_1 = f"{opening_short} {p1_hook}".strip()
+    paragraph_2 = p2_anecdote.strip()
+    p3_closing = f"¡Sube el volumen, que ya suena {song_title}!"
+    paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+
+    dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
+    tmp_prefix = os.path.join("/tmp", f"rockradio_voice_{os.getpid()}_{int(time.time()*1000)}")
+    temp_files = []
+
+    try:
+        p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
+            dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
+            tmp_prefix, temp_files,
+            use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
+        )
+
+        p1_core = f"{tmp_prefix}_p1_core.wav"
+        p2_core = f"{tmp_prefix}_p2_core.wav"
+        p3_core = f"{tmp_prefix}_p3_core.wav"
+        p1_norm = f"{tmp_prefix}_p1_norm.wav"
+        p2_norm = f"{tmp_prefix}_p2_norm.wav"
+        p3_norm = f"{tmp_prefix}_p3_norm.wav"
+        p3_eq = f"{tmp_prefix}_p3_eq.wav"
+        p3_mast = f"{tmp_prefix}_p3_mast.wav"
+        sil_short = f"{tmp_prefix}_sil_short.wav"
+        voice_wav = f"{tmp_prefix}_voice_only.wav"
+        temp_files.extend([
+            p1_core, p2_core, p3_core, p1_norm, p2_norm, p3_norm,
+            p3_eq, p3_mast, sil_short, voice_wav
+        ])
+
+        _process_paragraph_to_core_wav(p1_mp3, p1_core, 0.0)
+        _process_paragraph_to_core_wav(p2_mp3, p2_core, 0.0)
+        _process_paragraph_to_core_wav(p3_mp3, p3_core, 0.0)
+
+        target_lufs = -13.5
+        g1 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p1_core)))
+        g2 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p2_core)))
+        g3 = max(-4.0, min(12.0, target_lufs - get_integrated_lufs(p3_core) - 0.8))
+
+        _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
+        _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
+        _process_paragraph_to_core_wav(p3_mp3, p3_norm, g3)
+
+        subprocess.run([
+            FFMPEG_BIN, "-y", "-i", p3_norm,
+            "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.4",
+            "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
+            p3_eq
+        ], capture_output=True, check=True)
+
+        _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_resolution, p3_closing, boost_db=2.2)
+
+        # Pausas cortas de 0.65s para ritmo ágil de locución sobre la canción
+        _make_silence_wav(0.65, sil_short)
+        _concat_wavs([p1_norm, sil_short, p2_norm, sil_short, p3_mast], voice_wav)
+
+        tmp_out = out_mp3_path + ".tmp.mp3"
+        subprocess.run([
+            FFMPEG_BIN, "-y", "-i", voice_wav,
+            "-af", "alimiter=limit=0.912:attack=2:release=50",
+            "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "44100",
+            tmp_out
+        ], capture_output=True, check=True)
+        os.replace(tmp_out, out_mp3_path)
+
+        dur = get_audio_duration(out_mp3_path)
+        return {
+            "success": True,
+            "voice_only": True,
+            "song_title": song_title,
+            "band_name": band_name,
+            "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
+            "duration_sec": round(dur, 2),
+            "within_40s": dur <= 40.0,
+            "paragraph_1": paragraph_1,
+            "paragraph_2": paragraph_2,
+            "paragraph_3": paragraph_3,
+            "visible_script": f"{paragraph_1} {paragraph_2} {paragraph_3}",
+            "historical_info": historical_info
+        }
+    finally:
+        for tf in temp_files:
+            try:
+                if os.path.exists(tf):
+                    os.remove(tf)
+            except OSError:
+                pass
+
 def main():
     parser = argparse.ArgumentParser(description="Rock Radio — Motor de Historias IA y Fish Audio")
     parser.add_argument("--command", "-c", help="Comando en lenguaje natural (ej: 'Generar historia de Tom Sawyer de Rush')")
@@ -2755,6 +2896,7 @@ def main():
     parser.add_argument("--album", default="", help="Nombre del álbum")
     parser.add_argument("--year", default="", help="Año de lanzamiento")
     parser.add_argument("--mode", choices=["generate", "regenerate_story", "regenerate_voice"], default="generate")
+    parser.add_argument("--voice-only", action="store_true", help="Generar solo pista vocal para overlay en vivo sobre la canción")
     parser.add_argument("--out", default=None, help="Ruta de salida del MP3")
     parser.add_argument("--engine", choices=["fish", "edge"], default=None, help="Motor TTS: fish o edge")
     parser.add_argument("--fish-voice", default=None, help="ID de voz en Fish Audio")
@@ -2766,6 +2908,18 @@ def main():
 
     if args.serve:
         run_server(args.port)
+        return
+
+    if args.voice_only and args.song and args.band:
+        res = asyncio.run(generate_voice_only_radio_intro(
+            args.song, args.band,
+            out_mp3_path=args.out,
+            fish_voice=args.fish_voice,
+            fish_model=args.fish_model
+        ))
+        print("\n" + json.dumps(res, ensure_ascii=False, indent=2))
+        if not res.get("within_40s"):
+            print(f"⚠️ Advertencia: duración vocal ({res['duration_sec']}s) supera 40s")
         return
 
     if args.command:
