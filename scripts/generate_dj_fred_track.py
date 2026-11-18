@@ -360,10 +360,12 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "stairway to heaven": [
-        (
-            "Aislados en una remota cabaña sin electricidad en Gales en 1970, Jimmy Page y Robert Plant concibieron una épica que crecía desde la calma acústica hasta una tormenta eléctrica. "
-            "El legendario solo de guitarra fue grabado por Page con su Telecaster de 1959 en apenas tres tomas."
-        )
+        {
+            "p1_hook": "Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock.",
+            "p2_anecdote": "Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959.",
+            "p3_resolution": "Su solo en tres tomas marcó la historia para siempre.",
+            "historical_info": "Álbum Led Zeppelin IV (1971); compuesta por Jimmy Page y Robert Plant en Bron-Yr-Aur (Gales); solo de guitarra grabado en Island Studios con Fender Telecaster de 1959."
+        }
     ],
     "highway to hell": [
         (
@@ -1090,7 +1092,9 @@ def resolve_song_metadata(song_query, band_query=None):
         "living on a prayer": "livin on a prayer",
         "dont loose my number": "don t lose my number",
         "dont lose my number": "don t lose my number",
-        "don t loose my number": "don t lose my number"
+        "don t loose my number": "don t lose my number",
+        "starway yo heaven": "stairway to heaven",
+        "starway to heaven": "stairway to heaven"
     }
     if b_norm in band_aliases:
         b_norm = normalize_text_key(band_aliases[b_norm])

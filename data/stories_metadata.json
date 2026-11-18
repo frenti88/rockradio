@@ -1,6 +1,5 @@
 {
   "recent_openings": [
-    8,
     10,
     3,
     1,
@@ -9,9 +8,10 @@
     4,
     2,
     7,
-    10
+    10,
+    4
   ],
-  "last_generated_key": "fleetwood mac::dreams",
+  "last_generated_key": "led zeppelin::stairway to heaven",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -3031,6 +3031,118 @@
       "created_at": "2026-11-18T01:33:14.038489+00:00",
       "status": "completed",
       "song_duration_sec": 257
+    },
+    "led zeppelin::stairway to heaven": {
+      "song_title": "Stairway to Heaven",
+      "band_name": "Led Zeppelin",
+      "album": "Led Zeppelin IV (1971)",
+      "year": "1971",
+      "cover": "img/albums/led_zeppelin_1971_iv.png",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock. Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959. Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock. [curious] Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959. [emotional] Su solo en tres tomas marcó la historia para siempre. [excited] ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock.",
+      "paragraph_2": "Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959.",
+      "paragraph_3": "Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su solo en tres tomas marcó la historia para siempre.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 17.16,
+          "duration_sec": 12.162,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 20.16,
+          "end": 31.55,
+          "duration_sec": 11.389,
+          "text": "Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959.",
+          "vocal_text": "[curious] Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 34.55,
+          "end": 43.85,
+          "duration_sec": 9.303,
+          "text": "Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su solo en tres tomas marcó la historia para siempre. [excited] ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 0.696
+      },
+      "historical_info": "Álbum Led Zeppelin IV (1971); compuesta por Jimmy Page y Robert Plant en Bron-Yr-Aur (Gales); solo de guitarra grabado en Island Studios con Fender Telecaster de 1959.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock.",
+      "desarrollo": "Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959.",
+      "cierre": "Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 4,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 38.85,
+      "final_duration_sec": 44.64,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.2,
+        "p2_lufs": -20.4,
+        "p3_base_lufs": -20.7,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.436
+      },
+      "audio_file": "audio/fred_intro_led_zeppelin_stairway_to_heaven.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 17.16,
+          "text": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con Stairway to Heaven, de Led Zeppelin. Una obra maestra que subió desde una cabaña galesa hasta el Olimpo del rock."
+        },
+        {
+          "start": 17.16,
+          "end": 20.16,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 20.16,
+          "end": 31.55,
+          "text": "Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959."
+        },
+        {
+          "start": 31.55,
+          "end": 34.55,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 34.55,
+          "end": 43.85,
+          "text": "Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen y escuchemos a Stairway to Heaven, de Led Zeppelin, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T11:09:37.426470+00:00",
+      "status": "completed",
+      "song_duration_sec": 482
     }
   }
 }
