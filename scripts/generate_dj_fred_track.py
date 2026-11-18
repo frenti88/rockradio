@@ -414,10 +414,12 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "forever young": [
-        (
-            "Escrita en Berlín Occidental durante la Guerra Fría de 1984, Alphaville reflejó el miedo latente a un conflicto nuclear y el deseo de aferrarse a la juventud. "
-            "Originalmente grabada como pista bailable rápida, los productores bajaron el tempo transformándola en un himno nostálgico inmortal."
-        )
+        {
+            "p1_hook": "Un himno de juventud nacido frente al Muro.",
+            "p2_anecdote": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+            "p3_resolution": "Aquel cambio inesperado la volvió eterna.",
+            "historical_info": "Álbum Forever Young (1984); grabada en Berlín Occidental por Alphaville bajo el miedo nuclear de la Guerra Fría."
+        }
     ],
     "help": [
         (
@@ -568,11 +570,83 @@ MASTER_CURATED_STORIES = {
             "En 1975, Casablanca Records exigió con urgencia a Paul Stanley y Gene Simmons un himno que capturara el frenesí de sus shows. "
             "Grabada en Nueva York con un coro improvisado de técnicos y asistentes de estudio, nació el credo definitivo de fiesta para toda una generación."
         )
+    ],
+    "shout": [
+        {
+            "p1_hook": "Un grito de protesta nacido en la sala.",
+            "p2_anecdote": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+            "p3_resolution": "Su coro masivo conquistó el número uno mundial.",
+            "historical_info": "Álbum Songs from the Big Chair (1985); escrita por Roland Orzabal e Ian Stanley; inspirada en la terapia primaria de Arthur Janov."
+        }
+    ],
+    "drive": [
+        {
+            "p1_hook": "La balada más conmovedora de su carrera.",
+            "p2_anecdote": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+            "p3_resolution": "La voz de Orr la convirtió en un clásico inmortal.",
+            "historical_info": "Álbum Heartbeat City (1984); escrita por Ric Ocasek, cantada por Benjamin Orr y producida por Mutt Lange."
+        }
+    ],
+    "hold the line": [
+        {
+            "p1_hook": "El debut explosivo de seis maestros de estudio.",
+            "p2_anecdote": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+            "p3_resolution": "Ese arranque arrollador los lanzó directo a la fama.",
+            "historical_info": "Álbum Toto (1978); escrita por David Paich, voz principal de Bobby Kimball y guitarra de Steve Lukather."
+        }
+    ],
+    "money for nothing": [
+        {
+            "p1_hook": "Una conversación ajena convertida en himno.",
+            "p2_anecdote": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+            "p3_resolution": "Su riff de Les Paul marcó la historia del rock.",
+            "historical_info": "Álbum Brothers in Arms (1985); escrita por Mark Knopfler y Sting; grabada en Montserrat."
+        }
     ]
 }
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Shout",
+        "band_name": "Tears for Fears",
+        "album": "Songs from the Big Chair (1985)",
+        "year": "1985",
+        "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+        "duration_sec": 393
+    },
+    {
+        "song_title": "Drive",
+        "band_name": "The Cars",
+        "album": "Heartbeat City (1984)",
+        "year": "1984",
+        "cover": "img/albums/the_cars_1984_heartbeat_city.jpg",
+        "duration_sec": 235
+    },
+    {
+        "song_title": "Hold the Line",
+        "band_name": "Toto",
+        "album": "Toto (1978)",
+        "year": "1978",
+        "cover": "img/albums/toto_1978_toto.png",
+        "duration_sec": 236
+    },
+    {
+        "song_title": "Forever Young",
+        "band_name": "Alphaville",
+        "album": "Forever Young (1984)",
+        "year": "1984",
+        "cover": "img/albums/alphaville_1984_forever_young.png",
+        "duration_sec": 227
+    },
+    {
+        "song_title": "Money for Nothing",
+        "band_name": "Dire Straits",
+        "album": "Brothers in Arms (1985)",
+        "year": "1985",
+        "cover": "img/albums/dire_straits_1985_money_for_nothing.jpg",
+        "duration_sec": 248
+    },
     {
         "song_title": "18 and Life",
         "band_name": "Skid Row",
@@ -1141,17 +1215,32 @@ def select_closing_line(song_title, band_name, angle_idx=0):
     template = CLOSING_TEMPLATES[angle_idx % len(CLOSING_TEMPLATES)]
     return template.format(song=song_title, band=band_name)
 
+def find_curated_story_entry(song_title):
+    """
+    Busca la historia curada para una canción, priorizando coincidencias exactas
+    y límites de palabra para evitar colisiones erróneas (ej: 'one' dentro de 'money for nothing').
+    """
+    clean_key = normalize_text_key(song_title)
+    # 1. Coincidencia exacta
+    for k, v in MASTER_CURATED_STORIES.items():
+        if normalize_text_key(k) == clean_key:
+            return v if isinstance(v, list) else [v]
+    # 2. Coincidencia con límites de palabra (whole word)
+    padded_clean = f" {clean_key} "
+    for k, v in MASTER_CURATED_STORIES.items():
+        nk = normalize_text_key(k)
+        if len(nk) >= 4 and f" {nk} " in padded_clean:
+            return v if isinstance(v, list) else [v]
+        if len(clean_key) >= 6 and f" {clean_key} " in f" {nk} ":
+            return v if isinstance(v, list) else [v]
+    return None
+
 def get_master_fred_script(song_title, band_name, album_name="", year="", angle=1, opening_text=None):
     """
     Construye el guion maestro estructurado en 3 párrafos claros y concisos
     (<= 45s totales considerando 5s intro + dos pausas musicales de 3s + transición final).
     """
-    clean_key = normalize_text_key(song_title)
-    angles_list = None
-    for k, v in MASTER_CURATED_STORIES.items():
-        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)):
-            angles_list = v if isinstance(v, list) else [v]
-            break
+    angles_list = find_curated_story_entry(song_title)
 
     p1_hook = ""
     p2_anecdote = ""
@@ -1226,8 +1315,9 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
     )
     p3_closing = select_closing_line(song_title, band_name, angle - 1)
 
-    clean_key = normalize_text_key(song_title)
-    has_curated = any(normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)) for k in MASTER_CURATED_STORIES)
+    curated_entries = find_curated_story_entry(song_title)
+    has_curated = bool(curated_entries)
+    curated_count = len(curated_entries) if curated_entries else 0
 
     api_key = os.environ.get('OPENAI_API_KEY', '').strip()
     p1_hook = None
@@ -1235,12 +1325,6 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
     p3_resolution = None
     historical_info = ""
     source = "curated_master"
-
-    curated_count = 0
-    for k, v in MASTER_CURATED_STORIES.items():
-        if normalize_text_key(k) == clean_key or normalize_text_key(k) in clean_key or (len(clean_key) >= 5 and clean_key in normalize_text_key(k)):
-            curated_count = len(v) if isinstance(v, list) else 1
-            break
 
     need_ai = (not has_curated) or (int(angle) > curated_count)
     if api_key and need_ai:

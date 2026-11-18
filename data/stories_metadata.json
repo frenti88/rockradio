@@ -1,17 +1,17 @@
 {
   "recent_openings": [
-    3,
-    3,
-    5,
-    7,
+    8,
     2,
     3,
     4,
+    6,
     8,
-    2,
-    3
+    10,
+    3,
+    1,
+    6
   ],
-  "last_generated_key": "poison::life goes on",
+  "last_generated_key": "dire straits::money for nothing",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1911,6 +1911,566 @@
       "created_at": "2026-11-18T00:34:10.732829+00:00",
       "status": "completed",
       "song_duration_sec": 288
+    },
+    "tears for fears::shout": {
+      "song_title": "Shout",
+      "band_name": "Tears for Fears",
+      "album": "Songs from the Big Chair (1985)",
+      "year": "1985",
+      "cover": "img/albums/tff_1985_songs_from_the_big_chair.png",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala. En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría. Su coro masivo conquistó el número uno mundial. ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala. [curious] En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría. [emotional] Su coro masivo conquistó el número uno mundial. [excited] ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala.",
+      "paragraph_2": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+      "paragraph_3": "Su coro masivo conquistó el número uno mundial. ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su coro masivo conquistó el número uno mundial.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 14.91,
+          "duration_sec": 9.908,
+          "text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 17.91,
+          "end": 26.52,
+          "duration_sec": 8.611,
+          "text": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+          "vocal_text": "[curious] En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 29.52,
+          "end": 38.43,
+          "duration_sec": 8.907,
+          "text": "Su coro masivo conquistó el número uno mundial. ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su coro masivo conquistó el número uno mundial. [excited] ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Songs from the Big Chair (1985); escrita por Roland Orzabal e Ian Stanley; inspirada en la terapia primaria de Arthur Janov.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala.",
+      "desarrollo": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+      "cierre": "Su coro masivo conquistó el número uno mundial. ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 1,
+      "opening_text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 33.43,
+      "final_duration_sec": 39.65,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.8,
+        "p2_lufs": -20.5,
+        "p3_base_lufs": -19.9,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.863
+      },
+      "audio_file": "audio/fred_intro_tears_for_fears_shout.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 14.91,
+          "text": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de Shout, de Tears for Fears. Un grito de protesta nacido en la sala."
+        },
+        {
+          "start": 14.91,
+          "end": 17.91,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 17.91,
+          "end": 26.52,
+          "text": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría."
+        },
+        {
+          "start": 26.52,
+          "end": 29.52,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 29.52,
+          "end": 38.43,
+          "text": "Su coro masivo conquistó el número uno mundial. ¡Sube el volumen y escuchemos a Shout, de Tears for Fears, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:14:07.750192+00:00",
+      "status": "completed",
+      "song_duration_sec": 393
+    },
+    "the cars::drive": {
+      "song_title": "Drive",
+      "band_name": "The Cars",
+      "album": "Heartbeat City (1984)",
+      "year": "1984",
+      "cover": "img/albums/the_cars_1984_heartbeat_city.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera. En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid. La voz de Orr la convirtió en un clásico inmortal. ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera. [curious] En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid. [emotional] La voz de Orr la convirtió en un clásico inmortal. [excited] ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera.",
+      "paragraph_2": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+      "paragraph_3": "La voz de Orr la convirtió en un clásico inmortal. ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "La voz de Orr la convirtió en un clásico inmortal.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 14.35,
+          "duration_sec": 9.353,
+          "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 17.35,
+          "end": 26.12,
+          "duration_sec": 8.77,
+          "text": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+          "vocal_text": "[curious] En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 29.12,
+          "end": 37.75,
+          "duration_sec": 8.631,
+          "text": "La voz de Orr la convirtió en un clásico inmortal. ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] La voz de Orr la convirtió en un clásico inmortal. [excited] ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Heartbeat City (1984); escrita por Ric Ocasek, cantada por Benjamin Orr y producida por Mutt Lange.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera.",
+      "desarrollo": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+      "cierre": "La voz de Orr la convirtió en un clásico inmortal. ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 6,
+      "opening_text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 32.75,
+      "final_duration_sec": 39.0,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.3,
+        "p2_lufs": -21.5,
+        "p3_base_lufs": -21.1,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.477
+      },
+      "audio_file": "audio/fred_intro_the_cars_drive.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 14.35,
+          "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Drive. La balada más conmovedora de su carrera."
+        },
+        {
+          "start": 14.35,
+          "end": 17.35,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 17.35,
+          "end": 26.12,
+          "text": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid."
+        },
+        {
+          "start": 26.12,
+          "end": 29.12,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 29.12,
+          "end": 37.75,
+          "text": "La voz de Orr la convirtió en un clásico inmortal. ¡Sube el volumen y escuchemos a Drive, de The Cars, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:08:35.409444+00:00",
+      "status": "completed",
+      "song_duration_sec": 235
+    },
+    "toto::hold the line": {
+      "song_title": "Hold the Line",
+      "band_name": "Toto",
+      "album": "Toto (1978)",
+      "year": "1978",
+      "cover": "img/albums/toto_1978_toto.png",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio. En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco. Ese arranque arrollador los lanzó directo a la fama. ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio. [curious] En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco. [emotional] Ese arranque arrollador los lanzó directo a la fama. [excited] ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio.",
+      "paragraph_2": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+      "paragraph_3": "Ese arranque arrollador los lanzó directo a la fama. ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Ese arranque arrollador los lanzó directo a la fama.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.91,
+          "duration_sec": 11.907,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.91,
+          "end": 27.56,
+          "duration_sec": 7.651,
+          "text": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+          "vocal_text": "[curious] En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 30.56,
+          "end": 39.23,
+          "duration_sec": 8.667,
+          "text": "Ese arranque arrollador los lanzó directo a la fama. ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Ese arranque arrollador los lanzó directo a la fama. [excited] ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Toto (1978); escrita por David Paich, voz principal de Bobby Kimball y guitarra de Steve Lukather.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio.",
+      "desarrollo": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+      "cierre": "Ese arranque arrollador los lanzó directo a la fama. ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 8,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 34.22,
+      "final_duration_sec": 40.46,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.6,
+        "p2_lufs": -21.1,
+        "p3_base_lufs": -20.0,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.058
+      },
+      "audio_file": "audio/fred_intro_toto_hold_the_line.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.91,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con Hold the Line. El debut explosivo de seis maestros de estudio."
+        },
+        {
+          "start": 16.91,
+          "end": 19.91,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.91,
+          "end": 27.56,
+          "text": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco."
+        },
+        {
+          "start": 27.56,
+          "end": 30.56,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 30.56,
+          "end": 39.23,
+          "text": "Ese arranque arrollador los lanzó directo a la fama. ¡Sube el volumen y escuchemos a Hold the Line, de Toto, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:08:54.941850+00:00",
+      "status": "completed",
+      "song_duration_sec": 236
+    },
+    "alphaville::forever young": {
+      "song_title": "Forever Young",
+      "band_name": "Alphaville",
+      "album": "Forever Young (1984)",
+      "year": "1984",
+      "cover": "img/albums/alphaville_1984_forever_young.png",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro. En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo. Aquel cambio inesperado la volvió eterna. ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro. [curious] En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo. [emotional] Aquel cambio inesperado la volvió eterna. [excited] ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro.",
+      "paragraph_2": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+      "paragraph_3": "Aquel cambio inesperado la volvió eterna. ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel cambio inesperado la volvió eterna.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.03,
+          "duration_sec": 10.029,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro.",
+          "vocal_text": "[warm, confident] De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.03,
+          "end": 27.36,
+          "duration_sec": 9.332,
+          "text": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+          "vocal_text": "[curious] En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 30.36,
+          "end": 39.42,
+          "duration_sec": 9.058,
+          "text": "Aquel cambio inesperado la volvió eterna. ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel cambio inesperado la volvió eterna. [excited] ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Forever Young (1984); grabada en Berlín Occidental por Alphaville bajo el miedo nuclear de la Guerra Fría.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro.",
+      "desarrollo": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+      "cierre": "Aquel cambio inesperado la volvió eterna. ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 10,
+      "opening_text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 34.42,
+      "final_duration_sec": 40.65,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.6,
+        "p2_lufs": -21.2,
+        "p3_base_lufs": -20.8,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.81
+      },
+      "audio_file": "audio/fred_intro_alphaville_forever_young.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.03,
+          "text": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de Forever Young. Un himno de juventud nacido frente al Muro."
+        },
+        {
+          "start": 15.03,
+          "end": 18.03,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.03,
+          "end": 27.36,
+          "text": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo."
+        },
+        {
+          "start": 27.36,
+          "end": 30.36,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 30.36,
+          "end": 39.42,
+          "text": "Aquel cambio inesperado la volvió eterna. ¡Sube el volumen y escuchemos a Forever Young, de Alphaville, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:09:13.469358+00:00",
+      "status": "completed",
+      "song_duration_sec": 226
+    },
+    "dire straits::money for nothing": {
+      "song_title": "Money for Nothing",
+      "band_name": "Dire Straits",
+      "album": "Brothers in Arms (1985)",
+      "year": "1985",
+      "cover": "img/albums/dire_straits_1985_money_for_nothing.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno. En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting. Su riff de Les Paul marcó la historia del rock. ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno. [curious] En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting. [emotional] Su riff de Les Paul marcó la historia del rock. [excited] ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno.",
+      "paragraph_2": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+      "paragraph_3": "Su riff de Les Paul marcó la historia del rock. ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su riff de Les Paul marcó la historia del rock.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.21,
+          "duration_sec": 10.206,
+          "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.21,
+          "end": 25.94,
+          "duration_sec": 7.726,
+          "text": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+          "vocal_text": "[curious] En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 28.94,
+          "end": 37.95,
+          "duration_sec": 9.015,
+          "text": "Su riff de Les Paul marcó la historia del rock. ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su riff de Les Paul marcó la historia del rock. [excited] ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Brothers in Arms (1985); escrita por Mark Knopfler y Sting; grabada en Montserrat.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno.",
+      "desarrollo": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+      "cierre": "Su riff de Les Paul marcó la historia del rock. ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 6,
+      "opening_text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 32.95,
+      "final_duration_sec": 39.18,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.7,
+        "p2_lufs": -19.5,
+        "p3_base_lufs": -21.2,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 2.854
+      },
+      "audio_file": "audio/fred_intro_dire_straits_money_for_nothing.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.21,
+          "text": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de Money for Nothing. Una conversación ajena convertida en himno."
+        },
+        {
+          "start": 15.21,
+          "end": 18.21,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.21,
+          "end": 25.94,
+          "text": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting."
+        },
+        {
+          "start": 25.94,
+          "end": 28.94,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 28.94,
+          "end": 37.95,
+          "text": "Su riff de Les Paul marcó la historia del rock. ¡Sube el volumen y escuchemos a Money for Nothing, de Dire Straits, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T01:14:36.475187+00:00",
+      "status": "completed",
+      "song_duration_sec": 248
     }
   }
 }
