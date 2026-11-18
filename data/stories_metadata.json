@@ -1,17 +1,17 @@
 {
   "recent_openings": [
-    10,
-    4,
-    2,
     3,
     3,
     5,
     7,
     2,
     3,
-    4
+    4,
+    8,
+    2,
+    3
   ],
-  "last_generated_key": "pink floyd::high hopes",
+  "last_generated_key": "poison::life goes on",
   "stories": {
     "rush::tom sawyer": {
       "song_title": "Tom Sawyer",
@@ -1575,6 +1575,342 @@
       "created_at": "2026-11-18T00:29:05.687373+00:00",
       "status": "completed",
       "song_duration_sec": 511
+    },
+    "skid row::18 and life": {
+      "song_title": "18 and Life",
+      "band_name": "Skid Row",
+      "album": "Skid Row (1989)",
+      "year": "1989",
+      "cover": "img/albums/skid_row_1989_skid_row.jpg",
+      "full_song_audio": null,
+      "visible_script": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock. En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach. Su fuerza trágica llevó el debut al multiplatino. ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock. [curious] En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach. [emotional] Su fuerza trágica llevó el debut al multiplatino. [excited] ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock.",
+      "paragraph_2": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+      "paragraph_3": "Su fuerza trágica llevó el debut al multiplatino. ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su fuerza trágica llevó el debut al multiplatino.",
+      "p3_closing": "¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.62,
+          "duration_sec": 11.619,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock.",
+          "vocal_text": "[warm, confident] Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.62,
+          "end": 30.43,
+          "duration_sec": 10.811,
+          "text": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+          "vocal_text": "[curious] En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 33.43,
+          "end": 43.6,
+          "duration_sec": 10.168,
+          "text": "Su fuerza trágica llevó el debut al multiplatino. ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su fuerza trágica llevó el debut al multiplatino. [excited] ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 0.953
+      },
+      "historical_info": "Álbum Skid Row (1989); escrita por Dave 'Snake' Sabo y Rachel Bolan; producida por Michael Wagener.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock.",
+      "desarrollo": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+      "cierre": "Su fuerza trágica llevó el debut al multiplatino. ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 8,
+      "opening_text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 38.6,
+      "final_duration_sec": 44.64,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -21.3,
+        "p2_lufs": -20.0,
+        "p3_base_lufs": -20.9,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.34
+      },
+      "audio_file": "audio/fred_intro_skid_row_18_and_life.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.62,
+          "text": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con 18 and Life. Una noticia real convertida en drama de rock."
+        },
+        {
+          "start": 16.62,
+          "end": 19.62,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.62,
+          "end": 30.43,
+          "text": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach."
+        },
+        {
+          "start": 30.43,
+          "end": 33.43,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 33.43,
+          "end": 43.6,
+          "text": "Su fuerza trágica llevó el debut al multiplatino. ¡Sube el volumen y escuchemos a 18 and Life, de Skid Row, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T00:33:27.954724+00:00",
+      "status": "completed",
+      "song_duration_sec": 233
+    },
+    "motley crue::dr feelgood": {
+      "song_title": "Dr. Feelgood",
+      "band_name": "Mötley Crüe",
+      "album": "Dr. Feelgood (1989)",
+      "year": "1989",
+      "cover": "img/albums/motley_crue_1989_feelgood.png",
+      "full_song_audio": null,
+      "visible_script": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total. Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver. Aquel golpe de poder les dio su primer número uno. ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total. [curious] Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver. [emotional] Aquel golpe de poder les dio su primer número uno. [excited] ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total.",
+      "paragraph_2": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+      "paragraph_3": "Aquel golpe de poder les dio su primer número uno. ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Aquel golpe de poder les dio su primer número uno.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 15.8,
+          "duration_sec": 10.804,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total.",
+          "vocal_text": "[warm, confident] De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 18.8,
+          "end": 29.28,
+          "duration_sec": 10.481,
+          "text": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+          "vocal_text": "[curious] Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.28,
+          "end": 41.5,
+          "duration_sec": 9.219,
+          "text": "Aquel golpe de poder les dio su primer número uno. ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Aquel golpe de poder les dio su primer número uno. [excited] ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Dr. Feelgood (1989); escrita por Nikki Sixx y Mick Mars; producida por Bob Rock en Little Mountain Sound.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total.",
+      "desarrollo": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+      "cierre": "Aquel golpe de poder les dio su primer número uno. ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 2,
+      "opening_text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 36.5,
+      "final_duration_sec": 42.74,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.9,
+        "p2_lufs": -20.1,
+        "p3_base_lufs": -19.1,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.118
+      },
+      "audio_file": "audio/fred_intro_mtley_cre_dr_feelgood.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 15.8,
+          "text": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando Dr. Feelgood de Mötley Crüe. El rugido que marcó su renacimiento total."
+        },
+        {
+          "start": 15.8,
+          "end": 18.8,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 18.8,
+          "end": 29.28,
+          "text": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver."
+        },
+        {
+          "start": 29.28,
+          "end": 32.28,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.28,
+          "end": 41.5,
+          "text": "Aquel golpe de poder les dio su primer número uno. ¡Sube el volumen y escuchemos a Dr. Feelgood, de Mötley Crüe, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T00:33:49.031699+00:00",
+      "status": "completed",
+      "song_duration_sec": 290
+    },
+    "poison::life goes on": {
+      "song_title": "Life Goes On",
+      "band_name": "Poison",
+      "album": "Flesh & Blood (1990)",
+      "year": "1990",
+      "cover": "img/albums/poison_1990_flesh_and_blood.jpg",
+      "full_song_audio": null,
+      "visible_script": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo. Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille. Su honestidad conmovió a millones más allá del glam. ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+      "vocal_script": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo. [curious] Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille. [emotional] Su honestidad conmovió a millones más allá del glam. [excited] ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraph_1": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo.",
+      "paragraph_2": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+      "paragraph_3": "Su honestidad conmovió a millones más allá del glam. ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+      "p3_resolution": "Su honestidad conmovió a millones más allá del glam.",
+      "p3_closing": "¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+      "paragraphs": [
+        {
+          "id": "paragraph_1",
+          "role": "presentacion",
+          "start": 5.0,
+          "end": 16.18,
+          "duration_sec": 11.18,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo.",
+          "vocal_text": "[warm, confident] Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo."
+        },
+        {
+          "id": "paragraph_2",
+          "role": "desarrollo",
+          "start": 19.18,
+          "end": 29.46,
+          "duration_sec": 10.28,
+          "text": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+          "vocal_text": "[curious] Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille."
+        },
+        {
+          "id": "paragraph_3",
+          "role": "desenlace_cierre",
+          "start": 32.46,
+          "end": 40.98,
+          "duration_sec": 8.523,
+          "text": "Su honestidad conmovió a millones más allá del glam. ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+          "vocal_text": "[emotional] Su honestidad conmovió a millones más allá del glam. [excited] ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "pauses_sec": {
+        "intro_music": 5.0,
+        "pause_after_p1": 3.0,
+        "pause_after_p2": 3.0,
+        "outro_fade": 1.15
+      },
+      "historical_info": "Álbum Flesh & Blood (1990); escrita por Bret Michaels, C.C. DeVille, Bobby Dall y Rikki Rockett; producida por Bruce Fairbairn.",
+      "expressive_instructions": {
+        "model": "s2.1-pro-free",
+        "paragraph_1": "[warm, confident]",
+        "paragraph_2": "[curious]",
+        "paragraph_3": "[emotional] -> [excited]"
+      },
+      "apertura": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo.",
+      "desarrollo": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+      "cierre": "Su honestidad conmovió a millones más allá del glam. ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!",
+      "opening_id": 3,
+      "opening_text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison.",
+      "fish_model": "s2.1-pro-free",
+      "voice_reference_id": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice_duration_sec": 35.98,
+      "final_duration_sec": 42.21,
+      "intro_music_sec": 5.0,
+      "audio_metrics": {
+        "p1_lufs": -20.2,
+        "p2_lufs": -19.9,
+        "p3_base_lufs": -19.8,
+        "closing_boost_db": 2.6,
+        "p3_ramp_split_sec": 3.131
+      },
+      "audio_file": "audio/fred_intro_poison_life_goes_on.mp3",
+      "angle_index": 1,
+      "script_source": "curated_master",
+      "lyrics_timings": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 5.0,
+          "end": 16.18,
+          "text": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta 1990 con Poison. La balada más íntima nacida del duelo."
+        },
+        {
+          "start": 16.18,
+          "end": 19.18,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 19.18,
+          "end": 29.46,
+          "text": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille."
+        },
+        {
+          "start": 29.46,
+          "end": 32.46,
+          "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+        },
+        {
+          "start": 32.46,
+          "end": 40.98,
+          "text": "Su honestidad conmovió a millones más allá del glam. ¡Sube el volumen y escuchemos a Life Goes On, de Poison, aquí en Rock Radio, de vuelta al pasado!"
+        }
+      ],
+      "created_at": "2026-11-18T00:34:10.732829+00:00",
+      "status": "completed",
+      "song_duration_sec": 288
     }
   }
 }

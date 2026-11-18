@@ -521,6 +521,30 @@ MASTER_CURATED_STORIES = {
             "historical_info": "Álbum The Division Bell (1994); escrita por David Gilmour y Polly Samson; grabada en el estudio flotante Astoria."
         }
     ],
+    "18 and life": [
+        {
+            "p1_hook": "Una noticia real convertida en drama de rock.",
+            "p2_anecdote": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+            "p3_resolution": "Su fuerza trágica llevó el debut al multiplatino.",
+            "historical_info": "Álbum Skid Row (1989); escrita por Dave 'Snake' Sabo y Rachel Bolan; producida por Michael Wagener."
+        }
+    ],
+    "dr. feelgood": [
+        {
+            "p1_hook": "El rugido que marcó su renacimiento total.",
+            "p2_anecdote": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+            "p3_resolution": "Aquel golpe de poder les dio su primer número uno.",
+            "historical_info": "Álbum Dr. Feelgood (1989); escrita por Nikki Sixx y Mick Mars; producida por Bob Rock en Little Mountain Sound."
+        }
+    ],
+    "life goes on": [
+        {
+            "p1_hook": "La balada más íntima nacida del duelo.",
+            "p2_anecdote": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+            "p3_resolution": "Su honestidad conmovió a millones más allá del glam.",
+            "historical_info": "Álbum Flesh & Blood (1990); escrita por Bret Michaels, C.C. DeVille, Bobby Dall y Rikki Rockett; producida por Bruce Fairbairn."
+        }
+    ],
     "shout at the devil": [
         (
             "Escrita en 1983 en un pequeño apartamento de Sunset Strip, Nikki Sixx encontró inspiración en su curiosidad por el misticismo tras el auge del hard rock angelino. "
@@ -549,6 +573,30 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "18 and Life",
+        "band_name": "Skid Row",
+        "album": "Skid Row (1989)",
+        "year": "1989",
+        "cover": "img/albums/skid_row_1989_skid_row.jpg",
+        "duration_sec": 233
+    },
+    {
+        "song_title": "Dr. Feelgood",
+        "band_name": "Mötley Crüe",
+        "album": "Dr. Feelgood (1989)",
+        "year": "1989",
+        "cover": "img/albums/motley_crue_1989_feelgood.png",
+        "duration_sec": 290
+    },
+    {
+        "song_title": "Life Goes On",
+        "band_name": "Poison",
+        "album": "Flesh & Blood (1990)",
+        "year": "1990",
+        "cover": "img/albums/poison_1990_flesh_and_blood.jpg",
+        "duration_sec": 288
+    },
     {
         "song_title": "High Hopes",
         "band_name": "Pink Floyd",
