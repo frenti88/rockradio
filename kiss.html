@@ -8698,6 +8698,47 @@
           { start: 11.9, end: 23.5, text: 'Aislados en Bron-Yr-Aur sin electricidad en 1970, Jimmy Page y Robert Plant concibieron una épica acústica que estalló en Londres con una Telecaster de 1959.' },
           { start: 23.5, end: 29.8, text: 'Su solo en tres tomas marcó la historia para siempre. ¡Sube el volumen, que ya suena Stairway to Heaven!' }
         ]
+      },
+      {
+        id: 'song_guns_n_roses_november_rain',
+        pairId: 'guns_n_roses_november_rain',
+        isIntro: false,
+        radioOverlay: true,
+        bandName: "Guns N' Roses",
+        songTitle: 'November Rain',
+        title: 'November Rain',
+        albumName: 'Use Your Illusion I (1991)',
+        year: '1991',
+        cover: 'img/albums/guns_n_roses_1991_illusion_1.png',
+        tag: 'Historia',
+        duration: 537,
+        durationSec: 537.0,
+        introSec: '38s',
+        voiceAudioUrl: 'audio/fred_voice_guns_n_roses_november_rain.mp3',
+        voiceDurationSec: 31.4,
+        overlayTimings: {
+          introDelaySec: 5.0,
+          pause1Start: 6.86,
+          pause1End: 9.86,
+          pause2Start: 17.7,
+          pause2End: 20.7,
+          outroEnd: 31.4,
+          rampSec: 2.0,
+          totalPresentationSec: 38.4
+        },
+        summary: "Soy Fred, en Rock Radio. Axl Rose guardó esta melodía en su piano casi una década antes de grabarla. Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock. Su clímax dramático la consagró como la balada definitiva de los noventa. Aquí terminan mis palabras y comienza la música: November Rain, de Guns N' Roses.",
+        status: 'con_audio',
+        audioUrl: '',
+        fileUrl: '',
+        hasRealAudio: true,
+        lyrics: [
+          { start: 0.0, end: 5.0, text: "🎸 Intro musical — November Rain (Guns N' Roses)" },
+          { start: 5.0, end: 11.86, text: 'Soy Fred, en Rock Radio. Axl Rose guardó esta melodía en su piano casi una década antes de grabarla.' },
+          { start: 11.86, end: 14.86, text: "🎶 Pausa musical (3s) — November Rain (Guns N' Roses)" },
+          { start: 14.86, end: 22.7, text: 'Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock.' },
+          { start: 22.7, end: 25.7, text: "🎶 Pausa musical (3s) — November Rain (Guns N' Roses)" },
+          { start: 25.7, end: 36.4, text: "Su clímax dramático la consagró como la balada definitiva de los noventa. Aquí terminan mis palabras y comienza la música: November Rain, de Guns N' Roses." }
+        ]
       }
     ];
 
@@ -11211,7 +11252,29 @@
       spotifyPositionMs: 0,
       radioOverlayTimer: null,
       radioRampInterval: null,
+      radioDuckInterval: null,
       radioOverlayActive: false,
+      radioCurrentGain: 1.0,
+
+      getUserMasterVolume() {
+        try {
+          if (spotifyAudio && spotifyAudio.muted) return 0;
+          if (spotifyAudio && typeof spotifyAudio.volume === 'number' && !isNaN(spotifyAudio.volume)) {
+            return Math.max(0, Math.min(1, spotifyAudio.volume));
+          }
+        } catch (e) {}
+        return 1.0;
+      },
+
+      setSongSdkGain(gainMultiplier) {
+        this.radioCurrentGain = Math.max(0, Math.min(1, gainMultiplier));
+        const master = this.getUserMasterVolume();
+        const target = Math.max(0, Math.min(1, this.radioCurrentGain * master));
+        if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
+          try { spotifySdkPlayer.setVolume(target).catch(() => {}); } catch (e) {}
+        }
+        try { radioVoiceAudio.volume = master; } catch (e) {}
+      },
 
       stopRadioOverlay() {
         if (this.radioOverlayTimer) {
@@ -11222,7 +11285,12 @@
           clearInterval(this.radioRampInterval);
           this.radioRampInterval = null;
         }
+        if (this.radioDuckInterval) {
+          clearInterval(this.radioDuckInterval);
+          this.radioDuckInterval = null;
+        }
         this.radioOverlayActive = false;
+        this.radioCurrentGain = 1.0;
         try {
           if (!radioVoiceAudio.paused) radioVoiceAudio.pause();
           radioVoiceAudio.onended = null;
@@ -11233,28 +11301,38 @@
             radioVoiceAudio.load();
           }
         } catch (e) {}
-        if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
-          try { spotifySdkPlayer.setVolume(1.0).catch(() => {}); } catch (e) {}
-        }
+        this.setSongSdkGain(1.0);
       },
 
-      startRadioOverlay(voiceUrl, seqToken = this.playbackSeq, onComplete = null) {
+      startRadioOverlay(voiceUrl, seqToken = this.playbackSeq, onComplete = null, overlayTimings = null) {
         this.stopRadioOverlay();
         const cleanVoiceUrl = sanitizeUrl(voiceUrl, '');
         if (!cleanVoiceUrl || seqToken !== this.playbackSeq) return;
         this.radioOverlayActive = true;
 
-        // Bajar suavemente la canción de fondo mientras suena la historia (estilo radio tradicional)
-        if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
-          try { spotifySdkPlayer.setVolume(0.20).catch(() => {}); } catch (e) {}
-        }
+        const timings = overlayTimings && typeof overlayTimings === 'object' ? overlayTimings : null;
+        const introDelayMs = Math.round(((timings && timings.introDelaySec) ? timings.introDelaySec : 2.6) * 1000);
+        const rampSec = (timings && timings.rampSec) ? timings.rampSec : 2.0;
+
+        // Niveles relativos respecto al volumen del usuario:
+        // Intro sin voz: -8 dB (~0.40), Voz narrando: -17 dB (~0.14), Pausas musicales: -7.5 dB (~0.42), Normal: 0 dB (1.0)
+        const INTRO_GAIN = 0.40;
+        const VOICE_GAIN = 0.14;
+        const PAUSE_GAIN = 0.42;
+
+        // 0:00 -> introDelay: canción original a bajo volumen (-8 dB) sin voz
+        this.setSongSdkGain(INTRO_GAIN);
 
         const rampUpSongVolume = () => {
+          if (this.radioDuckInterval) {
+            clearInterval(this.radioDuckInterval);
+            this.radioDuckInterval = null;
+          }
           if (this.radioRampInterval) clearInterval(this.radioRampInterval);
           let step = 0;
-          const totalSteps = 18; // ~1.8s subida suave
-          const startVol = 0.20;
-          const endVol = 1.0;
+          const totalSteps = Math.max(12, Math.round(rampSec * 10)); // pasos de 100ms
+          const startGain = this.radioCurrentGain;
+          const endGain = 1.0;
           this.radioRampInterval = setInterval(() => {
             if (seqToken !== this.playbackSeq) {
               clearInterval(this.radioRampInterval);
@@ -11263,25 +11341,46 @@
             }
             step++;
             const progress = step / totalSteps;
-            const vol = Math.min(endVol, startVol + (endVol - startVol) * progress);
-            if (spotifySdkPlayer && typeof spotifySdkPlayer.setVolume === 'function') {
-              try { spotifySdkPlayer.setVolume(vol).catch(() => {}); } catch (e) {}
-            }
+            // Curva suave ease-in-out
+            const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+            const gain = Math.min(endGain, startGain + (endGain - startGain) * eased);
+            this.setSongSdkGain(gain);
             if (step >= totalSteps) {
               clearInterval(this.radioRampInterval);
               this.radioRampInterval = null;
               this.radioOverlayActive = false;
+              this.setSongSdkGain(1.0);
               if (typeof onComplete === 'function') onComplete();
             }
           }, 100);
         };
 
-        // Esperar ~2.6s de intro musical de la propia canción antes de entrar la voz
+        // Esperar intro musical de la propia canción (5.0s en el nuevo estándar) antes de entrar DJ Fred
         this.radioOverlayTimer = setTimeout(() => {
           if (seqToken !== this.playbackSeq || !this.spotifyIsPlaying) return;
           radioVoiceAudio.src = cleanVoiceUrl;
-          radioVoiceAudio.volume = 1.0;
+          radioVoiceAudio.volume = this.getUserMasterVolume();
           radioVoiceAudio.currentTime = 0;
+          this.setSongSdkGain(VOICE_GAIN);
+
+          // Automatización dinámica de volumen sincronizada con las pausas musicales de 3s
+          this.radioDuckInterval = setInterval(() => {
+            if (seqToken !== this.playbackSeq || !this.radioOverlayActive || radioVoiceAudio.paused) return;
+            const t = radioVoiceAudio.currentTime || 0;
+            let desiredGain = VOICE_GAIN;
+            if (timings) {
+              const inPause1 = t >= timings.pause1Start && t < timings.pause1End;
+              const inPause2 = t >= timings.pause2Start && t < timings.pause2End;
+              if (inPause1 || inPause2) {
+                desiredGain = PAUSE_GAIN;
+              }
+            }
+            // Transición suave hacia desiredGain (evita saltos bruscos)
+            const diff = desiredGain - this.radioCurrentGain;
+            const nextGain = Math.abs(diff) < 0.025 ? desiredGain : this.radioCurrentGain + diff * 0.35;
+            this.setSongSdkGain(nextGain);
+          }, 100);
+
           radioVoiceAudio.onended = () => {
             if (seqToken !== this.playbackSeq) return;
             rampUpSongVolume();
@@ -11294,7 +11393,7 @@
             console.warn('Radio voice overlay play notice (posible restricción móvil):', err);
             rampUpSongVolume();
           });
-        }, 2600);
+        }, introDelayMs);
       },
 
       stopHtmlAudio(keepRadioOverlay = false) {
@@ -11877,6 +11976,9 @@
       spotifyAudio.volume = vol;
       if (vol > 0) {
         previousVolume = vol;
+      }
+      if (GlobalAudioPlayer && typeof GlobalAudioPlayer.setSongSdkGain === 'function') {
+        GlobalAudioPlayer.setSongSdkGain(GlobalAudioPlayer.radioOverlayActive ? GlobalAudioPlayer.radioCurrentGain : 1.0);
       }
       updateVolumeUI();
     });

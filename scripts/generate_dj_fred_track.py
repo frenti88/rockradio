@@ -672,6 +672,22 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Se convirtió en el mayor clásico romántico de la banda.",
             "historical_info": "Álbum Whitesnake (1987); escrita por David Coverdale y John Sykes en el sur de Francia."
         }
+    ],
+    "november rain": [
+        {
+            "p1_hook": "Axl Rose guardó esta melodía en su piano casi una década antes de grabarla.",
+            "p2_anecdote": "Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock. En 1991, con una orquesta sintetizada y el solo épico de Slash, se volvió la canción más larga en entrar al Top 10 de Billboard.",
+            "p3_resolution": "Su clímax dramático la consagró como la balada definitiva de los noventa.",
+            "historical_info": "Álbum Use Your Illusion I (1991); escrita por Axl Rose desde 1983; 8:57 minutos, la canción más larga en alcanzar el Top 10 del Billboard Hot 100."
+        }
+    ],
+    "the trooper": [
+        {
+            "p1_hook": "Un galope de guitarras inspirado en una carga militar del siglo diecinueve.",
+            "p2_anecdote": "En 1983, Steve Harris escribió esta pieza desde la perspectiva de un soldado británico en la batalla de Balaclava de 1854, evocando el poema de Tennyson. Las guitarras gemelas de Dave Murray y Adrian Smith imitan el trote implacable de la caballería.",
+            "p3_resolution": "Desde entonces es un himno infaltable con la bandera ondeando en cada concierto.",
+            "historical_info": "Álbum Piece of Mind (1983); escrita por Steve Harris; inspirada en la Carga de la Brigada Ligera (1854) y el poema de Alfred, Lord Tennyson."
+        }
     ]
 }
 
@@ -2823,8 +2839,95 @@ def run_server(port=5055):
         print("\nDeteniendo servidor.")
 
 # ==============================================================================
-# 12. INTERFAZ CLI PRINCIPAL
+# 12. BIBLIOTECA OVERLAY TRADICIONAL (10 INTROS + 8 OUTROS) Y CLI PRINCIPAL
 # ==============================================================================
+RADIO_OVERLAY_INTROS = [
+    {"id": "intro_01_aguja_vinilo", "name": "La aguja sobre el vinilo", "moods": ["classic", "recording", "default"],
+     "short": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred."},
+    {"id": "intro_02_viaje_inesperado", "name": "El viaje inesperado", "moods": ["nostalgic", "historical", "default"],
+     "short": "Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio."},
+    {"id": "intro_03_frecuencia_perdida", "name": "La frecuencia perdida", "moods": ["mystery", "classic", "default"],
+     "short": "Acabas de encontrar una frecuencia llena de historias. Soy Fred, esto es Rock Radio."},
+    {"id": "intro_04_cinta_olvidada", "name": "La cinta olvidada", "moods": ["recording", "studio", "default"],
+     "short": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio."},
+    {"id": "intro_05_confesiones_madrugada", "name": "Confesiones de madrugada", "moods": ["ballad", "nostalgic", "emotional"],
+     "short": "Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio."},
+    {"id": "intro_06_detras_escenario", "name": "Detrás del escenario", "moods": ["concert", "energetic", "rock"],
+     "short": "¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio."},
+    {"id": "intro_07_archivo_confidencial", "name": "Archivo confidencial", "moods": ["mystery", "historical", "studio"],
+     "short": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio."},
+    {"id": "intro_08_la_primera_vez", "name": "La primera vez", "moods": ["nostalgic", "ballad", "classic"],
+     "short": "Esta historia puede cambiar cómo escuchas este clásico. Soy Fred, en Rock Radio."},
+    {"id": "intro_09_rebobinando_historia", "name": "Rebobinando la historia", "moods": ["historical", "nostalgic", "default"],
+     "short": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio."},
+    {"id": "intro_10_antes_darle_play", "name": "Antes de darle play", "moods": ["default", "mystery", "energetic"],
+     "short": "Antes de que siga sonando, quiero contarte algo. Soy Fred, estás en Rock Radio."}
+]
+
+RADIO_OVERLAY_OUTROS = [
+    {"id": "outro_01_revelador", "name": "Revelador", "moods": ["mystery", "studio", "default"],
+     "fmt": lambda s, b: f"Quizá ahora la escuches distinto: {s}, de {b}."},
+    {"id": "outro_02_nostalgico", "name": "Nostálgico", "moods": ["nostalgic", "ballad"],
+     "fmt": lambda s, b: f"Cierra los ojos y regresa a esa época con {s}, de {b}."},
+    {"id": "outro_03_emotivo", "name": "Emotivo", "moods": ["ballad", "emotional", "nostalgic"],
+     "fmt": lambda s, b: f"Hay cosas que solo una canción puede contar. Escucha {s}, de {b}."},
+    {"id": "outro_04_rock_energico", "name": "Rock enérgico", "moods": ["energetic", "rock", "concert"],
+     "fmt": lambda s, b: f"Ahora deja que las guitarras hagan el resto. ¡{s}, de {b}!"},
+    {"id": "outro_05_intriga", "name": "Intriga", "moods": ["mystery", "historical"],
+     "fmt": lambda s, b: f"¿La volverás a escuchar igual? Descúbrelo con {s}, de {b}."},
+    {"id": "outro_06_radio_vintage", "name": "Radio vintage", "moods": ["recording", "studio", "classic"],
+     "fmt": lambda s, b: f"La música sigue girando: {s}, de {b}, en Rock Radio."},
+    {"id": "outro_07_cinematografico", "name": "Cinematográfico", "moods": ["ballad", "historical", "emotional"],
+     "fmt": lambda s, b: f"Aquí terminan mis palabras y comienza la música: {s}, de {b}."},
+    {"id": "outro_08_firma_rock_radio", "name": "Firma de Rock Radio", "moods": ["default", "classic", "energetic"],
+     "fmt": lambda s, b: f"Ya sabes lo que ocurrió. Ahora siéntelo: {s}, de {b}. Rock Radio."}
+]
+
+def _select_overlay_intro_and_outro(song_title, band_name, p2_text):
+    """Selecciona una intro y un outro coherentes evitando repetir los últimos 3 usados."""
+    meta = {}
+    if os.path.exists(STORIES_METADATA_PATH):
+        try:
+            with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
+                meta = json.load(f)
+        except Exception:
+            meta = {}
+    last_intros = meta.get("last_overlay_intros", [])[-3:]
+    last_outros = meta.get("last_overlay_outros", [])[-3:]
+
+    txt = f"{song_title} {band_name} {p2_text}".lower()
+    if any(k in txt for k in ["piano", "balada", "lluvia", "amor", "romántic", "orquesta"]):
+        mood = "ballad"
+    elif any(k in txt for k in ["concierto", "estadio", "batalla", "guerra", "galope", "metal", "caballería"]):
+        mood = "energetic"
+    elif any(k in txt for k in ["estudio", "grab", "maqueta", "cinta", "sintetizador", "toma"]):
+        mood = "recording"
+    else:
+        mood = "historical"
+
+    compat_intros = [i for i in RADIO_OVERLAY_INTROS if mood in i["moods"] and i["id"] not in last_intros]
+    if not compat_intros:
+        compat_intros = [i for i in RADIO_OVERLAY_INTROS if i["id"] not in last_intros] or RADIO_OVERLAY_INTROS
+    chosen_intro = random.choice(compat_intros)
+
+    compat_outros = [o for o in RADIO_OVERLAY_OUTROS if mood in o["moods"] and o["id"] not in last_outros]
+    if not compat_outros:
+        compat_outros = [o for o in RADIO_OVERLAY_OUTROS if o["id"] not in last_outros] or RADIO_OVERLAY_OUTROS
+    chosen_outro = random.choice(compat_outros)
+    return chosen_intro, chosen_outro
+
+def _shorten_sentence_naturally(text, max_words):
+    words = text.split()
+    if len(words) <= max_words:
+        return text
+    # Intentar cortar en punto o coma dentro del límite
+    candidate = " ".join(words[:max_words])
+    for sep in [". ", "; ", ", "]:
+        idx = candidate.rfind(sep)
+        if idx > len(candidate) * 0.55:
+            return candidate[:idx].strip().rstrip(",;:") + "."
+    return candidate.rstrip(",;:") + "."
+
 async def generate_voice_only_radio_intro(
     song_title,
     band_name,
@@ -2833,9 +2936,15 @@ async def generate_voice_only_radio_intro(
     fish_model=None
 ):
     """
-    Genera únicamente la pista vocal masterizada (sin cama musical de fondo)
-    optimizada para sonar sobre la melodía suave de la propia canción en Spotify
-    en modo radio tradicional (<= 40.0s, bienvenida mínima, historia protagonista).
+    Genera la pista vocal masterizada para overlay de radio tradicional sobre la canción original:
+    - 5.0s de música inicial sin voz (reservados por el reproductor)
+    - Párrafo 1 (Intro dinámica + gancho)
+    - Pausa musical real de 3.0s
+    - Párrafo 2 (Anécdota verificable)
+    - Pausa musical real de 3.0s
+    - Párrafo 3 (Desenlace + Outro dinámico con mayor energía)
+    - 2.0s de subida progresiva final (reservados por el reproductor)
+    - Límite estricto: 5.0 + d1 + 3.0 + d2 + 3.0 + d3 + 2.0 <= 45.0s
     """
     selected_voice = fish_voice or DEFAULT_FISH_VOICE
     selected_model = fish_model or DEFAULT_FISH_MODEL
@@ -2854,94 +2963,185 @@ async def generate_voice_only_radio_intro(
         p3_resolution = entry.get("p3_resolution", "").strip()
         historical_info = entry.get("historical_info", "").strip()
     else:
-        p1_hook = "La historia detrás de este clásico inolvidable."
+        p1_hook = "Una historia real que vale la pena descubrir."
         p2_anecdote = f"{band_name} grabó {song_title} buscando capturar toda su energía cruda en el estudio."
         p3_resolution = "Una toma que quedó grabada para siempre en la historia del rock."
         historical_info = f"{band_name} — {song_title}"
 
-    # Bienvenida ultra breve para priorizar la historia (<= 40s total)
-    opening_short = f"Fred Rewind: {song_title}, de {band_name}."
-    paragraph_1 = f"{opening_short} {p1_hook}".strip()
-    paragraph_2 = p2_anecdote.strip()
-    p3_closing = f"¡Sube el volumen, que ya suena {song_title}!"
-    paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+    chosen_intro, chosen_outro = _select_overlay_intro_and_outro(song_title, band_name, p2_anecdote)
+    intro_delay_sec = 5.0
+    pause_sec = 3.0
+    ramp_sec = 2.0
+    max_voice_audio_sec = 45.0 - intro_delay_sec - ramp_sec  # 38.0s max (incluyendo 2x3.0s pausas = 32.0s de voz)
 
-    dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
     tmp_prefix = os.path.join("/tmp", f"rockradio_voice_{os.getpid()}_{int(time.time()*1000)}")
     temp_files = []
 
     try:
-        p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
-            dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
-            tmp_prefix, temp_files,
-            use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
-        )
+        for attempt in range(3):
+            if attempt == 0:
+                paragraph_1 = f"{chosen_intro['short']} {p1_hook}".strip()
+                paragraph_2 = p2_anecdote.strip()
+                p3_closing = chosen_outro["fmt"](song_title, band_name)
+                paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+            elif attempt == 1:
+                # Si excedió 45s, simplificar intro y acortar ligeramente anécdota sin cortar palabras
+                paragraph_1 = f"Soy Fred, en Rock Radio. {p1_hook}".strip()
+                paragraph_2 = _shorten_sentence_naturally(p2_anecdote.strip(), 34)
+                p3_closing = chosen_outro["fmt"](song_title, band_name)
+                paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+            else:
+                paragraph_1 = p1_hook.strip()
+                paragraph_2 = _shorten_sentence_naturally(p2_anecdote.strip(), 26)
+                p3_closing = f"Escucha {song_title}, de {band_name}."
+                paragraph_3 = f"{_shorten_sentence_naturally(p3_resolution, 12)} {p3_closing}".strip()
 
-        p1_core = f"{tmp_prefix}_p1_core.wav"
-        p2_core = f"{tmp_prefix}_p2_core.wav"
-        p3_core = f"{tmp_prefix}_p3_core.wav"
-        p1_norm = f"{tmp_prefix}_p1_norm.wav"
-        p2_norm = f"{tmp_prefix}_p2_norm.wav"
-        p3_norm = f"{tmp_prefix}_p3_norm.wav"
-        p3_eq = f"{tmp_prefix}_p3_eq.wav"
-        p3_mast = f"{tmp_prefix}_p3_mast.wav"
-        sil_short = f"{tmp_prefix}_sil_short.wav"
-        voice_wav = f"{tmp_prefix}_voice_only.wav"
-        temp_files.extend([
-            p1_core, p2_core, p3_core, p1_norm, p2_norm, p3_norm,
-            p3_eq, p3_mast, sil_short, voice_wav
-        ])
+            dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
+            att_prefix = f"{tmp_prefix}_a{attempt}"
+            p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
+                dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
+                att_prefix, temp_files,
+                use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
+            )
 
-        _process_paragraph_to_core_wav(p1_mp3, p1_core, 0.0)
-        _process_paragraph_to_core_wav(p2_mp3, p2_core, 0.0)
-        _process_paragraph_to_core_wav(p3_mp3, p3_core, 0.0)
+            p1_core = f"{att_prefix}_p1_core.wav"
+            p2_core = f"{att_prefix}_p2_core.wav"
+            p3_core = f"{att_prefix}_p3_core.wav"
+            p1_norm = f"{att_prefix}_p1_norm.wav"
+            p2_norm = f"{att_prefix}_p2_norm.wav"
+            p3_norm = f"{att_prefix}_p3_norm.wav"
+            p3_eq = f"{att_prefix}_p3_eq.wav"
+            p3_mast = f"{att_prefix}_p3_mast.wav"
+            sil_pause = f"{att_prefix}_sil_pause.wav"
+            voice_wav = f"{att_prefix}_voice_only.wav"
+            temp_files.extend([
+                p1_core, p2_core, p3_core, p1_norm, p2_norm, p3_norm,
+                p3_eq, p3_mast, sil_pause, voice_wav
+            ])
 
-        target_lufs = -13.5
-        g1 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p1_core)))
-        g2 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p2_core)))
-        g3 = max(-4.0, min(12.0, target_lufs - get_integrated_lufs(p3_core) - 0.8))
+            _process_paragraph_to_core_wav(p1_mp3, p1_core, 0.0)
+            _process_paragraph_to_core_wav(p2_mp3, p2_core, 0.0)
+            _process_paragraph_to_core_wav(p3_mp3, p3_core, 0.0)
 
-        _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
-        _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
-        _process_paragraph_to_core_wav(p3_mp3, p3_norm, g3)
+            d1 = _get_wav_duration(p1_core)
+            d2 = _get_wav_duration(p2_core)
+            d3 = _get_wav_duration(p3_core)
+            voice_total = d1 + pause_sec + d2 + pause_sec + d3
+            total_presentation = intro_delay_sec + voice_total + ramp_sec
 
-        subprocess.run([
-            FFMPEG_BIN, "-y", "-i", p3_norm,
-            "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.4",
-            "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
-            p3_eq
-        ], capture_output=True, check=True)
+            if total_presentation <= 45.0 or attempt == 2:
+                target_lufs = -13.5
+                g1 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p1_core)))
+                g2 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p2_core)))
+                g3 = max(-4.0, min(12.0, target_lufs - get_integrated_lufs(p3_core) - 0.8))
 
-        _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_resolution, p3_closing, boost_db=2.2)
+                _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
+                _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
+                _process_paragraph_to_core_wav(p3_mp3, p3_norm, g3)
 
-        # Pausas cortas de 0.65s para ritmo ágil de locución sobre la canción
-        _make_silence_wav(0.65, sil_short)
-        _concat_wavs([p1_norm, sil_short, p2_norm, sil_short, p3_mast], voice_wav)
+                subprocess.run([
+                    FFMPEG_BIN, "-y", "-i", p3_norm,
+                    "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.6",
+                    "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
+                    p3_eq
+                ], capture_output=True, check=True)
 
-        tmp_out = out_mp3_path + ".tmp.mp3"
-        subprocess.run([
-            FFMPEG_BIN, "-y", "-i", voice_wav,
-            "-af", "alimiter=limit=0.912:attack=2:release=50",
-            "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "44100",
-            tmp_out
-        ], capture_output=True, check=True)
-        os.replace(tmp_out, out_mp3_path)
+                _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_resolution, p3_closing, boost_db=2.6)
 
-        dur = get_audio_duration(out_mp3_path)
-        return {
-            "success": True,
-            "voice_only": True,
-            "song_title": song_title,
-            "band_name": band_name,
-            "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
-            "duration_sec": round(dur, 2),
-            "within_40s": dur <= 40.0,
-            "paragraph_1": paragraph_1,
-            "paragraph_2": paragraph_2,
-            "paragraph_3": paragraph_3,
-            "visible_script": f"{paragraph_1} {paragraph_2} {paragraph_3}",
-            "historical_info": historical_info
-        }
+                _make_silence_wav(pause_sec, sil_pause)
+                _concat_wavs([p1_norm, sil_pause, p2_norm, sil_pause, p3_mast], voice_wav)
+
+                tmp_out = out_mp3_path + ".tmp.mp3"
+                subprocess.run([
+                    FFMPEG_BIN, "-y", "-i", voice_wav,
+                    "-af", "alimiter=limit=0.912:attack=2:release=50",
+                    "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "44100",
+                    tmp_out
+                ], capture_output=True, check=True)
+                os.replace(tmp_out, out_mp3_path)
+
+                dur = get_audio_duration(out_mp3_path)
+                total_presentation = round(intro_delay_sec + dur + ramp_sec, 2)
+                pause1_start = round(d1, 2)
+                pause1_end = round(d1 + pause_sec, 2)
+                pause2_start = round(d1 + pause_sec + d2, 2)
+                pause2_end = round(d1 + pause_sec + d2 + pause_sec, 2)
+                outro_end = round(dur, 2)
+
+                overlay_timings = {
+                    "introDelaySec": intro_delay_sec,
+                    "pause1Start": pause1_start,
+                    "pause1End": pause1_end,
+                    "pause2Start": pause2_start,
+                    "pause2End": pause2_end,
+                    "outroEnd": outro_end,
+                    "rampSec": ramp_sec,
+                    "totalPresentationSec": total_presentation
+                }
+
+                # Persistir metadatos y control de repeticiones en data/stories_metadata.json
+                try:
+                    meta = {}
+                    if os.path.exists(STORIES_METADATA_PATH):
+                        with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
+                            meta = json.load(f)
+                    li = meta.get("last_overlay_intros", [])
+                    lo = meta.get("last_overlay_outros", [])
+                    li.append(chosen_intro["id"])
+                    lo.append(chosen_outro["id"])
+                    meta["last_overlay_intros"] = li[-10:]
+                    meta["last_overlay_outros"] = lo[-10:]
+                    overlays = meta.get("radio_overlays", {})
+                    overlays[slug] = {
+                        "song_title": song_title,
+                        "band_name": band_name,
+                        "intro_id": chosen_intro["id"],
+                        "intro_name": chosen_intro["name"],
+                        "outro_id": chosen_outro["id"],
+                        "outro_name": chosen_outro["name"],
+                        "paragraph_1": paragraph_1,
+                        "paragraph_2": paragraph_2,
+                        "paragraph_3": paragraph_3,
+                        "vocal_p1": dual["vocal_p1"],
+                        "vocal_p2": dual["vocal_p2"],
+                        "vocal_p3": dual["vocal_p3"],
+                        "model": selected_model,
+                        "voice": selected_voice,
+                        "segment_durations_sec": {"p1": round(d1, 2), "p2": round(d2, 2), "p3": round(d3, 2)},
+                        "voice_duration_sec": round(dur, 2),
+                        "overlay_timings": overlay_timings,
+                        "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
+                        "ducking": {"intro_db": -8, "voice_db": -17, "pause_db": -7.5, "normal_db": 0},
+                        "generated_at": datetime.now(timezone.utc).isoformat()
+                    }
+                    meta["radio_overlays"] = overlays
+                    with open(STORIES_METADATA_PATH, "w", encoding="utf-8") as f:
+                        json.dump(meta, f, ensure_ascii=False, indent=2)
+                except Exception as meta_err:
+                    print(f"⚠️ No se pudo persistir metadata overlay: {meta_err}", flush=True)
+
+                return {
+                    "success": True,
+                    "voice_only": True,
+                    "song_title": song_title,
+                    "band_name": band_name,
+                    "intro_id": chosen_intro["id"],
+                    "intro_name": chosen_intro["name"],
+                    "outro_id": chosen_outro["id"],
+                    "outro_name": chosen_outro["name"],
+                    "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
+                    "duration_sec": round(dur, 2),
+                    "total_presentation_sec": total_presentation,
+                    "within_45s": total_presentation <= 45.0,
+                    "overlay_timings": overlay_timings,
+                    "paragraph_1": paragraph_1,
+                    "paragraph_2": paragraph_2,
+                    "paragraph_3": paragraph_3,
+                    "visible_script": f"{paragraph_1} {paragraph_2} {paragraph_3}",
+                    "historical_info": historical_info
+                }
+            else:
+                print(f"⏱️ Intento {attempt + 1} excedió 45s ({total_presentation:.2f}s). Acortando guion y regenerando...", flush=True)
     finally:
         for tf in temp_files:
             try:

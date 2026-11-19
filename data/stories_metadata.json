@@ -3144,5 +3144,53 @@
       "status": "completed",
       "song_duration_sec": 482
     }
+  },
+  "last_overlay_intros": [
+    "intro_08_la_primera_vez"
+  ],
+  "last_overlay_outros": [
+    "outro_07_cinematografico"
+  ],
+  "radio_overlays": {
+    "guns_n_roses_november_rain": {
+      "song_title": "November Rain",
+      "band_name": "Guns N' Roses",
+      "intro_id": "intro_08_la_primera_vez",
+      "intro_name": "La primera vez",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Soy Fred, en Rock Radio. Axl Rose guardó esta melodía en su piano casi una década antes de grabarla.",
+      "paragraph_2": "Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock.",
+      "paragraph_3": "Su clímax dramático la consagró como la balada definitiva de los noventa. Aquí terminan mis palabras y comienza la música: November Rain, de Guns N' Roses.",
+      "vocal_p1": "[warm, confident] Soy Fred, en Rock Radio. Axl Rose guardó esta melodía en su piano casi una década antes de grabarla.",
+      "vocal_p2": "[curious] Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock.",
+      "vocal_p3": "[emotional] Su clímax dramático la consagró como la balada definitiva de los noventa. [excited] Aquí terminan mis palabras y comienza la música: November Rain, de Guns N' Roses.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 6.86,
+        "p2": 7.83,
+        "p3": 10.66
+      },
+      "voice_duration_sec": 31.4,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.86,
+        "pause1End": 9.86,
+        "pause2Start": 17.7,
+        "pause2End": 20.7,
+        "outroEnd": 31.4,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.4
+      },
+      "audio_file": "audio/fred_voice_guns_n_roses_november_rain.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T03:40:04.709647+00:00"
+    }
   }
 }
