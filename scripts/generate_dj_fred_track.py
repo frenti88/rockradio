@@ -2947,12 +2947,12 @@ async def generate_voice_only_radio_intro(
     Genera la pista vocal masterizada para overlay de radio tradicional sobre la canción original:
     - 5.0s de música inicial sin voz (reservados por el reproductor)
     - Párrafo 1 (Intro dinámica + gancho)
-    - Pausa musical real de 3.0s
+    - Pausa musical real de 1.0s
     - Párrafo 2 (Anécdota verificable)
-    - Pausa musical real de 3.0s
+    - Pausa musical real de 1.0s
     - Párrafo 3 (Desenlace + Outro dinámico con mayor energía)
     - 2.0s de subida progresiva final (reservados por el reproductor)
-    - Límite estricto: 5.0 + d1 + 3.0 + d2 + 3.0 + d3 + 2.0 <= 45.0s
+    - Límite estricto: 5.0 + d1 + 1.0 + d2 + 1.0 + d3 + 2.0 <= 45.0s
     """
     selected_voice = fish_voice or DEFAULT_FISH_VOICE
     selected_model = fish_model or DEFAULT_FISH_MODEL
@@ -2978,9 +2978,9 @@ async def generate_voice_only_radio_intro(
 
     chosen_intro, chosen_outro = _select_overlay_intro_and_outro(song_title, band_name, p2_anecdote)
     intro_delay_sec = 5.0
-    pause_sec = 3.0
+    pause_sec = 1.0
     ramp_sec = 2.0
-    max_voice_audio_sec = 45.0 - intro_delay_sec - ramp_sec  # 38.0s max (incluyendo 2x3.0s pausas = 32.0s de voz)
+    max_voice_audio_sec = 45.0 - intro_delay_sec - ramp_sec  # 38.0s max (incluyendo 2x1.0s pausas = 36.0s de voz)
 
     tmp_prefix = os.path.join("/tmp", f"rockradio_voice_{os.getpid()}_{int(time.time()*1000)}")
     temp_files = []
