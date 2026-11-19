@@ -3146,27 +3146,27 @@
     }
   },
   "last_overlay_intros": [
-    "intro_09_rebobinando_historia",
-    "intro_01_aguja_vinilo",
-    "intro_02_viaje_inesperado",
-    "intro_04_cinta_olvidada",
-    "intro_07_archivo_confidencial",
-    "intro_09_rebobinando_historia",
     "intro_02_viaje_inesperado",
     "intro_06_detras_escenario",
+    "intro_07_archivo_confidencial",
+    "intro_05_confesiones_madrugada",
+    "intro_04_cinta_olvidada",
+    "intro_02_viaje_inesperado",
+    "intro_01_aguja_vinilo",
+    "intro_09_rebobinando_historia",
     "intro_07_archivo_confidencial",
     "intro_05_confesiones_madrugada"
   ],
   "last_overlay_outros": [
-    "outro_07_cinematografico",
-    "outro_04_rock_energico",
     "outro_05_intriga",
+    "outro_04_rock_energico",
+    "outro_07_cinematografico",
+    "outro_02_nostalgico",
     "outro_06_radio_vintage",
-    "outro_07_cinematografico",
-    "outro_01_revelador",
     "outro_05_intriga",
-    "outro_04_rock_energico",
+    "outro_03_emotivo",
     "outro_07_cinematografico",
+    "outro_04_rock_energico",
     "outro_02_nostalgico"
   ],
   "radio_overlays": {
@@ -4049,6 +4049,246 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T11:50:47.591551+00:00"
+    },
+    "alphaville_forever_young": {
+      "song_title": "Forever Young",
+      "band_name": "Alphaville",
+      "intro_id": "intro_04_cinta_olvidada",
+      "intro_name": "La cinta olvidada",
+      "outro_id": "outro_06_radio_vintage",
+      "outro_name": "Radio vintage",
+      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Un himno de juventud nacido frente al Muro.",
+      "paragraph_2": "En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+      "paragraph_3": "Aquel cambio inesperado la volvió eterna. La música sigue girando: Forever Young, de Alphaville, en Rock Radio.",
+      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Un himno de juventud nacido frente al Muro.",
+      "vocal_p2": "[curious] En Berlín Occidental durante 1984, Marian Gold grabó una pista bailable rápida hasta que el estudio bajó el tempo por completo.",
+      "vocal_p3": "[emotional] Aquel cambio inesperado la volvió eterna. [excited] La música sigue girando: Forever Young, de Alphaville, en Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.84,
+        "p2": 8.97,
+        "p3": 7.73
+      },
+      "voice_duration_sec": 26.57,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.84,
+        "pause1End": 8.84,
+        "pause2Start": 17.8,
+        "pause2End": 18.8,
+        "outroEnd": 26.57,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.57
+      },
+      "audio_file": "audio/fred_voice_alphaville_forever_young.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:08:59.886319+00:00"
+    },
+    "dire_straits_money_for_nothing": {
+      "song_title": "Money for Nothing",
+      "band_name": "Dire Straits",
+      "intro_id": "intro_02_viaje_inesperado",
+      "intro_name": "El viaje inesperado",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. Una conversación ajena convertida en himno.",
+      "paragraph_2": "En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+      "paragraph_3": "Su riff de Les Paul marcó la historia del rock. ¿La volverás a escuchar igual? Descúbrelo con Money for Nothing, de Dire Straits.",
+      "vocal_p1": "[warm, confident] Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. Una conversación ajena convertida en himno.",
+      "vocal_p2": "[curious] En una tienda de electrodomésticos en Nueva York, Mark Knopfler anotó las quejas de un repartidor viendo MTV y sumó la voz de Sting.",
+      "vocal_p3": "[emotional] Su riff de Les Paul marcó la historia del rock. [excited] ¿La volverás a escuchar igual? Descúbrelo con Money for Nothing, de Dire Straits.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.27,
+        "p2": 7.92,
+        "p3": 7.91
+      },
+      "voice_duration_sec": 25.13,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.27,
+        "pause1End": 8.27,
+        "pause2Start": 16.19,
+        "pause2End": 17.19,
+        "outroEnd": 25.13,
+        "rampSec": 2.0,
+        "totalPresentationSec": 32.13
+      },
+      "audio_file": "audio/fred_voice_dire_straits_money_for_nothing.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:09:20.041023+00:00"
+    },
+    "foreigner_urgent": {
+      "song_title": "Urgent",
+      "band_name": "Foreigner",
+      "intro_id": "intro_01_aguja_vinilo",
+      "intro_name": "La aguja sobre el vinilo",
+      "outro_id": "outro_03_emotivo",
+      "outro_name": "Emotivo",
+      "paragraph_1": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Un ritmo urgente impulsado por un saxofón legendario.",
+      "paragraph_2": "En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+      "paragraph_3": "Aquel estallido de saxo convirtió al tema en un éxito arrollador. Hay cosas que solo una canción puede contar. Escucha Urgent, de Foreigner.",
+      "vocal_p1": "[warm, confident] Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Un ritmo urgente impulsado por un saxofón legendario.",
+      "vocal_p2": "[curious] En 1981, en Nueva York, Mick Jones contrató al veterano de Motown Junior Walker tras escucharlo en un club, grabando su solo en pocas tomas.",
+      "vocal_p3": "[emotional] Aquel estallido de saxo convirtió al tema en un éxito arrollador. [excited] Hay cosas que solo una canción puede contar. Escucha Urgent, de Foreigner.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.87,
+        "p2": 9.87,
+        "p3": 9.35
+      },
+      "voice_duration_sec": 30.12,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.87,
+        "pause1End": 9.87,
+        "pause2Start": 19.74,
+        "pause2End": 20.74,
+        "outroEnd": 30.12,
+        "rampSec": 2.0,
+        "totalPresentationSec": 37.12
+      },
+      "audio_file": "audio/fred_voice_foreigner_urgent.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:09:39.994284+00:00"
+    },
+    "survivor_eye_of_the_tiger": {
+      "song_title": "Eye of the Tiger",
+      "band_name": "Survivor",
+      "intro_id": "intro_09_rebobinando_historia",
+      "intro_name": "Rebobinando la historia",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. El himno definitivo de la perseverancia en el ring.",
+      "paragraph_2": "En 1982, Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+      "paragraph_3": "Esa energía implacable conquistó la cima de los rankings mundiales. Aquí terminan mis palabras y comienza la música: Eye of the Tiger, de Survivor.",
+      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. El himno definitivo de la perseverancia en el ring.",
+      "vocal_p2": "[curious] En 1982, Sylvester Stallone les pidió una canción para Rocky Tres; Jim Peterik y Frankie Sullivan sincronizaron los golpes del riff con los puñetazos de la película.",
+      "vocal_p3": "[emotional] Esa energía implacable conquistó la cima de los rankings mundiales. [excited] Aquí terminan mis palabras y comienza la música: Eye of the Tiger, de Survivor.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.63,
+        "p2": 10.33,
+        "p3": 10.1
+      },
+      "voice_duration_sec": 31.11,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.63,
+        "pause1End": 9.63,
+        "pause2Start": 19.96,
+        "pause2End": 20.96,
+        "outroEnd": 31.11,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.11
+      },
+      "audio_file": "audio/fred_voice_survivor_eye_of_the_tiger.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:10:00.574672+00:00"
+    },
+    "ramones_pet_sematary": {
+      "song_title": "Pet Sematary",
+      "band_name": "Ramones",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_04_rock_energico",
+      "outro_name": "Rock enérgico",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Punk rock nacido de una pesadilla literaria en Maine.",
+      "paragraph_2": "En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+      "paragraph_3": "La canción fue el mayor éxito radial de los Ramones en los ochenta. Ahora deja que las guitarras hagan el resto. ¡Pet Sematary, de Ramones!",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Punk rock nacido de una pesadilla literaria en Maine.",
+      "vocal_p2": "[curious] En 1989, el escritor Stephen King invitó a la banda a su casa y le dio a Dee Dee su novela; Dee Dee bajó al sótano y escribió la letra en una hora.",
+      "vocal_p3": "[emotional] La canción fue el mayor éxito radial de los Ramones en los ochenta. [excited] Ahora deja que las guitarras hagan el resto. ¡Pet Sematary, de Ramones!",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.04,
+        "p2": 10.48,
+        "p3": 7.6
+      },
+      "voice_duration_sec": 28.16,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.04,
+        "pause1End": 9.04,
+        "pause2Start": 19.52,
+        "pause2End": 20.52,
+        "outroEnd": 28.16,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.16
+      },
+      "audio_file": "audio/fred_voice_ramones_pet_sematary.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:10:19.122530+00:00"
+    },
+    "fleetwood_mac_dreams": {
+      "song_title": "Dreams",
+      "band_name": "Fleetwood Mac",
+      "intro_id": "intro_05_confesiones_madrugada",
+      "intro_name": "Confesiones de madrugada",
+      "outro_id": "outro_02_nostalgico",
+      "outro_name": "Nostálgico",
+      "paragraph_1": "Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio. La magia de diez minutos que definió a Rumours.",
+      "paragraph_2": "En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+      "paragraph_3": "Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. Cierra los ojos y regresa a esa época con Dreams, de Fleetwood Mac.",
+      "vocal_p1": "[warm, confident] Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio. La magia de diez minutos que definió a Rumours.",
+      "vocal_p2": "[curious] En 1976 en Sausalito, Stevie Nicks se apartó al estudio de Sly Stone y compuso Dreams al piano en apenas diez minutos en medio de las tensiones del grupo.",
+      "vocal_p3": "[emotional] Fue el único número uno de Fleetwood Mac en el Billboard Hot 100. [excited] Cierra los ojos y regresa a esa época con Dreams, de Fleetwood Mac.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.12,
+        "p2": 9.69,
+        "p3": 8.5
+      },
+      "voice_duration_sec": 28.34,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.12,
+        "pause1End": 9.12,
+        "pause2Start": 18.81,
+        "pause2End": 19.81,
+        "outroEnd": 28.34,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.34
+      },
+      "audio_file": "audio/fred_voice_fleetwood_mac_dreams.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:10:37.881884+00:00"
     }
   }
 }
