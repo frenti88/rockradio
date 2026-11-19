@@ -3147,27 +3147,27 @@
   },
   "last_overlay_intros": [
     "intro_09_rebobinando_historia",
-    "intro_06_detras_escenario",
-    "intro_01_aguja_vinilo",
-    "intro_07_archivo_confidencial",
-    "intro_04_cinta_olvidada",
-    "intro_09_rebobinando_historia",
     "intro_01_aguja_vinilo",
     "intro_02_viaje_inesperado",
     "intro_04_cinta_olvidada",
-    "intro_07_archivo_confidencial"
+    "intro_07_archivo_confidencial",
+    "intro_09_rebobinando_historia",
+    "intro_02_viaje_inesperado",
+    "intro_06_detras_escenario",
+    "intro_07_archivo_confidencial",
+    "intro_05_confesiones_madrugada"
   ],
   "last_overlay_outros": [
-    "outro_07_cinematografico",
-    "outro_08_firma_rock_radio",
-    "outro_05_intriga",
-    "outro_06_radio_vintage",
-    "outro_02_nostalgico",
     "outro_07_cinematografico",
     "outro_04_rock_energico",
     "outro_05_intriga",
     "outro_06_radio_vintage",
-    "outro_07_cinematografico"
+    "outro_07_cinematografico",
+    "outro_01_revelador",
+    "outro_05_intriga",
+    "outro_04_rock_energico",
+    "outro_07_cinematografico",
+    "outro_02_nostalgico"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3849,6 +3849,206 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T11:39:39.214600+00:00"
+    },
+    "skid_row_18_and_life": {
+      "song_title": "18 and Life",
+      "band_name": "Skid Row",
+      "intro_id": "intro_09_rebobinando_historia",
+      "intro_name": "Rebobinando la historia",
+      "outro_id": "outro_01_revelador",
+      "outro_name": "Revelador",
+      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Una noticia real convertida en drama de rock.",
+      "paragraph_2": "En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+      "paragraph_3": "Su fuerza trágica llevó el debut al multiplatino. Quizá ahora la escuches distinto: 18 and Life, de Skid Row.",
+      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Una noticia real convertida en drama de rock.",
+      "vocal_p2": "[curious] En 1989, Dave Sabo leyó en un diario sobre un joven condenado a cadena perpetua y compuso con Rachel Bolan este relato para Sebastian Bach.",
+      "vocal_p3": "[emotional] Su fuerza trágica llevó el debut al multiplatino. [excited] Quizá ahora la escuches distinto: 18 and Life, de Skid Row.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.43,
+        "p2": 9.84,
+        "p3": 7.13
+      },
+      "voice_duration_sec": 27.43,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.43,
+        "pause1End": 9.43,
+        "pause2Start": 19.27,
+        "pause2End": 20.27,
+        "outroEnd": 27.43,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.43
+      },
+      "audio_file": "audio/fred_voice_skid_row_18_and_life.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:49:39.560824+00:00"
+    },
+    "poison_life_goes_on": {
+      "song_title": "Life Goes On",
+      "band_name": "Poison",
+      "intro_id": "intro_02_viaje_inesperado",
+      "intro_name": "El viaje inesperado",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. La balada más íntima nacida del duelo.",
+      "paragraph_2": "Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+      "paragraph_3": "Su honestidad conmovió a millones más allá del glam. ¿La volverás a escuchar igual? Descúbrelo con Life Goes On, de Poison.",
+      "vocal_p1": "[warm, confident] Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. La balada más íntima nacida del duelo.",
+      "vocal_p2": "[curious] Para Flesh & Blood en 1990, Bret Michaels escribió este adiós a un amigo cercano, coronado por un emotivo solo de C.C. DeVille.",
+      "vocal_p3": "[emotional] Su honestidad conmovió a millones más allá del glam. [excited] ¿La volverás a escuchar igual? Descúbrelo con Life Goes On, de Poison.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.01,
+        "p2": 9.94,
+        "p3": 8.39
+      },
+      "voice_duration_sec": 27.38,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.01,
+        "pause1End": 8.01,
+        "pause2Start": 17.95,
+        "pause2End": 18.95,
+        "outroEnd": 27.38,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.38
+      },
+      "audio_file": "audio/fred_voice_poison_life_goes_on.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:49:57.789839+00:00"
+    },
+    "tears_for_fears_shout": {
+      "song_title": "Shout",
+      "band_name": "Tears for Fears",
+      "intro_id": "intro_06_detras_escenario",
+      "intro_name": "Detrás del escenario",
+      "outro_id": "outro_04_rock_energico",
+      "outro_name": "Rock enérgico",
+      "paragraph_1": "¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio. Un grito de protesta nacido en la sala.",
+      "paragraph_2": "En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+      "paragraph_3": "Su coro masivo conquistó el número uno mundial. Ahora deja que las guitarras hagan el resto. ¡Shout, de Tears for Fears!",
+      "vocal_p1": "[warm, confident] ¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio. Un grito de protesta nacido en la sala.",
+      "vocal_p2": "[curious] En 1984, Roland Orzabal la compuso en su pequeño estudio casero inspirado en la terapia primaria y la protesta política de la Guerra Fría.",
+      "vocal_p3": "[emotional] Su coro masivo conquistó el número uno mundial. [excited] Ahora deja que las guitarras hagan el resto. ¡Shout, de Tears for Fears!",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.66,
+        "p2": 9.09,
+        "p3": 7.59
+      },
+      "voice_duration_sec": 26.38,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.66,
+        "pause1End": 8.66,
+        "pause2Start": 17.75,
+        "pause2End": 18.75,
+        "outroEnd": 26.38,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.38
+      },
+      "audio_file": "audio/fred_voice_tears_for_fears_shout.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:50:14.459048+00:00"
+    },
+    "the_cars_drive": {
+      "song_title": "Drive",
+      "band_name": "The Cars",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. La balada más conmovedora de su carrera.",
+      "paragraph_2": "En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+      "paragraph_3": "La voz de Orr la convirtió en un clásico inmortal. Aquí terminan mis palabras y comienza la música: Drive, de The Cars.",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. La balada más conmovedora de su carrera.",
+      "vocal_p2": "[curious] En 1984, Benjamin Orr cantó esta pieza escrita por Ric Ocasek para Heartbeat City, que luego emocionó al mundo durante Live Aid.",
+      "vocal_p3": "[emotional] La voz de Orr la convirtió en un clásico inmortal. [excited] Aquí terminan mis palabras y comienza la música: Drive, de The Cars.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.55,
+        "p2": 9.76,
+        "p3": 8.21
+      },
+      "voice_duration_sec": 27.56,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.55,
+        "pause1End": 8.55,
+        "pause2Start": 18.31,
+        "pause2End": 19.31,
+        "outroEnd": 27.56,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.56
+      },
+      "audio_file": "audio/fred_voice_the_cars_drive.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:50:32.022369+00:00"
+    },
+    "toto_hold_the_line": {
+      "song_title": "Hold the Line",
+      "band_name": "Toto",
+      "intro_id": "intro_05_confesiones_madrugada",
+      "intro_name": "Confesiones de madrugada",
+      "outro_id": "outro_02_nostalgico",
+      "outro_name": "Nostálgico",
+      "paragraph_1": "Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio. El debut explosivo de seis maestros de estudio.",
+      "paragraph_2": "En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+      "paragraph_3": "Ese arranque arrollador los lanzó directo a la fama. Cierra los ojos y regresa a esa época con Hold the Line, de Toto.",
+      "vocal_p1": "[warm, confident] Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio. El debut explosivo de seis maestros de estudio.",
+      "vocal_p2": "[curious] En 1978, David Paich escribió este riff de piano en su casa antes de que Bobby Kimball y Steve Lukather lo grabaran para su primer disco.",
+      "vocal_p3": "[emotional] Ese arranque arrollador los lanzó directo a la fama. [excited] Cierra los ojos y regresa a esa época con Hold the Line, de Toto.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.13,
+        "p2": 8.98,
+        "p3": 6.93
+      },
+      "voice_duration_sec": 26.07,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.13,
+        "pause1End": 9.13,
+        "pause2Start": 18.11,
+        "pause2End": 19.11,
+        "outroEnd": 26.07,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.07
+      },
+      "audio_file": "audio/fred_voice_toto_hold_the_line.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:50:47.591551+00:00"
     }
   }
 }
