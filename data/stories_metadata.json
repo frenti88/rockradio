@@ -3148,12 +3148,14 @@
   "last_overlay_intros": [
     "intro_08_la_primera_vez",
     "intro_07_archivo_confidencial",
-    "intro_02_viaje_inesperado"
+    "intro_02_viaje_inesperado",
+    "intro_04_cinta_olvidada"
   ],
   "last_overlay_outros": [
     "outro_07_cinematografico",
     "outro_05_intriga",
-    "outro_03_emotivo"
+    "outro_03_emotivo",
+    "outro_06_radio_vintage"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3235,6 +3237,46 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T03:54:55.770490+00:00"
+    },
+    "phil_collins_dont_lose_my_number": {
+      "song_title": "Don't Lose My Number",
+      "band_name": "Phil Collins",
+      "intro_id": "intro_04_cinta_olvidada",
+      "intro_name": "La cinta olvidada",
+      "outro_id": "outro_06_radio_vintage",
+      "outro_name": "Radio vintage",
+      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Un ritmo trepidante nacido de la improvisación en el piano.",
+      "paragraph_2": "En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+      "paragraph_3": "Su pegada rítmica lo consagró en las radios de todo el planeta. La música sigue girando: Don't Lose My Number, de Phil Collins, en Rock Radio.",
+      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Un ritmo trepidante nacido de la improvisación en el piano.",
+      "vocal_p2": "[curious] En 1985, Phil Collins admitió que no sabía sobre qué trataba la letra, así que grabó su videoclip parodiando películas famosas y a The Police.",
+      "vocal_p3": "[emotional] Su pegada rítmica lo consagró en las radios de todo el planeta. [excited] La música sigue girando: Don't Lose My Number, de Phil Collins, en Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.15,
+        "p2": 9.52,
+        "p3": 9.29
+      },
+      "voice_duration_sec": 29.0,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.15,
+        "pause1End": 9.15,
+        "pause2Start": 18.67,
+        "pause2End": 19.67,
+        "outroEnd": 29.0,
+        "rampSec": 2.0,
+        "totalPresentationSec": 36.0
+      },
+      "audio_file": "audio/fred_voice_phil_collins_dont_lose_my_number.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:00:15.150332+00:00"
     }
   }
 }
