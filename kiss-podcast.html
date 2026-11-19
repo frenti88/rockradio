@@ -5972,12 +5972,11 @@
         </div>
 
         <div class="dj-playlist-table-wrap">
-          <div class="dj-playlist-table-header" style="grid-template-columns: 36px 3fr 2fr 1fr 140px;">
+          <div class="dj-playlist-table-header" style="grid-template-columns: 36px 3fr 2fr 1fr;">
             <div class="dj-col-num">#</div>
             <div>Título y Artista</div>
             <div>Álbum</div>
             <div class="dj-col-year">Duración</div>
-            <div style="text-align: right;">Acciones</div>
           </div>
           <div class="dj-playlist-table-body" id="spPlaylistTableBody">
             <!-- Rendered via JS -->
@@ -11172,7 +11171,7 @@
         tracks.forEach((t, idx) => {
           const row = document.createElement('div');
           row.className = 'dj-song-row';
-          row.style.gridTemplateColumns = '36px 3fr 2fr 1fr 140px';
+          row.style.gridTemplateColumns = '36px 3fr 2fr 1fr';
           row.style.alignItems = 'center';
           const rawTImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : '';
           const tImg = sanitizeUrl(rawTImg);
@@ -11191,18 +11190,7 @@
             </div>
             <div style="font-size:0.8rem; color:#b3b3b3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtmlStr(albumName)}</div>
             <div class="dj-col-year" style="font-size:0.8rem; color:#b3b3b3;">${formatTime(durSec)}</div>
-            <div style="text-align:right;">
-              <button class="home-card-add-dj sp-row-add-btn" type="button" style="margin:0; width:auto; padding:4px 10px;">+ DJ Fred</button>
-            </div>
           `;
-
-          const rowAddBtn = row.querySelector('.sp-row-add-btn');
-          if (rowAddBtn) {
-            rowAddBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              addSpotifyTrackToDjFred(t);
-            });
-          }
 
           row.addEventListener('click', () => {
             playSpotifyTrack(t, row, tracks, idx);
@@ -11281,7 +11269,7 @@
         tracks.forEach((t, idx) => {
           const row = document.createElement('div');
           row.className = 'dj-song-row';
-          row.style.gridTemplateColumns = '36px 3fr 2fr 1fr 140px';
+          row.style.gridTemplateColumns = '36px 3fr 2fr 1fr';
           row.style.alignItems = 'center';
           const rawTImg = (t.album && t.album.images && t.album.images.length > 0 && t.album.images[0].url) ? t.album.images[0].url : '';
           const tImg = sanitizeUrl(rawTImg);
@@ -11300,18 +11288,7 @@
             </div>
             <div style="font-size:0.8rem; color:#b3b3b3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtmlStr(albumName)}</div>
             <div class="dj-col-year" style="font-size:0.8rem; color:#b3b3b3;">${formatTime(durSec)}</div>
-            <div style="text-align:right;">
-              <button class="home-card-add-dj sp-row-add-btn" type="button" style="margin:0; width:auto; padding:4px 10px;">+ DJ Fred</button>
-            </div>
           `;
-
-          const rowAddBtn = row.querySelector('.sp-row-add-btn');
-          if (rowAddBtn) {
-            rowAddBtn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              addSpotifyTrackToDjFred(t);
-            });
-          }
 
           row.addEventListener('click', () => {
             playSpotifyTrack(t, row, tracks, idx);
