@@ -3146,24 +3146,28 @@
     }
   },
   "last_overlay_intros": [
-    "intro_08_la_primera_vez",
-    "intro_07_archivo_confidencial",
-    "intro_02_viaje_inesperado",
     "intro_04_cinta_olvidada",
     "intro_09_rebobinando_historia",
     "intro_07_archivo_confidencial",
     "intro_01_aguja_vinilo",
+    "intro_04_cinta_olvidada",
+    "intro_09_rebobinando_historia",
+    "intro_06_detras_escenario",
+    "intro_01_aguja_vinilo",
+    "intro_07_archivo_confidencial",
     "intro_04_cinta_olvidada"
   ],
   "last_overlay_outros": [
-    "outro_07_cinematografico",
-    "outro_05_intriga",
-    "outro_03_emotivo",
     "outro_06_radio_vintage",
     "outro_07_cinematografico",
     "outro_05_intriga",
     "outro_04_rock_energico",
-    "outro_06_radio_vintage"
+    "outro_06_radio_vintage",
+    "outro_07_cinematografico",
+    "outro_08_firma_rock_radio",
+    "outro_05_intriga",
+    "outro_06_radio_vintage",
+    "outro_02_nostalgico"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3445,6 +3449,206 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T04:13:10.575445+00:00"
+    },
+    "acdc_back_in_black": {
+      "song_title": "Back in Black",
+      "band_name": "AC/DC",
+      "intro_id": "intro_09_rebobinando_historia",
+      "intro_name": "Rebobinando la historia",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Nacida tras el golpe más duro del grupo.",
+      "paragraph_2": "Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo.",
+      "paragraph_3": "Su respuesta fue un rugido eterno de hard rock. Aquí terminan mis palabras y comienza la música: Back in Black, de AC/DC.",
+      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Nacida tras el golpe más duro del grupo.",
+      "vocal_p2": "[curious] Tras perder a Bon Scott en 1980, los Young viajaron a Bahamas con Brian Johnson y una campana de bronce para honrarlo.",
+      "vocal_p3": "[emotional] Su respuesta fue un rugido eterno de hard rock. [excited] Aquí terminan mis palabras y comienza la música: Back in Black, de AC/DC.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.68,
+        "p2": 7.99,
+        "p3": 7.69
+      },
+      "voice_duration_sec": 25.39,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.68,
+        "pause1End": 8.68,
+        "pause2Start": 16.66,
+        "pause2End": 17.66,
+        "outroEnd": 25.39,
+        "rampSec": 2.0,
+        "totalPresentationSec": 32.39
+      },
+      "audio_file": "audio/fred_voice_acdc_back_in_black.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:18:47.333279+00:00"
+    },
+    "kiss_detroit_rock_city": {
+      "song_title": "Detroit Rock City",
+      "band_name": "KISS",
+      "intro_id": "intro_06_detras_escenario",
+      "intro_name": "Detrás del escenario",
+      "outro_id": "outro_08_firma_rock_radio",
+      "outro_name": "Firma de Rock Radio",
+      "paragraph_1": "¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio. Una tragedia real llevada al estudio.",
+      "paragraph_2": "En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto.",
+      "paragraph_3": "Desde entonces abre sus shows como un rito infaltable. Ya sabes lo que ocurrió. Ahora siéntelo: Detroit Rock City, de KISS. Rock Radio.",
+      "vocal_p1": "[warm, confident] ¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio. Una tragedia real llevada al estudio.",
+      "vocal_p2": "[curious] En 1976, Bob Ezrin sumó sonidos de autos y un choque para narrar el drama de un fanático fallecido rumbo al concierto.",
+      "vocal_p3": "[emotional] Desde entonces abre sus shows como un rito infaltable. [excited] Ya sabes lo que ocurrió. Ahora siéntelo: Detroit Rock City, de KISS. Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.61,
+        "p2": 8.9,
+        "p3": 10.84
+      },
+      "voice_duration_sec": 29.39,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.61,
+        "pause1End": 8.61,
+        "pause2Start": 17.51,
+        "pause2End": 18.51,
+        "outroEnd": 29.39,
+        "rampSec": 2.0,
+        "totalPresentationSec": 36.39
+      },
+      "audio_file": "audio/fred_voice_kiss_detroit_rock_city.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:19:06.940034+00:00"
+    },
+    "toto_africa": {
+      "song_title": "Africa",
+      "band_name": "Toto",
+      "intro_id": "intro_01_aguja_vinilo",
+      "intro_name": "La aguja sobre el vinilo",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Una canción nacida en plena madrugada.",
+      "paragraph_2": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+      "paragraph_3": "Casi queda fuera y terminó siendo número uno. ¿La volverás a escuchar igual? Descúbrelo con Africa, de Toto.",
+      "vocal_p1": "[warm, confident] Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Una canción nacida en plena madrugada.",
+      "vocal_p2": "[curious] En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
+      "vocal_p3": "[emotional] Casi queda fuera y terminó siendo número uno. [excited] ¿La volverás a escuchar igual? Descúbrelo con Africa, de Toto.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.27,
+        "p2": 8.61,
+        "p3": 6.82
+      },
+      "voice_duration_sec": 24.74,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.27,
+        "pause1End": 8.27,
+        "pause2Start": 16.88,
+        "pause2End": 17.88,
+        "outroEnd": 24.74,
+        "rampSec": 2.0,
+        "totalPresentationSec": 31.74
+      },
+      "audio_file": "audio/fred_voice_toto_africa.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:19:21.741416+00:00"
+    },
+    "queen_radio_ga_ga": {
+      "song_title": "Radio Ga Ga",
+      "band_name": "Queen",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_06_radio_vintage",
+      "outro_name": "Radio vintage",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Una frase infantil que conquistó estadios enteros.",
+      "paragraph_2": "En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+      "paragraph_3": "Su coro de palmas sincronizadas hizo historia en Live Aid. La música sigue girando: Radio Ga Ga, de Queen, en Rock Radio.",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Una frase infantil que conquistó estadios enteros.",
+      "vocal_p2": "[curious] En 1983, el baterista Roger Taylor escuchó a su hijo pequeño decir 'radio ca-ca' al oír la radio y la convirtió en un homenaje frente al auge de MTV.",
+      "vocal_p3": "[emotional] Su coro de palmas sincronizadas hizo historia en Live Aid. [excited] La música sigue girando: Radio Ga Ga, de Queen, en Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.71,
+        "p2": 10.86,
+        "p3": 8.05
+      },
+      "voice_duration_sec": 28.66,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.71,
+        "pause1End": 8.71,
+        "pause2Start": 19.57,
+        "pause2End": 20.57,
+        "outroEnd": 28.66,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.66
+      },
+      "audio_file": "audio/fred_voice_queen_radio_ga_ga.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:19:39.557455+00:00"
+    },
+    "iron_maiden_the_number_of_the_beast": {
+      "song_title": "The Number of the Beast",
+      "band_name": "Iron Maiden",
+      "intro_id": "intro_04_cinta_olvidada",
+      "intro_name": "La cinta olvidada",
+      "outro_id": "outro_02_nostalgico",
+      "outro_name": "Nostálgico",
+      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Una pesadilla convertida en leyenda del metal.",
+      "paragraph_2": "Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+      "paragraph_3": "Aquel grito de furia pura definió la historia del metal. Cierra los ojos y regresa a esa época con The Number of the Beast, de Iron Maiden.",
+      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Una pesadilla convertida en leyenda del metal.",
+      "vocal_p2": "[curious] Tras soñar con La Profecía en 1982, Steve Harris compuso este himno mientras Martin Birch exigía tomas extenuantes a Bruce Dickinson.",
+      "vocal_p3": "[emotional] Aquel grito de furia pura definió la historia del metal. [excited] Cierra los ojos y regresa a esa época con The Number of the Beast, de Iron Maiden.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.28,
+        "p2": 9.64,
+        "p3": 8.77
+      },
+      "voice_duration_sec": 28.73,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.28,
+        "pause1End": 9.28,
+        "pause2Start": 18.92,
+        "pause2End": 19.92,
+        "outroEnd": 28.73,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.73
+      },
+      "audio_file": "audio/fred_voice_iron_maiden_the_number_of_the_beast.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:19:56.097348+00:00"
     }
   }
 }
