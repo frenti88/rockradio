@@ -386,10 +386,12 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "one": [
-        (
-            "Inspirada en la novela antibélica Johnny Got His Gun de 1939, Metallica compuso en 1988 una obra monumental sobre el aislamiento de un soldado herido. "
-            "La sincronía entre el doble bombo de Lars Ulrich y las guitarras imitando fuego de batalla rompió todos los moldes del metal."
-        )
+        {
+            "p1_hook": "La obra maestra antibélica que cambió la historia del metal.",
+            "p2_anecdote": "En 1988, inspirados en la novela Johnny Got His Gun de Dalton Trumbo, James Hetfield y Lars Ulrich retrataron la pesadilla de un soldado atrapado en su propio cuerpo. Fue además su primer videoclip oficial, sincronizando el doble bombo con el fuego de ametralladoras.",
+            "p3_resolution": "Ese estallido final les dio su primer Grammy y redefinió el metal.",
+            "historical_info": "Álbum ...And Justice for All (1988); escrita por James Hetfield y Lars Ulrich; inspirada en la novela Johnny Got His Gun (1939) de Dalton Trumbo; primer videoclip oficial de Metallica y ganadora del primer Grammy a Mejor Interpretación de Metal."
+        }
     ],
     "smoke on the water": [
         (
@@ -673,6 +675,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "One",
+        "band_name": "Metallica",
+        "album": "...And Justice for All (1988)",
+        "year": "1988",
+        "cover": "img/albums/metallica_1988_and_justice_for_all.png",
+        "duration_sec": 447
+    },
     {
         "song_title": "Is This Love",
         "band_name": "Whitesnake",
