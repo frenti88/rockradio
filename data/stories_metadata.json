@@ -3146,10 +3146,12 @@
     }
   },
   "last_overlay_intros": [
-    "intro_08_la_primera_vez"
+    "intro_08_la_primera_vez",
+    "intro_07_archivo_confidencial"
   ],
   "last_overlay_outros": [
-    "outro_07_cinematografico"
+    "outro_07_cinematografico",
+    "outro_05_intriga"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3191,6 +3193,46 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T03:40:04.709647+00:00"
+    },
+    "soda_stereo_trtame_suavemente": {
+      "song_title": "Trátame Suavemente",
+      "band_name": "Soda Stereo",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Uno de los primeros grandes himnos de Soda Stereo no fue escrito por Gustavo Cerati.",
+      "paragraph_2": "La compuso Daniel Melero, líder de Los Encargados, quien se la cedió al trío para su disco debut de 1984 producido por Federico Moura en Buenos Aires.",
+      "paragraph_3": "Aquella joya prestada se volvió indispensable en la historia del rock en español. ¿La volverás a escuchar igual? Descúbrelo con Trátame Suavemente, de Soda Stereo.",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Uno de los primeros grandes himnos de Soda Stereo no fue escrito por Gustavo Cerati.",
+      "vocal_p2": "[curious] La compuso Daniel Melero, líder de Los Encargados, quien se la cedió al trío para su disco debut de 1984 producido por Federico Moura en Buenos Aires.",
+      "vocal_p3": "[emotional] Aquella joya prestada se volvió indispensable en la historia del rock en español. [excited] ¿La volverás a escuchar igual? Descúbrelo con Trátame Suavemente, de Soda Stereo.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 9.76,
+        "p2": 10.41,
+        "p3": 9.03
+      },
+      "voice_duration_sec": 35.24,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 9.76,
+        "pause1End": 12.76,
+        "pause2Start": 23.17,
+        "pause2End": 26.17,
+        "outroEnd": 35.24,
+        "rampSec": 2.0,
+        "totalPresentationSec": 42.24
+      },
+      "audio_file": "audio/fred_voice_soda_stereo_trtame_suavemente.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T03:50:10.903359+00:00"
     }
   }
 }

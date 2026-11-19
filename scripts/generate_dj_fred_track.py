@@ -688,6 +688,14 @@ MASTER_CURATED_STORIES = {
             "p3_resolution": "Desde entonces es un himno infaltable con la bandera ondeando en cada concierto.",
             "historical_info": "Álbum Piece of Mind (1983); escrita por Steve Harris; inspirada en la Carga de la Brigada Ligera (1854) y el poema de Alfred, Lord Tennyson."
         }
+    ],
+    "tratame suavemente": [
+        {
+            "p1_hook": "Uno de los primeros grandes himnos de Soda Stereo no fue escrito por Gustavo Cerati.",
+            "p2_anecdote": "La compuso Daniel Melero, líder de Los Encargados, quien se la cedió al trío para su disco debut de 1984 producido por Federico Moura en Buenos Aires.",
+            "p3_resolution": "Aquella joya prestada se volvió indispensable en la historia del rock en español.",
+            "historical_info": "Álbum Soda Stereo (1984); compuesta por Daniel Melero (Los Encargados); producida por Federico Moura (Virus) en Estudios CBS, Buenos Aires."
+        }
     ]
 }
 
