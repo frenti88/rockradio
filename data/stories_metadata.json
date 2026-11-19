@@ -3155,7 +3155,12 @@
     "intro_01_aguja_vinilo",
     "intro_09_rebobinando_historia",
     "intro_07_archivo_confidencial",
-    "intro_05_confesiones_madrugada"
+    "intro_05_confesiones_madrugada",
+    "curiosidad",
+    "escena_historica",
+    "contraste",
+    "confidencia",
+    "memoria_musical"
   ],
   "last_overlay_outros": [
     "outro_05_intriga",
@@ -3167,7 +3172,12 @@
     "outro_03_emotivo",
     "outro_07_cinematografico",
     "outro_04_rock_energico",
-    "outro_02_nostalgico"
+    "outro_02_nostalgico",
+    "continuidad_narrativa",
+    "energia",
+    "revelacion",
+    "nostalgia",
+    "expectativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3293,33 +3303,38 @@
     "tears_for_fears_everybody_wants_to_rule_the_worl": {
       "song_title": "Everybody Wants to Rule the World",
       "band_name": "Tears for Fears",
-      "intro_id": "intro_09_rebobinando_historia",
-      "intro_name": "Rebobinando la historia",
-      "outro_id": "outro_07_cinematografico",
-      "outro_name": "Cinematográfico",
-      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un clásico que casi ni se graba.",
-      "paragraph_2": "Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
-      "paragraph_3": "Aquella sesión improvisada alcanzó el número uno mundial. Aquí terminan mis palabras y comienza la música: Everybody Wants to Rule the World, de Tears for Fears.",
-      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un clásico que casi ni se graba.",
-      "vocal_p2": "[curious] Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
-      "vocal_p3": "[emotional] Aquella sesión improvisada alcanzó el número uno mundial. [excited] Aquí terminan mis palabras y comienza la música: Everybody Wants to Rule the World, de Tears for Fears.",
+      "intro_id": "creative_contraste",
+      "intro_name": "contraste",
+      "intro_strategy": "contraste",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "contraste_cultural",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Por fuera suena luminosa y casi hecha para la carretera, pero por dentro esconde una mirada muy filosa sobre la Guerra Fría.",
+      "paragraph_2": "En 1985, Tears for Fears ya cerraba Songs from the Big Chair cuando el productor Chris Hughes pidió un corte más abierto; Roland Orzabal lo armó a última hora con guitarras de doce cuerdas y un pulso arrastrado que el dúo temió dejar fuera.",
+      "paragraph_3": "Aquella apuesta de cierre los llevó al número uno mundial. Con ese contraste en mente, cada acorde revela otra capa: Everybody Wants to Rule the World, de Tears for Fears.",
+      "vocal_p1": "[warm, confident] Por fuera suena luminosa y casi hecha para la carretera, pero por dentro esconde una mirada muy filosa sobre la Guerra Fría.",
+      "vocal_p2": "[curious] En 1985, Tears for Fears ya cerraba Songs from the Big Chair cuando el productor Chris Hughes pidió un corte más abierto; Roland Orzabal lo armó a última hora con guitarras de doce cuerdas y un pulso arrastrado que el dúo temió dejar fuera.",
+      "vocal_p3": "[emotional] Aquella apuesta de cierre los llevó al número uno mundial. [excited] Con ese contraste en mente, cada acorde revela otra capa: Everybody Wants to Rule the World, de Tears for Fears.",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 7.29,
-        "p2": 9.71,
-        "p3": 9.94
+        "p1": 6.52,
+        "p2": 15.03,
+        "p3": 9.65
       },
-      "voice_duration_sec": 28.97,
+      "voice_duration_sec": 33.25,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 7.29,
-        "pause1End": 8.29,
-        "pause2Start": 18.0,
-        "pause2End": 19.0,
-        "outroEnd": 28.97,
+        "pause1Start": 6.52,
+        "pause1End": 7.52,
+        "pause2Start": 22.56,
+        "pause2End": 23.56,
+        "outroEnd": 33.25,
         "rampSec": 2.0,
-        "totalPresentationSec": 35.97
+        "totalPresentationSec": 40.25
       },
       "audio_file": "audio/fred_voice_tears_for_fears_everybody_wants_to_rule_the_worl.mp3",
       "ducking": {
@@ -3328,7 +3343,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-19T04:07:05.924007+00:00"
+      "generated_at": "2026-11-19T12:38:31.455787+00:00"
     },
     "def_leppard_hysteria": {
       "song_title": "Hysteria",
@@ -3413,33 +3428,38 @@
     "rush_tom_sawyer": {
       "song_title": "Tom Sawyer",
       "band_name": "Rush",
-      "intro_id": "intro_04_cinta_olvidada",
-      "intro_name": "La cinta olvidada",
-      "outro_id": "outro_06_radio_vintage",
-      "outro_name": "Radio vintage",
-      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Todo comenzó en el invierno de 1980.",
-      "paragraph_2": "En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
-      "paragraph_3": "Ese cruce de técnica y rebeldía selló su himno definitivo. La música sigue girando: Tom Sawyer, de Rush, en Rock Radio.",
-      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Todo comenzó en el invierno de 1980.",
-      "vocal_p2": "[curious] En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
-      "vocal_p3": "[emotional] Ese cruce de técnica y rebeldía selló su himno definitivo. [excited] La música sigue girando: Tom Sawyer, de Rush, en Rock Radio.",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_continuidad_narrativa",
+      "outro_name": "continuidad_narrativa",
+      "outro_strategy": "continuidad_narrativa",
+      "emotion": "curiosidad_tecnica",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Pocas piezas representan tan bien a una banda como esta, aunque su letra no nació solo dentro de Rush.",
+      "paragraph_2": "En el invierno de 1980, en Le Studio de Quebec, Neil Peart reescribió un poema de su amigo Pye Dubois inspirado en el espíritu rebelde de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim y Alex Lifeson cortaba el compás en siete por ocho.",
+      "paragraph_3": "Esa colaboración inesperada terminó definiendo Moving Pictures. De aquel poema compartido nació lo que estás por escuchar: Tom Sawyer, de Rush.",
+      "vocal_p1": "[warm, confident] Pocas piezas representan tan bien a una banda como esta, aunque su letra no nació solo dentro de Rush.",
+      "vocal_p2": "[curious] En el invierno de 1980, en Le Studio de Quebec, Neil Peart reescribió un poema de su amigo Pye Dubois inspirado en el espíritu rebelde de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim y Alex Lifeson cortaba el compás en siete por ocho.",
+      "vocal_p3": "[emotional] Esa colaboración inesperada terminó definiendo Moving Pictures. [excited] De aquel poema compartido nació lo que estás por escuchar: Tom Sawyer, de Rush.",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 8.35,
-        "p2": 7.95,
-        "p3": 7.9
+        "p1": 5.5,
+        "p2": 15.65,
+        "p3": 8.64
       },
-      "voice_duration_sec": 26.25,
+      "voice_duration_sec": 31.84,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 8.35,
-        "pause1End": 9.35,
-        "pause2Start": 17.31,
-        "pause2End": 18.31,
-        "outroEnd": 26.25,
+        "pause1Start": 5.5,
+        "pause1End": 6.5,
+        "pause2Start": 22.15,
+        "pause2End": 23.15,
+        "outroEnd": 31.84,
         "rampSec": 2.0,
-        "totalPresentationSec": 33.25
+        "totalPresentationSec": 38.84
       },
       "audio_file": "audio/fred_voice_rush_tom_sawyer.mp3",
       "ducking": {
@@ -3448,7 +3468,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-19T04:13:10.575445+00:00"
+      "generated_at": "2026-11-19T12:37:41.690809+00:00"
     },
     "acdc_back_in_black": {
       "song_title": "Back in Black",
@@ -3533,33 +3553,38 @@
     "toto_africa": {
       "song_title": "Africa",
       "band_name": "Toto",
-      "intro_id": "intro_01_aguja_vinilo",
-      "intro_name": "La aguja sobre el vinilo",
-      "outro_id": "outro_05_intriga",
-      "outro_name": "Intriga",
-      "paragraph_1": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Una canción nacida en plena madrugada.",
-      "paragraph_2": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
-      "paragraph_3": "Casi queda fuera y terminó siendo número uno. ¿La volverás a escuchar igual? Descúbrelo con Africa, de Toto.",
-      "vocal_p1": "[warm, confident] Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. Una canción nacida en plena madrugada.",
-      "vocal_p2": "[curious] En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
-      "vocal_p3": "[emotional] Casi queda fuera y terminó siendo número uno. [excited] ¿La volverás a escuchar igual? Descúbrelo con Africa, de Toto.",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "curiosidad_tecnica",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Te comparto un detalle curioso desde Rock Radio: quien escribió esta canción la imaginó completa sin haber pisado nunca ese continente.",
+      "paragraph_2": "En 1982, tras ver un documental de madrugada en televisión, David Paich esbozó la melodía y levantó junto a Jeff Porcaro una base hipnótica de marimbas, congas y percusiones reales para Toto IV.",
+      "paragraph_3": "Aunque en el grupo dudaron de que encajara con su sonido habitual, terminó alcanzando el número uno en Estados Unidos. Desde los ochenta hasta hoy, ese pulso sigue vivo en Africa, de Toto.",
+      "vocal_p1": "[warm, confident] Te comparto un detalle curioso desde Rock Radio: quien escribió esta canción la imaginó completa sin haber pisado nunca ese continente.",
+      "vocal_p2": "[curious] En 1982, tras ver un documental de madrugada en televisión, David Paich esbozó la melodía y levantó junto a Jeff Porcaro una base hipnótica de marimbas, congas y percusiones reales para Toto IV.",
+      "vocal_p3": "[emotional] Aunque en el grupo dudaron de que encajara con su sonido habitual, terminó alcanzando el número uno en Estados Unidos. [excited] Desde los ochenta hasta hoy, ese pulso sigue vivo en Africa, de Toto.",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 7.27,
-        "p2": 8.61,
-        "p3": 6.82
+        "p1": 8.08,
+        "p2": 13.91,
+        "p3": 10.94
       },
-      "voice_duration_sec": 24.74,
+      "voice_duration_sec": 34.98,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 7.27,
-        "pause1End": 8.27,
-        "pause2Start": 16.88,
-        "pause2End": 17.88,
-        "outroEnd": 24.74,
+        "pause1Start": 8.08,
+        "pause1End": 9.08,
+        "pause2Start": 22.99,
+        "pause2End": 23.99,
+        "outroEnd": 34.98,
         "rampSec": 2.0,
-        "totalPresentationSec": 31.74
+        "totalPresentationSec": 41.98
       },
       "audio_file": "audio/fred_voice_toto_africa.mp3",
       "ducking": {
@@ -3568,7 +3593,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-19T04:19:21.741416+00:00"
+      "generated_at": "2026-11-19T12:38:53.338224+00:00"
     },
     "queen_radio_ga_ga": {
       "song_title": "Radio Ga Ga",
@@ -4289,6 +4314,158 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T12:10:37.881884+00:00"
+    },
+    "iron_maiden_the_trooper": {
+      "song_title": "The Trooper",
+      "band_name": "Iron Maiden",
+      "intro_id": "creative_escena_historica",
+      "intro_name": "escena_historica",
+      "intro_strategy": "escena_historica",
+      "outro_id": "creative_energia",
+      "outro_name": "energia",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "En 1854, una carga de caballería en Balaclava dejó una imagen tan cruda que terminó inspirando a Alfred, Lord Tennyson.",
+      "paragraph_2": "Casi ciento treinta años después, Steve Harris tomó ese episodio para Piece of Mind en 1983 desde los ojos de un soldado en combate, mientras Dave Murray y Adrian Smith tradujeron el galope en un duelo imparable de guitarras gemelas.",
+      "paragraph_3": "Grabada en Nasáu con toda la garra vocal de Bruce Dickinson, conserva intacto su pulso en vivo. Ahí llega ese galope: The Trooper, de Iron Maiden.",
+      "vocal_p1": "[warm, confident] En 1854, una carga de caballería en Balaclava dejó una imagen tan cruda que terminó inspirando a Alfred, Lord Tennyson.",
+      "vocal_p2": "[curious] Casi ciento treinta años después, Steve Harris tomó ese episodio para Piece of Mind en 1983 desde los ojos de un soldado en combate, mientras Dave Murray y Adrian Smith tradujeron el galope en un duelo imparable de guitarras gemelas.",
+      "vocal_p3": "[emotional] Grabada en Nasáu con toda la garra vocal de Bruce Dickinson, conserva intacto su pulso en vivo. [excited] Ahí llega ese galope: The Trooper, de Iron Maiden.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.08,
+        "p2": 15.26,
+        "p3": 9.4
+      },
+      "voice_duration_sec": 34.77,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.08,
+        "pause1End": 9.08,
+        "pause2Start": 24.34,
+        "pause2End": 25.34,
+        "outroEnd": 34.77,
+        "rampSec": 2.0,
+        "totalPresentationSec": 41.77
+      },
+      "audio_file": "audio/fred_voice_iron_maiden_the_trooper.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:38:05.013283+00:00"
+    },
+    "pink_floyd_comfortably_numb": {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_id": "creative_memoria_musical",
+      "intro_name": "memoria_musical",
+      "intro_strategy": "memoria_musical",
+      "outro_id": "creative_expectativa",
+      "outro_name": "expectativa",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
+      "paragraph_2": "En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales; después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
+      "paragraph_3": "Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "vocal_p1": "[warm, confident] Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
+      "vocal_p2": "[curious] En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales; después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
+      "vocal_p3": "[emotional] Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. [excited] Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.1,
+        "p2": 15.46,
+        "p3": 12.14
+      },
+      "voice_duration_sec": 36.75,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.1,
+        "pause1End": 8.1,
+        "pause2Start": 23.56,
+        "pause2End": 24.56,
+        "outroEnd": 36.75,
+        "rampSec": 2.0,
+        "totalPresentationSec": 43.75
+      },
+      "audio_file": "audio/fred_voice_pink_floyd_comfortably_numb.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T12:39:15.821369+00:00"
     }
-  }
+  },
+  "overlay_narrative_history": [
+    {
+      "song_title": "Tom Sawyer",
+      "band_name": "Rush",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "continuidad_narrativa",
+      "emotion": "curiosidad_tecnica",
+      "paragraph_1": "Pocas piezas representan tan bien a una banda como esta, aunque su letra no nació solo dentro de Rush.",
+      "paragraph_3": "Esa colaboración inesperada terminó definiendo Moving Pictures. De aquel poema compartido nació lo que estás por escuchar: Tom Sawyer, de Rush.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-19T12:37:41.690809+00:00"
+    },
+    {
+      "song_title": "The Trooper",
+      "band_name": "Iron Maiden",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "En 1854, una carga de caballería en Balaclava dejó una imagen tan cruda que terminó inspirando a Alfred, Lord Tennyson.",
+      "paragraph_3": "Grabada en Nasáu con toda la garra vocal de Bruce Dickinson, conserva intacto su pulso en vivo. Ahí llega ese galope: The Trooper, de Iron Maiden.",
+      "mentions_brand": true,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-19T12:38:05.013283+00:00"
+    },
+    {
+      "song_title": "Everybody Wants to Rule the World",
+      "band_name": "Tears for Fears",
+      "intro_strategy": "contraste",
+      "outro_strategy": "revelacion",
+      "emotion": "contraste_cultural",
+      "paragraph_1": "Por fuera suena luminosa y casi hecha para la carretera, pero por dentro esconde una mirada muy filosa sobre la Guerra Fría.",
+      "paragraph_3": "Aquella apuesta de cierre los llevó al número uno mundial. Con ese contraste en mente, cada acorde revela otra capa: Everybody Wants to Rule the World, de Tears for Fears.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-19T12:38:31.455787+00:00"
+    },
+    {
+      "song_title": "Africa",
+      "band_name": "Toto",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "nostalgia",
+      "emotion": "curiosidad_tecnica",
+      "paragraph_1": "Te comparto un detalle curioso desde Rock Radio: quien escribió esta canción la imaginó completa sin haber pisado nunca ese continente.",
+      "paragraph_3": "Aunque en el grupo dudaron de que encajara con su sonido habitual, terminó alcanzando el número uno en Estados Unidos. Desde los ochenta hasta hoy, ese pulso sigue vivo en Africa, de Toto.",
+      "mentions_brand": true,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-19T12:38:53.338224+00:00"
+    },
+    {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_strategy": "memoria_musical",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
+      "paragraph_3": "Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-19T12:39:15.821369+00:00"
+    }
+  ]
 }
