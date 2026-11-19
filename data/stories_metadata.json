@@ -3150,14 +3150,20 @@
     "intro_07_archivo_confidencial",
     "intro_02_viaje_inesperado",
     "intro_04_cinta_olvidada",
-    "intro_09_rebobinando_historia"
+    "intro_09_rebobinando_historia",
+    "intro_07_archivo_confidencial",
+    "intro_01_aguja_vinilo",
+    "intro_04_cinta_olvidada"
   ],
   "last_overlay_outros": [
     "outro_07_cinematografico",
     "outro_05_intriga",
     "outro_03_emotivo",
     "outro_06_radio_vintage",
-    "outro_07_cinematografico"
+    "outro_07_cinematografico",
+    "outro_05_intriga",
+    "outro_04_rock_energico",
+    "outro_06_radio_vintage"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3319,6 +3325,126 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T04:07:05.924007+00:00"
+    },
+    "def_leppard_hysteria": {
+      "song_title": "Hysteria",
+      "band_name": "Def Leppard",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Una canción forjada en pura perseverancia.",
+      "paragraph_2": "Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+      "paragraph_3": "El título reflejó la emoción imparable de aquel regreso. ¿La volverás a escuchar igual? Descúbrelo con Hysteria, de Def Leppard.",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Una canción forjada en pura perseverancia.",
+      "vocal_p2": "[curious] Marcada por el accidente en que Rick Allen perdió su brazo izquierdo y aprendió a tocar con pedales electrónicos, Phil Collen tejió los acordes cristalinos con Mutt Lange.",
+      "vocal_p3": "[emotional] El título reflejó la emoción imparable de aquel regreso. [excited] ¿La volverás a escuchar igual? Descúbrelo con Hysteria, de Def Leppard.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.41,
+        "p2": 9.66,
+        "p3": 8.2
+      },
+      "voice_duration_sec": 27.3,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.41,
+        "pause1End": 8.41,
+        "pause2Start": 18.07,
+        "pause2End": 19.07,
+        "outroEnd": 27.3,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.3
+      },
+      "audio_file": "audio/fred_voice_def_leppard_hysteria.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:12:35.993301+00:00"
+    },
+    "mtley_cre_dr_feelgood": {
+      "song_title": "Dr. Feelgood",
+      "band_name": "Mötley Crüe",
+      "intro_id": "intro_01_aguja_vinilo",
+      "intro_name": "La aguja sobre el vinilo",
+      "outro_id": "outro_04_rock_energico",
+      "outro_name": "Rock enérgico",
+      "paragraph_1": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. El rugido que marcó su renacimiento total.",
+      "paragraph_2": "Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+      "paragraph_3": "Aquel golpe de poder les dio su primer número uno. Ahora deja que las guitarras hagan el resto. ¡Dr. Feelgood, de Mötley Crüe!",
+      "vocal_p1": "[warm, confident] Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. El rugido que marcó su renacimiento total.",
+      "vocal_p2": "[curious] Ya sobrios en 1989, Nikki Sixx y Mick Mars grabaron con Bob Rock esta cruda historia sobre los excesos de Los Ángeles en Vancouver.",
+      "vocal_p3": "[emotional] Aquel golpe de poder les dio su primer número uno. [excited] Ahora deja que las guitarras hagan el resto. ¡Dr. Feelgood, de Mötley Crüe!",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.77,
+        "p2": 9.52,
+        "p3": 7.75
+      },
+      "voice_duration_sec": 27.06,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.77,
+        "pause1End": 8.77,
+        "pause2Start": 18.29,
+        "pause2End": 19.29,
+        "outroEnd": 27.06,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.06
+      },
+      "audio_file": "audio/fred_voice_mtley_cre_dr_feelgood.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:12:53.209367+00:00"
+    },
+    "rush_tom_sawyer": {
+      "song_title": "Tom Sawyer",
+      "band_name": "Rush",
+      "intro_id": "intro_04_cinta_olvidada",
+      "intro_name": "La cinta olvidada",
+      "outro_id": "outro_06_radio_vintage",
+      "outro_name": "Radio vintage",
+      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Todo comenzó en el invierno de 1980.",
+      "paragraph_2": "En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
+      "paragraph_3": "Ese cruce de técnica y rebeldía selló su himno definitivo. La música sigue girando: Tom Sawyer, de Rush, en Rock Radio.",
+      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. Todo comenzó en el invierno de 1980.",
+      "vocal_p2": "[curious] En Quebec, Neil Peart adaptó un poema de Pye Dubois sobre el personaje de Mark Twain, mientras Geddy Lee abría con su sintetizador Oberheim.",
+      "vocal_p3": "[emotional] Ese cruce de técnica y rebeldía selló su himno definitivo. [excited] La música sigue girando: Tom Sawyer, de Rush, en Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.35,
+        "p2": 7.95,
+        "p3": 7.9
+      },
+      "voice_duration_sec": 26.25,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.35,
+        "pause1End": 9.35,
+        "pause2Start": 17.31,
+        "pause2End": 18.31,
+        "outroEnd": 26.25,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.25
+      },
+      "audio_file": "audio/fred_voice_rush_tom_sawyer.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:13:10.575445+00:00"
     }
   }
 }
