@@ -3146,28 +3146,28 @@
     }
   },
   "last_overlay_intros": [
-    "intro_04_cinta_olvidada",
-    "intro_09_rebobinando_historia",
-    "intro_07_archivo_confidencial",
-    "intro_01_aguja_vinilo",
-    "intro_04_cinta_olvidada",
     "intro_09_rebobinando_historia",
     "intro_06_detras_escenario",
     "intro_01_aguja_vinilo",
     "intro_07_archivo_confidencial",
-    "intro_04_cinta_olvidada"
+    "intro_04_cinta_olvidada",
+    "intro_09_rebobinando_historia",
+    "intro_01_aguja_vinilo",
+    "intro_02_viaje_inesperado",
+    "intro_04_cinta_olvidada",
+    "intro_07_archivo_confidencial"
   ],
   "last_overlay_outros": [
-    "outro_06_radio_vintage",
-    "outro_07_cinematografico",
-    "outro_05_intriga",
-    "outro_04_rock_energico",
-    "outro_06_radio_vintage",
     "outro_07_cinematografico",
     "outro_08_firma_rock_radio",
     "outro_05_intriga",
     "outro_06_radio_vintage",
-    "outro_02_nostalgico"
+    "outro_02_nostalgico",
+    "outro_07_cinematografico",
+    "outro_04_rock_energico",
+    "outro_05_intriga",
+    "outro_06_radio_vintage",
+    "outro_07_cinematografico"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3649,6 +3649,206 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T04:19:56.097348+00:00"
+    },
+    "dokken_dream_warriors": {
+      "song_title": "Dream Warriors",
+      "band_name": "Dokken",
+      "intro_id": "intro_09_rebobinando_historia",
+      "intro_name": "Rebobinando la historia",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un himno de metal nacido directo de las pesadillas del cine.",
+      "paragraph_2": "En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+      "paragraph_3": "La alianza con el cine llevó al grupo a lo más alto de MTV. Aquí terminan mis palabras y comienza la música: Dream Warriors, de Dokken.",
+      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un himno de metal nacido directo de las pesadillas del cine.",
+      "vocal_p2": "[curious] En 1987, George Lynch y Jeff Pilson compusieron este tema para Pesadilla en la Calle del Infierno 3, sumando a Freddy Krueger en su célebre videoclip.",
+      "vocal_p3": "[emotional] La alianza con el cine llevó al grupo a lo más alto de MTV. [excited] Aquí terminan mis palabras y comienza la música: Dream Warriors, de Dokken.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 9.34,
+        "p2": 10.02,
+        "p3": 9.28
+      },
+      "voice_duration_sec": 30.69,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 9.34,
+        "pause1End": 10.34,
+        "pause2Start": 20.37,
+        "pause2End": 21.37,
+        "outroEnd": 30.69,
+        "rampSec": 2.0,
+        "totalPresentationSec": 37.69
+      },
+      "audio_file": "audio/fred_voice_dokken_dream_warriors.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:38:22.442431+00:00"
+    },
+    "the_cars_heartbeat_city": {
+      "song_title": "Heartbeat City",
+      "band_name": "The Cars",
+      "intro_id": "intro_01_aguja_vinilo",
+      "intro_name": "La aguja sobre el vinilo",
+      "outro_id": "outro_04_rock_energico",
+      "outro_name": "Rock enérgico",
+      "paragraph_1": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. El pulso electrónico que definió una época dorada.",
+      "paragraph_2": "En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+      "paragraph_3": "El tema dio nombre al disco más ambicioso de la banda. Ahora deja que las guitarras hagan el resto. ¡Heartbeat City, de The Cars!",
+      "vocal_p1": "[warm, confident] Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred. El pulso electrónico que definió una época dorada.",
+      "vocal_p2": "[curious] En 1984, Ric Ocasek grabó en Londres junto al productor Mutt Lange mezclando sintetizadores Fairlight y cajas de ritmos en una atmósfera nocturna impecable.",
+      "vocal_p3": "[emotional] El tema dio nombre al disco más ambicioso de la banda. [excited] Ahora deja que las guitarras hagan el resto. ¡Heartbeat City, de The Cars!",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.84,
+        "p2": 11.25,
+        "p3": 7.44
+      },
+      "voice_duration_sec": 29.57,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.84,
+        "pause1End": 9.84,
+        "pause2Start": 21.09,
+        "pause2End": 22.09,
+        "outroEnd": 29.57,
+        "rampSec": 2.0,
+        "totalPresentationSec": 36.57
+      },
+      "audio_file": "audio/fred_voice_the_cars_heartbeat_city.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:38:42.060159+00:00"
+    },
+    "duran_duran_ordinary_world": {
+      "song_title": "Ordinary World",
+      "band_name": "Duran Duran",
+      "intro_id": "intro_02_viaje_inesperado",
+      "intro_name": "El viaje inesperado",
+      "outro_id": "outro_05_intriga",
+      "outro_name": "Intriga",
+      "paragraph_1": "Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. El renacimiento más emotivo de los años noventa.",
+      "paragraph_2": "En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "paragraph_3": "Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. ¿La volverás a escuchar igual? Descúbrelo con Ordinary World, de Duran Duran.",
+      "vocal_p1": "[warm, confident] Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio. El renacimiento más emotivo de los años noventa.",
+      "vocal_p2": "[curious] En 1993, Simon Le Bon escribió estos versos en duelo por la muerte de su amigo David Miles, impulsando el inesperado regreso del grupo al top tres mundial.",
+      "vocal_p3": "[emotional] Su mensaje de resiliencia les valió el prestigioso premio Ivor Novello. [excited] ¿La volverás a escuchar igual? Descúbrelo con Ordinary World, de Duran Duran.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.43,
+        "p2": 10.21,
+        "p3": 9.21
+      },
+      "voice_duration_sec": 28.89,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.43,
+        "pause1End": 8.43,
+        "pause2Start": 18.64,
+        "pause2End": 19.64,
+        "outroEnd": 28.89,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.89
+      },
+      "audio_file": "audio/fred_voice_duran_duran_ordinary_world.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:39:00.721854+00:00"
+    },
+    "cinderella_nobodys_fool": {
+      "song_title": "Nobody's Fool",
+      "band_name": "Cinderella",
+      "intro_id": "intro_04_cinta_olvidada",
+      "intro_name": "La cinta olvidada",
+      "outro_id": "outro_06_radio_vintage",
+      "outro_name": "Radio vintage",
+      "paragraph_1": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. La balada que transformó la historia del grupo.",
+      "paragraph_2": "Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+      "paragraph_3": "Aquel himno impulsó a Night Songs al triple platino. La música sigue girando: Nobody's Fool, de Cinderella, en Rock Radio.",
+      "vocal_p1": "[warm, confident] Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio. La balada que transformó la historia del grupo.",
+      "vocal_p2": "[curious] Descubiertos por Jon Bon Jovi en Filadelfia, Tom Keifer grabó en 1986 esta confesión desgarradora con guitarras acústicas y un crescendo eléctrico inolvidable.",
+      "vocal_p3": "[emotional] Aquel himno impulsó a Night Songs al triple platino. [excited] La música sigue girando: Nobody's Fool, de Cinderella, en Rock Radio.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.4,
+        "p2": 11.46,
+        "p3": 8.52
+      },
+      "voice_duration_sec": 30.43,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.4,
+        "pause1End": 9.4,
+        "pause2Start": 20.87,
+        "pause2End": 21.87,
+        "outroEnd": 30.43,
+        "rampSec": 2.0,
+        "totalPresentationSec": 37.43
+      },
+      "audio_file": "audio/fred_voice_cinderella_nobodys_fool.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:39:20.521728+00:00"
+    },
+    "pink_floyd_high_hopes": {
+      "song_title": "High Hopes",
+      "band_name": "Pink Floyd",
+      "intro_id": "intro_07_archivo_confidencial",
+      "intro_name": "Archivo confidencial",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Un adiós nostálgico cargado de memoria.",
+      "paragraph_2": "En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+      "paragraph_3": "Las campanas finales sellaron la última gran obra de estudio. Aquí terminan mis palabras y comienza la música: High Hopes, de Pink Floyd.",
+      "vocal_p1": "[warm, confident] Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio. Un adiós nostálgico cargado de memoria.",
+      "vocal_p2": "[curious] En 1994, David Gilmour y Polly Samson evocaron su juventud en Cambridge sobre el río Támesis, coronada por su emotivo solo de lap steel.",
+      "vocal_p3": "[emotional] Las campanas finales sellaron la última gran obra de estudio. [excited] Aquí terminan mis palabras y comienza la música: High Hopes, de Pink Floyd.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.87,
+        "p2": 10.06,
+        "p3": 8.62
+      },
+      "voice_duration_sec": 28.58,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.87,
+        "pause1End": 8.87,
+        "pause2Start": 18.93,
+        "pause2End": 19.93,
+        "outroEnd": 28.58,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.58
+      },
+      "audio_file": "audio/fred_voice_pink_floyd_high_hopes.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T11:39:39.214600+00:00"
     }
   }
 }
