@@ -6,9 +6,9 @@ Arquitectura unificada de producción radial asistida por IA:
 - Conserva Fish Audio (s2.1-pro-free / s2.1-pro) y la voz configurada de Fred (reference_id).
 - Evalúa compatibilidad con S2.1 Pro y Drama 3 sin cambiar el modelo ni la voz activa.
 - Intérprete de comandos en lenguaje natural (generación, regeneración de historia, regeneración de voz).
-- Repertorio de 10 aperturas dinámicas con rotación inteligente (evita repetir las últimas 3).
+- Motor creativo de intros y outros (10 intros y 8 outros como guía de estilo) con control de diversidad en las últimas 15 historias.
 - Guion dual exacto: Texto visible (limpio) + Texto vocal (dirección emocional Fish Audio).
-- Duración máxima absoluta de 45.0 segundos (incluyendo 5.0s iniciales de música sin voz).
+- Duración máxima absoluta de 45.0 segundos (incluyendo 5.0s iniciales de música sin voz y dos pausas exactas de 1.0s).
   Si excede 45s, resume y regenera la locución acortada sin acelerar artificialmente ni cortar frases.
 - Cadena de audio FFmpeg profesional: 5s música sin voz, sidechain ducking (12-18dB, attack 200ms,
   release 450ms), highpass ~80Hz, EQ correctiva, presencia 2-4kHz, compresión 3:1, de-esser,
@@ -60,7 +60,7 @@ FFMPEG_BIN = "/opt/homebrew/bin/ffmpeg" if os.path.exists("/opt/homebrew/bin/ffm
 FFPROBE_BIN = "/opt/homebrew/bin/ffprobe" if os.path.exists("/opt/homebrew/bin/ffprobe") else "ffprobe"
 
 INTRO_MUSIC_SEC = 5.0
-PAUSE_MUSIC_SEC = 3.0
+PAUSE_MUSIC_SEC = 1.0
 OUTRO_MUSIC_TAIL_SEC = 1.2
 MAX_TOTAL_DURATION_SEC = 45.0
 SAFE_TARGET_TOTAL_SEC = 44.6  # Margen para padding de frames MP3 garantizando <= 45.00s reales
@@ -288,23 +288,29 @@ MASTER_CURATED_STORIES = {
     "the trooper": [
         {
             "p1_hook": "Inspirada en una batalla del siglo diecinueve.",
-            "p2_anecdote": "Basada en Balaclava en 1854, Steve Harris escribió este clásico en 1983 desde la mirada cruda de un soldado en combate.",
-            "p3_resolution": "Las guitarras gemelas al galope sellaron un himno eterno.",
-            "historical_info": "Batalla de Balaclava (1854, Guerra de Crimea) y poema de Tennyson; guitarras de Dave Murray y Adrian Smith en Piece of Mind (1983)."
+            "p2_anecdote": "Basada en la batalla de Balaclava de 1854 y el poema de Alfred, Lord Tennyson, Steve Harris la escribió en 1983 desde la mirada cruda de un soldado en combate mientras Dave Murray y Adrian Smith trazaban el galope de guitarras gemelas.",
+            "p3_resolution": "Desde entonces es un himno infaltable en cada escenario.",
+            "historical_info": "Batalla de Balaclava (1854, Guerra de Crimea) y poema de Alfred, Lord Tennyson; guitarras de Dave Murray y Adrian Smith en Piece of Mind (1983)."
         },
         {
             "p1_hook": "Grabada en Bahamas sin trucos en cabina.",
-            "p2_anecdote": "Para Piece of Mind en 1983, Bruce Dickinson desató toda su potencia vocal sobre la épica historia de Steve Harris.",
-            "p3_resolution": "Su mística sigue intacta en cada escenario.",
-            "historical_info": "Sesiones en Compass Point Studios, Bahamas (1983), con Bruce Dickinson y la célebre portada de Eddie."
+            "p2_anecdote": "Para Piece of Mind en 1983 en los estudios Compass Point de Nasáu, Bruce Dickinson desató su voz sobre la escritura directa de Steve Harris, buscando sonar como la banda en vivo.",
+            "p3_resolution": "Esa crudeza convirtió el tema en sello indiscutible de Iron Maiden.",
+            "historical_info": "Sesiones en Compass Point Studios, Nasáu, Bahamas (1983), álbum Piece of Mind, con Bruce Dickinson y producción de Martin Birch."
         }
     ],
     "africa": [
         {
             "p1_hook": "Una canción nacida en plena madrugada.",
-            "p2_anecdote": "En 1982, tras ver un documental, David Paich imaginó África y grabó con Jeff Porcaro marimbas y congas reales para Toto IV.",
-            "p3_resolution": "Casi queda fuera y terminó siendo número uno.",
-            "historical_info": "Inspiración nocturna de David Paich en 1982 y grabación acústica multipista con Jeff Porcaro para Toto IV."
+            "p2_anecdote": "En 1982, tras ver un documental en televisión, David Paich imaginó África sin haber pisado el continente y grabó con Jeff Porcaro marimbas, congas y percusiones reales para Toto IV.",
+            "p3_resolution": "Casi queda fuera del disco y terminó alcanzando el número uno en Estados Unidos.",
+            "historical_info": "Inspiración nocturna de David Paich en 1982 tras ver un documental; grabación acústica multipista con Jeff Porcaro y Emil Richards para Toto IV (1982)."
+        },
+        {
+            "p1_hook": "Un estribillo que el propio grupo dudó en publicar.",
+            "p2_anecdote": "Durante las sesiones de Toto IV en Los Ángeles, varios integrantes pensaban que su letra y su mezcla de sintetizadores con percusión africana no encajaban con el rock habitual de la banda.",
+            "p3_resolution": "El pulso hipnótico de Jeff Porcaro terminó dándoles su mayor clásico mundial.",
+            "historical_info": "Sesiones de Toto IV (1982) en Los Ángeles; dudas iniciales de Steve Lukather y miembros de Toto antes de alcanzar el #1 del Billboard Hot 100 en febrero de 1983."
         }
     ],
     "back in black": [
@@ -406,10 +412,18 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "comfortably numb": [
-        (
-            "Roger Waters escribió estos versos recordando la desconexión física sufrida en 1977 tras recibir sedantes para tocar enfermo en Filadelfia. "
-            "Sobre una maqueta de David Gilmour para The Wall, nació el majestuoso solo de guitarra grabado en apenas dos tomas con su Stratocaster negra."
-        )
+        {
+            "p1_hook": "Una noche de fiebre y sedantes en Filadelfia inspiró esta canción.",
+            "p2_anecdote": "En 1977, Roger Waters sufrió fuertes dolores estomacales antes de un concierto y un médico le inyectó un tranquilizante para salir al escenario. Años después plasmó aquella desconexión física sobre una maqueta que David Gilmour había descartado de su disco solista.",
+            "p3_resolution": "De esa tensión creativa nació uno de los solos de guitarra más recordados de The Wall.",
+            "historical_info": "Concierto de Pink Floyd en el Spectrum de Filadelfia (29 de junio de 1977), letra de Roger Waters y música original de David Gilmour para The Wall (1979)."
+        },
+        {
+            "p1_hook": "Dos visiones opuestas chocaron hasta encontrar un equilibrio irrepetible.",
+            "p2_anecdote": "Durante la grabación de The Wall en 1979, Roger Waters prefería la versión orquestal de Michael Kamen mientras David Gilmour defendía un pulso más crudo. La mezcla final combinó ambas texturas y culminó con el célebre solo final de Gilmour.",
+            "p3_resolution": "Ese choque en el estudio dejó una de las cumbres emocionales de Pink Floyd.",
+            "historical_info": "Sesiones de The Wall (1979); arreglos orquestales de Michael Kamen, tensión creativa entre Roger Waters y David Gilmour y solo final de David Gilmour."
+        }
     ],
     "subdivisions": [
         {
@@ -679,14 +693,6 @@ MASTER_CURATED_STORIES = {
             "p2_anecdote": "Desde 1983 la tocaba en cada piano que encontraba, pero el grupo dudaba en llevar una balada sinfónica al hard rock. En 1991, con una orquesta sintetizada y el solo épico de Slash, se volvió la canción más larga en entrar al Top 10 de Billboard.",
             "p3_resolution": "Su clímax dramático la consagró como la balada definitiva de los noventa.",
             "historical_info": "Álbum Use Your Illusion I (1991); escrita por Axl Rose desde 1983; 8:57 minutos, la canción más larga en alcanzar el Top 10 del Billboard Hot 100."
-        }
-    ],
-    "the trooper": [
-        {
-            "p1_hook": "Un galope de guitarras inspirado en una carga militar del siglo diecinueve.",
-            "p2_anecdote": "En 1983, Steve Harris escribió esta pieza desde la perspectiva de un soldado británico en la batalla de Balaclava de 1854, evocando el poema de Tennyson. Las guitarras gemelas de Dave Murray y Adrian Smith imitan el trote implacable de la caballería.",
-            "p3_resolution": "Desde entonces es un himno infaltable con la bandera ondeando en cada concierto.",
-            "historical_info": "Álbum Piece of Mind (1983); escrita por Steve Harris; inspirada en la Carga de la Brigada Ligera (1854) y el poema de Alfred, Lord Tennyson."
         }
     ],
     "tratame suavemente": [
@@ -2847,8 +2853,10 @@ def run_server(port=5055):
         print("\nDeteniendo servidor.")
 
 # ==============================================================================
-# 12. BIBLIOTECA OVERLAY TRADICIONAL (10 INTROS + 8 OUTROS) Y CLI PRINCIPAL
+# 12. GUÍA DE ESTILO (10 INTROS + 8 OUTROS), MOTOR CREATIVO (15 HISTORIAS) Y CLI
 # ==============================================================================
+# Las 10 intros y 8 outros se conservan como GUÍA DE ESTILO (personalidad, ritmo
+# e intención narrativa de DJ Fred en Rock Radio), NO como catálogo cerrado.
 RADIO_OVERLAY_INTROS = [
     {"id": "intro_01_aguja_vinilo", "name": "La aguja sobre el vinilo", "moods": ["classic", "recording", "default"],
      "short": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred."},
@@ -2891,44 +2899,510 @@ RADIO_OVERLAY_OUTROS = [
      "fmt": lambda s, b: f"Ya sabes lo que ocurrió. Ahora siéntelo: {s}, de {b}. Rock Radio."}
 ]
 
-def _select_overlay_intro_and_outro(song_title, band_name, p2_text):
-    """Selecciona una intro y un outro coherentes evitando repetir los últimos 3 usados."""
-    meta = {}
-    if os.path.exists(STORIES_METADATA_PATH):
-        try:
-            with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
-                meta = json.load(f)
-        except Exception:
-            meta = {}
-    last_intros = meta.get("last_overlay_intros", [])[-3:]
-    last_outros = meta.get("last_overlay_outros", [])[-3:]
+CREATIVE_INTRO_STRATEGIES = (
+    "curiosidad",
+    "pregunta",
+    "viaje_temporal",
+    "confidencia",
+    "contraste",
+    "escena_historica",
+    "memoria_musical",
+    "inicio_directo",
+)
 
-    txt = f"{song_title} {band_name} {p2_text}".lower()
-    if any(k in txt for k in ["piano", "balada", "lluvia", "amor", "romántic", "orquesta"]):
-        mood = "ballad"
-    elif any(k in txt for k in ["concierto", "estadio", "batalla", "guerra", "galope", "metal", "caballería"]):
-        mood = "energetic"
-    elif any(k in txt for k in ["estudio", "grab", "maqueta", "cinta", "sintetizador", "toma"]):
-        mood = "recording"
-    else:
-        mood = "historical"
+CREATIVE_OUTRO_STRATEGIES = (
+    "revelacion",
+    "nostalgia",
+    "expectativa",
+    "energia",
+    "reflexion",
+    "continuidad_narrativa",
+    "transicion_directa",
+)
 
-    compat_intros = [i for i in RADIO_OVERLAY_INTROS if mood in i["moods"] and i["id"] not in last_intros]
-    if not compat_intros:
-        compat_intros = [i for i in RADIO_OVERLAY_INTROS if i["id"] not in last_intros] or RADIO_OVERLAY_INTROS
-    chosen_intro = random.choice(compat_intros)
+CLICHE_OPENERS = (
+    "imagina que",
+    "sabias que",
+    "hay canciones que",
+    "antes de escuchar",
+)
 
-    compat_outros = [o for o in RADIO_OVERLAY_OUTROS if mood in o["moods"] and o["id"] not in last_outros]
-    if not compat_outros:
-        compat_outros = [o for o in RADIO_OVERLAY_OUTROS if o["id"] not in last_outros] or RADIO_OVERLAY_OUTROS
-    chosen_outro = random.choice(compat_outros)
-    return chosen_intro, chosen_outro
+CLOSING_INVITATIONS = (
+    "sube el volumen",
+    "dale play",
+    "cierra los ojos",
+    "deja que suene",
+    "escucha con atencion",
+    "deja que las guitarras",
+)
+
+HISTORY_WINDOW_SIZE = 15
+
+
+def _norm_narrative_text(text):
+    decomposed = unicodedata.normalize("NFD", str(text or "").lower())
+    stripped = "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+    return re.sub(r"[^a-z0-9\s]+", " ", stripped).strip()
+
+
+def _narrative_tokens(text):
+    return [tok for tok in _norm_narrative_text(text).split() if tok]
+
+
+def _jaccard_text(a, b):
+    ta, tb = set(_narrative_tokens(a)), set(_narrative_tokens(b))
+    if not ta or not tb:
+        return 0.0
+    return len(ta & tb) / len(ta | tb)
+
+
+def _extract_year_from_text(text):
+    match = re.search(r"\b(19[5-9]\d|20[0-2]\d)\b", str(text or ""))
+    return match.group(1) if match else ""
+
+
+def _infer_story_emotion(song_title, band_name, p2_text, p3_resolution=""):
+    """Determina la emoción principal guiada por la anécdota (no rígidamente por el género)."""
+    txt = _norm_narrative_text(f"{song_title} {band_name} {p2_text} {p3_resolution}")
+    if any(k in txt for k in ["duelo", "dolor", "sedante", "fiebre", "enfermo", "desconexion", "trist", "soledad", "melancol", "perdida"]):
+        return "sensibilidad_contenida"
+    if any(k in txt for k in ["casi queda fuera", "dudo", "dudaba", "contraste", "oscura", "guerra fria", "advertencia", "ultima hora", "improvisada"]):
+        return "contraste_cultural"
+    if any(k in txt for k in ["batalla", "combate", "caballeria", "galope", "rugido", "escenario", "explosivo"]):
+        return "intensidad_historica"
+    if any(k in txt for k in ["sintetizador", "compas", "siete por ocho", "poema", "estudio", "maqueta", "marimba", "documental", "toma"]):
+        return "curiosidad_tecnica"
+    if any(k in txt for k in ["piano", "balada", "orquesta", "recuerdo", "juventud", "muro"]):
+        return "nostalgia_cercana"
+    return "calidez_radial"
+
+
+def load_recent_overlay_history(limit=HISTORY_WINDOW_SIZE):
+    """Recupera las últimas 15 historias generadas desde data/stories_metadata.json (sin bloquear si no existe)."""
+    if not os.path.exists(STORIES_METADATA_PATH):
+        return []
+    try:
+        with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
+            meta = json.load(f)
+    except Exception:
+        return []
+
+    history = meta.get("overlay_narrative_history", [])
+    if isinstance(history, list) and history:
+        return [item for item in history if isinstance(item, dict)][-limit:]
+
+    # Retrocompatibilidad: reconstruir historial ligero desde radio_overlays existentes
+    overlays = meta.get("radio_overlays", {})
+    if not isinstance(overlays, dict) or not overlays:
+        return []
+    ordered = sorted(
+        overlays.values(),
+        key=lambda item: str(item.get("generated_at", "")) if isinstance(item, dict) else ""
+    )
+    rebuilt = []
+    for item in ordered[-limit:]:
+        if not isinstance(item, dict):
+            continue
+        p1 = str(item.get("paragraph_1", "")).strip()
+        p3 = str(item.get("paragraph_3", "")).strip()
+        rebuilt.append({
+            "song_title": item.get("song_title", ""),
+            "band_name": item.get("band_name", ""),
+            "intro_strategy": item.get("intro_strategy", ""),
+            "outro_strategy": item.get("outro_strategy", ""),
+            "emotion": item.get("emotion", ""),
+            "paragraph_1": p1,
+            "paragraph_3": p3,
+            "mentions_brand": ("fred" in _norm_narrative_text(p1 + " " + p3) or "rock radio" in _norm_narrative_text(p1 + " " + p3)),
+            "generated_at": item.get("generated_at", ""),
+        })
+    return rebuilt[-limit:]
+
+
+def score_narrative_diversity(p1, p3, intro_strategy, outro_strategy, recent_history):
+    """Evalúa originalidad y antirrepetición (0 a 100) frente a las últimas 15 historias sin dependencias externas."""
+    score = 100.0
+    notes = []
+    norm_p1 = _norm_narrative_text(p1)
+    norm_p3 = _norm_narrative_text(p3)
+    p1_prefix = " ".join(_narrative_tokens(p1)[:4])
+    mentions_brand = ("fred" in norm_p1 or "rock radio" in norm_p1 or "rock radio" in norm_p3)
+    uses_cliche = any(norm_p1.startswith(c) for c in CLICHE_OPENERS)
+
+    if uses_cliche:
+        score -= 10.0
+        notes.append("apertura_formula")
+
+    if not recent_history:
+        return round(max(0.0, score), 2), notes
+
+    window = recent_history[-HISTORY_WINDOW_SIZE:]
+    last_item = window[-1]
+    if intro_strategy and last_item.get("intro_strategy") == intro_strategy:
+        score -= 32.0
+        notes.append("intro_strategy_consecutiva")
+    if outro_strategy and last_item.get("outro_strategy") == outro_strategy:
+        score -= 32.0
+        notes.append("outro_strategy_consecutiva")
+
+    brand_recent_count = 0
+    cliche_recent_count = 0
+    for idx, prev in enumerate(window):
+        prev_p1 = str(prev.get("paragraph_1", ""))
+        prev_p3 = str(prev.get("paragraph_3", ""))
+        norm_prev_p1 = _norm_narrative_text(prev_p1)
+        norm_prev_p3 = _norm_narrative_text(prev_p3)
+        recency_weight = 1.0 + (idx / max(1, len(window))) * 0.5
+
+        if norm_p1 and norm_prev_p1:
+            if norm_p1 == norm_prev_p1:
+                score -= 55.0
+                notes.append("intro_literal_repetida")
+            else:
+                sim1 = _jaccard_text(p1, prev_p1)
+                if sim1 >= 0.65:
+                    score -= 26.0 * recency_weight
+                    notes.append("intro_muy_similar")
+                elif p1_prefix and p1_prefix == " ".join(_narrative_tokens(prev_p1)[:4]):
+                    score -= 14.0 * recency_weight
+                    notes.append("estructura_inicio_similar")
+
+        if norm_p3 and norm_prev_p3:
+            if norm_p3 == norm_prev_p3:
+                score -= 55.0
+                notes.append("outro_literal_repetido")
+            elif _jaccard_text(p3, prev_p3) >= 0.68:
+                score -= 22.0 * recency_weight
+                notes.append("outro_muy_similar")
+
+        if intro_strategy and outro_strategy:
+            if prev.get("intro_strategy") == intro_strategy and prev.get("outro_strategy") == outro_strategy:
+                score -= 14.0 * recency_weight
+                notes.append("combinacion_intro_outro_repetida")
+
+        for inv in CLOSING_INVITATIONS:
+            if inv in norm_p3 and inv in norm_prev_p3 and idx >= len(window) - 4:
+                score -= 12.0
+                notes.append(f"invitacion_final_repetida:{inv}")
+
+        if prev.get("mentions_brand") or ("fred" in norm_prev_p1) or ("rock radio" in norm_prev_p1) or ("rock radio" in norm_prev_p3):
+            brand_recent_count += 1
+        if any(norm_prev_p1.startswith(c) for c in CLICHE_OPENERS):
+            cliche_recent_count += 1
+
+    if mentions_brand and brand_recent_count >= max(3, len(window) // 3):
+        score -= 18.0
+        notes.append("marca_fred_o_rock_radio_frecuente")
+    if uses_cliche and cliche_recent_count >= 1:
+        score -= 16.0
+        notes.append("muletilla_repetida")
+
+    return round(max(0.0, score), 2), sorted(set(notes))
+
+
+def _generate_openai_creative_candidates(song_title, band_name, p1_hook, p2_anecdote, p3_resolution, historical_info, emotion, recent_history):
+    """Genera 3 propuestas creativas de intro/outro usando la API de OpenAI si OPENAI_API_KEY está disponible."""
+    api_key = os.environ.get("OPENAI_API_KEY", "").strip()
+    if not api_key:
+        return []
+
+    model_name = os.environ.get("OPENAI_STORY_MODEL", "gpt-4o-mini").strip() or "gpt-4o-mini"
+    history_summary = [
+        {
+            "song": h.get("song_title", ""),
+            "intro_strategy": h.get("intro_strategy", ""),
+            "outro_strategy": h.get("outro_strategy", ""),
+            "p1": str(h.get("paragraph_1", ""))[:120],
+            "p3": str(h.get("paragraph_3", ""))[:120],
+        }
+        for h in recent_history[-HISTORY_WINDOW_SIZE:]
+    ]
+    style_intros = [i["short"] for i in RADIO_OVERLAY_INTROS[:5]]
+    style_outros = [o["fmt"](song_title, band_name) for o in RADIO_OVERLAY_OUTROS[:4]]
+
+    prompt = (
+        "Eres DJ Fred de Rock Radio (locutor experimentado de rock clásico, cercano, curioso, nostálgico, "
+        "hablas de tú al oyente en español natural y humano). "
+        "Usa las referencias de estilo SOLO para captar voz y ritmo, NUNCA para copiarlas ni para repetir 'Soy Fred, en Rock Radio' en cada pista.\n"
+        f"Canción: {song_title} | Banda: {band_name} | Emoción guiada por la anécdota: {emotion}\n"
+        f"Hechos verificados (NO inventes ningún dato, fecha ni escena): {p1_hook} {p2_anecdote} {p3_resolution} ({historical_info})\n"
+        f"Referencias de estilo intro: {json.dumps(style_intros, ensure_ascii=False)}\n"
+        f"Referencias de estilo outro: {json.dumps(style_outros, ensure_ascii=False)}\n"
+        f"Historial reciente (últimas {len(history_summary)} historias a evitar repetir): {json.dumps(history_summary, ensure_ascii=False)}\n"
+        "Genera EXACTAMENTE 3 propuestas distintas en JSON válido con clave 'candidates' (lista de 3 objetos). "
+        "Cada objeto debe tener: intro_strategy (una de "
+        f"{list(CREATIVE_INTRO_STRATEGIES)}), outro_strategy (una de {list(CREATIVE_OUTRO_STRATEGIES)}), "
+        "paragraph_1 (máx 22 palabras, original, sin muletillas como 'Imagina que...' o '¿Sabías que...?'), "
+        "paragraph_2 (anécdota verificada concisa, máx 38 palabras), "
+        "p3_resolution (desenlace fiel, máx 16 palabras), "
+        "p3_closing (outro original ligado al desenlace que mencione claramente canción y artista, máx 18 palabras). "
+        "Responde únicamente con el JSON."
+    )
+
+    payload = json.dumps({
+        "model": model_name,
+        "temperature": 0.85,
+        "response_format": {"type": "json_object"},
+        "messages": [
+            {"role": "system", "content": "Devuelve únicamente JSON válido con la clave 'candidates'."},
+            {"role": "user", "content": prompt},
+        ],
+    }).encode("utf-8")
+
+    req = urllib.request.Request(
+        "https://api.openai.com/v1/chat/completions",
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=25) as resp:
+            raw = json.loads(resp.read().decode("utf-8"))
+        content = raw["choices"][0]["message"]["content"]
+        parsed = json.loads(content)
+        candidates = parsed.get("candidates", [])
+        valid = []
+        for c in candidates:
+            if not isinstance(c, dict):
+                continue
+            p1 = str(c.get("paragraph_1", "")).strip()
+            p2 = str(c.get("paragraph_2", "")).strip() or p2_anecdote
+            res_txt = str(c.get("p3_resolution", "")).strip() or p3_resolution
+            closing = str(c.get("p3_closing", "")).strip()
+            if not p1 or not closing:
+                continue
+            if _norm_narrative_text(song_title) not in _norm_narrative_text(closing) or _norm_narrative_text(band_name) not in _norm_narrative_text(closing):
+                closing = f"{closing.rstrip('.')} {song_title}, de {band_name}."
+            i_strat = str(c.get("intro_strategy", "curiosidad")).strip().lower()
+            o_strat = str(c.get("outro_strategy", "revelacion")).strip().lower()
+            if i_strat not in CREATIVE_INTRO_STRATEGIES:
+                i_strat = "curiosidad"
+            if o_strat not in CREATIVE_OUTRO_STRATEGIES:
+                o_strat = "revelacion"
+            valid.append({
+                "intro_strategy": i_strat,
+                "outro_strategy": o_strat,
+                "emotion": emotion,
+                "paragraph_1": p1,
+                "paragraph_2": p2,
+                "p3_resolution": res_txt,
+                "p3_closing": closing,
+                "paragraph_3": f"{res_txt} {closing}".strip(),
+                "source_mode": "openai_creative",
+            })
+        return valid[:3]
+    except Exception:
+        return []
+
+
+def _build_local_creative_candidates(song_title, band_name, p1_hook, p2_anecdote, p3_resolution, historical_info, emotion, recent_history):
+    """Construye 3 propuestas variadas (intros y outros originales por estrategia) sin depender de API externa."""
+    year = _extract_year_from_text(f"{p1_hook} {p2_anecdote} {historical_info}")
+    hook_clean = p1_hook.strip().rstrip(".")
+    hook_lower = hook_clean[:1].lower() + hook_clean[1:] if hook_clean else "esta historia merece una segunda escucha"
+    res_clean = p3_resolution.strip()
+
+    # Decidir si incluir una mención orgánica a la emisora solo cuando hace varias historias que no aparece
+    recent_brand_hits = sum(
+        1 for h in recent_history[-4:]
+        if h.get("mentions_brand")
+        or "fred" in _norm_narrative_text(f"{h.get('paragraph_1', '')} {h.get('paragraph_3', '')}")
+        or "rock radio" in _norm_narrative_text(f"{h.get('paragraph_1', '')} {h.get('paragraph_3', '')}")
+    )
+    allow_light_brand = (recent_brand_hits == 0 and len(recent_history) >= 2)
+
+    intro_builders = {
+        "curiosidad": lambda: f"Quizá has escuchado este tema muchas veces, pero fíjate en un detalle clave: {hook_lower}.",
+        "pregunta": lambda: f"¿Qué ocurre cuando un giro inesperado cambia el destino de un disco de {band_name}? {hook_clean}.",
+        "viaje_temporal": (
+            (lambda: f"Regresa por un instante a {year}. En ese momento, {hook_lower}.")
+            if year else
+            (lambda: f"Volvamos al momento exacto en que {band_name} trabajaba en este tema: {hook_lower}.")
+        ),
+        "confidencia": (
+            (lambda: f"Te comparto un hallazgo de Rock Radio sobre {band_name}: {hook_lower}.")
+            if allow_light_brand else
+            (lambda: f"Quiero compartirte un dato que pocos recuerdan sobre {band_name}: {hook_lower}.")
+        ),
+        "contraste": lambda: f"A primera escucha parece una cosa, pero su origen cuenta otra historia: {hook_lower}.",
+        "escena_historica": (
+            (lambda: f"Sitúate en {year} junto a {band_name}: {hook_lower}.")
+            if year else
+            (lambda: f"Detrás de esta grabación de {band_name} hay una escena real muy particular: {hook_lower}.")
+        ),
+        "memoria_musical": lambda: f"Al volver a escuchar a {band_name}, conviene recordar de dónde vino ese sonido: {hook_lower}.",
+        "inicio_directo": lambda: f"{hook_clean}. Y lo que ocurrió con {band_name} terminó marcando este clásico.",
+    }
+
+    outro_builders = {
+        "revelacion": lambda: f"Con ese origen en mente, cada compás suena distinto. {song_title}, de {band_name}.",
+        "nostalgia": (
+            (lambda: f"Desde {year} hasta hoy, el pulso sigue intacto. Aquí tienes {song_title}, de {band_name}.")
+            if year else
+            (lambda: f"Aquel momento sigue vivo cada vez que suena {song_title}, de {band_name}.")
+        ),
+        "expectativa": lambda: f"Ahora deja que los instrumentos terminen de contarlo: {song_title}, de {band_name}.",
+        "energia": lambda: f"Todo ese impulso estalla a partir de aquí. {song_title}, de {band_name}.",
+        "reflexion": lambda: f"A veces una decisión inesperada define toda una carrera. {song_title}, de {band_name}.",
+        "continuidad_narrativa": lambda: f"De aquel punto de partida nació exactamente lo que vas a escuchar: {song_title}, de {band_name}.",
+        "transicion_directa": (
+            (lambda: f"En Rock Radio, {song_title}, de {band_name}.")
+            if allow_light_brand else
+            (lambda: f"Aquí la tienes: {song_title}, de {band_name}.")
+        ),
+    }
+
+    # Priorizar estrategias coherentes con la emoción de la anécdota sin repetir la inmediatamente anterior
+    emotion_intro_prefs = {
+        "sensibilidad_contenida": ["confidencia", "memoria_musical", "contraste", "viaje_temporal", "inicio_directo"],
+        "contraste_cultural": ["contraste", "pregunta", "curiosidad", "viaje_temporal", "inicio_directo"],
+        "intensidad_historica": ["escena_historica", "inicio_directo", "viaje_temporal", "pregunta", "curiosidad"],
+        "curiosidad_tecnica": ["curiosidad", "confidencia", "escena_historica", "pregunta", "contraste"],
+        "nostalgia_cercana": ["memoria_musical", "viaje_temporal", "confidencia", "curiosidad", "escena_historica"],
+        "calidez_radial": ["curiosidad", "confidencia", "memoria_musical", "inicio_directo", "viaje_temporal"],
+    }
+    emotion_outro_prefs = {
+        "sensibilidad_contenida": ["reflexion", "expectativa", "nostalgia", "transicion_directa"],
+        "contraste_cultural": ["revelacion", "reflexion", "continuidad_narrativa", "expectativa"],
+        "intensidad_historica": ["energia", "transicion_directa", "continuidad_narrativa", "expectativa"],
+        "curiosidad_tecnica": ["revelacion", "continuidad_narrativa", "expectativa", "reflexion"],
+        "nostalgia_cercana": ["nostalgia", "reflexion", "expectativa", "transicion_directa"],
+        "calidez_radial": ["continuidad_narrativa", "revelacion", "expectativa", "transicion_directa"],
+    }
+
+    last_intro = recent_history[-1].get("intro_strategy", "") if recent_history else ""
+    last_outro = recent_history[-1].get("outro_strategy", "") if recent_history else ""
+
+    intro_pool = [s for s in emotion_intro_prefs.get(emotion, list(CREATIVE_INTRO_STRATEGIES)) if s != last_intro]
+    for s in CREATIVE_INTRO_STRATEGIES:
+        if s not in intro_pool and s != last_intro:
+            intro_pool.append(s)
+
+    outro_pool = [s for s in emotion_outro_prefs.get(emotion, list(CREATIVE_OUTRO_STRATEGIES)) if s != last_outro]
+    for s in CREATIVE_OUTRO_STRATEGIES:
+        if s not in outro_pool and s != last_outro:
+            outro_pool.append(s)
+
+    # Barajar ligeramente las posiciones secundarias para no elegir siempre el mismo orden
+    top_intros = intro_pool[:5]
+    top_outros = outro_pool[:5]
+    random.shuffle(top_intros)
+    random.shuffle(top_outros)
+
+    candidates = []
+    for idx in range(3):
+        i_strat = top_intros[idx % len(top_intros)]
+        o_strat = top_outros[idx % len(top_outros)]
+        p1 = intro_builders[i_strat]().strip()
+        p3_closing = outro_builders[o_strat]().strip()
+        p3 = f"{res_clean} {p3_closing}".strip()
+        candidates.append({
+            "intro_strategy": i_strat,
+            "outro_strategy": o_strat,
+            "emotion": emotion,
+            "paragraph_1": p1,
+            "paragraph_2": p2_anecdote.strip(),
+            "p3_resolution": res_clean,
+            "p3_closing": p3_closing,
+            "paragraph_3": p3,
+            "source_mode": "local_creative",
+        })
+    return candidates
+
+
+def select_creative_overlay_script(
+    song_title,
+    band_name,
+    p1_hook,
+    p2_anecdote,
+    p3_resolution,
+    historical_info="",
+    recent_history=None,
+    custom_p1=None,
+    custom_p2=None,
+    custom_p3=None,
+    custom_intro_strategy=None,
+    custom_outro_strategy=None,
+    custom_emotion=None,
+):
+    """Genera 2-3 propuestas creativas, las evalúa frente a las últimas 15 historias y elige aleatoriamente entre las mejores."""
+    history = load_recent_overlay_history(HISTORY_WINDOW_SIZE) if recent_history is None else recent_history
+    emotion = custom_emotion or _infer_story_emotion(song_title, band_name, custom_p2 or p2_anecdote, p3_resolution)
+
+    if custom_p1 and custom_p2 and custom_p3:
+        p1 = custom_p1.strip()
+        p2 = custom_p2.strip()
+        p3 = custom_p3.strip()
+        i_strat = (custom_intro_strategy or "curiosidad").strip().lower()
+        o_strat = (custom_outro_strategy or "revelacion").strip().lower()
+        if i_strat not in CREATIVE_INTRO_STRATEGIES:
+            i_strat = "curiosidad"
+        if o_strat not in CREATIVE_OUTRO_STRATEGIES:
+            o_strat = "revelacion"
+        score, notes = score_narrative_diversity(p1, p3, i_strat, o_strat, history)
+        # Separar resolución y cierre para el ramp vocal del párrafo 3
+        sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", p3) if s.strip()]
+        if len(sentences) >= 2:
+            res_part = " ".join(sentences[:-1])
+            close_part = sentences[-1]
+        else:
+            res_part = p3_resolution.strip()
+            close_part = p3
+        chosen = {
+            "intro_strategy": i_strat,
+            "outro_strategy": o_strat,
+            "emotion": emotion,
+            "paragraph_1": p1,
+            "paragraph_2": p2,
+            "p3_resolution": res_part,
+            "p3_closing": close_part,
+            "paragraph_3": p3,
+            "diversity_score": score,
+            "diversity_notes": notes,
+            "source_mode": "agent_custom",
+        }
+        return chosen, [chosen]
+
+    candidates = _generate_openai_creative_candidates(
+        song_title, band_name, p1_hook, p2_anecdote, p3_resolution, historical_info, emotion, history
+    )
+    if len(candidates) < 2:
+        candidates = _build_local_creative_candidates(
+            song_title, band_name, p1_hook, p2_anecdote, p3_resolution, historical_info, emotion, history
+        )
+
+    scored = []
+    for cand in candidates:
+        div_score, notes = score_narrative_diversity(
+            cand["paragraph_1"],
+            cand["paragraph_3"],
+            cand["intro_strategy"],
+            cand["outro_strategy"],
+            history,
+        )
+        # Penalización suave por longitud excesiva para proteger los 45 segundos
+        total_words = len(f"{cand['paragraph_1']} {cand['paragraph_2']} {cand['paragraph_3']}".split())
+        length_penalty = max(0.0, (total_words - 78) * 1.2)
+        final_score = round(max(0.0, div_score - length_penalty), 2)
+        cand["diversity_score"] = final_score
+        cand["diversity_notes"] = notes
+        scored.append(cand)
+
+    scored.sort(key=lambda c: c["diversity_score"], reverse=True)
+    best_score = scored[0]["diversity_score"]
+    # Variación aleatoria entre las mejores propuestas válidas (nunca elegir sistemáticamente solo la primera)
+    top_pool = [c for c in scored if c["diversity_score"] >= best_score - 12.0]
+    chosen = random.choice(top_pool)
+    return chosen, scored
+
 
 def _shorten_sentence_naturally(text, max_words):
     words = text.split()
     if len(words) <= max_words:
         return text
-    # Intentar cortar en punto o coma dentro del límite
     candidate = " ".join(words[:max_words])
     for sep in [". ", "; ", ", "]:
         idx = candidate.rfind(sep)
@@ -2936,21 +3410,29 @@ def _shorten_sentence_naturally(text, max_words):
             return candidate[:idx].strip().rstrip(",;:") + "."
     return candidate.rstrip(",;:") + "."
 
+
 async def generate_voice_only_radio_intro(
     song_title,
     band_name,
     out_mp3_path=None,
     fish_voice=None,
-    fish_model=None
+    fish_model=None,
+    custom_p1=None,
+    custom_p2=None,
+    custom_p3=None,
+    intro_strategy=None,
+    outro_strategy=None,
+    emotion=None,
+    dry_run_script=False,
 ):
     """
     Genera la pista vocal masterizada para overlay de radio tradicional sobre la canción original:
     - 5.0s de música inicial sin voz (reservados por el reproductor)
-    - Párrafo 1 (Intro dinámica + gancho)
-    - Pausa musical real de 1.0s
+    - Párrafo 1 (Intro creativa y original)
+    - Pausa musical exacta de 1.0s
     - Párrafo 2 (Anécdota verificable)
-    - Pausa musical real de 1.0s
-    - Párrafo 3 (Desenlace + Outro dinámico con mayor energía)
+    - Pausa musical exacta de 1.0s
+    - Párrafo 3 (Desenlace + Outro original ligado a la historia)
     - 2.0s de subida progresiva final (reservados por el reproductor)
     - Límite estricto: 5.0 + d1 + 1.0 + d2 + 1.0 + d3 + 2.0 <= 45.0s
     """
@@ -2965,7 +3447,8 @@ async def generate_voice_only_radio_intro(
 
     curated = find_curated_story_entry(song_title, band_name)
     if curated and isinstance(curated[0], dict):
-        entry = curated[0]
+        # Elegir un ángulo verificado (rotando aleatoriamente si hay varios ángulos)
+        entry = random.choice(curated) if len(curated) > 1 and not custom_p2 else curated[0]
         p1_hook = entry.get("p1_hook", "").strip()
         p2_anecdote = entry.get("p2_anecdote", "").strip()
         p3_resolution = entry.get("p3_resolution", "").strip()
@@ -2976,11 +3459,55 @@ async def generate_voice_only_radio_intro(
         p3_resolution = "Una toma que quedó grabada para siempre en la historia del rock."
         historical_info = f"{band_name} — {song_title}"
 
-    chosen_intro, chosen_outro = _select_overlay_intro_and_outro(song_title, band_name, p2_anecdote)
+    recent_history = load_recent_overlay_history(HISTORY_WINDOW_SIZE)
+    chosen, candidates = select_creative_overlay_script(
+        song_title,
+        band_name,
+        p1_hook,
+        p2_anecdote,
+        p3_resolution,
+        historical_info=historical_info,
+        recent_history=recent_history,
+        custom_p1=custom_p1,
+        custom_p2=custom_p2,
+        custom_p3=custom_p3,
+        custom_intro_strategy=intro_strategy,
+        custom_outro_strategy=outro_strategy,
+        custom_emotion=emotion,
+    )
+
+    if dry_run_script:
+        return {
+            "success": True,
+            "dry_run_script": True,
+            "song_title": song_title,
+            "band_name": band_name,
+            "intro_strategy": chosen["intro_strategy"],
+            "outro_strategy": chosen["outro_strategy"],
+            "emotion": chosen["emotion"],
+            "diversity_score": chosen["diversity_score"],
+            "diversity_notes": chosen["diversity_notes"],
+            "source_mode": chosen["source_mode"],
+            "paragraph_1": chosen["paragraph_1"],
+            "paragraph_2": chosen["paragraph_2"],
+            "paragraph_3": chosen["paragraph_3"],
+            "candidates": [
+                {
+                    "intro_strategy": c["intro_strategy"],
+                    "outro_strategy": c["outro_strategy"],
+                    "diversity_score": c["diversity_score"],
+                    "paragraph_1": c["paragraph_1"],
+                    "paragraph_3": c["paragraph_3"],
+                }
+                for c in candidates
+            ],
+            "history_window_checked": len(recent_history),
+            "historical_info": historical_info,
+        }
+
     intro_delay_sec = 5.0
     pause_sec = 1.0
     ramp_sec = 2.0
-    max_voice_audio_sec = 45.0 - intro_delay_sec - ramp_sec  # 38.0s max (incluyendo 2x1.0s pausas = 36.0s de voz)
 
     tmp_prefix = os.path.join("/tmp", f"rockradio_voice_{os.getpid()}_{int(time.time()*1000)}")
     temp_files = []
@@ -2988,23 +3515,26 @@ async def generate_voice_only_radio_intro(
     try:
         for attempt in range(3):
             if attempt == 0:
-                paragraph_1 = f"{chosen_intro['short']} {p1_hook}".strip()
-                paragraph_2 = p2_anecdote.strip()
-                p3_closing = chosen_outro["fmt"](song_title, band_name)
-                paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+                paragraph_1 = chosen["paragraph_1"].strip()
+                paragraph_2 = chosen["paragraph_2"].strip()
+                p3_res = chosen["p3_resolution"].strip()
+                p3_closing = chosen["p3_closing"].strip()
+                paragraph_3 = chosen["paragraph_3"].strip()
             elif attempt == 1:
-                # Si excedió 45s, simplificar intro y acortar ligeramente anécdota sin cortar palabras
-                paragraph_1 = f"Soy Fred, en Rock Radio. {p1_hook}".strip()
-                paragraph_2 = _shorten_sentence_naturally(p2_anecdote.strip(), 34)
-                p3_closing = chosen_outro["fmt"](song_title, band_name)
-                paragraph_3 = f"{p3_resolution} {p3_closing}".strip()
+                # Si excedió 45s, recortar adornos preservando la idea y sin acelerar voz
+                paragraph_1 = _shorten_sentence_naturally(chosen["paragraph_1"].strip(), 15)
+                paragraph_2 = _shorten_sentence_naturally(chosen["paragraph_2"].strip(), 32)
+                p3_res = _shorten_sentence_naturally(chosen["p3_resolution"].strip(), 13)
+                p3_closing = chosen["p3_closing"].strip()
+                paragraph_3 = f"{p3_res} {p3_closing}".strip()
             else:
-                paragraph_1 = p1_hook.strip()
-                paragraph_2 = _shorten_sentence_naturally(p2_anecdote.strip(), 26)
+                paragraph_1 = _shorten_sentence_naturally(p1_hook.strip(), 12)
+                paragraph_2 = _shorten_sentence_naturally(chosen["paragraph_2"].strip(), 25)
+                p3_res = _shorten_sentence_naturally(chosen["p3_resolution"].strip(), 11)
                 p3_closing = f"Escucha {song_title}, de {band_name}."
-                paragraph_3 = f"{_shorten_sentence_naturally(p3_resolution, 12)} {p3_closing}".strip()
+                paragraph_3 = f"{p3_res} {p3_closing}".strip()
 
-            dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
+            dual = build_dual_scripts(paragraph_1, paragraph_2, p3_res, p3_closing, model_name=selected_model)
             att_prefix = f"{tmp_prefix}_a{attempt}"
             p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
                 dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
@@ -3054,7 +3584,7 @@ async def generate_voice_only_radio_intro(
                     p3_eq
                 ], capture_output=True, check=True)
 
-                _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_resolution, p3_closing, boost_db=2.6)
+                _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_res, p3_closing, boost_db=2.6)
 
                 _make_silence_wav(pause_sec, sil_pause)
                 _concat_wavs([p1_norm, sil_pause, p2_norm, sil_pause, p3_mast], voice_wav)
@@ -3087,26 +3617,55 @@ async def generate_voice_only_radio_intro(
                     "totalPresentationSec": total_presentation
                 }
 
-                # Persistir metadatos y control de repeticiones en data/stories_metadata.json
+                # Persistir metadatos y ventana de últimas 15 historias en data/stories_metadata.json
+                generated_at = datetime.now(timezone.utc).isoformat()
+                mentions_brand = (
+                    "fred" in _norm_narrative_text(f"{paragraph_1} {paragraph_3}")
+                    or "rock radio" in _norm_narrative_text(f"{paragraph_1} {paragraph_3}")
+                )
                 try:
                     meta = {}
                     if os.path.exists(STORIES_METADATA_PATH):
                         with open(STORIES_METADATA_PATH, "r", encoding="utf-8") as f:
                             meta = json.load(f)
+
                     li = meta.get("last_overlay_intros", [])
                     lo = meta.get("last_overlay_outros", [])
-                    li.append(chosen_intro["id"])
-                    lo.append(chosen_outro["id"])
-                    meta["last_overlay_intros"] = li[-10:]
-                    meta["last_overlay_outros"] = lo[-10:]
+                    li.append(chosen["intro_strategy"])
+                    lo.append(chosen["outro_strategy"])
+                    meta["last_overlay_intros"] = li[-HISTORY_WINDOW_SIZE:]
+                    meta["last_overlay_outros"] = lo[-HISTORY_WINDOW_SIZE:]
+
+                    hist = meta.get("overlay_narrative_history", [])
+                    if not isinstance(hist, list):
+                        hist = []
+                    hist.append({
+                        "song_title": song_title,
+                        "band_name": band_name,
+                        "intro_strategy": chosen["intro_strategy"],
+                        "outro_strategy": chosen["outro_strategy"],
+                        "emotion": chosen["emotion"],
+                        "paragraph_1": paragraph_1,
+                        "paragraph_3": paragraph_3,
+                        "mentions_brand": mentions_brand,
+                        "diversity_score": chosen["diversity_score"],
+                        "generated_at": generated_at,
+                    })
+                    meta["overlay_narrative_history"] = hist[-HISTORY_WINDOW_SIZE:]
+
                     overlays = meta.get("radio_overlays", {})
                     overlays[slug] = {
                         "song_title": song_title,
                         "band_name": band_name,
-                        "intro_id": chosen_intro["id"],
-                        "intro_name": chosen_intro["name"],
-                        "outro_id": chosen_outro["id"],
-                        "outro_name": chosen_outro["name"],
+                        "intro_id": f"creative_{chosen['intro_strategy']}",
+                        "intro_name": chosen["intro_strategy"],
+                        "intro_strategy": chosen["intro_strategy"],
+                        "outro_id": f"creative_{chosen['outro_strategy']}",
+                        "outro_name": chosen["outro_strategy"],
+                        "outro_strategy": chosen["outro_strategy"],
+                        "emotion": chosen["emotion"],
+                        "source_mode": chosen["source_mode"],
+                        "diversity_score": chosen["diversity_score"],
                         "paragraph_1": paragraph_1,
                         "paragraph_2": paragraph_2,
                         "paragraph_3": paragraph_3,
@@ -3120,7 +3679,7 @@ async def generate_voice_only_radio_intro(
                         "overlay_timings": overlay_timings,
                         "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
                         "ducking": {"intro_db": -8, "voice_db": -17, "pause_db": -7.5, "normal_db": 0},
-                        "generated_at": datetime.now(timezone.utc).isoformat()
+                        "generated_at": generated_at
                     }
                     meta["radio_overlays"] = overlays
                     with open(STORIES_METADATA_PATH, "w", encoding="utf-8") as f:
@@ -3133,10 +3692,11 @@ async def generate_voice_only_radio_intro(
                     "voice_only": True,
                     "song_title": song_title,
                     "band_name": band_name,
-                    "intro_id": chosen_intro["id"],
-                    "intro_name": chosen_intro["name"],
-                    "outro_id": chosen_outro["id"],
-                    "outro_name": chosen_outro["name"],
+                    "intro_strategy": chosen["intro_strategy"],
+                    "outro_strategy": chosen["outro_strategy"],
+                    "emotion": chosen["emotion"],
+                    "source_mode": chosen["source_mode"],
+                    "diversity_score": chosen["diversity_score"],
                     "audio_file": os.path.relpath(out_mp3_path, PROJECT_ROOT).replace("\\", "/"),
                     "duration_sec": round(dur, 2),
                     "total_presentation_sec": total_presentation,
@@ -3158,6 +3718,7 @@ async def generate_voice_only_radio_intro(
             except OSError:
                 pass
 
+
 def main():
     parser = argparse.ArgumentParser(description="Rock Radio — Motor de Historias IA y Fish Audio")
     parser.add_argument("--command", "-c", help="Comando en lenguaje natural (ej: 'Generar historia de Tom Sawyer de Rush')")
@@ -3167,6 +3728,13 @@ def main():
     parser.add_argument("--year", default="", help="Año de lanzamiento")
     parser.add_argument("--mode", choices=["generate", "regenerate_story", "regenerate_voice"], default="generate")
     parser.add_argument("--voice-only", action="store_true", help="Generar solo pista vocal para overlay en vivo sobre la canción")
+    parser.add_argument("--p1", "--paragraph-1", dest="p1", default=None, help="Párrafo 1 personalizado (intro creativa generada por IA)")
+    parser.add_argument("--p2", "--paragraph-2", dest="p2", default=None, help="Párrafo 2 personalizado (anécdota verificada)")
+    parser.add_argument("--p3", "--paragraph-3", dest="p3", default=None, help="Párrafo 3 personalizado (desenlace + outro creativo)")
+    parser.add_argument("--intro-strategy", choices=list(CREATIVE_INTRO_STRATEGIES), default=None, help="Estrategia narrativa de intro")
+    parser.add_argument("--outro-strategy", choices=list(CREATIVE_OUTRO_STRATEGIES), default=None, help="Estrategia narrativa de outro")
+    parser.add_argument("--emotion", default=None, help="Emoción dominante guiada por la anécdota")
+    parser.add_argument("--dry-run-script", action="store_true", help="Solo generar y evaluar propuestas de guion sin invocar síntesis TTS")
     parser.add_argument("--out", default=None, help="Ruta de salida del MP3")
     parser.add_argument("--engine", choices=["fish", "edge"], default=None, help="Motor TTS: fish o edge")
     parser.add_argument("--fish-voice", default=None, help="ID de voz en Fish Audio")
@@ -3180,16 +3748,23 @@ def main():
         run_server(args.port)
         return
 
-    if args.voice_only and args.song and args.band:
+    if (args.voice_only or args.dry_run_script) and args.song and args.band:
         res = asyncio.run(generate_voice_only_radio_intro(
             args.song, args.band,
             out_mp3_path=args.out,
             fish_voice=args.fish_voice,
-            fish_model=args.fish_model
+            fish_model=args.fish_model,
+            custom_p1=args.p1,
+            custom_p2=args.p2,
+            custom_p3=args.p3,
+            intro_strategy=args.intro_strategy,
+            outro_strategy=args.outro_strategy,
+            emotion=args.emotion,
+            dry_run_script=args.dry_run_script,
         ))
         print("\n" + json.dumps(res, ensure_ascii=False, indent=2))
-        if not res.get("within_40s"):
-            print(f"⚠️ Advertencia: duración vocal ({res['duration_sec']}s) supera 40s")
+        if not args.dry_run_script and not res.get("within_45s"):
+            print(f"⚠️ Advertencia: presentación total ({res['total_presentation_sec']}s) supera 45.0s")
         return
 
     if args.command:
@@ -3220,5 +3795,7 @@ def main():
 
     parser.print_help()
 
+
 if __name__ == "__main__":
     main()
+
