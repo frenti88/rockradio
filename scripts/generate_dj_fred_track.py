@@ -412,10 +412,12 @@ MASTER_CURATED_STORIES = {
         )
     ],
     "subdivisions": [
-        (
-            "En 1982, Neil Peart retrató la presión por encajar dentro de los suburbios residenciales norteamericanos. "
-            "Con Geddy Lee tomando protagonismo en el sintetizador Oberheim y la cavernosa voz de Mark Dailey pronunciando el título, el tema se volvió refugio eterno para los espíritus libres."
-        )
+        {
+            "p1_hook": "El refugio sonoro de los espíritus independientes.",
+            "p2_anecdote": "En 1982, Neil Peart retrató la presión de los suburbios norteamericanos sobre los jóvenes por encajar o quedar marginados. Geddy Lee tomó el mando con su sintetizador Oberheim y el locutor Mark Dailey aportó su cavernosa voz pronunciando el título.",
+            "p3_resolution": "Ese giro electrónico marcó una nueva era para el trío canadiense.",
+            "historical_info": "Álbum Signals (1982); letra de Neil Peart, música de Geddy Lee y Alex Lifeson; voz hablada del locutor canadiense Mark Dailey; grabada en Le Studio (Morin-Heights, Quebec)."
+        }
     ],
     "forever young": [
         {
@@ -675,6 +677,14 @@ MASTER_CURATED_STORIES = {
 
 # Metadatos verificables adicionales para canciones clásicas fuera del HTML inicial
 SUPPLEMENTAL_VERIFIED_TRACKS = [
+    {
+        "song_title": "Subdivisions",
+        "band_name": "Rush",
+        "album": "Signals (1982)",
+        "year": "1982",
+        "cover": "img/albums/rush_1982_signals.jpg",
+        "duration_sec": 338
+    },
     {
         "song_title": "One",
         "band_name": "Metallica",
