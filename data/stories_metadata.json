@@ -3149,13 +3149,15 @@
     "intro_08_la_primera_vez",
     "intro_07_archivo_confidencial",
     "intro_02_viaje_inesperado",
-    "intro_04_cinta_olvidada"
+    "intro_04_cinta_olvidada",
+    "intro_09_rebobinando_historia"
   ],
   "last_overlay_outros": [
     "outro_07_cinematografico",
     "outro_05_intriga",
     "outro_03_emotivo",
-    "outro_06_radio_vintage"
+    "outro_06_radio_vintage",
+    "outro_07_cinematografico"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3277,6 +3279,46 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-19T04:00:15.150332+00:00"
+    },
+    "tears_for_fears_everybody_wants_to_rule_the_worl": {
+      "song_title": "Everybody Wants to Rule the World",
+      "band_name": "Tears for Fears",
+      "intro_id": "intro_09_rebobinando_historia",
+      "intro_name": "Rebobinando la historia",
+      "outro_id": "outro_07_cinematografico",
+      "outro_name": "Cinematográfico",
+      "paragraph_1": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un clásico que casi ni se graba.",
+      "paragraph_2": "Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
+      "paragraph_3": "Aquella sesión improvisada alcanzó el número uno mundial. Aquí terminan mis palabras y comienza la música: Everybody Wants to Rule the World, de Tears for Fears.",
+      "vocal_p1": "[warm, confident] Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio. Un clásico que casi ni se graba.",
+      "vocal_p2": "[curious] Se sumó al final de Songs from the Big Chair en 1985, cuando Chris Hughes pidió un corte luminoso y Roland Orzabal lo tejió en una tarde.",
+      "vocal_p3": "[emotional] Aquella sesión improvisada alcanzó el número uno mundial. [excited] Aquí terminan mis palabras y comienza la música: Everybody Wants to Rule the World, de Tears for Fears.",
+      "model": "s2.1-pro-free",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.29,
+        "p2": 9.71,
+        "p3": 9.94
+      },
+      "voice_duration_sec": 28.97,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.29,
+        "pause1End": 8.29,
+        "pause2Start": 18.0,
+        "pause2End": 19.0,
+        "outroEnd": 28.97,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.97
+      },
+      "audio_file": "audio/fred_voice_tears_for_fears_everybody_wants_to_rule_the_worl.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-19T04:07:05.924007+00:00"
     }
   }
 }
