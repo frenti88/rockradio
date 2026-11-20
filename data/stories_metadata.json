@@ -3146,8 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "curiosidad",
-    "contraste",
     "escena_historica",
     "confidencia",
     "inicio_directo",
@@ -3160,11 +3158,11 @@
     "pregunta",
     "curiosidad",
     "escena_historica",
+    "confidencia",
+    "curiosidad",
     "confidencia"
   ],
   "last_overlay_outros": [
-    "continuidad_narrativa",
-    "revelacion",
     "energia",
     "expectativa",
     "reflexion",
@@ -3177,7 +3175,9 @@
     "continuidad_narrativa",
     "revelacion",
     "expectativa",
-    "nostalgia"
+    "nostalgia",
+    "revelacion",
+    "expectativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -5744,33 +5744,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-20T16:57:33.466906+00:00"
+    },
+    "kiss_forever": {
+      "song_title": "Forever",
+      "band_name": "KISS",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
+      "outro_id": "creative_expectativa",
+      "outro_name": "expectativa",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "source_mode": "agent_custom",
+      "diversity_score": 68.27,
+      "paragraph_1": "Meli, baja un instante el ruido del mundo porque esta canción suena hoy solo para ti, mi amorcito.",
+      "paragraph_2": "En 1989, Paul Stanley y Michael Bolton escribieron esta balada sobre encontrar un amor tan real que te hace querer quedarte para siempre. Y así eres tú: la luz que llena de calma y felicidad cada uno de mis días.",
+      "paragraph_3": "Gracias por existir y por hacer mi vida tan bonita, Meli. Con todo el corazón, Forever, de KISS.",
+      "vocal_p1": "[soft, intimate] Meli, baja un instante el ruido del mundo porque esta canción suena hoy solo para ti, mi amorcito.",
+      "vocal_p2": "[calm, reflective] En 1989, Paul Stanley y Michael Bolton escribieron esta balada sobre encontrar un amor tan real que te hace querer quedarte para siempre. Y así eres tú: la luz que llena de calma y felicidad cada uno de mis días.",
+      "vocal_p3": "[warm, soft] Gracias por existir y por hacer mi vida tan bonita, Meli. Con todo el corazón, Forever, de KISS.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 6.72,
+        "p2": 16.77,
+        "p3": 7.66
+      },
+      "voice_duration_sec": 33.2,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.72,
+        "pause1End": 7.72,
+        "pause2Start": 24.49,
+        "pause2End": 25.49,
+        "outroEnd": 33.2,
+        "rampSec": 2.0,
+        "totalPresentationSec": 40.2
+      },
+      "audio_file": "audio/fred_voice_kiss_forever_meli.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T17:06:10.548282+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Kryptonite",
-      "band_name": "3 Doors Down",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "continuidad_narrativa",
-      "emotion": "curiosidad_tecnica",
-      "paragraph_1": "El mayor éxito de 3 Doors Down no nació en un estudio, sino golpeando un pupitre en clase de matemáticas.",
-      "paragraph_3": "De aquel cuaderno escolar salió Kryptonite, de 3 Doors Down.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:35:05.981094+00:00"
-    },
-    {
-      "song_title": "Good Riddance (Time of Your Life)",
-      "band_name": "Green Day",
-      "intro_strategy": "contraste",
-      "outro_strategy": "revelacion",
-      "emotion": "contraste_cultural",
-      "paragraph_1": "El mundo entero la adoptó como un abrazo en graduaciones y despedidas, pero nació desde un sarcasmo amargo.",
-      "paragraph_3": "El público la resignificó para siempre. Disfrutemos Good Riddance (Time of Your Life), de Green Day.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:35:14.074853+00:00"
-    },
     {
       "song_title": "Paradise City",
       "band_name": "Guns N' Roses",
@@ -5926,6 +5947,30 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-20T16:57:33.466906+00:00"
+    },
+    {
+      "song_title": "Forever",
+      "band_name": "KISS",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "nostalgia_cercana",
+      "paragraph_1": "Poca gente imagina a KISS escribiendo su balada más romántica mano a mano con Michael Bolton.",
+      "paragraph_3": "Detrás del maquillaje también latía una enorme sensibilidad. Disfrutemos Forever, de KISS.",
+      "mentions_brand": false,
+      "diversity_score": 80.4,
+      "generated_at": "2026-11-20T17:06:02.242017+00:00"
+    },
+    {
+      "song_title": "Forever",
+      "band_name": "KISS",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Meli, baja un instante el ruido del mundo porque esta canción suena hoy solo para ti, mi amorcito.",
+      "paragraph_3": "Gracias por existir y por hacer mi vida tan bonita, Meli. Con todo el corazón, Forever, de KISS.",
+      "mentions_brand": false,
+      "diversity_score": 68.27,
+      "generated_at": "2026-11-20T17:06:10.548282+00:00"
     }
   ]
 }
