@@ -84,7 +84,7 @@ def load_env_local():
 load_env_local()
 
 DEFAULT_FISH_VOICE = os.environ.get("FISH_VOICE_ID", "e8303fcb17bd4a8ba7709b1f6d3416f7").strip()
-DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "s2.1-pro-free").strip()
+DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "drama-3").strip()
 
 # ==============================================================================
 # 1. REPERTORIO DE 10 APERTURAS DINÁMICAS (Sección 4)
@@ -190,17 +190,17 @@ def strip_vocal_tags(text):
 
 EMOTION_VOCAL_PROFILES = {
     "sensibilidad_contenida": {
-        "opening": "[soft, intimate, reflective]",
-        "story": "[calm, warm, storytelling]",
-        "resolution": "[thoughtful, gentle]",
+        "opening": "[soft, intimate]",
+        "story": "[calm, reflective]",
+        "resolution": "[warm, heartfelt]",
         "closing": "[warm, soft]",
         "temperature": 0.62,
-        "top_p": 0.78,
+        "top_p": 0.76,
         "closing_boost_db": 0.9,
     },
     "intensidad_historica": {
-        "opening": "[warm, confident, lively]",
-        "story": "[warm, animated]",
+        "opening": "[warm, confident]",
+        "story": "[warm, conversational]",
         "resolution": "[confident, warm]",
         "closing": "[smiling, upbeat]",
         "temperature": 0.65,
@@ -208,40 +208,40 @@ EMOTION_VOCAL_PROFILES = {
         "closing_boost_db": 2.2,
     },
     "nostalgia_cercana": {
-        "opening": "[warm, nostalgic, gentle]",
+        "opening": "[warm, nostalgic]",
         "story": "[warm, conversational]",
-        "resolution": "[nostalgic, heartfelt]",
+        "resolution": "[nostalgic, warm]",
         "closing": "[warm, inviting]",
-        "temperature": 0.70,
-        "top_p": 0.82,
-        "closing_boost_db": 1.4,
+        "temperature": 0.63,
+        "top_p": 0.76,
+        "closing_boost_db": 1.3,
     },
     "contraste_cultural": {
-        "opening": "[curious, slightly amused, conversational]",
-        "story": "[engaging, clear]",
-        "resolution": "[surprised, expressive]",
+        "opening": "[curious, conversational]",
+        "story": "[warm, conversational]",
+        "resolution": "[smiling, expressive]",
         "closing": "[confident, warm]",
-        "temperature": 0.78,
-        "top_p": 0.85,
-        "closing_boost_db": 1.9,
-    },
-    "curiosidad_tecnica": {
-        "opening": "[curious, intrigued, warm]",
-        "story": "[engaged, clear, conversational]",
-        "resolution": "[appreciative, confident]",
-        "closing": "[warm, upbeat]",
-        "temperature": 0.75,
-        "top_p": 0.84,
+        "temperature": 0.65,
+        "top_p": 0.78,
         "closing_boost_db": 1.8,
     },
+    "curiosidad_tecnica": {
+        "opening": "[curious, warm]",
+        "story": "[warm, conversational]",
+        "resolution": "[warm, confident]",
+        "closing": "[smiling, upbeat]",
+        "temperature": 0.64,
+        "top_p": 0.77,
+        "closing_boost_db": 1.7,
+    },
     "calidez_radial": {
-        "opening": "[warm, confident, smiling]",
-        "story": "[conversational, friendly]",
-        "resolution": "[warm, expressive]",
-        "closing": "[upbeat, warm]",
-        "temperature": 0.76,
-        "top_p": 0.84,
-        "closing_boost_db": 2.0,
+        "opening": "[warm, confident]",
+        "story": "[warm, conversational]",
+        "resolution": "[warm, smiling]",
+        "closing": "[smiling, upbeat]",
+        "temperature": 0.64,
+        "top_p": 0.77,
+        "closing_boost_db": 1.9,
     },
 }
 
@@ -280,8 +280,8 @@ def build_dual_scripts(
     visible_script = " ".join([x for x in (clean_p1, clean_p2, clean_p3) if x]).strip()
 
     opening_tag = profile["opening"]
-    if "?" in clean_p1 and "curious" not in opening_tag:
-        opening_tag = "[curious, intrigued, warm]"
+    if "?" in clean_p1 and "curious" not in opening_tag and emotion != "sensibilidad_contenida":
+        opening_tag = "[warm, confident]"
 
     if tts_p1 and tts_p2 and tts_p3:
         vocal_p1 = tts_p1.strip()
@@ -290,11 +290,7 @@ def build_dual_scripts(
     elif caps["supports_bracket_tags"]:
         vocal_p1 = f"{opening_tag} {clean_p1}"
         vocal_p2 = f"{profile['story']} {clean_p2}"
-        if caps["supports_inline_xml_tags"]:
-            emphasis_wrap = "soft" if emotion == "sensibilidad_contenida" else "forceful"
-            close_part = f"{profile['closing']} <{emphasis_wrap}>{clean_p3_close}</{emphasis_wrap}>"
-        else:
-            close_part = f"{profile['closing']} {clean_p3_close}"
+        close_part = f"{profile['closing']} {clean_p3_close}"
         if clean_p3_res:
             vocal_p3 = f"{profile['resolution']} {clean_p3_res} {close_part}".strip()
         else:
