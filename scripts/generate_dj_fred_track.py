@@ -2734,7 +2734,12 @@ def run_server(port=5055):
             origin = self.headers.get('Origin', '')
             if re.match(r'^http://(localhost|127\.0\.0\.1)(:\d+)?$', origin):
                 return origin
-            if origin in ('https://www.rockradio.lat', 'https://rockradio.lat'):
+            if origin in (
+                'https://www.trackstories.space',
+                'https://trackstories.space',
+                'https://www.rockradio.lat',
+                'https://rockradio.lat',
+            ):
                 return origin
             return None
 

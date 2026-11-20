@@ -4,6 +4,8 @@
 const APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fred.";
 
 const ALLOWED_ORIGINS = new Set([
+  'https://www.trackstories.space',
+  'https://trackstories.space',
   'https://www.rockradio.lat',
   'https://rockradio.lat'
 ]);
