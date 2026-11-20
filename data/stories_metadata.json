@@ -3146,10 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "inicio_directo",
-    "pregunta",
-    "curiosidad",
-    "escena_historica",
     "confidencia",
     "curiosidad",
     "confidencia",
@@ -3160,14 +3156,14 @@
     "curiosidad",
     "confidencia",
     "curiosidad",
-    "curiosidad"
+    "curiosidad",
+    "curiosidad",
+    "contraste",
+    "curiosidad",
+    "confidencia"
   ],
   "last_overlay_outros": [
     "nostalgia",
-    "continuidad_narrativa",
-    "revelacion",
-    "expectativa",
-    "nostalgia",
     "revelacion",
     "expectativa",
     "revelacion",
@@ -3177,7 +3173,11 @@
     "revelacion",
     "revelacion",
     "nostalgia",
-    "revelacion"
+    "revelacion",
+    "expectativa",
+    "revelacion",
+    "revelacion",
+    "nostalgia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -6059,57 +6059,189 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-20T17:27:22.175749+00:00"
+    },
+    "system_of_a_down_toxicity": {
+      "song_title": "Toxicity",
+      "band_name": "System of a Down",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_expectativa",
+      "outro_name": "expectativa",
+      "outro_strategy": "expectativa",
+      "emotion": "energetic",
+      "source_mode": "agent_custom",
+      "diversity_score": 68.0,
+      "paragraph_1": "Hay discos que llegan en el instante exacto en que el mundo entero está a punto de cambiar.",
+      "paragraph_2": "En septiembre de 2001, System of a Down lanzó Toxicity junto al productor Rick Rubin, quien confesó que no sabía bien qué significaba el tema, pero sí cómo lo hacía sentir. Una semana después, el álbum debutó en el número uno.",
+      "paragraph_3": "Caos melódico e intensidad pura de principio a fin. Prepárate para Toxicity, de System of a Down.",
+      "vocal_p1": "[warm, intriguing] Hay discos que llegan en el instante exacto en que el mundo entero está a punto de cambiar.",
+      "vocal_p2": "En septiembre de 2001, System of a Down lanzó Toxicity junto al productor Rick Rubin, quien confesó que no sabía bien qué significaba el tema, pero sí cómo lo hacía sentir. Una semana después, el álbum debutó en el número uno.",
+      "vocal_p3": "[confident] Caos melódico e intensidad pura de principio a fin. Prepárate para Toxicity, de System of a Down.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 6.26,
+        "p2": 15.67,
+        "p3": 7.83
+      },
+      "voice_duration_sec": 31.79,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.26,
+        "pause1End": 7.26,
+        "pause2Start": 22.92,
+        "pause2End": 23.92,
+        "outroEnd": 31.79,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.79
+      },
+      "audio_file": "audio/fred_voice_system_of_a_down_toxicity.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T18:04:37.353664+00:00"
+    },
+    "deftones_minerva": {
+      "song_title": "Minerva",
+      "band_name": "Deftones",
+      "intro_id": "creative_contraste",
+      "intro_name": "contraste",
+      "intro_strategy": "contraste",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "melancholic",
+      "source_mode": "agent_custom",
+      "diversity_score": 48.2,
+      "paragraph_1": "Después de la cima que significó White Pony, Deftones eligió no repetirse y sumergirse en un muro de guitarras hipnótico.",
+      "paragraph_2": "En abril de 2003 estrenaron este primer sencillo de su cuarto álbum homónimo, donde Chino Moreno y Stephen Carpenter fundieron el peso del metal alternativo con la bruma etérea del shoegaze en una etapa personal muy intensa.",
+      "paragraph_3": "Belleza y distorsión flotando en el mismo acorde. Déjate llevar por Minerva, de Deftones.",
+      "vocal_p1": "[warm, reflective] Después de la cima que significó White Pony, Deftones eligió no repetirse y sumergirse en un muro de guitarras hipnótico.",
+      "vocal_p2": "En abril de 2003 estrenaron este primer sencillo de su cuarto álbum homónimo, donde Chino Moreno y Stephen Carpenter fundieron el peso del metal alternativo con la bruma etérea del shoegaze en una etapa personal muy intensa.",
+      "vocal_p3": "[soft, warm] Belleza y distorsión flotando en el mismo acorde. Déjate llevar por Minerva, de Deftones.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 9.13,
+        "p2": 15.12,
+        "p3": 7.19
+      },
+      "voice_duration_sec": 33.49,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 9.13,
+        "pause1End": 10.13,
+        "pause2Start": 25.26,
+        "pause2End": 26.26,
+        "outroEnd": 33.49,
+        "rampSec": 2.0,
+        "totalPresentationSec": 40.49
+      },
+      "audio_file": "audio/fred_voice_deftones_minerva.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T18:04:45.774868+00:00"
+    },
+    "the_police_wrapped_around_your_finger": {
+      "song_title": "Wrapped Around Your Finger",
+      "band_name": "The Police",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "curious",
+      "source_mode": "agent_custom",
+      "diversity_score": 0.0,
+      "paragraph_1": "Pocos logran meter mitología griega y la leyenda de Fausto en un hit de los ochenta.",
+      "paragraph_2": "En 1983, Sting la escribió para Synchronicity, el disco final de The Police, grabado en Montserrat con la banda en cuartos separados por la tensión. Su letra cuenta cómo el aprendiz termina volteando las reglas del poder.",
+      "paragraph_3": "Fue su último Top 10 estadounidense y sigue sonando hipnótica. Aquí viene Wrapped Around Your Finger, de The Police.",
+      "vocal_p1": "[warm, curious] Pocos logran meter mitología griega y la leyenda de Fausto en un hit de los ochenta.",
+      "vocal_p2": "En 1983, Sting la escribió para Synchronicity, el disco final de The Police, grabado en Montserrat con la banda en cuartos separados por la tensión. Su letra cuenta cómo el aprendiz termina volteando las reglas del poder.",
+      "vocal_p3": "[warm, confident] Fue su último Top 10 estadounidense y sigue sonando hipnótica. Aquí viene Wrapped Around Your Finger, de The Police.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 5.53,
+        "p2": 16.7,
+        "p3": 8.79
+      },
+      "voice_duration_sec": 33.07,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.53,
+        "pause1End": 6.53,
+        "pause2Start": 23.23,
+        "pause2End": 24.23,
+        "outroEnd": 33.07,
+        "rampSec": 2.0,
+        "totalPresentationSec": 40.07
+      },
+      "audio_file": "audio/fred_voice_the_police_wrapped_around_your_finger.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T18:04:53.900716+00:00"
+    },
+    "rem_nightswimming": {
+      "song_title": "Nightswimming",
+      "band_name": "R.E.M.",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgic",
+      "source_mode": "agent_custom",
+      "diversity_score": 85.53,
+      "paragraph_1": "Mike Mills estuvo a punto de tirar a la basura la melodía de piano más inolvidable que compuso.",
+      "paragraph_2": "La grabó en Miami usando el mismo piano con el que se registró Layla, y Michael Stipe cantó la letra casi de una sola toma para Automatic for the People en 1992, con arreglos de cuerdas de John Paul Jones, de Led Zeppelin.",
+      "paragraph_3": "Nostalgia nocturna en su forma más pura. Respira hondo con Nightswimming, de R.E.M.",
+      "vocal_p1": "[warm, nostalgic] Mike Mills estuvo a punto de tirar a la basura la melodía de piano más inolvidable que compuso.",
+      "vocal_p2": "La grabó en Miami usando el mismo piano con el que se registró Layla, y Michael Stipe cantó la letra casi de una sola toma para Automatic for the People en 1992, con arreglos de cuerdas de John Paul Jones, de Led Zeppelin.",
+      "vocal_p3": "[soft, warm] Nostalgia nocturna en su forma más pura. Respira hondo con Nightswimming, de Ar I Em.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 6.57,
+        "p2": 15.04,
+        "p3": 8.08
+      },
+      "voice_duration_sec": 31.74,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.57,
+        "pause1End": 7.57,
+        "pause2Start": 22.61,
+        "pause2End": 23.61,
+        "outroEnd": 31.74,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.74
+      },
+      "audio_file": "audio/fred_voice_rem_nightswimming.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T18:05:02.234517+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Wake Me Up When September Ends",
-      "band_name": "Green Day",
-      "intro_strategy": "inicio_directo",
-      "outro_strategy": "nostalgia",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Esta es probablemente la canción más íntima y dolorosa que ha escrito Billie Joe Armstrong.",
-      "paragraph_3": "Una memoria que sigue tocando corazones. Escuchemos Wake Me Up When September Ends, de Green Day.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T16:46:14.074781+00:00"
-    },
-    {
-      "song_title": "Cuando Seas Grande",
-      "band_name": "Miguel Mateos",
-      "intro_strategy": "pregunta",
-      "outro_strategy": "continuidad_narrativa",
-      "emotion": "calidez_radial",
-      "paragraph_1": "¿Quién en Latinoamérica no ha cantado alguna vez el famoso consejo al nene de esta canción?",
-      "paragraph_3": "Sigue tan vigente como en los ochenta. Disfrutemos Cuando Seas Grande, de Miguel Mateos.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T16:46:21.700560+00:00"
-    },
-    {
-      "song_title": "Home Sweet Home",
-      "band_name": "Mötley Crüe",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "nostalgia_cercana",
-      "paragraph_1": "Esta balada al piano fue tan pedida en MTV que el canal tuvo que inventar una regla nueva solo para frenarla.",
-      "paragraph_3": "Cambió las power ballads para siempre. Disfrutemos Home Sweet Home, de Mötley Crüe.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T16:57:17.747076+00:00"
-    },
-    {
-      "song_title": "I Don't Want to Miss a Thing",
-      "band_name": "Aerosmith",
-      "intro_strategy": "escena_historica",
-      "outro_strategy": "expectativa",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Tras casi treinta años de carrera, el primer número uno de Aerosmith llegó gracias a una frase escuchada en televisión.",
-      "paragraph_3": "La voz de Steven Tyler la volvió eterna. Escuchemos I Don't Want to Miss a Thing, de Aerosmith.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T16:57:25.320140+00:00"
-    },
     {
       "song_title": "I Don't Want to Miss a Thing",
       "band_name": "Aerosmith",
@@ -6241,6 +6373,54 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-20T17:27:22.175749+00:00"
+    },
+    {
+      "song_title": "Toxicity",
+      "band_name": "System of a Down",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "expectativa",
+      "emotion": "energetic",
+      "paragraph_1": "Hay discos que llegan en el instante exacto en que el mundo entero está a punto de cambiar.",
+      "paragraph_3": "Caos melódico e intensidad pura de principio a fin. Prepárate para Toxicity, de System of a Down.",
+      "mentions_brand": false,
+      "diversity_score": 68.0,
+      "generated_at": "2026-11-20T18:04:37.353664+00:00"
+    },
+    {
+      "song_title": "Minerva",
+      "band_name": "Deftones",
+      "intro_strategy": "contraste",
+      "outro_strategy": "revelacion",
+      "emotion": "melancholic",
+      "paragraph_1": "Después de la cima que significó White Pony, Deftones eligió no repetirse y sumergirse en un muro de guitarras hipnótico.",
+      "paragraph_3": "Belleza y distorsión flotando en el mismo acorde. Déjate llevar por Minerva, de Deftones.",
+      "mentions_brand": false,
+      "diversity_score": 48.2,
+      "generated_at": "2026-11-20T18:04:45.774868+00:00"
+    },
+    {
+      "song_title": "Wrapped Around Your Finger",
+      "band_name": "The Police",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "curious",
+      "paragraph_1": "Pocos logran meter mitología griega y la leyenda de Fausto en un hit de los ochenta.",
+      "paragraph_3": "Fue su último Top 10 estadounidense y sigue sonando hipnótica. Aquí viene Wrapped Around Your Finger, de The Police.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-20T18:04:53.900716+00:00"
+    },
+    {
+      "song_title": "Nightswimming",
+      "band_name": "R.E.M.",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgic",
+      "paragraph_1": "Mike Mills estuvo a punto de tirar a la basura la melodía de piano más inolvidable que compuso.",
+      "paragraph_3": "Nostalgia nocturna en su forma más pura. Respira hondo con Nightswimming, de R.E.M.",
+      "mentions_brand": false,
+      "diversity_score": 85.53,
+      "generated_at": "2026-11-20T18:05:02.234517+00:00"
     }
   ]
 }
