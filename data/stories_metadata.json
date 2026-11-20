@@ -3146,8 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "memoria_musical",
-    "viaje_temporal",
     "confidencia",
     "inicio_directo",
     "escena_historica",
@@ -3160,11 +3158,11 @@
     "escena_historica",
     "memoria_musical",
     "curiosidad",
-    "contraste"
+    "contraste",
+    "escena_historica",
+    "confidencia"
   ],
   "last_overlay_outros": [
-    "expectativa",
-    "energia",
     "continuidad_narrativa",
     "nostalgia",
     "energia",
@@ -3177,7 +3175,9 @@
     "nostalgia",
     "expectativa",
     "continuidad_narrativa",
-    "revelacion"
+    "revelacion",
+    "energia",
+    "expectativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -3191,7 +3191,7 @@
       "outro_strategy": "expectativa",
       "emotion": "sensibilidad_contenida",
       "source_mode": "agent_custom",
-      "diversity_score": 54.73,
+      "diversity_score": 84.13,
       "paragraph_1": "Te cuento algo curioso en Rock Radio: Axl Rose guardó esta melodía casi diez años en su cabeza.",
       "paragraph_2": "Desde 1983 la tocaba en cada piano que veía, aunque la banda dudaba en lanzar una balada sinfónica tan larga, hasta que en 1991 el solo épico de Slash la volvió el tema más extenso del Top 10 de Billboard.",
       "paragraph_3": "Toda esa paciencia valió cada segundo. Déjate llevar por November Rain, de Guns N' Roses.",
@@ -3201,20 +3201,20 @@
       "model": "drama-3",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 8.04,
-        "p2": 18.49,
-        "p3": 7.66
+        "p1": 7.65,
+        "p2": 18.23,
+        "p3": 6.78
       },
-      "voice_duration_sec": 36.23,
+      "voice_duration_sec": 34.69,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 8.04,
-        "pause1End": 9.04,
-        "pause2Start": 27.53,
-        "pause2End": 28.53,
-        "outroEnd": 36.23,
+        "pause1Start": 7.65,
+        "pause1End": 8.65,
+        "pause2Start": 26.87,
+        "pause2End": 27.87,
+        "outroEnd": 34.69,
         "rampSec": 2.0,
-        "totalPresentationSec": 43.23
+        "totalPresentationSec": 41.69
       },
       "audio_file": "audio/fred_voice_guns_n_roses_november_rain.mp3",
       "ducking": {
@@ -3223,7 +3223,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T14:30:20.334403+00:00"
+      "generated_at": "2026-11-20T14:54:45.651391+00:00"
     },
     "soda_stereo_trtame_suavemente": {
       "song_title": "Trátame Suavemente",
@@ -4541,7 +4541,7 @@
       "outro_strategy": "energia",
       "emotion": "intensidad_historica",
       "source_mode": "agent_custom",
-      "diversity_score": 51.67,
+      "diversity_score": 84.13,
       "paragraph_1": "Este himno no nació en un gran estudio, sino en la parte trasera de una furgoneta alquilada.",
       "paragraph_2": "En 1986, volviendo agotados de tocar en San Francisco, Slash sacó el riff en acústica mientras Axl Rose improvisaba versos sobre escapar a una ciudad ideal, y todos votaron por dejar ese coro.",
       "paragraph_3": "Así explotó Appetite for Destruction en 1987. Súbele todo el volumen a esta joya: Paradise City, de Guns N' Roses.",
@@ -4551,20 +4551,20 @@
       "model": "drama-3",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 5.41,
-        "p2": 15.07,
-        "p3": 10.84
+        "p1": 5.79,
+        "p2": 15.63,
+        "p3": 9.57
       },
-      "voice_duration_sec": 33.36,
+      "voice_duration_sec": 33.02,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 5.41,
-        "pause1End": 6.41,
-        "pause2Start": 21.48,
-        "pause2End": 22.48,
-        "outroEnd": 33.36,
+        "pause1Start": 5.79,
+        "pause1End": 6.79,
+        "pause2Start": 22.42,
+        "pause2End": 23.42,
+        "outroEnd": 33.02,
         "rampSec": 2.0,
-        "totalPresentationSec": 40.36
+        "totalPresentationSec": 40.02
       },
       "audio_file": "audio/fred_voice_guns_n_roses_paradise_city.mp3",
       "ducking": {
@@ -4573,7 +4573,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T14:29:15.734376+00:00"
+      "generated_at": "2026-11-20T14:54:36.811443+00:00"
     },
     "van_halen_dreams": {
       "song_title": "Dreams",
@@ -5298,30 +5298,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Urgent",
-      "band_name": "Foreigner",
-      "intro_strategy": "memoria_musical",
-      "outro_strategy": "expectativa",
-      "emotion": "curiosidad_tecnica",
-      "paragraph_1": "Pocas veces un solo de saxofón se roba el protagonismo en una canción de rock con tanta clase.",
-      "paragraph_3": "Espera ese estallido de saxo en esta joya: Urgent, de Foreigner.",
-      "mentions_brand": false,
-      "diversity_score": 84.13,
-      "generated_at": "2026-11-20T14:33:25.790244+00:00"
-    },
-    {
-      "song_title": "Eye of the Tiger",
-      "band_name": "Survivor",
-      "intro_strategy": "viaje_temporal",
-      "outro_strategy": "energia",
-      "emotion": "intensidad_historica",
-      "paragraph_1": "En 1982, una llamada directa de Sylvester Stallone puso a Survivor frente a la oportunidad de su vida.",
-      "paragraph_3": "Se quedó seis semanas en la cima estadounidense. Súbele todo el volumen a Eye of the Tiger, de Survivor.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:33:33.300071+00:00"
-    },
-    {
       "song_title": "Pet Sematary",
       "band_name": "Ramones",
       "intro_strategy": "confidencia",
@@ -5476,6 +5452,30 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-20T14:35:14.074853+00:00"
+    },
+    {
+      "song_title": "Paradise City",
+      "band_name": "Guns N' Roses",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "Este himno no nació en un gran estudio, sino en la parte trasera de una furgoneta alquilada.",
+      "paragraph_3": "Así explotó Appetite for Destruction en 1987. Súbele todo el volumen a esta joya: Paradise City, de Guns N' Roses.",
+      "mentions_brand": false,
+      "diversity_score": 84.13,
+      "generated_at": "2026-11-20T14:54:36.811443+00:00"
+    },
+    {
+      "song_title": "November Rain",
+      "band_name": "Guns N' Roses",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Te cuento algo curioso en Rock Radio: Axl Rose guardó esta melodía casi diez años en su cabeza.",
+      "paragraph_3": "Toda esa paciencia valió cada segundo. Déjate llevar por November Rain, de Guns N' Roses.",
+      "mentions_brand": true,
+      "diversity_score": 84.13,
+      "generated_at": "2026-11-20T14:54:45.651391+00:00"
     }
   ]
 }

@@ -1818,12 +1818,13 @@ FISH_PHONETICS = [
 
 
 def apply_fish_phonetics(text, model=None):
-    """Para drama-3 (bilingüe nativo) conserva el inglés real y solo limpia ';' y 'Dr.'; para otros modelos aplica guía fonética."""
+    """Para drama-3 (bilingüe nativo) conserva el inglés real y solo limpia ';', 'Dr.' y abreviaturas como 'N''."""
     if not text:
         return ""
     result = text.replace(";", ",")
     if model and "drama" in str(model).lower():
         result = re.sub(r'\bDr\.\s+', 'Doctor ', result)
+        result = re.sub(r"\bGuns\s+N['’]?\s*Roses\b", 'Guns and Roses', result, flags=re.IGNORECASE)
         return result
     for pattern, replacement in FISH_PHONETICS:
         result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
