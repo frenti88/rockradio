@@ -3146,7 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "confidencia",
     "inicio_directo",
     "escena_historica",
     "confidencia",
@@ -3160,10 +3159,10 @@
     "curiosidad",
     "contraste",
     "escena_historica",
-    "confidencia"
+    "confidencia",
+    "inicio_directo"
   ],
   "last_overlay_outros": [
-    "continuidad_narrativa",
     "nostalgia",
     "energia",
     "expectativa",
@@ -3177,7 +3176,8 @@
     "continuidad_narrativa",
     "revelacion",
     "energia",
-    "expectativa"
+    "expectativa",
+    "reflexion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -5294,21 +5294,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-20T14:35:14.074853+00:00"
+    },
+    "linkin_park_crawling": {
+      "song_title": "Crawling",
+      "band_name": "Linkin Park",
+      "intro_id": "creative_inicio_directo",
+      "intro_name": "inicio_directo",
+      "intro_strategy": "inicio_directo",
+      "outro_id": "creative_reflexion",
+      "outro_name": "reflexion",
+      "outro_strategy": "reflexion",
+      "emotion": "sensibilidad_contenida",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Chester Bennington confesó que esta fue la canción más difícil de cantar en vivo y la más personal de su debut.",
+      "paragraph_2": "Para Hybrid Theory en el año 2000, escribió sin rodeos sobre perder el control frente a sus propias batallas internas, sosteniendo un estribillo tan crudo que les dio el Grammy a mejor interpretación de hard rock en 2002.",
+      "paragraph_3": "Pocas voces transmiten una honestidad así. Escuchemos Crawling, de Linkin Park.",
+      "vocal_p1": "[soft, intimate] Chester Bennington confesó que esta fue la canción más difícil de cantar en vivo y la más personal de su debut.",
+      "vocal_p2": "[calm, reflective] Para Hybrid Theory en el año 2000, escribió sin rodeos sobre perder el control frente a sus propias batallas internas, sosteniendo un estribillo tan crudo que les dio el Grammy a mejor interpretación de hard rock en 2002.",
+      "vocal_p3": "[warm, soft] Pocas voces transmiten una honestidad así. Escuchemos Crawling, de Linkin Park.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 6.8,
+        "p2": 14.38,
+        "p3": 5.64
+      },
+      "voice_duration_sec": 28.87,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.8,
+        "pause1End": 7.8,
+        "pause2Start": 22.17,
+        "pause2End": 23.17,
+        "outroEnd": 28.87,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.87
+      },
+      "audio_file": "audio/fred_voice_linkin_park_crawling.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T15:50:51.438433+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Pet Sematary",
-      "band_name": "Ramones",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "continuidad_narrativa",
-      "emotion": "calidez_radial",
-      "paragraph_1": "En Rock Radio nos encantan los cruces inesperados, como el día en que Stephen King invitó a los Ramones a su casa.",
-      "paragraph_3": "Fue su mayor éxito radial de los ochenta. Desde aquel sótano llega Pet Sematary, de Ramones.",
-      "mentions_brand": true,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:33:40.981018+00:00"
-    },
     {
       "song_title": "Dreams",
       "band_name": "Fleetwood Mac",
@@ -5476,6 +5509,18 @@
       "mentions_brand": true,
       "diversity_score": 84.13,
       "generated_at": "2026-11-20T14:54:45.651391+00:00"
+    },
+    {
+      "song_title": "Crawling",
+      "band_name": "Linkin Park",
+      "intro_strategy": "inicio_directo",
+      "outro_strategy": "reflexion",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Chester Bennington confesó que esta fue la canción más difícil de cantar en vivo y la más personal de su debut.",
+      "paragraph_3": "Pocas voces transmiten una honestidad así. Escuchemos Crawling, de Linkin Park.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-20T15:50:51.438433+00:00"
     }
   ]
 }
