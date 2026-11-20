@@ -199,13 +199,13 @@ EMOTION_VOCAL_PROFILES = {
         "closing_boost_db": 0.9,
     },
     "intensidad_historica": {
-        "opening": "[confident, intrigued, lively]",
+        "opening": "[warm, confident, lively]",
         "story": "[energetic, animated]",
         "resolution": "[excited, dynamic]",
         "closing": "[energetic, smiling, upbeat]",
-        "temperature": 0.86,
-        "top_p": 0.88,
-        "closing_boost_db": 2.8,
+        "temperature": 0.74,
+        "top_p": 0.82,
+        "closing_boost_db": 2.6,
     },
     "nostalgia_cercana": {
         "opening": "[warm, nostalgic, gentle]",
