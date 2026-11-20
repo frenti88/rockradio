@@ -3146,10 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "confidencia",
-    "inicio_directo",
-    "escena_historica",
-    "curiosidad",
     "contraste",
     "viaje_temporal",
     "confidencia",
@@ -3160,13 +3156,13 @@
     "curiosidad",
     "contraste",
     "memoria_musical",
-    "escena_historica"
+    "escena_historica",
+    "pregunta",
+    "confidencia",
+    "pregunta",
+    "confidencia"
   ],
   "last_overlay_outros": [
-    "continuidad_narrativa",
-    "nostalgia",
-    "energia",
-    "revelacion",
     "expectativa",
     "continuidad_narrativa",
     "reflexion",
@@ -3177,7 +3173,11 @@
     "continuidad_narrativa",
     "transicion_directa",
     "expectativa",
-    "energia"
+    "energia",
+    "energia",
+    "expectativa",
+    "energia",
+    "expectativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -4488,38 +4488,38 @@
     "pink_floyd_comfortably_numb": {
       "song_title": "Comfortably Numb",
       "band_name": "Pink Floyd",
-      "intro_id": "creative_memoria_musical",
-      "intro_name": "memoria_musical",
-      "intro_strategy": "memoria_musical",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
       "outro_id": "creative_expectativa",
       "outro_name": "expectativa",
       "outro_strategy": "expectativa",
       "emotion": "sensibilidad_contenida",
       "source_mode": "agent_custom",
-      "diversity_score": 66.4,
-      "paragraph_1": "Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
-      "paragraph_2": "En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales; después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
-      "paragraph_3": "Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
-      "vocal_p1": "[soft, intimate, reflective] Cuando baja la luz... y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
-      "vocal_p2": "[calm, warm, storytelling] En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales... [reflective] Después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
-      "vocal_p3": "[thoughtful, gentle] Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía... [warm, soft] Ahora, deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "diversity_score": 79.93,
+      "paragraph_1": "Baja el ruido de todo lo demás y escúchame esto: detrás de una canción tan hipnótica hay una noche realmente dura.",
+      "paragraph_2": "En 1977, antes de tocar en Filadelfia, Roger Waters tenía unos dolores terribles y un médico le inyectó un tranquilizante para poder salir al escenario. En 1979 volcó esa extraña desconexión sobre una maqueta que David Gilmour guardaba para The Wall.",
+      "paragraph_3": "Con ese solo descomunal de Gilmour nació una auténtica obra maestra. Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
+      "vocal_p1": "[soft, warm, intimate] Baja el ruido de todo lo demás y escúchame esto, detrás de una canción tan hipnótica hay una noche realmente dura.",
+      "vocal_p2": "[calm, storytelling, reflective] En 1977, antes de tocar en Filadelfia, Roger Waters tenía unos dolores terribles y un médico le inyectó un tranquilizante para poder salir al escenario. [thoughtful, gentle] En 1979 volcó esa extraña desconexión sobre una maqueta que David Gilmour guardaba para The Wall.",
+      "vocal_p3": "[warm, heartfelt] Con ese solo descomunal de Gilmour nació una auténtica obra maestra. [soft, inviting] Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 8.4,
-        "p2": 15.78,
-        "p3": 11.25
+        "p1": 5.97,
+        "p2": 17.84,
+        "p3": 9.28
       },
-      "voice_duration_sec": 37.46,
+      "voice_duration_sec": 35.13,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 8.4,
-        "pause1End": 9.4,
-        "pause2Start": 25.18,
-        "pause2End": 26.18,
-        "outroEnd": 37.46,
+        "pause1Start": 5.97,
+        "pause1End": 6.97,
+        "pause2Start": 24.82,
+        "pause2End": 25.82,
+        "outroEnd": 35.13,
         "rampSec": 2.0,
-        "totalPresentationSec": 44.46
+        "totalPresentationSec": 42.13
       },
       "audio_file": "audio/fred_voice_pink_floyd_comfortably_numb.mp3",
       "ducking": {
@@ -4528,7 +4528,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T01:31:23.097237+00:00"
+      "generated_at": "2026-11-20T02:03:58.258091+00:00"
     },
     "guns_n_roses_paradise_city": {
       "song_title": "Paradise City",
@@ -4848,38 +4848,38 @@
     "mtley_cre_kickstart_my_heart": {
       "song_title": "Kickstart My Heart",
       "band_name": "Mötley Crüe",
-      "intro_id": "creative_escena_historica",
-      "intro_name": "escena_historica",
-      "intro_strategy": "escena_historica",
+      "intro_id": "creative_pregunta",
+      "intro_name": "pregunta",
+      "intro_strategy": "pregunta",
       "outro_id": "creative_energia",
       "outro_name": "energia",
       "outro_strategy": "energia",
       "emotion": "intensidad_historica",
       "source_mode": "agent_custom",
-      "diversity_score": 0.0,
-      "paragraph_1": "El título de esta canción no es una metáfora: nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
-      "paragraph_2": "En diciembre de 1987, tras una sobredosis en Los Ángeles, los paramédicos lo reanimaron con dos inyecciones de adrenalina al pecho; dos años después convirtió ese susto en este motor de Dr. Feelgood, con Mick Mars imitando una moto.",
-      "paragraph_3": "Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock. Suelta el embrague con Kickstart My Heart, de Mötley Crüe.",
-      "vocal_p1": "[curious, intrigued, lively] El título de esta canción no es una metáfora... [surprised, energetic] ¡Nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto!",
-      "vocal_p2": "[energetic, animated] En diciembre de 1987, tras una sobredosis en Los Ángeles, los paramédicos lo reanimaron con dos inyecciones de adrenalina al pecho; [confident, upbeat] dos años después convirtió ese susto en este motor de Dr. Feelgood, con Mick Mars imitando una moto.",
-      "vocal_p3": "[excited, dynamic] Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock... [energetic, smiling, upbeat] ¡Suelta el embrague con Kickstart My Heart, de Mötley Crüe!",
+      "diversity_score": 28.33,
+      "paragraph_1": "¿Sabes qué es lo más loco de este clásico? Que nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
+      "paragraph_2": "En diciembre de 1987, una sobredosis casi apaga su historia, hasta que dos dosis de adrenalina al pecho lo trajeron de vuelta. Y oye, cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
+      "paragraph_3": "Pocas historias del rock tienen semejante locura. ¡Súbele a todo volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
+      "vocal_p1": "[curious, smiling, conversational] ¿Sabes qué es lo más loco de este clásico? [surprised, lively] ¡Que nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto!",
+      "vocal_p2": "[animated, storytelling] En diciembre de 1987, una sobredosis casi apaga su historia, hasta que dos dosis de adrenalina al pecho lo trajeron de vuelta. [amused, chuckling] Y oye, cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
+      "vocal_p3": "[excited, warm, smiling] Pocas historias del rock tienen semejante locura. [energetic, upbeat] ¡Súbele a todo volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 6.68,
-        "p2": 15.44,
-        "p3": 7.79
+        "p1": 5.99,
+        "p2": 17.92,
+        "p3": 8.06
       },
-      "voice_duration_sec": 31.95,
+      "voice_duration_sec": 34.01,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 6.68,
-        "pause1End": 7.68,
-        "pause2Start": 23.12,
-        "pause2End": 24.12,
-        "outroEnd": 31.95,
+        "pause1Start": 5.99,
+        "pause1End": 6.99,
+        "pause2Start": 24.9,
+        "pause2End": 25.9,
+        "outroEnd": 34.01,
         "rampSec": 2.0,
-        "totalPresentationSec": 38.95
+        "totalPresentationSec": 41.01
       },
       "audio_file": "audio/fred_voice_mtley_cre_kickstart_my_heart.mp3",
       "ducking": {
@@ -4888,7 +4888,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T01:31:42.714564+00:00"
+      "generated_at": "2026-11-20T02:03:36.779944+00:00"
     },
     "ratt_round_and_round": {
       "song_title": "Round and Round",
@@ -5298,54 +5298,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Pet Sematary",
-      "band_name": "Ramones",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "continuidad_narrativa",
-      "emotion": "calidez_radial",
-      "paragraph_1": "En Rock Radio nos encantan los cruces inesperados, como el día en que Stephen King invitó a los Ramones a su casa en Maine.",
-      "paragraph_3": "Se convirtió en su mayor éxito radial de los ochenta. Desde aquel sótano en Maine llega Pet Sematary, de Ramones.",
-      "mentions_brand": true,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:00:13.017934+00:00"
-    },
-    {
-      "song_title": "Dreams",
-      "band_name": "Fleetwood Mac",
-      "intro_strategy": "inicio_directo",
-      "outro_strategy": "nostalgia",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Diez minutos frente a un teclado en un cuarto vacío bastaron para definir el pulso de Rumours.",
-      "paragraph_3": "Terminó siendo el único número uno del grupo en el Billboard Hot 100. De aquella tarde de 1976 sigue sonando Dreams, de Fleetwood Mac.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:00:34.850388+00:00"
-    },
-    {
-      "song_title": "Kickstart My Heart",
-      "band_name": "Mötley Crüe",
-      "intro_strategy": "escena_historica",
-      "outro_strategy": "energia",
-      "emotion": "intensidad_historica",
-      "paragraph_1": "El título de esta canción no es una metáfora: nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
-      "paragraph_3": "Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock. Suelta el embrague con Kickstart My Heart, de Mötley Crüe.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:21:42.872184+00:00"
-    },
-    {
-      "song_title": "Round and Round",
-      "band_name": "Ratt",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "calidez_radial",
-      "paragraph_1": "Pocas bandas de los ochenta se lanzaron al estrellato con un cómplice tan inesperado en su primer gran video.",
-      "paragraph_3": "El sencillo entró al Top 15 y definió el sonido de Sunset Strip. Con esa escena en la cabeza, disfruta Round and Round, de Ratt.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:22:06.298565+00:00"
-    },
-    {
       "song_title": "Love Song",
       "band_name": "Tesla",
       "intro_strategy": "contraste",
@@ -5476,6 +5428,54 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-20T01:31:42.714564+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "pregunta",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "¿Sabes qué es lo más loco de esta canción? Que su título no es ninguna.",
+      "paragraph_3": "De verdad, pocas historias del rock tienen semejante locura. Así que súbele a todo volumen y disfrutemos esta bestialidad de canción: Kickstart My Heart, de Mötley Crüe.",
+      "mentions_brand": false,
+      "diversity_score": 2.13,
+      "generated_at": "2026-11-20T02:01:53.402637+00:00"
+    },
+    {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Baja un poco el ruido de todo lo demás y escúchame esto.",
+      "paragraph_3": "Entre la orquesta de Michael Kamen y ese solo descomunal de Gilmour nació. Súbele con calma y déjate llevar por esta maravilla: Comfortably Numb, de Pink Floyd.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-20T02:02:45.395456+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "pregunta",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "¿Sabes qué es lo más loco de este clásico? Que nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
+      "paragraph_3": "Pocas historias del rock tienen semejante locura. ¡Súbele a todo volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
+      "mentions_brand": false,
+      "diversity_score": 28.33,
+      "generated_at": "2026-11-20T02:03:36.779944+00:00"
+    },
+    {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Baja el ruido de todo lo demás y escúchame esto: detrás de una canción tan hipnótica hay una noche realmente dura.",
+      "paragraph_3": "Con ese solo descomunal de Gilmour nació una auténtica obra maestra. Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
+      "mentions_brand": false,
+      "diversity_score": 79.93,
+      "generated_at": "2026-11-20T02:03:58.258091+00:00"
     }
   ]
 }

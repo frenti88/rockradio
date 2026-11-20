@@ -1794,6 +1794,42 @@ def apply_english_phonetics(text):
         result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
     return result
 
+
+# Guía fonética sutil exclusiva para tts_text de Fish Audio (nunca altera visible_text)
+FISH_PHONETICS = [
+    (r'\bDr\.\s*Feelgood\b', 'Dóctor Fílgud'),
+    (r'\bComfortably Numb\b', 'Cámfortabli Nam'),
+    (r'\bThe Wall\b', 'De Uól'),
+    (r'\bPink Floyd\b', 'Pink Flóid'),
+    (r'\bDavid Gilmour\b', 'Déivid Guílmor'),
+    (r'\bRoger Waters\b', 'Róyer Uóters'),
+    (r'\bMichael Kamen\b', 'Máikel Kéimen'),
+    (r'\bKickstart My Heart\b', 'Kikstárt Mai Jart'),
+    (r'\bMötley Crüe\b', 'Mótli Crú'),
+    (r'\bMotley Crue\b', 'Mótli Crú'),
+    (r'\bNikki Sixx\b', 'Níki Siks'),
+    (r'\bPlush\b', 'Plásh'),
+    (r'\bStone Temple Pilots\b', 'Stoun Témpol Páilots'),
+    (r'\bGood Riddance\b', 'Gud Rídans'),
+    (r'\bTime of Your Life\b', 'Taim of Yur Láif'),
+    (r'\bGreen Day\b', 'Grin Déi'),
+    (r'\bFoo Fighters\b', 'Fu Fáiters'),
+    (r'\bThe Smashing Pumpkins\b', 'De Smáshin Pámpkins'),
+    (r'\b3 Doors Down\b', 'Tri Dors Dáun'),
+    (r'\bKryptonite\b', 'Kriptonáit'),
+    (r'\bRock and Roll All Nite\b', 'Rok and Rol Ol Náit'),
+]
+
+
+def apply_fish_phonetics(text):
+    """Mejora la pronunciación de nombres/títulos en inglés y limpia ';' para locución fluida en Fish Audio."""
+    if not text:
+        return ""
+    result = text.replace(";", ",")
+    for pattern, replacement in FISH_PHONETICS:
+        result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
+    return result
+
 def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band", year=""):
     text = (text or "").strip()
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
@@ -1860,7 +1896,7 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
 
     raw_tmp = f"{out_mp3_path}.fish_raw.mp3"
     payload = {
-        "text": text,
+        "text": apply_fish_phonetics(text),
         "reference_id": reference_id,
         "format": "mp3",
         "mp3_bitrate": 192,
@@ -2050,8 +2086,8 @@ def _apply_progressive_closing_ramp(in_wav, eq_wav, out_wav, p3_res_clean, p3_cl
 
 def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
     """
-    Aplica la cadena vocal unificada y recorta únicamente silencio digital muerto (<-50dB)
-    para preservar pausas musicales exactas de 3.0s entre párrafos.
+    Aplica la cadena vocal unificada y recorta únicamente silencio digital muerto
+    preservando la respiración natural final antes de las pausas exactas de 1.0s.
     """
     gain_filter = f",volume={norm_gain_db:+.2f}dB" if abs(norm_gain_db) >= 0.05 else ""
     vocal_core = (
@@ -2060,11 +2096,11 @@ def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
         "equalizer=f=380:width_type=o:width=1.2:g=-1.5,"
         "equalizer=f=3000:width_type=o:width=1.1:g=2.0,"
         "deesser=i=0.25:m=0.5:f=0.5:s=o,"
-        "acompressor=threshold=-20dB:ratio=3.2:attack=8:release=90:makeup=1.8,"
-        "silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,"
-        "areverse,silenceremove=start_periods=1:start_duration=0.02:start_threshold=-50dB,areverse,"
-        "afade=t=in:st=0:d=0.015,"
-        f"areverse,afade=t=in:st=0:d=0.015,areverse{gain_filter}"
+        "acompressor=threshold=-20dB:ratio=3.0:attack=8:release=110:makeup=1.6,"
+        "silenceremove=start_periods=1:start_duration=0.02:start_threshold=-54dB,"
+        "areverse,silenceremove=start_periods=1:start_duration=0.04:start_threshold=-58dB,areverse,"
+        "afade=t=in:st=0:d=0.025,"
+        f"areverse,afade=t=in:st=0:d=0.045,areverse{gain_filter}"
     )
     subprocess.run([
         FFMPEG_BIN, "-y", "-i", in_mp3,
