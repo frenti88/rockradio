@@ -200,12 +200,12 @@ EMOTION_VOCAL_PROFILES = {
     },
     "intensidad_historica": {
         "opening": "[warm, confident, lively]",
-        "story": "[energetic, animated]",
-        "resolution": "[excited, dynamic]",
-        "closing": "[energetic, smiling, upbeat]",
-        "temperature": 0.74,
-        "top_p": 0.82,
-        "closing_boost_db": 2.6,
+        "story": "[warm, animated]",
+        "resolution": "[confident, warm]",
+        "closing": "[smiling, upbeat]",
+        "temperature": 0.65,
+        "top_p": 0.78,
+        "closing_boost_db": 2.2,
     },
     "nostalgia_cercana": {
         "opening": "[warm, nostalgic, gentle]",
@@ -1821,11 +1821,14 @@ FISH_PHONETICS = [
 ]
 
 
-def apply_fish_phonetics(text):
-    """Mejora la pronunciación de nombres/títulos en inglés y limpia ';' para locución fluida en Fish Audio."""
+def apply_fish_phonetics(text, model=None):
+    """Para drama-3 (bilingüe nativo) conserva el inglés real y solo limpia ';' y 'Dr.'; para otros modelos aplica guía fonética."""
     if not text:
         return ""
     result = text.replace(";", ",")
+    if model and "drama" in str(model).lower():
+        result = re.sub(r'\bDr\.\s+', 'Doctor ', result)
+        return result
     for pattern, replacement in FISH_PHONETICS:
         result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
     return result
@@ -1896,7 +1899,7 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
 
     raw_tmp = f"{out_mp3_path}.fish_raw.mp3"
     payload = {
-        "text": apply_fish_phonetics(text),
+        "text": apply_fish_phonetics(text, model=model),
         "reference_id": reference_id,
         "format": "mp3",
         "mp3_bitrate": 192,

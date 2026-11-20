@@ -3146,7 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "inicio_directo",
     "escena_historica",
     "memoria_musical",
     "curiosidad",
@@ -3160,10 +3159,10 @@
     "pregunta",
     "pregunta",
     "confidencia",
+    "pregunta",
     "pregunta"
   ],
   "last_overlay_outros": [
-    "reflexion",
     "nostalgia",
     "expectativa",
     "continuidad_narrativa",
@@ -3177,6 +3176,7 @@
     "energia",
     "energia",
     "expectativa",
+    "energia",
     "energia"
   ],
   "radio_overlays": {
@@ -4859,27 +4859,27 @@
       "diversity_score": 0.0,
       "paragraph_1": "Oye esto: ¿te imaginas morir dos minutos y volver para escribir un himno de rock?",
       "paragraph_2": "En diciembre de 1987, dos dosis de adrenalina al pecho salvaron a Nikki Sixx de una sobredosis. Y cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
-      "paragraph_3": "¡Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe!",
-      "vocal_p1": "[warm, confident, lively] Oye esto: ¿te imaginas morir dos minutos y volver para escribir un himno de rock?",
-      "vocal_p2": "[warm, animated] En diciembre de 1987, dos dosis de adrenalina al pecho salvaron a Nikki Sixx de una sobredosis. [chuckle] Y cualquiera se iría a descansar, pero en 1989 lo volvió un misil para <emphasis>Dr. Feelgood</emphasis>, con Mick Mars acelerando la guitarra como una moto.",
-      "vocal_p3": "[energetic, smiling] ¡Súbele todo el volumen y disfrutemos esta bestialidad: <forceful>Kickstart My Heart</forceful>, de Mötley Crüe!",
+      "paragraph_3": "Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe.",
+      "vocal_p1": "[warm, confident] Oye esto: ¿te imaginas morir dos minutos y volver para escribir un himno de rock?",
+      "vocal_p2": "[warm, conversational] En diciembre de 1987, dos dosis de adrenalina al pecho salvaron a Nikki Sixx de una sobredosis. [chuckle] Y cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
+      "vocal_p3": "[smiling, upbeat] Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe.",
       "model": "drama-3",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 6.01,
-        "p2": 20.37,
-        "p3": 7.36
+        "p1": 5.64,
+        "p2": 19.47,
+        "p3": 6.99
       },
-      "voice_duration_sec": 35.79,
+      "voice_duration_sec": 34.14,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 6.01,
-        "pause1End": 7.01,
-        "pause2Start": 27.38,
-        "pause2End": 28.38,
-        "outroEnd": 35.79,
+        "pause1Start": 5.64,
+        "pause1End": 6.64,
+        "pause2Start": 26.11,
+        "pause2End": 27.11,
+        "outroEnd": 34.14,
         "rampSec": 2.0,
-        "totalPresentationSec": 42.79
+        "totalPresentationSec": 41.14
       },
       "audio_file": "audio/fred_voice_mtley_cre_kickstart_my_heart.mp3",
       "ducking": {
@@ -4888,7 +4888,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T13:59:21.361738+00:00"
+      "generated_at": "2026-11-20T14:08:58.027911+00:00"
     },
     "ratt_round_and_round": {
       "song_title": "Round and Round",
@@ -5298,18 +5298,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Plush",
-      "band_name": "Stone Temple Pilots",
-      "intro_strategy": "inicio_directo",
-      "outro_strategy": "reflexion",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Una noticia real en la prensa de San Diego dejó una huella oscura en el debut de Stone Temple Pilots.",
-      "paragraph_3": "El tema les dio un premio Grammy y definió el pulso alternativo de los noventa. Aquí suena Plush, de Stone Temple Pilots.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:23:52.736543+00:00"
-    },
-    {
       "song_title": "1979",
       "band_name": "The Smashing Pumpkins",
       "intro_strategy": "escena_historica",
@@ -5476,6 +5464,18 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-20T13:59:21.361738+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "pregunta",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "Oye esto: ¿te imaginas morir dos minutos y volver para escribir un himno de rock?",
+      "paragraph_3": "Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-20T14:08:58.027911+00:00"
     }
   ]
 }
