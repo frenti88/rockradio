@@ -3146,7 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "inicio_directo",
     "escena_historica",
     "confidencia",
     "curiosidad",
@@ -3160,10 +3159,10 @@
     "contraste",
     "escena_historica",
     "confidencia",
-    "inicio_directo"
+    "inicio_directo",
+    "curiosidad"
   ],
   "last_overlay_outros": [
-    "nostalgia",
     "energia",
     "expectativa",
     "revelacion",
@@ -3177,7 +3176,8 @@
     "revelacion",
     "energia",
     "expectativa",
-    "reflexion"
+    "reflexion",
+    "continuidad_narrativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -5339,21 +5339,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-20T15:50:51.438433+00:00"
+    },
+    "311_amber": {
+      "song_title": "Amber",
+      "band_name": "311",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_continuidad_narrativa",
+      "outro_name": "continuidad_narrativa",
+      "outro_strategy": "continuidad_narrativa",
+      "emotion": "nostalgia_cercana",
+      "source_mode": "agent_custom",
+      "diversity_score": 81.33,
+      "paragraph_1": "Aunque la banda era famosa por su rock explosivo, su canción más querida nació bajando todas las revoluciones.",
+      "paragraph_2": "Para From Chaos en 2001, Nick Hexum escribió esta dedicatoria luminosa pensando en su entonces pareja Nicole Scherzinger, mezclando guitarras suaves con pulso reggae que al principio dudaron en lanzar.",
+      "paragraph_3": "Terminó siendo su clásico más inolvidable. Disfrutemos esa vibra en Amber, de 311.",
+      "vocal_p1": "[warm, nostalgic] Aunque la banda era famosa por su rock explosivo, su canción más querida nació bajando todas las revoluciones.",
+      "vocal_p2": "[warm, conversational] Para From Chaos en 2001, Nick Hexum escribió esta dedicatoria luminosa pensando en su entonces pareja Nicole Scherzinger, mezclando guitarras suaves con pulso reggae que al principio dudaron en lanzar.",
+      "vocal_p3": "[warm, inviting] Terminó siendo su clásico más inolvidable. Disfrutemos esa vibra en Amber, de Three Eleven.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.37,
+        "p2": 14.68,
+        "p3": 7.23
+      },
+      "voice_duration_sec": 31.32,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.37,
+        "pause1End": 8.37,
+        "pause2Start": 23.05,
+        "pause2End": 24.05,
+        "outroEnd": 31.32,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.32
+      },
+      "audio_file": "audio/fred_voice_311_amber.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T16:08:55.465834+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Dreams",
-      "band_name": "Fleetwood Mac",
-      "intro_strategy": "inicio_directo",
-      "outro_strategy": "nostalgia",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Diez minutos frente a un teclado en un cuarto vacío bastaron para definir el pulso de Rumours.",
-      "paragraph_3": "Fue el único número uno del grupo en el Billboard Hot 100. Disfrutemos Dreams, de Fleetwood Mac.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:33:48.174961+00:00"
-    },
     {
       "song_title": "The Trooper",
       "band_name": "Iron Maiden",
@@ -5521,6 +5554,18 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-20T15:50:51.438433+00:00"
+    },
+    {
+      "song_title": "Amber",
+      "band_name": "311",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "continuidad_narrativa",
+      "emotion": "nostalgia_cercana",
+      "paragraph_1": "Aunque la banda era famosa por su rock explosivo, su canción más querida nació bajando todas las revoluciones.",
+      "paragraph_3": "Terminó siendo su clásico más inolvidable. Disfrutemos esa vibra en Amber, de 311.",
+      "mentions_brand": false,
+      "diversity_score": 81.33,
+      "generated_at": "2026-11-20T16:08:55.465834+00:00"
     }
   ]
 }
