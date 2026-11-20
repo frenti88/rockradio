@@ -3146,9 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "inicio_directo",
-    "escena_historica",
-    "memoria_musical",
     "curiosidad",
     "contraste",
     "escena_historica",
@@ -3160,12 +3157,12 @@
     "contraste",
     "viaje_temporal",
     "inicio_directo",
-    "pregunta"
+    "pregunta",
+    "curiosidad",
+    "escena_historica",
+    "confidencia"
   ],
   "last_overlay_outros": [
-    "transicion_directa",
-    "nostalgia",
-    "expectativa",
     "continuidad_narrativa",
     "revelacion",
     "energia",
@@ -3177,7 +3174,10 @@
     "revelacion",
     "reflexion",
     "nostalgia",
-    "continuidad_narrativa"
+    "continuidad_narrativa",
+    "revelacion",
+    "expectativa",
+    "nostalgia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -5654,45 +5654,99 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-20T16:46:21.700560+00:00"
+    },
+    "mtley_cre_home_sweet_home": {
+      "song_title": "Home Sweet Home",
+      "band_name": "Mötley Crüe",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "nostalgia_cercana",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Esta balada al piano fue tan pedida en MTV que el canal tuvo que inventar una regla nueva solo para frenarla.",
+      "paragraph_2": "En 1985, Nikki Sixx y Tommy Lee la escribieron para Theatre of Pain retratando el cansancio de las giras y las ganas de volver a casa. El video lideró el conteo tanto tiempo que nació la famosa regla Crüe.",
+      "paragraph_3": "Cambió las power ballads para siempre. Disfrutemos Home Sweet Home, de Mötley Crüe.",
+      "vocal_p1": "[warm, nostalgic] Esta balada al piano fue tan pedida en MTV que el canal tuvo que inventar una regla nueva solo para frenarla.",
+      "vocal_p2": "[warm, conversational] En 1985, Nikki Sixx y Tommy Lee la escribieron para Theatre of Pain retratando el cansancio de las giras y las ganas de volver a casa. [chuckle] El video lideró el conteo tanto tiempo que nació la famosa regla Crüe.",
+      "vocal_p3": "[warm, inviting] Cambió las power ballads para siempre. Disfrutemos Home Sweet Home, de Mötley Crüe.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 7.49,
+        "p2": 15.39,
+        "p3": 6.03
+      },
+      "voice_duration_sec": 30.96,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.49,
+        "pause1End": 8.49,
+        "pause2Start": 23.88,
+        "pause2End": 24.88,
+        "outroEnd": 30.96,
+        "rampSec": 2.0,
+        "totalPresentationSec": 37.96
+      },
+      "audio_file": "audio/fred_voice_mtley_cre_home_sweet_home.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T16:57:17.747076+00:00"
+    },
+    "aerosmith_i_dont_want_to_miss_a_thing": {
+      "song_title": "I Don't Want to Miss a Thing",
+      "band_name": "Aerosmith",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgia_cercana",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Hoy hacemos una pausa muy especial en la cabina porque esta canción lleva nombre propio: va dedicada con todo cariño para Marianna.",
+      "paragraph_2": "En 1998, Diane Warren escribió este clásico para Armageddon y le dio a Aerosmith su primer número uno hablando de no perderse ni un solo instante junto a quien de verdad importa.",
+      "paragraph_3": "Marianna, gracias por ser una gran amiga de esas que iluminan la vida. Esta es toda tuya: I Don't Want to Miss a Thing, de Aerosmith.",
+      "vocal_p1": "[warm, nostalgic] Hoy hacemos una pausa muy especial en la cabina porque esta canción lleva nombre propio: va dedicada con todo cariño para Marianna.",
+      "vocal_p2": "[warm, conversational] En 1998, Diane Warren escribió este clásico para Armageddon y le dio a Aerosmith su primer número uno hablando de no perderse ni un solo instante junto a quien de verdad importa.",
+      "vocal_p3": "[warm, inviting] Marianna, gracias por ser una gran amiga de esas que iluminan la vida. Esta es toda tuya: I Don't Want to Miss a Thing, de Aerosmith.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.88,
+        "p2": 14.38,
+        "p3": 9.21
+      },
+      "voice_duration_sec": 34.51,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.88,
+        "pause1End": 9.88,
+        "pause2Start": 24.26,
+        "pause2End": 25.26,
+        "outroEnd": 34.51,
+        "rampSec": 2.0,
+        "totalPresentationSec": 41.51
+      },
+      "audio_file": "audio/fred_voice_aerosmith_i_dont_want_to_miss_a_thing_marianna.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-20T16:57:33.466906+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Plush",
-      "band_name": "Stone Temple Pilots",
-      "intro_strategy": "inicio_directo",
-      "outro_strategy": "transicion_directa",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Una noticia real en la prensa de San Diego dejó una huella oscura en el debut de Stone Temple Pilots.",
-      "paragraph_3": "Les valió un Grammy y definió los noventa. Aquí suena Plush, de Stone Temple Pilots.",
-      "mentions_brand": false,
-      "diversity_score": 85.07,
-      "generated_at": "2026-11-20T14:34:42.985503+00:00"
-    },
-    {
-      "song_title": "1979",
-      "band_name": "The Smashing Pumpkins",
-      "intro_strategy": "escena_historica",
-      "outro_strategy": "nostalgia",
-      "emotion": "nostalgia_cercana",
-      "paragraph_1": "El disco doble ya estaba casi cerrado cuando el productor Flood le pidió a Billy Corgan una última noche.",
-      "paragraph_3": "Aquella canción de último minuto fue su mayor éxito. Disfrutemos 1979, de The Smashing Pumpkins.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-20T14:34:51.133076+00:00"
-    },
-    {
-      "song_title": "Drive",
-      "band_name": "Incubus",
-      "intro_strategy": "memoria_musical",
-      "outro_strategy": "expectativa",
-      "emotion": "sensibilidad_contenida",
-      "paragraph_1": "Pocas canciones resumen con tanta claridad ese instante en que decides dejar de manejar tu vida desde el miedo.",
-      "paragraph_3": "Toma el volante y escucha esta maravilla: Drive, de Incubus.",
-      "mentions_brand": false,
-      "diversity_score": 84.6,
-      "generated_at": "2026-11-20T14:34:58.702612+00:00"
-    },
     {
       "song_title": "Kryptonite",
       "band_name": "3 Doors Down",
@@ -5836,6 +5890,42 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-20T16:46:21.700560+00:00"
+    },
+    {
+      "song_title": "Home Sweet Home",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "nostalgia_cercana",
+      "paragraph_1": "Esta balada al piano fue tan pedida en MTV que el canal tuvo que inventar una regla nueva solo para frenarla.",
+      "paragraph_3": "Cambió las power ballads para siempre. Disfrutemos Home Sweet Home, de Mötley Crüe.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-20T16:57:17.747076+00:00"
+    },
+    {
+      "song_title": "I Don't Want to Miss a Thing",
+      "band_name": "Aerosmith",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Tras casi treinta años de carrera, el primer número uno de Aerosmith llegó gracias a una frase escuchada en televisión.",
+      "paragraph_3": "La voz de Steven Tyler la volvió eterna. Escuchemos I Don't Want to Miss a Thing, de Aerosmith.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-20T16:57:25.320140+00:00"
+    },
+    {
+      "song_title": "I Don't Want to Miss a Thing",
+      "band_name": "Aerosmith",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgia_cercana",
+      "paragraph_1": "Hoy hacemos una pausa muy especial en la cabina porque esta canción lleva nombre propio: va dedicada con todo cariño para Marianna.",
+      "paragraph_3": "Marianna, gracias por ser una gran amiga de esas que iluminan la vida. Esta es toda tuya: I Don't Want to Miss a Thing, de Aerosmith.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-20T16:57:33.466906+00:00"
     }
   ]
 }
