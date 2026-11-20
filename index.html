@@ -5001,13 +5001,12 @@
         display: block !important;
         position: absolute !important;
         bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        width: 100% !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: calc(100% - 20px) !important;
         height: 2.5px !important;
-        background: rgba(255, 255, 255, 0.2) !important;
-        border-bottom-left-radius: 8px !important;
-        border-bottom-right-radius: 8px !important;
+        background: rgba(255, 255, 255, 0.22) !important;
+        border-radius: 2px !important;
         overflow: hidden !important;
         pointer-events: none !important;
         z-index: 10 !important;
@@ -5016,15 +5015,9 @@
       .mini-progress-fill {
         height: 100% !important;
         background: #ffffff !important;
-        width: 0% !important;
-        transition: width 0.1s linear !important;
-      }
-
-      .mini-progress-fill {
-        height: 100%;
-        background: var(--sp-green);
         width: 0%;
-        transition: width 0.1s linear;
+        border-radius: 2px;
+        transition: width 0.2s linear;
       }
 
       /* ========================================================
@@ -13523,24 +13516,122 @@
     };
 
     let spotifyProgressInterval = null;
+    let lastProgressTickAt = 0;
+    let mobileWakeLock = null;
+
+    function updateMediaSessionMetadata() {
+      if (!('mediaSession' in navigator)) return;
+      try {
+        const title = (barTitle && barTitle.textContent) ? barTitle.textContent.trim() : 'Trackstories';
+        const artist = (barArtist && barArtist.textContent) ? barArtist.textContent.replace(/🟢\s*SPOTIFY\s*/i, '').trim() : 'DJ Fred';
+        const imgEl = document.getElementById('barThumbImg');
+        const artworkSrc = (imgEl && imgEl.src) ? imgEl.src : '';
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title,
+          artist,
+          album: 'Trackstories • Rock Radio',
+          artwork: artworkSrc ? [
+            { src: artworkSrc, sizes: '256x256', type: 'image/jpeg' },
+            { src: artworkSrc, sizes: '512x512', type: 'image/jpeg' }
+          ] : []
+        });
+      } catch (e) {}
+    }
+
+    function updateMediaSessionPosition(curSec, durSec) {
+      if (!('mediaSession' in navigator) || typeof navigator.mediaSession.setPositionState !== 'function') return;
+      if (!Number.isFinite(durSec) || durSec <= 0) return;
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: durSec,
+          playbackRate: 1.0,
+          position: Math.max(0, Math.min(curSec, durSec))
+        });
+      } catch (e) {}
+    }
+
+    function initMediaSessionHandlers() {
+      if (!('mediaSession' in navigator)) return;
+      try {
+        navigator.mediaSession.setActionHandler('play', () => {
+          if (!GlobalAudioPlayer.spotifyIsPlaying && spotifyAudio.paused) GlobalAudioPlayer.togglePlay();
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+          if (GlobalAudioPlayer.spotifyIsPlaying || !spotifyAudio.paused) GlobalAudioPlayer.togglePlay();
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', () => GlobalAudioPlayer.prev());
+        navigator.mediaSession.setActionHandler('nexttrack', () => GlobalAudioPlayer.next());
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+          if (!details || typeof details.seekTime !== 'number') return;
+          const durSec = (GlobalAudioPlayer.activeEngine === 'audio' && spotifyAudio.duration)
+            ? spotifyAudio.duration
+            : ((GlobalAudioPlayer.spotifyDurationMs || 180000) / 1000);
+          if (durSec > 0) GlobalAudioPlayer.seek(details.seekTime / durSec);
+        });
+      } catch (e) {}
+    }
+    initMediaSessionHandlers();
+
+    async function syncWakeLock(shouldHold) {
+      if (!('wakeLock' in navigator)) return;
+      try {
+        if (shouldHold) {
+          if (!mobileWakeLock) {
+            mobileWakeLock = await navigator.wakeLock.request('screen');
+            mobileWakeLock.addEventListener('release', () => { mobileWakeLock = null; });
+          }
+        } else if (mobileWakeLock) {
+          await mobileWakeLock.release();
+          mobileWakeLock = null;
+        }
+      } catch (e) {}
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState !== 'visible') return;
+      if (GlobalAudioPlayer.spotifyIsPlaying || !spotifyAudio.paused) {
+        syncWakeLock(true);
+      }
+      if (GlobalAudioPlayer.activeEngine === 'sdk' && spotifySdkPlayer && typeof spotifySdkPlayer.getCurrentState === 'function') {
+        spotifySdkPlayer.getCurrentState().then(state => {
+          if (!state || !state.duration) return;
+          GlobalAudioPlayer.spotifyDurationMs = state.duration;
+          GlobalAudioPlayer.spotifyPositionMs = state.position;
+          lastProgressTickAt = Date.now();
+          const pct = Math.min(100, Math.max(0, (state.position / state.duration) * 100));
+          const curSec = Math.floor(state.position / 1000);
+          const durSec = Math.floor(state.duration / 1000);
+          if (spotifyProgressFill) spotifyProgressFill.style.width = `${pct}%`;
+          if (miniProgressFill) miniProgressFill.style.width = `${pct}%`;
+          if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
+          if (barTimeTotal) barTimeTotal.textContent = formatTime(durSec);
+          updateMediaSessionPosition(curSec, durSec);
+        }).catch(() => {});
+      }
+    });
 
     function startSpotifyProgressSimulation() {
       if (spotifyProgressInterval) clearInterval(spotifyProgressInterval);
+      lastProgressTickAt = Date.now();
       spotifyProgressInterval = setInterval(() => {
         if ((GlobalAudioPlayer.source !== 'spotify' && GlobalAudioPlayer.activeEngine !== 'sdk') || !GlobalAudioPlayer.spotifyIsPlaying) return;
 
         // If native HTML audio is actively playing, timeupdate event handles the sync
         if (GlobalAudioPlayer.activeEngine === 'audio' && !spotifyAudio.paused) {
+          lastProgressTickAt = Date.now();
           return;
         }
 
-        GlobalAudioPlayer.spotifyPositionMs += 500;
+        const now = Date.now();
+        const elapsed = Math.max(0, now - (lastProgressTickAt || now));
+        lastProgressTickAt = now;
+        GlobalAudioPlayer.spotifyPositionMs += elapsed;
         const durMs = GlobalAudioPlayer.spotifyDurationMs || 180000;
         if (GlobalAudioPlayer.spotifyPositionMs >= durMs) {
           GlobalAudioPlayer.next();
           return;
         }
-        const pct = (GlobalAudioPlayer.spotifyPositionMs / durMs) * 100;
+        const pct = Math.min(100, Math.max(0, (GlobalAudioPlayer.spotifyPositionMs / durMs) * 100));
         const curSec = Math.floor(GlobalAudioPlayer.spotifyPositionMs / 1000);
         const durSec = Math.floor(durMs / 1000);
 
@@ -13548,6 +13639,7 @@
         if (miniProgressFill) miniProgressFill.style.width = `${pct}%`;
         if (barTimeCurrent) barTimeCurrent.textContent = formatTime(curSec);
         if (barTimeTotal) barTimeTotal.textContent = formatTime(durSec);
+        updateMediaSessionPosition(curSec, durSec);
       }, 500);
     }
 
@@ -13564,6 +13656,13 @@
     }
 
     function updatePlayUI(isPlaying) {
+      if ('mediaSession' in navigator) {
+        try {
+          navigator.mediaSession.playbackState = isPlaying ? 'playing' : 'paused';
+          if (isPlaying) updateMediaSessionMetadata();
+        } catch (e) {}
+      }
+      syncWakeLock(!!isPlaying);
       if (isPlaying) {
         bigPlayIcon.classList.add('hidden');
         bigPauseIcon.classList.remove('hidden');
