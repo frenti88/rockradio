@@ -1797,9 +1797,9 @@ def apply_english_phonetics(text):
 
 # Guía fonética sutil exclusiva para tts_text de Fish Audio (nunca altera visible_text)
 FISH_PHONETICS = [
-    (r'\bDr\.\s*Feelgood\b', 'Dóctor Fílgud'),
+    (r'\bDr\.\s*Feelgood\b', 'Dákter Fílgud'),
     (r'\bComfortably Numb\b', 'Cámfortabli Nam'),
-    (r'\bThe Wall\b', 'De Uól'),
+    (r'\bThe Wall\b', 'De Guól'),
     (r'\bPink Floyd\b', 'Pink Flóid'),
     (r'\bDavid Gilmour\b', 'Déivid Guílmor'),
     (r'\bRoger Waters\b', 'Róyer Uóters'),
@@ -2096,7 +2096,7 @@ def _process_paragraph_to_core_wav(in_mp3, out_wav, norm_gain_db=0.0):
         "equalizer=f=380:width_type=o:width=1.2:g=-1.5,"
         "equalizer=f=3000:width_type=o:width=1.1:g=2.0,"
         "deesser=i=0.25:m=0.5:f=0.5:s=o,"
-        "acompressor=threshold=-20dB:ratio=3.0:attack=8:release=110:makeup=1.6,"
+        "acompressor=threshold=-20dB:ratio=2.2:attack=10:release=120:makeup=1.2,"
         "silenceremove=start_periods=1:start_duration=0.02:start_threshold=-54dB,"
         "areverse,silenceremove=start_periods=1:start_duration=0.04:start_threshold=-58dB,areverse,"
         "afade=t=in:st=0:d=0.025,"
@@ -3716,10 +3716,13 @@ async def generate_voice_only_radio_intro(
             total_presentation = intro_delay_sec + voice_total + ramp_sec
 
             if total_presentation <= 45.0 or attempt == 2:
-                target_lufs = -13.5
-                g1 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p1_core)))
-                g2 = max(-4.0, min(13.0, target_lufs - get_integrated_lufs(p2_core)))
-                g3 = max(-4.0, min(12.0, target_lufs - get_integrated_lufs(p3_core) - 0.8))
+                is_soft = chosen["emotion"] == "sensibilidad_contenida"
+                p1_lufs = -15.2 if is_soft else -13.8
+                p2_lufs = -14.4 if is_soft else -13.5
+                p3_lufs = -14.2 if is_soft else -13.2
+                g1 = max(-4.0, min(12.0, p1_lufs - get_integrated_lufs(p1_core)))
+                g2 = max(-4.0, min(12.0, p2_lufs - get_integrated_lufs(p2_core)))
+                g3 = max(-4.0, min(12.0, p3_lufs - get_integrated_lufs(p3_core) - 0.6))
 
                 _process_paragraph_to_core_wav(p1_mp3, p1_norm, g1)
                 _process_paragraph_to_core_wav(p2_mp3, p2_norm, g2)
@@ -3727,7 +3730,7 @@ async def generate_voice_only_radio_intro(
 
                 subprocess.run([
                     FFMPEG_BIN, "-y", "-i", p3_norm,
-                    "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.6",
+                    "-af", "equalizer=f=3200:width_type=o:width=1.0:g=1.4",
                     "-ar", "44100", "-ac", "2", "-c:a", "pcm_s16le",
                     p3_eq
                 ], capture_output=True, check=True)
@@ -3743,7 +3746,7 @@ async def generate_voice_only_radio_intro(
                 tmp_out = out_mp3_path + ".tmp.mp3"
                 subprocess.run([
                     FFMPEG_BIN, "-y", "-i", voice_wav,
-                    "-af", "alimiter=limit=0.912:attack=2:release=50",
+                    "-af", "alimiter=limit=0.851:attack=2:release=60",
                     "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "44100",
                     tmp_out
                 ], capture_output=True, check=True)

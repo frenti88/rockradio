@@ -3146,9 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "contraste",
-    "viaje_temporal",
-    "confidencia",
     "pregunta",
     "inicio_directo",
     "escena_historica",
@@ -3160,12 +3157,12 @@
     "pregunta",
     "confidencia",
     "pregunta",
+    "confidencia",
+    "pregunta",
+    "pregunta",
     "confidencia"
   ],
   "last_overlay_outros": [
-    "expectativa",
-    "continuidad_narrativa",
-    "reflexion",
     "revelacion",
     "reflexion",
     "nostalgia",
@@ -3176,6 +3173,9 @@
     "energia",
     "energia",
     "expectativa",
+    "energia",
+    "expectativa",
+    "energia",
     "energia",
     "expectativa"
   ],
@@ -4496,30 +4496,30 @@
       "outro_strategy": "expectativa",
       "emotion": "sensibilidad_contenida",
       "source_mode": "agent_custom",
-      "diversity_score": 79.93,
-      "paragraph_1": "Baja el ruido de todo lo demás y escúchame esto: detrás de una canción tan hipnótica hay una noche realmente dura.",
-      "paragraph_2": "En 1977, antes de tocar en Filadelfia, Roger Waters tenía unos dolores terribles y un médico le inyectó un tranquilizante para poder salir al escenario. En 1979 volcó esa extraña desconexión sobre una maqueta que David Gilmour guardaba para The Wall.",
-      "paragraph_3": "Con ese solo descomunal de Gilmour nació una auténtica obra maestra. Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
-      "vocal_p1": "[soft, warm, intimate] Baja el ruido de todo lo demás y escúchame esto, detrás de una canción tan hipnótica hay una noche realmente dura.",
-      "vocal_p2": "[calm, storytelling, reflective] En 1977, antes de tocar en Filadelfia, Roger Waters tenía unos dolores terribles y un médico le inyectó un tranquilizante para poder salir al escenario. [thoughtful, gentle] En 1979 volcó esa extraña desconexión sobre una maqueta que David Gilmour guardaba para The Wall.",
-      "vocal_p3": "[warm, heartfelt] Con ese solo descomunal de Gilmour nació una auténtica obra maestra. [soft, inviting] Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
-      "model": "s2.1-pro-free",
+      "diversity_score": 30.93,
+      "paragraph_1": "Baja el ruido y escúchame esto: detrás de tanta calma hay una noche realmente dura.",
+      "paragraph_2": "En 1977, en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores antes de tocar.",
+      "paragraph_3": "Con ese solo descomunal nació una obra maestra. Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
+      "vocal_p1": "[soft, intimate, reflective] Baja el ruido y escúchame esto: detrás de tanta calma hay una noche realmente dura.",
+      "vocal_p2": "[calm, warm, storytelling] En 1977, en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores antes de tocar.",
+      "vocal_p3": "[thoughtful, gentle] Con ese solo descomunal nació una obra maestra. [warm, soft] <soft>Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.</soft>",
+      "model": "drama-3",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 5.97,
-        "p2": 17.84,
-        "p3": 9.28
+        "p1": 6.87,
+        "p2": 9.85,
+        "p3": 11.55
       },
-      "voice_duration_sec": 35.13,
+      "voice_duration_sec": 30.33,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 5.97,
-        "pause1End": 6.97,
-        "pause2Start": 24.82,
-        "pause2End": 25.82,
-        "outroEnd": 35.13,
+        "pause1Start": 6.87,
+        "pause1End": 7.87,
+        "pause2Start": 17.73,
+        "pause2End": 18.73,
+        "outroEnd": 30.33,
         "rampSec": 2.0,
-        "totalPresentationSec": 42.13
+        "totalPresentationSec": 37.33
       },
       "audio_file": "audio/fred_voice_pink_floyd_comfortably_numb.mp3",
       "ducking": {
@@ -4528,7 +4528,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T02:03:58.258091+00:00"
+      "generated_at": "2026-11-20T04:33:24.777759+00:00"
     },
     "guns_n_roses_paradise_city": {
       "song_title": "Paradise City",
@@ -4856,30 +4856,30 @@
       "outro_strategy": "energia",
       "emotion": "intensidad_historica",
       "source_mode": "agent_custom",
-      "diversity_score": 28.33,
-      "paragraph_1": "¿Sabes qué es lo más loco de este clásico? Que nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
-      "paragraph_2": "En diciembre de 1987, una sobredosis casi apaga su historia, hasta que dos dosis de adrenalina al pecho lo trajeron de vuelta. Y oye, cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
-      "paragraph_3": "Pocas historias del rock tienen semejante locura. ¡Súbele a todo volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
-      "vocal_p1": "[curious, smiling, conversational] ¿Sabes qué es lo más loco de este clásico? [surprised, lively] ¡Que nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto!",
-      "vocal_p2": "[animated, storytelling] En diciembre de 1987, una sobredosis casi apaga su historia, hasta que dos dosis de adrenalina al pecho lo trajeron de vuelta. [amused, chuckling] Y oye, cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
-      "vocal_p3": "[excited, warm, smiling] Pocas historias del rock tienen semejante locura. [energetic, upbeat] ¡Súbele a todo volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
-      "model": "s2.1-pro-free",
+      "diversity_score": 0.0,
+      "paragraph_1": "¡Oye esto! ¿Te imaginas morir dos minutos y volver para escribir un himno?",
+      "paragraph_2": "En diciembre de 1987, dos dosis de adrenalina al pecho salvaron a Nikki Sixx de una sobredosis. Y cualquiera se iría a descansar, pero en 1989 lo volvió un misil para Dr. Feelgood, con Mick Mars acelerando la guitarra como una moto.",
+      "paragraph_3": "¡Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe!",
+      "vocal_p1": "[excited] ¡Oye esto! [curious] ¿Te imaginas morir <emphasis>dos minutos</emphasis> y volver para escribir un himno?",
+      "vocal_p2": "[animated] En diciembre de 1987, dos dosis de adrenalina al pecho salvaron a Nikki Sixx de una sobredosis. [chuckle] Y cualquiera se iría a descansar, pero en 1989 lo volvió un misil para <emphasis>Dr. Feelgood</emphasis>, con Mick Mars acelerando la guitarra como una moto.",
+      "vocal_p3": "[energetic, smiling] ¡Súbele todo el volumen y disfrutemos esta bestialidad: <forceful>Kickstart My Heart</forceful>, de Mötley Crüe!",
+      "model": "drama-3",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 5.99,
-        "p2": 17.92,
-        "p3": 8.06
+        "p1": 5.25,
+        "p2": 19.94,
+        "p3": 7.61
       },
-      "voice_duration_sec": 34.01,
+      "voice_duration_sec": 34.85,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 5.99,
-        "pause1End": 6.99,
-        "pause2Start": 24.9,
-        "pause2End": 25.9,
-        "outroEnd": 34.01,
+        "pause1Start": 5.25,
+        "pause1End": 6.25,
+        "pause2Start": 26.2,
+        "pause2End": 27.2,
+        "outroEnd": 34.85,
         "rampSec": 2.0,
-        "totalPresentationSec": 41.01
+        "totalPresentationSec": 41.85
       },
       "audio_file": "audio/fred_voice_mtley_cre_kickstart_my_heart.mp3",
       "ducking": {
@@ -4888,7 +4888,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T02:03:36.779944+00:00"
+      "generated_at": "2026-11-20T04:33:10.106222+00:00"
     },
     "ratt_round_and_round": {
       "song_title": "Round and Round",
@@ -5298,42 +5298,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Love Song",
-      "band_name": "Tesla",
-      "intro_strategy": "contraste",
-      "outro_strategy": "expectativa",
-      "emotion": "nostalgia_cercana",
-      "paragraph_1": "Mientras casi todas las baladas de finales de los ochenta hablaban de rupturas, Tesla eligió ir en sentido contrario.",
-      "paragraph_3": "Fue el mayor éxito de su carrera en el Top 10 estadounidense. Deja que esa guitarra acústica marque el camino en Love Song, de Tesla.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:22:28.624236+00:00"
-    },
-    {
-      "song_title": "Rock and Roll All Nite",
-      "band_name": "KISS",
-      "intro_strategy": "viaje_temporal",
-      "outro_strategy": "continuidad_narrativa",
-      "emotion": "intensidad_historica",
-      "paragraph_1": "En 1975, el presidente de su sello le lanzó un reto directo a KISS: necesitaban un verdadero himno de celebración.",
-      "paragraph_3": "Desde entonces cierra casi cada concierto bajo una lluvia de confeti. De aquel desafío de 1975 nació Rock and Roll All Nite, de KISS.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:22:50.411610+00:00"
-    },
-    {
-      "song_title": "Livin' on a Prayer",
-      "band_name": "Bon Jovi",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "reflexion",
-      "emotion": "calidez_radial",
-      "paragraph_1": "Poca gente sabe en Rock Radio que Tommy y Gina no fueron una invención, sino recuerdos muy reales.",
-      "paragraph_3": "Por eso sigue sonando tan cercana décadas después: habla de aguantar juntos cuando cuesta. Escucha Livin' on a Prayer, de Bon Jovi.",
-      "mentions_brand": true,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T13:23:11.113990+00:00"
-    },
-    {
       "song_title": "My Hero",
       "band_name": "Foo Fighters",
       "intro_strategy": "pregunta",
@@ -5476,6 +5440,42 @@
       "mentions_brand": false,
       "diversity_score": 79.93,
       "generated_at": "2026-11-20T02:03:58.258091+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "pregunta",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "¡Oye esto! ¿Te imaginas morir dos minutos y volver para escribir un himno? Así nació.",
+      "paragraph_3": "Pocas historias del rock tienen semejante nivel de adrenalina. ¡Súbele todo el volumen y disfrutemos esta joya: Kickstart My Heart, de Mötley Crüe!",
+      "mentions_brand": false,
+      "diversity_score": 29.27,
+      "generated_at": "2026-11-20T04:32:29.629319+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "pregunta",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "¡Oye esto! ¿Te imaginas morir dos minutos y volver para escribir un himno?",
+      "paragraph_3": "¡Súbele todo el volumen y disfrutemos esta bestialidad: Kickstart My Heart, de Mötley Crüe!",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-20T04:33:10.106222+00:00"
+    },
+    {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Baja el ruido y escúchame esto: detrás de tanta calma hay una noche realmente dura.",
+      "paragraph_3": "Con ese solo descomunal nació una obra maestra. Súbele con calma y disfrutemos esta maravilla: Comfortably Numb, de Pink Floyd.",
+      "mentions_brand": false,
+      "diversity_score": 30.93,
+      "generated_at": "2026-11-20T04:33:24.777759+00:00"
     }
   ]
 }
