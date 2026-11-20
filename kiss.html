@@ -3311,6 +3311,64 @@
       font-size: 0.82rem;
       color: #e5e7eb;
     }
+    .dj-playlist-hero.dj-playlist-hero--trackstories {
+      display: block;
+      padding: 28px 32px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0d162a 0%, #0f1c36 58%, #0c1426 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+      margin-bottom: 22px;
+    }
+    .ts-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+    }
+    .ts-hero-wave {
+      width: 20px;
+      height: 18px;
+      color: #1ed760;
+      flex-shrink: 0;
+    }
+    .ts-hero-title {
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin: 0 0 12px;
+    }
+    .ts-hero-subtitle {
+      font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+      font-weight: 500;
+      color: #e2e8f0;
+      line-height: 1.38;
+      margin: 0 0 18px;
+      max-width: 680px;
+    }
+    .ts-hero-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+    .ts-hero-meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #1ed760;
+      display: inline-block;
+    }
     .dj-playlist-action-bar {
       display: flex;
       align-items: center;
@@ -4637,6 +4695,36 @@
         gap: 6px !important;
       }
 
+      .dj-playlist-hero.dj-playlist-hero--trackstories {
+        display: block !important;
+        text-align: left !important;
+        padding: 22px 18px !important;
+        margin: 0 0 14px !important;
+        border-radius: 14px !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        background: linear-gradient(135deg, #0d162a 0%, #0f1c36 58%, #0c1426 100%) !important;
+      }
+
+      .dj-playlist-hero--trackstories .ts-hero-eyebrow {
+        font-size: 0.68rem !important;
+        margin-bottom: 10px !important;
+      }
+
+      .dj-playlist-hero--trackstories .ts-hero-title {
+        font-size: 1.55rem !important;
+        margin-bottom: 8px !important;
+      }
+
+      .dj-playlist-hero--trackstories .ts-hero-subtitle {
+        font-size: 0.96rem !important;
+        margin-bottom: 14px !important;
+      }
+
+      .dj-playlist-hero--trackstories .ts-hero-meta {
+        font-size: 0.82rem !important;
+        justify-content: flex-start !important;
+      }
+
       /* Action Bar: Shuffle left, Big Green Play Right (Spotify Mobile style) */
       .dj-playlist-action-bar {
         display: flex !important;
@@ -5875,32 +5963,23 @@
           </button>
         </div>
 
-        <div class="dj-playlist-hero">
-          <div class="dj-playlist-orb-cover">
-            <div class="dj-fred-orb-ring"></div>
-            <div class="dj-fred-orb-inner">
-              <div class="dj-fred-orb-waves">
-                <span></span><span></span><span></span><span></span>
-              </div>
-              <span>DJ FRED</span>
-            </div>
+        <div class="dj-playlist-hero dj-playlist-hero--trackstories">
+          <div class="ts-hero-eyebrow">
+            <svg class="ts-hero-wave" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2" y="10" width="2.4" height="4" rx="1.2" fill="currentColor"/>
+              <rect x="6.4" y="6.5" width="2.4" height="11" rx="1.2" fill="currentColor"/>
+              <rect x="10.8" y="3.5" width="2.4" height="17" rx="1.2" fill="currentColor"/>
+              <rect x="15.2" y="7.5" width="2.4" height="9" rx="1.2" fill="currentColor"/>
+              <rect x="19.6" y="10" width="2.4" height="4" rx="1.2" fill="currentColor"/>
+            </svg>
+            <span>TRACKSTORIES / COLECCIÓN ORIGINAL</span>
           </div>
-          <div class="dj-playlist-hero-info">
-            <div class="dj-fred-badge-row">
-              <span class="dj-fred-live-dot"></span>
-              <span>FRED REWIND: DE REGRESO AL PASADO • LOCUTOR: DJ FRED</span>
-            </div>
-            <h1 class="dj-playlist-main-title">Fred Rewind con DJ Fred</h1>
-            <p class="dj-playlist-main-desc">
-              <em>"La música tiene memoria."</em> Elige de la lista cuál canción quieres reproducir. Cada pista inicia con la historia real narrada por DJ Fred sobre la introducción original y luego suena la canción completa al 100%.
-            </p>
-            <div class="dj-playlist-meta-line">
-              <span style="color:#6ee7b7;font-weight:800;">🎙️ Locutor: DJ Fred</span>
-              <span>•</span>
-              <span id="djPlaylistTrackCount">11 canciones completas</span>
-              <span>•</span>
-              <span style="color:#b3b3b3;">Edición Radio FM</span>
-            </div>
+          <h1 class="ts-hero-title">La otra cara</h1>
+          <p class="ts-hero-subtitle">Conoces la canción. No toda su historia.</p>
+          <div class="ts-hero-meta">
+            <span id="djPlaylistTrackCount">47 canciones</span>
+            <span class="ts-hero-meta-dot" aria-hidden="true"></span>
+            <span>Historias reales</span>
           </div>
         </div>
 
@@ -9996,7 +10075,7 @@
       djFredQueue = list;
       const songCount = list.filter(x => !x.isIntro).length || (list.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${songCount} canciones con Historia de DJ Fred`;
+      if (countEl) countEl.textContent = `${songCount} ${songCount === 1 ? 'canción' : 'canciones'}`;
       const availCountEl = document.getElementById('djFredAvailableCount');
       if (availCountEl) availCountEl.textContent = String(songCount);
       const shelfMoreBtn = document.querySelector('[data-filterjump="djfred"]');
@@ -10113,7 +10192,7 @@
       const catalog = djFredQueue.length ? djFredQueue : buildDjFredCatalog();
       const songCount = catalog.filter(x => !x.isIntro).length || (catalog.length / 2);
       const countEl = document.getElementById('djPlaylistTrackCount');
-      if (countEl) countEl.textContent = `${songCount} canciones con Historia de DJ Fred`;
+      if (countEl) countEl.textContent = `${songCount} ${songCount === 1 ? 'canción' : 'canciones'}`;
 
       listEl.innerHTML = '';
       if (!catalog.length) {
