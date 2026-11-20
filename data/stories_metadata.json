@@ -3146,8 +3146,6 @@
     }
   },
   "last_overlay_intros": [
-    "memoria_musical",
-    "viaje_temporal",
     "confidencia",
     "inicio_directo",
     "escena_historica",
@@ -3160,11 +3158,11 @@
     "escena_historica",
     "memoria_musical",
     "curiosidad",
-    "contraste"
+    "contraste",
+    "memoria_musical",
+    "escena_historica"
   ],
   "last_overlay_outros": [
-    "expectativa",
-    "energia",
     "continuidad_narrativa",
     "nostalgia",
     "energia",
@@ -3177,7 +3175,9 @@
     "nostalgia",
     "expectativa",
     "continuidad_narrativa",
-    "transicion_directa"
+    "transicion_directa",
+    "expectativa",
+    "energia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -4496,30 +4496,30 @@
       "outro_strategy": "expectativa",
       "emotion": "sensibilidad_contenida",
       "source_mode": "agent_custom",
-      "diversity_score": 100.0,
+      "diversity_score": 66.4,
       "paragraph_1": "Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
       "paragraph_2": "En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales; después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
       "paragraph_3": "Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
-      "vocal_p1": "[warm, confident] Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
-      "vocal_p2": "[curious] En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales; después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
-      "vocal_p3": "[emotional] Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. [excited] Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "vocal_p1": "[soft, intimate, reflective] Cuando baja la luz... y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
+      "vocal_p2": "[calm, warm, storytelling] En 1977, antes de tocar en Filadelfia, un médico inyectó un tranquilizante a Roger Waters por fuertes dolores estomacales... [reflective] Después volcó aquella sensación de desconexión sobre una maqueta que David Gilmour había descartado para The Wall.",
+      "vocal_p3": "[thoughtful, gentle] Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía... [warm, soft] Ahora, deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 7.1,
-        "p2": 15.46,
-        "p3": 12.14
+        "p1": 8.4,
+        "p2": 15.78,
+        "p3": 11.25
       },
-      "voice_duration_sec": 36.75,
+      "voice_duration_sec": 37.46,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 7.1,
-        "pause1End": 8.1,
-        "pause2Start": 23.56,
-        "pause2End": 24.56,
-        "outroEnd": 36.75,
+        "pause1Start": 8.4,
+        "pause1End": 9.4,
+        "pause2Start": 25.18,
+        "pause2End": 26.18,
+        "outroEnd": 37.46,
         "rampSec": 2.0,
-        "totalPresentationSec": 43.75
+        "totalPresentationSec": 44.46
       },
       "audio_file": "audio/fred_voice_pink_floyd_comfortably_numb.mp3",
       "ducking": {
@@ -4528,7 +4528,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-19T12:39:15.821369+00:00"
+      "generated_at": "2026-11-20T01:31:23.097237+00:00"
     },
     "guns_n_roses_paradise_city": {
       "song_title": "Paradise City",
@@ -4856,30 +4856,30 @@
       "outro_strategy": "energia",
       "emotion": "intensidad_historica",
       "source_mode": "agent_custom",
-      "diversity_score": 100.0,
+      "diversity_score": 0.0,
       "paragraph_1": "El título de esta canción no es una metáfora: nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
       "paragraph_2": "En diciembre de 1987, tras una sobredosis en Los Ángeles, los paramédicos lo reanimaron con dos inyecciones de adrenalina al pecho; dos años después convirtió ese susto en este motor de Dr. Feelgood, con Mick Mars imitando una moto.",
       "paragraph_3": "Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock. Suelta el embrague con Kickstart My Heart, de Mötley Crüe.",
-      "vocal_p1": "[warm, confident] El título de esta canción no es una metáfora: nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
-      "vocal_p2": "[curious] En diciembre de 1987, tras una sobredosis en Los Ángeles, los paramédicos lo reanimaron con dos inyecciones de adrenalina al pecho; dos años después convirtió ese susto en este motor de Dr. Feelgood, con Mick Mars imitando una moto.",
-      "vocal_p3": "[emotional] Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock. [excited] Suelta el embrague con Kickstart My Heart, de Mötley Crüe.",
+      "vocal_p1": "[curious, intrigued, lively] El título de esta canción no es una metáfora... [surprised, energetic] ¡Nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto!",
+      "vocal_p2": "[energetic, animated] En diciembre de 1987, tras una sobredosis en Los Ángeles, los paramédicos lo reanimaron con dos inyecciones de adrenalina al pecho; [confident, upbeat] dos años después convirtió ese susto en este motor de Dr. Feelgood, con Mick Mars imitando una moto.",
+      "vocal_p3": "[excited, dynamic] Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock... [energetic, smiling, upbeat] ¡Suelta el embrague con Kickstart My Heart, de Mötley Crüe!",
       "model": "s2.1-pro-free",
       "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
       "segment_durations_sec": {
-        "p1": 7.19,
-        "p2": 14.67,
-        "p3": 8.3
+        "p1": 6.68,
+        "p2": 15.44,
+        "p3": 7.79
       },
-      "voice_duration_sec": 32.21,
+      "voice_duration_sec": 31.95,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 7.19,
-        "pause1End": 8.19,
-        "pause2Start": 22.87,
-        "pause2End": 23.87,
-        "outroEnd": 32.21,
+        "pause1Start": 6.68,
+        "pause1End": 7.68,
+        "pause2Start": 23.12,
+        "pause2End": 24.12,
+        "outroEnd": 31.95,
         "rampSec": 2.0,
-        "totalPresentationSec": 39.21
+        "totalPresentationSec": 38.95
       },
       "audio_file": "audio/fred_voice_mtley_cre_kickstart_my_heart.mp3",
       "ducking": {
@@ -4888,7 +4888,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-19T13:21:42.872184+00:00"
+      "generated_at": "2026-11-20T01:31:42.714564+00:00"
     },
     "ratt_round_and_round": {
       "song_title": "Round and Round",
@@ -5298,30 +5298,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Urgent",
-      "band_name": "Foreigner",
-      "intro_strategy": "memoria_musical",
-      "outro_strategy": "expectativa",
-      "emotion": "curiosidad_tecnica",
-      "paragraph_1": "Pocas veces un solo de saxofón se roba el protagonismo en una canción de rock con tanta naturalidad.",
-      "paragraph_3": "Ese cruce entre soul y arena rock elevó el álbum 4 a otro nivel. Espera ese estallido de metal en Urgent, de Foreigner.",
-      "mentions_brand": false,
-      "diversity_score": 84.13,
-      "generated_at": "2026-11-19T12:59:36.028327+00:00"
-    },
-    {
-      "song_title": "Eye of the Tiger",
-      "band_name": "Survivor",
-      "intro_strategy": "viaje_temporal",
-      "outro_strategy": "energia",
-      "emotion": "intensidad_historica",
-      "paragraph_1": "En 1982, una llamada directa de Sylvester Stallone puso a Survivor frente a la oportunidad de su vida.",
-      "paragraph_3": "El resultado se quedó seis semanas en la cima estadounidense. Ahí entra ese pulso inconfundible: Eye of the Tiger, de Survivor.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-19T12:59:54.464432+00:00"
-    },
-    {
       "song_title": "Pet Sematary",
       "band_name": "Ramones",
       "intro_strategy": "confidencia",
@@ -5476,6 +5452,30 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-19T13:25:19.724321+00:00"
+    },
+    {
+      "song_title": "Comfortably Numb",
+      "band_name": "Pink Floyd",
+      "intro_strategy": "memoria_musical",
+      "outro_strategy": "expectativa",
+      "emotion": "sensibilidad_contenida",
+      "paragraph_1": "Cuando baja la luz y entran esos primeros acordes, cuesta asociar tanta calma con el episodio físico tan duro que los originó.",
+      "paragraph_3": "Entre la orquesta de Michael Kamen y la guitarra de Gilmour quedó uno de los pasajes más profundos de su discografía. Ahora deja que esas cuerdas hablen por sí solas: Comfortably Numb, de Pink Floyd.",
+      "mentions_brand": false,
+      "diversity_score": 66.4,
+      "generated_at": "2026-11-20T01:31:23.097237+00:00"
+    },
+    {
+      "song_title": "Kickstart My Heart",
+      "band_name": "Mötley Crüe",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "energia",
+      "emotion": "intensidad_historica",
+      "paragraph_1": "El título de esta canción no es una metáfora: nació de dos minutos en que Nikki Sixx estuvo clínicamente muerto.",
+      "paragraph_3": "Sobrevivir a esa noche encendió uno de los arranques más feroces del hard rock. Suelta el embrague con Kickstart My Heart, de Mötley Crüe.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-20T01:31:42.714564+00:00"
     }
   ]
 }

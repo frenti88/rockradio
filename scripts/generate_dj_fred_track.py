@@ -188,15 +188,89 @@ def strip_vocal_tags(text):
     clean = re.sub(r'\s+', ' ', clean).strip()
     return clean
 
-def build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=DEFAULT_FISH_MODEL):
+EMOTION_VOCAL_PROFILES = {
+    "sensibilidad_contenida": {
+        "opening": "[soft, intimate, reflective]",
+        "story": "[calm, warm, storytelling]",
+        "resolution": "[thoughtful, gentle]",
+        "closing": "[warm, soft]",
+        "temperature": 0.62,
+        "top_p": 0.78,
+        "closing_boost_db": 0.9,
+    },
+    "intensidad_historica": {
+        "opening": "[confident, intrigued, lively]",
+        "story": "[energetic, animated]",
+        "resolution": "[excited, dynamic]",
+        "closing": "[energetic, smiling, upbeat]",
+        "temperature": 0.86,
+        "top_p": 0.88,
+        "closing_boost_db": 2.8,
+    },
+    "nostalgia_cercana": {
+        "opening": "[warm, nostalgic, gentle]",
+        "story": "[warm, conversational]",
+        "resolution": "[nostalgic, heartfelt]",
+        "closing": "[warm, inviting]",
+        "temperature": 0.70,
+        "top_p": 0.82,
+        "closing_boost_db": 1.4,
+    },
+    "contraste_cultural": {
+        "opening": "[curious, slightly amused, conversational]",
+        "story": "[engaging, clear]",
+        "resolution": "[surprised, expressive]",
+        "closing": "[confident, warm]",
+        "temperature": 0.78,
+        "top_p": 0.85,
+        "closing_boost_db": 1.9,
+    },
+    "curiosidad_tecnica": {
+        "opening": "[curious, intrigued, warm]",
+        "story": "[engaged, clear, conversational]",
+        "resolution": "[appreciative, confident]",
+        "closing": "[warm, upbeat]",
+        "temperature": 0.75,
+        "top_p": 0.84,
+        "closing_boost_db": 1.8,
+    },
+    "calidez_radial": {
+        "opening": "[warm, confident, smiling]",
+        "story": "[conversational, friendly]",
+        "resolution": "[warm, expressive]",
+        "closing": "[upbeat, warm]",
+        "temperature": 0.76,
+        "top_p": 0.84,
+        "closing_boost_db": 2.0,
+    },
+}
+
+
+def get_vocal_profile(emotion=None):
+    return EMOTION_VOCAL_PROFILES.get(str(emotion or "").strip().lower(), EMOTION_VOCAL_PROFILES["calidez_radial"])
+
+
+def build_dual_scripts(
+    paragraph_1,
+    paragraph_2,
+    p3_resolution,
+    p3_closing,
+    model_name=DEFAULT_FISH_MODEL,
+    emotion=None,
+    tts_p1=None,
+    tts_p2=None,
+    tts_p3=None,
+):
     """
     Estructura el guion en tres bloques narrativos identificables con separación semántica:
     - paragraph_1: apertura y contexto inicial
     - paragraph_2: desarrollo de la anécdota histórica
     - paragraph_3: desenlace + cierre emotivo progresivo
-    Genera texto visible limpio y texto vocal expresivo con exactamente las mismas palabras habladas.
+    Genera texto visible limpio y texto vocal expresivo adaptado a la emoción de la anécdota.
     """
     caps = get_fish_model_capabilities(model_name)
+    profile = get_vocal_profile(emotion)
+
     clean_p1 = strip_vocal_tags(paragraph_1)
     clean_p2 = strip_vocal_tags(paragraph_2)
     clean_p3_res = strip_vocal_tags(p3_resolution)
@@ -205,15 +279,24 @@ def build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, mode
 
     visible_script = " ".join([x for x in (clean_p1, clean_p2, clean_p3) if x]).strip()
 
-    if caps["supports_bracket_tags"]:
-        vocal_p1 = f"{caps['opening_tag']} {clean_p1}"
-        vocal_p2 = f"{caps['story_tag']} {clean_p2}"
+    opening_tag = profile["opening"]
+    if "?" in clean_p1 and "curious" not in opening_tag:
+        opening_tag = "[curious, intrigued, warm]"
+
+    if tts_p1 and tts_p2 and tts_p3:
+        vocal_p1 = tts_p1.strip()
+        vocal_p2 = tts_p2.strip()
+        vocal_p3 = tts_p3.strip()
+    elif caps["supports_bracket_tags"]:
+        vocal_p1 = f"{opening_tag} {clean_p1}"
+        vocal_p2 = f"{profile['story']} {clean_p2}"
         if caps["supports_inline_xml_tags"]:
-            close_part = f"{caps['closing_tag']} <forceful>{clean_p3_close}</forceful>"
+            emphasis_wrap = "soft" if emotion == "sensibilidad_contenida" else "forceful"
+            close_part = f"{profile['closing']} <{emphasis_wrap}>{clean_p3_close}</{emphasis_wrap}>"
         else:
-            close_part = f"{caps['closing_tag']} {clean_p3_close}"
+            close_part = f"{profile['closing']} {clean_p3_close}"
         if clean_p3_res:
-            vocal_p3 = f"{caps['resolution_tag']} {clean_p3_res} {close_part}".strip()
+            vocal_p3 = f"{profile['resolution']} {clean_p3_res} {close_part}".strip()
         else:
             vocal_p3 = close_part
     else:
@@ -233,11 +316,17 @@ def build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, mode
         "vocal_p1": vocal_p1,
         "vocal_p2": vocal_p2,
         "vocal_p3": vocal_p3,
+        "temperature": profile["temperature"],
+        "top_p": profile["top_p"],
+        "closing_boost_db": profile["closing_boost_db"],
         "expressive_instructions": {
             "model": caps["model"],
-            "paragraph_1": caps["opening_tag"] if caps["supports_bracket_tags"] else "natural",
-            "paragraph_2": caps["story_tag"] if caps["supports_bracket_tags"] else "narrative",
-            "paragraph_3": f"{caps['resolution_tag']} -> {caps['closing_tag']}" if caps["supports_bracket_tags"] else "progressive_emotional"
+            "emotion": emotion or "calidez_radial",
+            "temperature": profile["temperature"],
+            "top_p": profile["top_p"],
+            "paragraph_1": opening_tag if caps["supports_bracket_tags"] else "natural",
+            "paragraph_2": profile["story"] if caps["supports_bracket_tags"] else "narrative",
+            "paragraph_3": f"{profile['resolution']} -> {profile['closing']}" if caps["supports_bracket_tags"] else "progressive_emotional"
         }
     }
 
@@ -1764,7 +1853,7 @@ def get_integrated_lufs(path):
     except Exception:
         return -20.0
 
-def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL):
+def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL, temperature=None, top_p=None):
     api_key = os.environ.get("FISH_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError("FISH_API_KEY no está configurada en el entorno del servidor.")
@@ -1778,6 +1867,10 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
         "normalize": True,
         "latency": "normal"
     }
+    if temperature is not None:
+        payload["temperature"] = float(temperature)
+    if top_p is not None:
+        payload["top_p"] = float(top_p)
     max_retries = 4
     for attempt in range(max_retries):
         try:
@@ -1818,13 +1911,13 @@ def _fish_audio_tts_sync(text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, mo
     except Exception:
         pass
 
-async def synthesize_fish_audio_tts(sem, text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL):
+async def synthesize_fish_audio_tts(sem, text, out_mp3_path, reference_id=DEFAULT_FISH_VOICE, model=DEFAULT_FISH_MODEL, temperature=None, top_p=None):
     async with sem:
-        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, reference_id, model)
+        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, reference_id, model, temperature, top_p)
 
-async def synthesize_single_segment(text, out_mp3_path, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, is_closing=False):
+async def synthesize_single_segment(text, out_mp3_path, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, is_closing=False, temperature=None, top_p=None):
     if use_fish:
-        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, fish_voice, fish_model)
+        await asyncio.to_thread(_fish_audio_tts_sync, text, out_mp3_path, fish_voice, fish_model, temperature, top_p)
     else:
         if edge_tts is None:
             raise RuntimeError("edge_tts no está instalado y FISH_API_KEY no está disponible.")
@@ -1832,7 +1925,7 @@ async def synthesize_single_segment(text, out_mp3_path, use_fish=True, fish_voic
         await edge_tts.Communicate(apply_english_phonetics(text), DEFAULT_VOICE, rate="+0%", pitch=pitch).save(out_mp3_path)
     return out_mp3_path
 
-async def synthesize_segments(p1_text, p2_text, p3_text, tmp_prefix, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, job_id=None):
+async def synthesize_segments(p1_text, p2_text, p3_text, tmp_prefix, temp_files, use_fish=True, fish_voice=DEFAULT_FISH_VOICE, fish_model=DEFAULT_FISH_MODEL, job_id=None, temperature=None, top_p=None):
     """
     Envía exactamente 3 solicitudes separadas a Fish Audio (paragraph_1, paragraph_2, paragraph_3)
     usando la misma voz (reference_id) y configuraciones consistentes.
@@ -1850,9 +1943,9 @@ async def synthesize_segments(p1_text, p2_text, p3_text, tmp_prefix, temp_files,
 
     if use_fish:
         sem = asyncio.Semaphore(1)
-        await synthesize_fish_audio_tts(sem, p1_text, p1_mp3, reference_id=fish_voice, model=fish_model)
-        await synthesize_fish_audio_tts(sem, p2_text, p2_mp3, reference_id=fish_voice, model=fish_model)
-        await synthesize_fish_audio_tts(sem, p3_text, p3_mp3, reference_id=fish_voice, model=fish_model)
+        await synthesize_fish_audio_tts(sem, p1_text, p1_mp3, reference_id=fish_voice, model=fish_model, temperature=temperature, top_p=top_p)
+        await synthesize_fish_audio_tts(sem, p2_text, p2_mp3, reference_id=fish_voice, model=fish_model, temperature=temperature, top_p=top_p)
+        await synthesize_fish_audio_tts(sem, p3_text, p3_mp3, reference_id=fish_voice, model=fish_model, temperature=temperature, top_p=top_p)
     else:
         await synthesize_single_segment(p1_text, p1_mp3, use_fish=False, is_closing=False)
         await synthesize_single_segment(p2_text, p2_mp3, use_fish=False, is_closing=False)
@@ -3429,6 +3522,9 @@ async def generate_voice_only_radio_intro(
     outro_strategy=None,
     emotion=None,
     dry_run_script=False,
+    tts_p1=None,
+    tts_p2=None,
+    tts_p3=None,
 ):
     """
     Genera la pista vocal masterizada para overlay de radio tradicional sobre la canción original:
@@ -3539,12 +3635,23 @@ async def generate_voice_only_radio_intro(
                 p3_closing = f"Escucha {song_title}, de {band_name}."
                 paragraph_3 = f"{p3_res} {p3_closing}".strip()
 
-            dual = build_dual_scripts(paragraph_1, paragraph_2, p3_res, p3_closing, model_name=selected_model)
+            dual = build_dual_scripts(
+                paragraph_1,
+                paragraph_2,
+                p3_res,
+                p3_closing,
+                model_name=selected_model,
+                emotion=chosen["emotion"],
+                tts_p1=tts_p1 if attempt == 0 else None,
+                tts_p2=tts_p2 if attempt == 0 else None,
+                tts_p3=tts_p3 if attempt == 0 else None,
+            )
             att_prefix = f"{tmp_prefix}_a{attempt}"
             p1_mp3, p2_mp3, p3_mp3 = await synthesize_segments(
                 dual["vocal_p1"], dual["vocal_p2"], dual["vocal_p3"],
                 att_prefix, temp_files,
-                use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model
+                use_fish=use_fish, fish_voice=selected_voice, fish_model=selected_model,
+                temperature=dual["temperature"], top_p=dual["top_p"]
             )
 
             p1_core = f"{att_prefix}_p1_core.wav"
@@ -3589,7 +3696,10 @@ async def generate_voice_only_radio_intro(
                     p3_eq
                 ], capture_output=True, check=True)
 
-                _apply_progressive_closing_ramp(p3_norm, p3_eq, p3_mast, p3_res, p3_closing, boost_db=2.6)
+                _apply_progressive_closing_ramp(
+                    p3_norm, p3_eq, p3_mast, p3_res, p3_closing,
+                    boost_db=dual["closing_boost_db"]
+                )
 
                 _make_silence_wav(pause_sec, sil_pause)
                 _concat_wavs([p1_norm, sil_pause, p2_norm, sil_pause, p3_mast], voice_wav)
