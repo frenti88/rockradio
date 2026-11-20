@@ -4725,31 +4725,76 @@
         justify-content: flex-start !important;
       }
 
-      /* Action Bar: Shuffle left, Big Green Play Right (Spotify Mobile style) */
+      /* Action Bar: Secondary left, Shuffle + Big Green Play Right (Spotify Mobile style) */
       .dj-playlist-action-bar {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        padding: 4px 2px 14px !important;
+        gap: 12px !important;
+        padding: 4px 4px 14px !important;
         margin-bottom: 4px !important;
       }
 
-      .btn-dj-play-all {
-        width: 50px !important;
-        height: 50px !important;
-        order: 2 !important;
-        box-shadow: 0 6px 20px rgba(30, 215, 96, 0.45) !important;
-      }
-
-      .btn-dj-play-all svg {
-        width: 22px !important;
-        height: 22px !important;
-      }
-
-      .btn-dj-shuffle {
+      .dj-action-bar-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
         order: 1 !important;
-        padding: 8px 16px !important;
-        font-size: 0.8rem !important;
+      }
+
+      .dj-action-bar-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 16px !important;
+        margin-left: auto !important;
+        order: 2 !important;
+      }
+
+      .dj-playlist-action-bar .btn-spotify-play-big {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        order: 2 !important;
+        box-shadow: 0 6px 20px rgba(30, 215, 96, 0.4) !important;
+      }
+
+      .dj-playlist-action-bar .btn-spotify-play-big svg {
+        width: 24px !important;
+        height: 24px !important;
+      }
+
+      .dj-icon-action-btn {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        background: transparent !important;
+        border: none !important;
+        color: #b3b3b3 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        transition: color 0.15s ease, transform 0.15s ease !important;
+      }
+
+      .dj-icon-action-btn:hover,
+      .dj-icon-action-btn:active {
+        color: #ffffff !important;
+        transform: scale(1.06) !important;
+      }
+
+      .dj-icon-action-btn.danger:hover,
+      .dj-icon-action-btn.danger:active {
+        color: #f87171 !important;
+      }
+
+      .dj-icon-action-btn.active {
+        color: #1ed760 !important;
+      }
+
+      #btnSpPlaylistAddAllToDj {
+        order: 1 !important;
       }
 
       /* Spotify Mobile: Hide table header completely */
@@ -5977,16 +6022,20 @@
         </div>
 
         <div class="dj-playlist-action-bar">
-          <button class="btn-spotify-play-big" id="btnDjPlaylistPlayAll" type="button" title="Reproducir / Pausar DJ Fred">
-            <svg id="djPlaylistPlayIcon" viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
-            <svg id="djPlaylistPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
-          </button>
-          <button class="btn-dj-fred-next" id="btnDjPlaylistShuffle" type="button" title="Reproducir una canción aleatoria de DJ Fred">
-            <span>🔀 Aleatorio</span>
-          </button>
-          <button class="btn-dj-fred-next" id="btnDjPlaylistClearAll" type="button" title="Vaciar y reiniciar lista de DJ Fred" style="border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
-            <span>🗑️ Vaciar lista</span>
-          </button>
+          <div class="dj-action-bar-left">
+            <button class="dj-icon-action-btn danger" id="btnDjPlaylistClearAll" type="button" title="Vaciar y reiniciar lista de DJ Fred" aria-label="Vaciar lista" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </button>
+          </div>
+          <div class="dj-action-bar-right" style="display:flex; align-items:center; gap:16px; margin-left:auto;">
+            <button class="dj-icon-action-btn" id="btnDjPlaylistShuffle" type="button" title="Reproducir una canción aleatoria de DJ Fred" aria-label="Aleatorio" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+            </button>
+            <button class="btn-spotify-play-big" id="btnDjPlaylistPlayAll" type="button" title="Reproducir / Pausar DJ Fred">
+              <svg id="djPlaylistPlayIcon" viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+              <svg id="djPlaylistPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="dj-playlist-table-wrap">
