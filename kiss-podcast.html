@@ -11845,13 +11845,36 @@
         if (typeof getValidSpotifyToken === 'function') {
           const token = await getValidSpotifyToken();
           if (token) {
-            const spQ = encodeURIComponent(`track:${songTitle} artist:${bandName}`);
-            const spRes = await fetch(`https://api.spotify.com/v1/search?q=${spQ}&type=track&limit=1`, {
+            const spQ = encodeURIComponent(`track:"${songTitle}" artist:"${bandName}"`);
+            const spRes = await fetch(`https://api.spotify.com/v1/search?q=${spQ}&type=track&limit=8`, {
               headers: { 'Authorization': `Bearer ${token}` }
             });
             if (spRes.ok) {
               const spJson = await spRes.json();
-              const spTrack = spJson.tracks && spJson.tracks.items && spJson.tracks.items[0];
+              const spItems = (spJson.tracks && spJson.tracks.items) || [];
+              const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+              const wantArtist = norm(bandName);
+              const wantTitle = norm(songTitle);
+              const badRe = /\b(live|remix|karaoke|tribute|cover|instrumental|acoustic|demo|8-bit|lullaby|made famous|2000)\b/i;
+              const scoreTrack = (tr) => {
+                let sc = (tr.popularity || 0);
+                const artists = (tr.artists || []).map(a => norm(a.name));
+                if (artists.includes(wantArtist)) sc += 200;
+                else if (artists.some(a => a.includes(wantArtist))) sc += 60;
+                else sc -= 200;
+                const tName = norm(tr.name);
+                const aName = norm(tr.album && tr.album.name);
+                if (tName === wantTitle) sc += 80;
+                else if (tName.startsWith(wantTitle)) sc += 40;
+                if (!badRe.test(wantTitle)) {
+                  if (badRe.test(tName)) sc -= 180;
+                  if (badRe.test(aName)) sc -= 90;
+                }
+                return sc;
+              };
+              const spTrack = spItems.length
+                ? spItems.slice().sort((a, b) => scoreTrack(b) - scoreTrack(a))[0]
+                : null;
               if (spTrack) {
                 const spCover = (spTrack.album && spTrack.album.images && spTrack.album.images[0])
                   ? spTrack.album.images[0].url : '';
