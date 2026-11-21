@@ -1,5 +1,5 @@
 // Vercel Serverless Function: Fred Rewind Native AI Story Generation
-// Generates authentic DJ Fred classic rock radio stories using OpenAI gpt-4o-mini
+// Generates authentic DJ Fred classic TrackStories stories using OpenAI gpt-4o-mini
 
 const APERTURA_OBLIGATORIA = "Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fred.";
 

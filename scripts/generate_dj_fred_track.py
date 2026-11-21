@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ROCK RADIO — FRED REWIND • Generador de Historias mediante Comandos de IA y Fish Audio
+TRACKSTORIES — FRED REWIND • Generador de Historias mediante Comandos de IA y Fish Audio
 ======================================================================================
 Arquitectura unificada de producción radial asistida por IA:
 - Conserva Fish Audio (s2.1-pro-free / s2.1-pro) y la voz configurada de Fred (reference_id).
@@ -92,70 +92,70 @@ DEFAULT_FISH_MODEL = os.environ.get("FISH_MODEL", "drama-3").strip()
 DYNAMIC_OPENINGS = [
     {
         "id": 1,
-        "base": "Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de...",
+        "base": "TrackStories: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de {song}, de {band}."
+        "format": lambda song, band, year: f"TrackStories: De vuelta al pasado. Soy Fred, y esta es la historia que no conocías de {song}, de {band}."
     },
     {
         "id": 2,
-        "base": "De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred...",
+        "base": "De vuelta al pasado en TrackStories. Al micrófono, su guía en el tiempo, Fred...",
         "requires_year": False,
-        "format": lambda song, band, year: f"De vuelta al pasado en Rock Radio. Al micrófono, su guía en el tiempo, Fred, recordando {song} de {band}."
+        "format": lambda song, band, year: f"De vuelta al pasado en TrackStories. Al micrófono, su guía en el tiempo, Fred, recordando {song} de {band}."
     },
     {
         "id": 3,
-        "base": "Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta...",
+        "base": "Esto es TrackStories: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta...",
         "requires_year": True,
-        "format": lambda song, band, year: f"Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {year} con {band}." if year else f"Esto es Rock Radio: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {song} de {band}."
+        "format": lambda song, band, year: f"Esto es TrackStories: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {year} con {band}." if year else f"Esto es TrackStories: De vuelta al pasado. Con ustedes, Fred, rebobinando la cinta hasta {song} de {band}."
     },
     {
         "id": 4,
-        "base": "Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock...",
+        "base": "TrackStories: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con {song}, de {band}."
+        "format": lambda song, band, year: f"TrackStories: De vuelta al pasado. Les habla Fred, desempolvando la memoria del rock con {song}, de {band}."
     },
     {
         "id": 5,
-        "base": "Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de...",
+        "base": "Sintonizas TrackStories: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Sintonizas Rock Radio: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de {band}."
+        "format": lambda song, band, year: f"Sintonizas TrackStories: De vuelta al pasado. Al habla Fred, su cronista del rock, abriendo los archivos de {band}."
     },
     {
         "id": 6,
-        "base": "Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de...",
+        "base": "TrackStories: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de {song}."
+        "format": lambda song, band, year: f"TrackStories: De vuelta al pasado. Aquí Fred, su cómplice musical, poniendo la aguja sobre el vinilo de {song}."
     },
     {
         "id": 7,
-        "base": "Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo...",
+        "base": "Están en TrackStories: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Están en Rock Radio: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a {band}."
+        "format": lambda song, band, year: f"Están en TrackStories: De vuelta al pasado. Con ustedes Fred, en los controles de esta máquina del tiempo junto a {band}."
     },
     {
         "id": 8,
-        "base": "Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con...",
+        "base": "TrackStories: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Rock Radio: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con {song}."
+        "format": lambda song, band, year: f"TrackStories: De vuelta al pasado. Les saluda Fred, su anfitrión en este viaje sonoro, para contarles lo que pasó con {song}."
     },
     {
         "id": 9,
-        "base": "Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de...",
+        "base": "Esto es TrackStories: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de...",
         "requires_year": False,
-        "format": lambda song, band, year: f"Esto es Rock Radio: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de {song}."
+        "format": lambda song, band, year: f"Esto es TrackStories: De vuelta al pasado. Soy Fred, el guardián de estos clásicos, trayendo de vuelta la historia de {song}."
     },
     {
         "id": 10,
-        "base": "De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred...",
+        "base": "De vuelta al pasado por TrackStories. Al frente de la tornamesa, su compañero de ruta, Fred...",
         "requires_year": False,
-        "format": lambda song, band, year: f"De vuelta al pasado por Rock Radio. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de {song}."
+        "format": lambda song, band, year: f"De vuelta al pasado por TrackStories. Al frente de la tornamesa, su compañero de ruta, Fred, viajando al origen de {song}."
     }
 ]
 
 CLOSING_TEMPLATES = [
-    "¡Sube el volumen y escuchemos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!",
-    "¡Sube el volumen! Escuchemos juntos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!",
-    "¡Dale volumen y escuchemos a {song}, de {band}, aquí en Rock Radio, de vuelta al pasado!"
+    "¡Sube el volumen y escuchemos a {song}, de {band}, aquí en TrackStories, de vuelta al pasado!",
+    "¡Sube el volumen! Escuchemos juntos a {song}, de {band}, aquí en TrackStories, de vuelta al pasado!",
+    "¡Dale volumen y escuchemos a {song}, de {band}, aquí en TrackStories, de vuelta al pasado!"
 ]
 
 # ==============================================================================
@@ -1612,7 +1612,7 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
     if api_key and need_ai:
         try:
             system_prompt = (
-                "Eres Fred, cronista y locutor experto de rock clásico en 'Rock Radio: De vuelta al pasado'. "
+                "Eres Fred, cronista y locutor experto de rock clásico en 'TrackStories: De vuelta al pasado'. "
                 "Escribes guiones radiales en 3 párrafos claros con hechos históricos reales y verificables. "
                 "REGLA ESTRICTA DE VERACIDAD: Nunca inventes fechas, nombres ni anécdotas falsas."
             )
@@ -1661,7 +1661,7 @@ def generate_ai_story_script(song_title, band_name, album_name="", year="", angl
                     historical_info = strip_vocal_tags(parsed.get("historical_info", ""))
                     source = "openai_gpt_4o_mini"
         except Exception as e:
-            print(f"⚠️ [ROCK RADIO AI] Usando catálogo curado por: {e}", flush=True)
+            print(f"⚠️ [TRACKSTORIES AI] Usando catálogo curado por: {e}", flush=True)
 
     if not p2_anecdote:
         master = get_master_fred_script(song_title, band_name, album_name, year, angle, opening_text=apertura)
@@ -1764,7 +1764,7 @@ condense_anecdote_text = condense_paragraph_text
 # ==============================================================================
 ENGLISH_PHONETICS = [
     (r'\bFred Rewind\b', 'Fred Riuáind'),
-    (r'\bRock Radio\b', 'Rok Réidio'),
+    (r'\bTrackStories\b', 'Rok Réidio'),
     (r'\bDJ Fredd?\b', 'Dí-yéi Fred'),
     (r'\bRush\b', 'Rásh'),
     (r'\bTom Sawyer\b', 'Tom Sóyer'),
@@ -1835,7 +1835,7 @@ def parse_radio_script(text, song_title="Rock Classic", band_name="Rock Band", y
     sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+', text) if s.strip()]
     if len(sentences) >= 3:
         p1 = sentences[0]
-        if len(sentences) >= 4 and ("Rock Radio" in sentences[0] or "De vuelta al pasado" in sentences[0]) and len(sentences[0].split()) <= 8:
+        if len(sentences) >= 4 and ("TrackStories" in sentences[0] or "De vuelta al pasado" in sentences[0]) and len(sentences[0].split()) <= 8:
             p1 = f"{sentences[0]} {sentences[1]}"
             p3 = sentences[-1]
             p2 = " ".join(sentences[2:-1])
@@ -2547,7 +2547,7 @@ async def run_story_pipeline(
 
     dual = build_dual_scripts(paragraph_1, paragraph_2, p3_resolution, p3_closing, model_name=selected_model)
 
-    print(f"\n🎙️ [ROCK RADIO AI] Iniciando '{song_title}' — {band_name} (modo={mode}, modelo={selected_model}, voz={selected_voice[:8]}...)", flush=True)
+    print(f"\n🎙️ [TRACKSTORIES AI] Iniciando '{song_title}' — {band_name} (modo={mode}, modelo={selected_model}, voz={selected_voice[:8]}...)", flush=True)
     print(f"   Apertura #{opening_id}: {opening_text}", flush=True)
 
     tmp_prefix = f"/tmp/rockradio_{pid}_{int(t_start*1000)}"
@@ -2574,7 +2574,7 @@ async def run_story_pipeline(
                 break
 
             excess = predicted_final - (SAFE_TARGET_TOTAL_SEC - 1.2)
-            print(f"⏱️ [ROCK RADIO AI] Duración estimada {predicted_final:.2f}s excede límite (45s). Condensando sin acelerar (pase {pass_num})...", flush=True)
+            print(f"⏱️ [TRACKSTORIES AI] Duración estimada {predicted_final:.2f}s excede límite (45s). Condensando sin acelerar (pase {pass_num})...", flush=True)
 
             if pass_num == 1:
                 new_p2 = condense_paragraph_text(dual["p2_clean"], song_title, band_name, role_label="párrafo 2 (anécdota)", excess_sec=excess)
@@ -2653,7 +2653,7 @@ async def run_story_pipeline(
             {
                 "start": 0.0,
                 "end": p1_start,
-                "text": "🎸 📻 Intro musical — Rock Radio: De vuelta al pasado..."
+                "text": "🎸 📻 Intro musical — TrackStories: De vuelta al pasado..."
             },
             {
                 "start": p1_start,
@@ -2663,7 +2663,7 @@ async def run_story_pipeline(
             {
                 "start": p1_end,
                 "end": pause1_end,
-                "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+                "text": "🎶 Pausa musical (3s) — TrackStories: De vuelta al pasado..."
             },
             {
                 "start": p2_start,
@@ -2673,7 +2673,7 @@ async def run_story_pipeline(
             {
                 "start": p2_end,
                 "end": pause2_end,
-                "text": "🎶 Pausa musical (3s) — Rock Radio: De vuelta al pasado..."
+                "text": "🎶 Pausa musical (3s) — TrackStories: De vuelta al pasado..."
             },
             {
                 "start": p3_start,
@@ -2749,7 +2749,7 @@ async def run_story_pipeline(
 
         elapsed = time.time() - t_start
         print(
-            f"✅ [ROCK RADIO AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | "
+            f"✅ [TRACKSTORIES AI] Completado en {elapsed:.2f}s | '{song_title}' ({band_name}) | "
             f"P1: {dur_p1:.2f}s -> [3.0s] -> P2: {dur_p2:.2f}s -> [3.0s] -> P3: {dur_p3:.2f}s | "
             f"Final: {actual_final_dur:.2f}s (<=45s) | Archivo: {rel_audio_file}",
             flush=True
@@ -2898,7 +2898,7 @@ def run_server(port=5055):
                 caps = get_fish_model_capabilities(DEFAULT_FISH_MODEL)
                 self._send_json(200, {
                     'status': 'online',
-                    'service': 'Rock Radio • Fred Rewind AI Production Engine',
+                    'service': 'TrackStories • Fred Rewind AI Production Engine',
                     'fishModel': caps['model'],
                     'fishVoiceId': DEFAULT_FISH_VOICE,
                     'capabilities': caps,
@@ -2980,7 +2980,7 @@ def run_server(port=5055):
                 self._send_json(404, {'error': 'Endpoint no encontrado'})
 
     server = ThreadingHTTPServer(('127.0.0.1', port), DjFredAudioHandler)
-    print(f"🚀 [ROCK RADIO AI] Servidor en http://127.0.0.1:{port} (Fish Audio {DEFAULT_FISH_MODEL} | Voz {DEFAULT_FISH_VOICE})", flush=True)
+    print(f"🚀 [TRACKSTORIES AI] Servidor en http://127.0.0.1:{port} (Fish Audio {DEFAULT_FISH_MODEL} | Voz {DEFAULT_FISH_VOICE})", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -2990,28 +2990,28 @@ def run_server(port=5055):
 # 12. GUÍA DE ESTILO (10 INTROS + 8 OUTROS), MOTOR CREATIVO (15 HISTORIAS) Y CLI
 # ==============================================================================
 # Las 10 intros y 8 outros se conservan como GUÍA DE ESTILO (personalidad, ritmo
-# e intención narrativa de DJ Fred en Rock Radio), NO como catálogo cerrado.
+# e intención narrativa de DJ Fred en TrackStories), NO como catálogo cerrado.
 RADIO_OVERLAY_INTROS = [
     {"id": "intro_01_aguja_vinilo", "name": "La aguja sobre el vinilo", "moods": ["classic", "recording", "default"],
-     "short": "Hay canciones que empiezan antes de la primera nota. Estás en Rock Radio, soy Fred."},
+     "short": "Hay canciones que empiezan antes de la primera nota. Estás en TrackStories, soy Fred."},
     {"id": "intro_02_viaje_inesperado", "name": "El viaje inesperado", "moods": ["nostalgic", "historical", "default"],
-     "short": "Ajusta tu reloj para viajar al pasado. Soy Fred, en Rock Radio."},
+     "short": "Ajusta tu reloj para viajar al pasado. Soy Fred, en TrackStories."},
     {"id": "intro_03_frecuencia_perdida", "name": "La frecuencia perdida", "moods": ["mystery", "classic", "default"],
-     "short": "Acabas de encontrar una frecuencia llena de historias. Soy Fred, esto es Rock Radio."},
+     "short": "Acabas de encontrar una frecuencia llena de historias. Soy Fred, esto es TrackStories."},
     {"id": "intro_04_cinta_olvidada", "name": "La cinta olvidada", "moods": ["recording", "studio", "default"],
-     "short": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en Rock Radio."},
+     "short": "Imagina encontrar una vieja cinta con un secreto. Soy Fred, en TrackStories."},
     {"id": "intro_05_confesiones_madrugada", "name": "Confesiones de madrugada", "moods": ["ballad", "nostalgic", "emotional"],
-     "short": "Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde Rock Radio."},
+     "short": "Baja el ruido de afuera y escucha sin afán. Te habla Fred, desde TrackStories."},
     {"id": "intro_06_detras_escenario", "name": "Detrás del escenario", "moods": ["concert", "energetic", "rock"],
-     "short": "¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es Rock Radio."},
+     "short": "¿Sabes qué pasó cuando se apagaron las luces? Soy Fred, y esto es TrackStories."},
     {"id": "intro_07_archivo_confidencial", "name": "Archivo confidencial", "moods": ["mystery", "historical", "studio"],
-     "short": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en Rock Radio."},
+     "short": "Hoy abrimos un viejo archivo lleno de secretos. Soy Fred, en TrackStories."},
     {"id": "intro_08_la_primera_vez", "name": "La primera vez", "moods": ["nostalgic", "ballad", "classic"],
-     "short": "Esta historia puede cambiar cómo escuchas este clásico. Soy Fred, en Rock Radio."},
+     "short": "Esta historia puede cambiar cómo escuchas este clásico. Soy Fred, en TrackStories."},
     {"id": "intro_09_rebobinando_historia", "name": "Rebobinando la historia", "moods": ["historical", "nostalgic", "default"],
-     "short": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en Rock Radio."},
+     "short": "Hoy regresamos al instante exacto en que nació esta historia. Soy Fred, en TrackStories."},
     {"id": "intro_10_antes_darle_play", "name": "Antes de darle play", "moods": ["default", "mystery", "energetic"],
-     "short": "Antes de que siga sonando, quiero contarte algo. Soy Fred, estás en Rock Radio."}
+     "short": "Antes de que siga sonando, quiero contarte algo. Soy Fred, estás en TrackStories."}
 ]
 
 RADIO_OVERLAY_OUTROS = [
@@ -3026,11 +3026,11 @@ RADIO_OVERLAY_OUTROS = [
     {"id": "outro_05_intriga", "name": "Intriga", "moods": ["mystery", "historical"],
      "fmt": lambda s, b: f"¿La volverás a escuchar igual? Descúbrelo con {s}, de {b}."},
     {"id": "outro_06_radio_vintage", "name": "Radio vintage", "moods": ["recording", "studio", "classic"],
-     "fmt": lambda s, b: f"La música sigue girando: {s}, de {b}, en Rock Radio."},
+     "fmt": lambda s, b: f"La música sigue girando: {s}, de {b}, en TrackStories."},
     {"id": "outro_07_cinematografico", "name": "Cinematográfico", "moods": ["ballad", "historical", "emotional"],
      "fmt": lambda s, b: f"Aquí terminan mis palabras y comienza la música: {s}, de {b}."},
-    {"id": "outro_08_firma_rock_radio", "name": "Firma de Rock Radio", "moods": ["default", "classic", "energetic"],
-     "fmt": lambda s, b: f"Ya sabes lo que ocurrió. Ahora siéntelo: {s}, de {b}. Rock Radio."}
+    {"id": "outro_08_firma_rock_radio", "name": "Firma de TrackStories", "moods": ["default", "classic", "energetic"],
+     "fmt": lambda s, b: f"Ya sabes lo que ocurrió. Ahora siéntelo: {s}, de {b}. TrackStories."}
 ]
 
 CREATIVE_INTRO_STRATEGIES = (
@@ -3147,7 +3147,7 @@ def load_recent_overlay_history(limit=HISTORY_WINDOW_SIZE):
             "emotion": item.get("emotion", ""),
             "paragraph_1": p1,
             "paragraph_3": p3,
-            "mentions_brand": ("fred" in _norm_narrative_text(p1 + " " + p3) or "rock radio" in _norm_narrative_text(p1 + " " + p3)),
+            "mentions_brand": ("fred" in _norm_narrative_text(p1 + " " + p3) or "TrackStories" in _norm_narrative_text(p1 + " " + p3)),
             "generated_at": item.get("generated_at", ""),
         })
     return rebuilt[-limit:]
@@ -3160,7 +3160,7 @@ def score_narrative_diversity(p1, p3, intro_strategy, outro_strategy, recent_his
     norm_p1 = _norm_narrative_text(p1)
     norm_p3 = _norm_narrative_text(p3)
     p1_prefix = " ".join(_narrative_tokens(p1)[:4])
-    mentions_brand = ("fred" in norm_p1 or "rock radio" in norm_p1 or "rock radio" in norm_p3)
+    mentions_brand = ("fred" in norm_p1 or "TrackStories" in norm_p1 or "TrackStories" in norm_p3)
     uses_cliche = any(norm_p1.startswith(c) for c in CLICHE_OPENERS)
 
     if uses_cliche:
@@ -3219,7 +3219,7 @@ def score_narrative_diversity(p1, p3, intro_strategy, outro_strategy, recent_his
                 score -= 12.0
                 notes.append(f"invitacion_final_repetida:{inv}")
 
-        if prev.get("mentions_brand") or ("fred" in norm_prev_p1) or ("rock radio" in norm_prev_p1) or ("rock radio" in norm_prev_p3):
+        if prev.get("mentions_brand") or ("fred" in norm_prev_p1) or ("TrackStories" in norm_prev_p1) or ("TrackStories" in norm_prev_p3):
             brand_recent_count += 1
         if any(norm_prev_p1.startswith(c) for c in CLICHE_OPENERS):
             cliche_recent_count += 1
@@ -3255,9 +3255,9 @@ def _generate_openai_creative_candidates(song_title, band_name, p1_hook, p2_anec
     style_outros = [o["fmt"](song_title, band_name) for o in RADIO_OVERLAY_OUTROS[:4]]
 
     prompt = (
-        "Eres DJ Fred de Rock Radio (locutor experimentado de rock clásico, cercano, curioso, nostálgico, "
+        "Eres DJ Fred de TrackStories (locutor experimentado de rock clásico, cercano, curioso, nostálgico, "
         "hablas de tú al oyente en español natural y humano). "
-        "Usa las referencias de estilo SOLO para captar voz y ritmo, NUNCA para copiarlas ni para repetir 'Soy Fred, en Rock Radio' en cada pista.\n"
+        "Usa las referencias de estilo SOLO para captar voz y ritmo, NUNCA para copiarlas ni para repetir 'Soy Fred, en TrackStories' en cada pista.\n"
         f"Canción: {song_title} | Banda: {band_name} | Emoción guiada por la anécdota: {emotion}\n"
         f"Hechos verificados (NO inventes ningún dato, fecha ni escena): {p1_hook} {p2_anecdote} {p3_resolution} ({historical_info})\n"
         f"Referencias de estilo intro: {json.dumps(style_intros, ensure_ascii=False)}\n"
@@ -3344,7 +3344,7 @@ def _build_local_creative_candidates(song_title, band_name, p1_hook, p2_anecdote
         1 for h in recent_history[-4:]
         if h.get("mentions_brand")
         or "fred" in _norm_narrative_text(f"{h.get('paragraph_1', '')} {h.get('paragraph_3', '')}")
-        or "rock radio" in _norm_narrative_text(f"{h.get('paragraph_1', '')} {h.get('paragraph_3', '')}")
+        or "TrackStories" in _norm_narrative_text(f"{h.get('paragraph_1', '')} {h.get('paragraph_3', '')}")
     )
     allow_light_brand = (recent_brand_hits == 0 and len(recent_history) >= 2)
 
@@ -3357,7 +3357,7 @@ def _build_local_creative_candidates(song_title, band_name, p1_hook, p2_anecdote
             (lambda: f"Volvamos al momento exacto en que {band_name} trabajaba en este tema: {hook_lower}.")
         ),
         "confidencia": (
-            (lambda: f"Te comparto un hallazgo de Rock Radio sobre {band_name}: {hook_lower}.")
+            (lambda: f"Te comparto un hallazgo de TrackStories sobre {band_name}: {hook_lower}.")
             if allow_light_brand else
             (lambda: f"Quiero compartirte un dato que pocos recuerdan sobre {band_name}: {hook_lower}.")
         ),
@@ -3383,7 +3383,7 @@ def _build_local_creative_candidates(song_title, band_name, p1_hook, p2_anecdote
         "reflexion": lambda: f"A veces una decisión inesperada define toda una carrera. {song_title}, de {band_name}.",
         "continuidad_narrativa": lambda: f"De aquel punto de partida nació exactamente lo que vas a escuchar: {song_title}, de {band_name}.",
         "transicion_directa": (
-            (lambda: f"En Rock Radio, {song_title}, de {band_name}.")
+            (lambda: f"En TrackStories, {song_title}, de {band_name}.")
             if allow_light_brand else
             (lambda: f"Aquí la tienes: {song_title}, de {band_name}.")
         ),
@@ -3775,7 +3775,7 @@ async def generate_voice_only_radio_intro(
                 generated_at = datetime.now(timezone.utc).isoformat()
                 mentions_brand = (
                     "fred" in _norm_narrative_text(f"{paragraph_1} {paragraph_3}")
-                    or "rock radio" in _norm_narrative_text(f"{paragraph_1} {paragraph_3}")
+                    or "TrackStories" in _norm_narrative_text(f"{paragraph_1} {paragraph_3}")
                 )
                 try:
                     meta = {}
@@ -3874,7 +3874,7 @@ async def generate_voice_only_radio_intro(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Rock Radio — Motor de Historias IA y Fish Audio")
+    parser = argparse.ArgumentParser(description="TrackStories — Motor de Historias IA y Fish Audio")
     parser.add_argument("--command", "-c", help="Comando en lenguaje natural (ej: 'Generar historia de Tom Sawyer de Rush')")
     parser.add_argument("--song", help="Nombre de la canción")
     parser.add_argument("--band", help="Nombre de la banda o artista")

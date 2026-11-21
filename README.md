@@ -1,4 +1,4 @@
-# 🎸 Rock Radio — Fred Rewind
+# 🎸 TrackStories — Fred Rewind
 
 Plataforma interactiva de historias musicales en 45 segundos con diseño estilo Spotify Desktop. Conecta la historia del Rock Clásico, Hard Rock y Heavy Metal con narración de **DJ Fred** (*"De vuelta al pasado"*) antes de cada canción original completa.
 
