@@ -3247,6 +3247,71 @@
       "total_presentation_seconds": 35.06,
       "voice_file": "audio/fred_voice_los_prisioneros_muevan_las_industrias.mp3",
       "script": "Jorge González escribió esta letra viajando en el metro de Santiago, mirando las fábricas cerradas y el desempleo del Chile de los ochenta. En mil novecientos ochenta y seis la grabó prácticamente solo con sintetizadores para Pateando Piedras, convirtiendo una protesta obrera en un clásico bailable. Que suenen esos teclados inconfundibles de Los Prisioneros. Esto es Muevan las Industrias."
+    },
+    "song_aleks_syntek_sexo_pudor_y_lagrimas": {
+      "id": "song_aleks_syntek_sexo_pudor_y_lagrimas",
+      "song": "Sexo, Pudor y Lágrimas",
+      "artist": "Aleks Syntek",
+      "album": "Sexo, Pudor y Lágrimas",
+      "year": 1999,
+      "story_type": "soundtrack_hit",
+      "opening_style": "cinema_scene",
+      "closing_style": "dramatic_launch",
+      "total_presentation_seconds": 35.66,
+      "voice_file": "audio/fred_voice_aleks_syntek_sexo_pudor_y_lagrimas.mp3",
+      "script": "En mil novecientos noventa y nueve, una película mexicana rompió récords de taquilla y necesitaba una canción capaz de capturar toda su tensión emocional. Aleks Syntek compuso la banda sonora completa para el filme de Antonio Serrano, ganó el Premio Ariel y firmó el mayor éxito de su carrera. Dejá que corran los créditos y disfrutá este clásico de Aleks Syntek. Suena Sexo, Pudor y Lágrimas."
+    },
+    "song_los_prisioneros_el_baile_de_los_que_sobran": {
+      "id": "song_los_prisioneros_el_baile_de_los_que_sobran",
+      "song": "El Baile de los que Sobran",
+      "artist": "Los Prisioneros",
+      "album": "Pateando Piedras",
+      "year": 1986,
+      "story_type": "studio_secret",
+      "opening_style": "myth_buster",
+      "closing_style": "anthem_cue",
+      "total_presentation_seconds": 35.45,
+      "voice_file": "audio/fred_voice_los_prisioneros_el_baile_de_los_que_sobran.mp3",
+      "script": "Muchos creen que este himno chileno nació con una guitarra acústica en la calle, pero Jorge González lo armó con una caja de ritmos prestada. En el estudio aceleraron el tempo, sumaron un ladrido de perro en el sampler y la guitarra de Claudio Narea, creando un símbolo generacional de mil novecientos ochenta y seis. Pateando piedras y haciendo historia con Los Prisioneros. Acá viene El Baile de los que Sobran."
+    },
+    "song_caifanes_aqui_no_es_asi": {
+      "id": "song_caifanes_aqui_no_es_asi",
+      "song": "Aquí No Es Así",
+      "artist": "Caifanes",
+      "album": "El Nervio del Volcán",
+      "year": 1994,
+      "story_type": "band_era",
+      "opening_style": "tension_hook",
+      "closing_style": "electric_handover",
+      "total_presentation_seconds": 35.63,
+      "voice_file": "audio/fred_voice_caifanes_aqui_no_es_asi.mp3",
+      "script": "Mil novecientos noventa y cuatro marcó el último disco de estudio de Caifanes antes de su separación, y la energía en el estudio estaba al límite. Compuesta por Saúl Hernández, Alejandro Marcovich y Alfonso André para El Nervio del Volcán, destaca por esas guitarras casi hipnóticas que suenan como violines. Subile al volumen en TrackStories y sentí la mística de Caifanes. Esto es Aquí No Es Así."
+    },
+    "song_kraken_vestido_de_cristal": {
+      "id": "song_kraken_vestido_de_cristal",
+      "song": "Vestido de Cristal",
+      "artist": "Kraken",
+      "album": "Kraken II",
+      "year": 1989,
+      "story_type": "national_milestone",
+      "opening_style": "legend_tribute",
+      "closing_style": "epic_cue",
+      "total_presentation_seconds": 35.19,
+      "voice_file": "audio/fred_voice_kraken_vestido_de_cristal.mp3",
+      "script": "Cuando hablamos del rock colombiano, la voz de Elkin Ramírez, el eterno Titán, ocupa un lugar sagrado desde finales de los ochenta. Lanzada en Kraken Dos en mil novecientos ochenta y nueve, esta balada épica llegó al número uno de la radio colombiana enfrentando el falso ego con pura honestidad. Rendimos tributo al Titán y a su banda inmortal. Con ustedes, Kraken y Vestido de Cristal."
+    },
+    "song_aterciopelados_florecita_rockera": {
+      "id": "song_aterciopelados_florecita_rockera",
+      "song": "Florecita Rockera",
+      "artist": "Aterciopelados",
+      "album": "El Dorado",
+      "year": 1995,
+      "story_type": "breakthrough_anthem",
+      "opening_style": "energetic_scene",
+      "closing_style": "playful_launch",
+      "total_presentation_seconds": 34.95,
+      "voice_file": "audio/fred_voice_aterciopelados_florecita_rockera.mp3",
+      "script": "Bogotá, mil novecientos noventa y cinco. Aterciopelados abre su álbum El Dorado con un estallido de actitud punk e identidad colombiana. Escrita por Héctor Buitrago y cantada con descaro por Andrea Echeverri, esta canción puso al dúo bogotano en el radar de todo el continente. Preparate para cantar a todo pulmón con Aterciopelados. Acá suena Florecita Rockera."
     }
   },
   "last_overlay_intros": [
