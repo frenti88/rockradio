@@ -3147,8 +3147,6 @@
   },
   "last_overlay_intros": [
     "curiosidad",
-    "confidencia",
-    "curiosidad",
     "contraste",
     "curiosidad",
     "contraste",
@@ -3160,11 +3158,11 @@
     "confidencia",
     "curiosidad",
     "curiosidad",
+    "curiosidad",
+    "curiosidad",
     "curiosidad"
   ],
   "last_overlay_outros": [
-    "revelacion",
-    "revelacion",
     "revelacion",
     "nostalgia",
     "revelacion",
@@ -3177,7 +3175,9 @@
     "revelacion",
     "revelacion",
     "revelacion",
-    "revelacion"
+    "revelacion",
+    "revelacion",
+    "nostalgia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -8309,33 +8309,99 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-21T10:33:20.251908+00:00"
+    },
+    "virus_amor_descartable": {
+      "song_title": "Amor Descartable",
+      "band_name": "Virus",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "curious",
+      "source_mode": "agent_custom",
+      "diversity_score": 0.0,
+      "paragraph_1": "En 1984, Virus dio un giro audaz hacia los sintetizadores y redefinió para siempre la elegancia del rock argentino.",
+      "paragraph_2": "Compuesta por los hermanos Julio y Federico Moura para el álbum Relax, esta canción reflejó con ironía y sensualidad la modernidad porteña, agotando funciones en el Teatro Astros y conquistando toda Sudamérica.",
+      "paragraph_3": "Modernidad, pulso electrónico y carisma inolvidable. Aquí suena Amor Descartable, de Virus.",
+      "vocal_p1": "[warm, confident] En 1984, Virus dio un giro audaz hacia los sintetizadores y redefinió para siempre la elegancia del rock argentino.",
+      "vocal_p2": "Compuesta por los hermanos Julio y Federico Moura para el álbum Relax, esta canción reflejó con ironía y sensualidad la modernidad porteña, agotando funciones en el Teatro Astros y conquistando toda Sudamérica.",
+      "vocal_p3": "[warm, upbeat] Modernidad, pulso electrónico y carisma inolvidable. Aquí suena Amor Descartable, de Virus.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 9.5,
+        "p2": 14.37,
+        "p3": 8.36
+      },
+      "voice_duration_sec": 34.27,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 9.5,
+        "pause1End": 10.5,
+        "pause2Start": 24.87,
+        "pause2End": 25.87,
+        "outroEnd": 34.27,
+        "rampSec": 2.0,
+        "totalPresentationSec": 41.27
+      },
+      "audio_file": "audio/fred_voice_virus_amor_descartable.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-21T14:26:05.347625+00:00"
+    },
+    "fito_pez_giros": {
+      "song_title": "Giros",
+      "band_name": "Fito Páez",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "emotional",
+      "source_mode": "agent_custom",
+      "diversity_score": 68.0,
+      "paragraph_1": "Con apenas veintidós años, Fito Páez cruzó el tango, el rock y los sintetizadores en un disco que lo consagró para siempre.",
+      "paragraph_2": "En 1985, tras girar como tecladista de Charly García, grabó este autorretrato juvenil donde un bandoneón ejecutado desde el sintetizador abre un álbum histórico que presentó a sala llena en el Luna Park.",
+      "paragraph_3": "Poesía rosarina y movimiento puro desde el primer compás. Disfrutemos Giros, de Fito Páez.",
+      "vocal_p1": "[warm, reflective] Con apenas veintidós años, Fito Páez cruzó el tango, el rock y los sintetizadores en un disco que lo consagró para siempre.",
+      "vocal_p2": "En 1985, tras girar como tecladista de Charly García, grabó este autorretrato juvenil donde un bandoneón ejecutado desde el sintetizador abre un álbum histórico que presentó a sala llena en el Luna Park.",
+      "vocal_p3": "[soft, warm] Poesía rosarina y movimiento puro desde el primer compás. Disfrutemos Giros, de Fito Páez.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.25,
+        "p2": 14.35,
+        "p3": 7.29
+      },
+      "voice_duration_sec": 31.92,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.25,
+        "pause1End": 9.25,
+        "pause2Start": 23.6,
+        "pause2End": 24.6,
+        "outroEnd": 31.92,
+        "rampSec": 2.0,
+        "totalPresentationSec": 38.92
+      },
+      "audio_file": "audio/fred_voice_fito_paez_giros.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-21T14:26:13.582938+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "The Man Who Sold the World",
-      "band_name": "Nirvana",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "melancholic",
-      "paragraph_1": "Tantos jóvenes creyeron que esta canción era original de Nirvana que el propio David Bowie bromeaba con eso en sus conciertos.",
-      "paragraph_3": "Una versión que conquistó a toda una generación. Escuchemos The Man Who Sold the World, de Nirvana.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:32:00.119600+00:00"
-    },
-    {
-      "song_title": "Everlong",
-      "band_name": "Foo Fighters",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "revelacion",
-      "emotion": "emotional",
-      "paragraph_1": "En el puente más tranquilo de este clásico se esconden susurros que durante años nadie lograba descifrar.",
-      "paragraph_3": "Intensidad, romanticismo y guitarras que despegan el alma. Ahí viene Everlong, de Foo Fighters.",
-      "mentions_brand": false,
-      "diversity_score": 52.13,
-      "generated_at": "2026-11-21T10:32:07.547864+00:00"
-    },
     {
       "song_title": "Numb",
       "band_name": "Linkin Park",
@@ -8491,6 +8557,30 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-21T14:21:36.153109+00:00"
+    },
+    {
+      "song_title": "Amor Descartable",
+      "band_name": "Virus",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "curious",
+      "paragraph_1": "En 1984, Virus dio un giro audaz hacia los sintetizadores y redefinió para siempre la elegancia del rock argentino.",
+      "paragraph_3": "Modernidad, pulso electrónico y carisma inolvidable. Aquí suena Amor Descartable, de Virus.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-21T14:26:05.347625+00:00"
+    },
+    {
+      "song_title": "Giros",
+      "band_name": "Fito Páez",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "nostalgia",
+      "emotion": "emotional",
+      "paragraph_1": "Con apenas veintidós años, Fito Páez cruzó el tango, el rock y los sintetizadores en un disco que lo consagró para siempre.",
+      "paragraph_3": "Poesía rosarina y movimiento puro desde el primer compás. Disfrutemos Giros, de Fito Páez.",
+      "mentions_brand": false,
+      "diversity_score": 68.0,
+      "generated_at": "2026-11-21T14:26:13.582938+00:00"
     }
   ]
 }
