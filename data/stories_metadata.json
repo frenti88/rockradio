@@ -3143,11 +3143,113 @@
       "created_at": "2026-11-18T11:09:37.426470+00:00",
       "status": "completed",
       "song_duration_sec": 482
+    },
+    "song_soda_stereo_signos": {
+      "id": "song_soda_stereo_signos",
+      "song": "Signos",
+      "artist": "Soda Stereo",
+      "album": "Signos",
+      "year": 1986,
+      "story_type": "hit_origin",
+      "opening_style": "temporal_scene",
+      "closing_style": "emotional_hook",
+      "total_presentation_seconds": 35.4,
+      "voice_file": "audio/fred_voice_soda_stereo_signos.mp3",
+      "script": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre. Signos fue el primer álbum del rock argentino editado en formato cedé, fabricado en Holanda, y desató la famosa Sodamanía por toda Latinoamérica. Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos."
+    },
+    "song_los_rodriguez_sin_documentos": {
+      "id": "song_los_rodriguez_sin_documentos",
+      "song": "Sin Documentos",
+      "artist": "Los Rodríguez",
+      "album": "Sin Documentos",
+      "year": 1993,
+      "story_type": "cultural_fusion",
+      "opening_style": "direct_question",
+      "closing_style": "energetic_launch",
+      "total_presentation_seconds": 34.04,
+      "voice_file": "audio/fred_voice_los_rodriguez_sin_documentos.mp3",
+      "script": "¿Qué pasa cuando juntás el rock porteño de Andrés Calamaro y Ariel Rot con el pulso callejero de Madrid? En mil novecientos noventa y tres, Los Rodríguez mezclaron guitarras eléctricas con rumba española y firmaron un himno que conquistó las dos orillas del Atlántico. Acompañame en este viaje sin pasaporte junto a Calamaro y Los Rodríguez. Acá suena Sin Documentos."
+    },
+    "song_fito_paez_al_lado_del_camino": {
+      "id": "song_fito_paez_al_lado_del_camino",
+      "song": "Al Lado del Camino",
+      "artist": "Fito Páez",
+      "album": "Abre",
+      "year": 1999,
+      "story_type": "milestone_award",
+      "opening_style": "reflective_statement",
+      "closing_style": "warm_invitation",
+      "total_presentation_seconds": 36.6,
+      "voice_file": "audio/fred_voice_fito_paez_al_lado_del_camino.mp3",
+      "script": "Hay canciones que funcionan como una declaración de principios, y Fito Páez escribió la suya justo antes de despedir los años noventa. Grabada en sus estudios Circo Beat para el álbum Abre, esta joya arrasó en los primeros Latin Grammy ganando Mejor Canción y Mejor Interpretación Rock. Respirá hondo y escuchá esta letra inmortal de Fito Páez. Con ustedes, Al Lado del Camino."
+    },
+    "song_el_ultimo_de_la_fila_como_un_burro_amarrado": {
+      "id": "song_el_ultimo_de_la_fila_como_un_burro_amarrado",
+      "song": "Como un Burro Amarrado en la Puerta del Baile",
+      "artist": "El Último de la Fila",
+      "album": "Astronomía Razonable",
+      "year": 1993,
+      "story_type": "song_craft",
+      "opening_style": "playful_hook",
+      "closing_style": "rhythmic_cue",
+      "total_presentation_seconds": 39.1,
+      "voice_file": "audio/fred_voice_el_ultimo_de_la_fila_como_un_burro_amarrado.mp3",
+      "script": "Solo Manolo García y Quimi Portet podían titular un éxito masivo con una imagen tan delirante y poética a la vez. Incluida en Astronomía Razonable de mil novecientos noventa y tres, la canción mezcla rock español, rumba catalana y hasta una estrofa cantada en catalán. Preparate para mover los pies con El Último de la Fila: Como un Burro Amarrado en la Puerta del Baile."
+    },
+    "song_aleks_syntek_una_pequena_parte_de_ti": {
+      "id": "song_aleks_syntek_una_pequena_parte_de_ti",
+      "song": "Una Pequeña Parte de Ti",
+      "artist": "Aleks Syntek",
+      "album": "¡Hey Tú!",
+      "year": 1990,
+      "story_type": "breakthrough_debut",
+      "opening_style": "insider_fact",
+      "closing_style": "clean_handover",
+      "total_presentation_seconds": 34.74,
+      "voice_file": "audio/fred_voice_aleks_syntek_una_pequena_parte_de_ti.mp3",
+      "script": "¿Sabías que fue Alfonso André, el baterista de Caifanes, quien recomendó a un jovencísimo Aleks Syntek con su primera disquera? Así nació ¡Hey Tú! en mil novecientos noventa junto a La Gente Normal, trayendo sintetizadores y techno pop fresco al rock mexicano. Volvamos a ese debut inolvidable de Aleks Syntek en TrackStories. Suena Una Pequeña Parte de Ti."
+    },
+    "song_caifanes_matenme_porque_me_muero": {
+      "id": "song_caifanes_matenme_porque_me_muero",
+      "song": "Mátenme Porque Me Muero",
+      "artist": "Caifanes",
+      "album": "Caifanes",
+      "year": 1988,
+      "story_type": "personal_dedication",
+      "opening_style": "intimate_mood",
+      "closing_style": "dramatic_cue",
+      "total_presentation_seconds": 36.36,
+      "voice_file": "audio/fred_voice_caifanes_matenme_porque_me_muero.mp3",
+      "script": "Detrás de ese ritmo bailable y oscuro que definió al rock mexicano en mil novecientos ochenta y ocho, se esconde una herida muy profunda. Saúl Hernández compuso esta canción pensando en su madre fallecida, transformando el duelo en el primer gran himno que puso a Caifanes en boca de todos. Apagá las luces y sentí la fuerza de Caifanes. Esto es Mátenme Porque Me Muero."
+    },
+    "song_estados_alterados_el_velo": {
+      "id": "song_estados_alterados_el_velo",
+      "song": "El Velo",
+      "artist": "Estados Alterados",
+      "album": "Estados Alterados",
+      "year": 1991,
+      "story_type": "pioneer_milestone",
+      "opening_style": "geographic_scene",
+      "closing_style": "atmospheric_launch",
+      "total_presentation_seconds": 35.4,
+      "voice_file": "audio/fred_voice_estados_alterados_el_velo.mp3",
+      "script": "Nos vamos hasta Medellín en mil novecientos noventa y uno, donde una banda se atrevió a cruzar el rock colombiano con la electrónica más vanguardista. Producida por Richard Blair, esta canción rompió fronteras y se convirtió en una de las primeras producciones colombianas en rotar internacionalmente por MTV. Subite a esta atmósfera hipnótica de Estados Alterados. Acá llega El Velo."
+    },
+    "song_los_prisioneros_muevan_las_industrias": {
+      "id": "song_los_prisioneros_muevan_las_industrias",
+      "song": "Muevan las Industrias",
+      "artist": "Los Prisioneros",
+      "album": "Pateando Piedras",
+      "year": 1986,
+      "story_type": "social_chronicle",
+      "opening_style": "vivid_origin",
+      "closing_style": "punchy_cue",
+      "total_presentation_seconds": 35.06,
+      "voice_file": "audio/fred_voice_los_prisioneros_muevan_las_industrias.mp3",
+      "script": "Jorge González escribió esta letra viajando en el metro de Santiago, mirando las fábricas cerradas y el desempleo del Chile de los ochenta. En mil novecientos ochenta y seis la grabó prácticamente solo con sintetizadores para Pateando Piedras, convirtiendo una protesta obrera en un clásico bailable. Que suenen esos teclados inconfundibles de Los Prisioneros. Esto es Muevan las Industrias."
     }
   },
   "last_overlay_intros": [
-    "curiosidad",
-    "contraste",
     "curiosidad",
     "contraste",
     "pregunta",
@@ -3160,24 +3262,26 @@
     "curiosidad",
     "curiosidad",
     "curiosidad",
+    "curiosidad",
+    "curiosidad",
     "curiosidad"
   ],
   "last_overlay_outros": [
     "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
+    "revelacion",
     "nostalgia",
     "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "nostalgia"
+    "revelacion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -8399,33 +8503,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-21T14:26:13.582938+00:00"
+    },
+    "soda_stereo_signos": {
+      "song_title": "Signos",
+      "band_name": "Soda Stereo",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "curiosidad_tecnica",
+      "source_mode": "agent_custom",
+      "diversity_score": 0.0,
+      "paragraph_1": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
+      "paragraph_2": "Signos fue el primer álbum del rock argentino editado en formato cedé, fabricado en Holanda, y desató la famosa Sodamanía por toda Latinoamérica.",
+      "paragraph_3": "Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos.",
+      "vocal_p1": "[curious, warm] Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
+      "vocal_p2": "[warm, conversational] Signos fue el primer álbum del rock argentino editado en formato cedé, fabricado en Holanda, y desató la famosa Sodamanía por toda Latinoamérica.",
+      "vocal_p3": "[warm, confident] Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. [smiling, upbeat] Esto es Signos.",
+      "model": "drama-3",
+      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "segment_durations_sec": {
+        "p1": 8.78,
+        "p2": 11.01,
+        "p3": 8.36
+      },
+      "voice_duration_sec": 30.2,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 8.78,
+        "pause1End": 9.78,
+        "pause2Start": 20.79,
+        "pause2End": 21.79,
+        "outroEnd": 30.2,
+        "rampSec": 2.0,
+        "totalPresentationSec": 37.2
+      },
+      "audio_file": "audio/fred_voice_soda_stereo_signos.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-21T23:30:47.510688+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Numb",
-      "band_name": "Linkin Park",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "emotional",
-      "paragraph_1": "Para cerrar el disco Meteora en 2003, Linkin Park dejó guardado su himno más universal.",
-      "paragraph_3": "Un desahogo generacional que sigue intacto. Quédate con Numb, de Linkin Park.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:32:14.390853+00:00"
-    },
-    {
-      "song_title": "So Far Away",
-      "band_name": "Staind",
-      "intro_strategy": "contraste",
-      "outro_strategy": "nostalgia",
-      "emotion": "emotional",
-      "paragraph_1": "Acostumbrado a escribir desde sus capítulos más oscuros, Aaron Lewis encontró de pronto una luz que lo cambió todo.",
-      "paragraph_3": "Una balada sincera sobre dejar el pasado atrás. Siente So Far Away, de Staind.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-21T10:32:21.479479+00:00"
-    },
     {
       "song_title": "Blurry",
       "band_name": "Puddle of Mudd",
@@ -8581,6 +8706,30 @@
       "mentions_brand": false,
       "diversity_score": 68.0,
       "generated_at": "2026-11-21T14:26:13.582938+00:00"
+    },
+    {
+      "song_title": "Signos",
+      "band_name": "Soda Stereo",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "curiosidad_tecnica",
+      "paragraph_1": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
+      "paragraph_3": "Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-21T23:29:35.332549+00:00"
+    },
+    {
+      "song_title": "Signos",
+      "band_name": "Soda Stereo",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "revelacion",
+      "emotion": "curiosidad_tecnica",
+      "paragraph_1": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
+      "paragraph_3": "Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-21T23:30:47.510688+00:00"
     }
   ]
 }
