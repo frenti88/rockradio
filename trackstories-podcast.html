@@ -16787,6 +16787,34 @@
         });
         plFrag.appendChild(storiesPlCard);
 
+        // Card #2: Especial Documental Glam Rock 80s dentro de Tus Playlists
+        const glamPlCard = document.createElement('div');
+        glamPlCard.className = 'home-sp-card' + ((window.GlamRockSpecial && window.GlamRockSpecial.isActive()) ? ' active-playing' : '');
+        glamPlCard.innerHTML = `
+          <div class="home-sp-card-art">
+            <img src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.jpg" alt="GLAM ROCK: Cuando el rock conquistó los 80" loading="lazy">
+            <span class="home-sp-card-badge">ESPECIAL • 10 CAP.</span>
+            <button class="home-sp-card-play" type="button" title="Reproducir Especial Glam Rock 80s" aria-label="Reproducir especial">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="home-sp-card-title">GLAM ROCK: Los 80</div>
+          <div class="home-sp-card-sub">Especial Documental • TrackStories • 10 capítulos</div>
+        `;
+        glamPlCard.addEventListener('click', (e) => {
+          const sec = document.getElementById('glamRockSpecialSection');
+          const bar = document.getElementById('glamSpecialPlayerBar');
+          if (e.target.closest('.home-sp-card-play')) {
+            e.stopPropagation();
+            if (window.GlamRockSpecial) window.GlamRockSpecial.togglePlay();
+            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+          if (bar) bar.classList.add('open');
+          if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        plFrag.appendChild(glamPlCard);
+
         playlistsToShow.slice(0, 6).forEach(pl => {
           plFrag.appendChild(createSpotifyHomePlaylistCard(pl));
         });
