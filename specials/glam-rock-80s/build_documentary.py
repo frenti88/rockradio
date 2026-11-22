@@ -316,27 +316,160 @@ def synth_fish_audio(text: str, out_mp3: Path):
     print(f"  [TTS OK] {out_mp3.name} ({out_mp3.stat().st_size} B)", flush=True)
 
 
-def generate_bed_wav(out_wav: Path, duration_sec: float, freqs: list, sr: int = 48000):
-    if out_wav.exists() and out_wav.stat().st_size > 10000:
-        return
+def _synth_kick(sr, dur=0.18):
+    t = np.linspace(0, dur, int(sr * dur), endpoint=False, dtype=np.float32)
+    freq = 140.0 * np.exp(-26.0 * t) + 46.0
+    phase = 2 * np.pi * np.cumsum(freq) / sr
+    return np.sin(phase) * np.exp(-12.0 * t) * 0.9
+
+
+def _synth_snare(sr, dur=0.22, gated=True):
+    n = int(sr * dur)
+    t = np.linspace(0, dur, n, endpoint=False, dtype=np.float32)
+    rng = np.random.default_rng(42)
+    noise = rng.standard_normal(n).astype(np.float32)
+    body = np.sin(2 * np.pi * 195.0 * t) * np.exp(-22.0 * t)
+    env = np.exp(-8.0 * t) if gated else np.exp(-16.0 * t)
+    if gated:
+        env[int(sr * 0.14):] *= np.linspace(1.0, 0.0, n - int(sr * 0.14), dtype=np.float32)
+    return (noise * 0.55 * env + body * 0.45) * 0.65
+
+
+def _synth_hat(sr, dur=0.05):
+    n = int(sr * dur)
+    t = np.linspace(0, dur, n, endpoint=False, dtype=np.float32)
+    rng = np.random.default_rng(7)
+    noise = rng.standard_normal(n).astype(np.float32)
+    # High-pass via simple diff
+    hp = np.diff(noise, prepend=0.0)
+    return hp * np.exp(-55.0 * t) * 0.18
+
+
+def generate_bed_wav(out_wav: Path, duration_sec: float, freqs: list, sr: int = 48000, style: str = "rock"):
     n = int(sr * duration_sec)
     t = np.linspace(0, duration_sec, n, endpoint=False, dtype=np.float32)
     left = np.zeros(n, dtype=np.float32)
     right = np.zeros(n, dtype=np.float32)
-    for i, f in enumerate(freqs):
-        # Warm analog pad with subtle detuning and slow LFO swell
-        lfo = 0.65 + 0.35 * np.sin(2 * np.pi * (0.08 + 0.03 * i) * t)
-        sig_l = np.sin(2 * np.pi * f * t) * 0.5 + np.sin(2 * np.pi * (f * 2.002) * t) * 0.15
-        sig_r = np.sin(2 * np.pi * (f * 1.003) * t) * 0.5 + np.sin(2 * np.pi * (f * 1.998) * t) * 0.15
-        left += sig_l * lfo / len(freqs)
-        right += sig_r * lfo / len(freqs)
+
+    # Style-specific BPM, drum groove, and chord progression
+    style_cfg = {
+        "intro_crescendo":    {"bpm": 116, "drums": "rock",    "dist": 2.6, "arp": True,  "chords": [1.0, 1.0, 1.189, 1.335]},
+        "discovery_70s":      {"bpm": 124, "drums": "stomp",   "dist": 3.0, "arp": False, "chords": [1.0, 1.335, 1.498, 1.335]},
+        "sunset_groove":      {"bpm": 134, "drums": "driving", "dist": 3.8, "arp": False, "chords": [1.0, 1.122, 1.335, 1.498]},
+        "mtv_triumph":        {"bpm": 128, "drums": "rock",    "dist": 2.8, "arp": True,  "chords": [1.0, 1.498, 1.189, 1.335]},
+        "party_glam":         {"bpm": 132, "drums": "driving", "dist": 3.4, "arp": True,  "chords": [1.0, 1.335, 1.498, 1.0]},
+        "party_glam_2":       {"bpm": 130, "drums": "driving", "dist": 3.2, "arp": True,  "chords": [1.0, 1.26, 1.498, 1.335]},
+        "stadium_anthem":     {"bpm": 122, "drums": "arena",   "dist": 3.0, "arp": True,  "chords": [1.0, 1.189, 1.335, 1.498]},
+        "stadium_hysteria":   {"bpm": 118, "drums": "arena",   "dist": 3.4, "arp": True,  "chords": [1.0, 1.335, 1.498, 1.189]},
+        "ballad_warm":        {"bpm": 76,  "drums": "ballad",  "dist": 1.1, "arp": True,  "chords": [1.0, 1.189, 1.335, 1.498]},
+        "tension_resilience": {"bpm": 72,  "drums": "pulse",   "dist": 1.4, "arp": False, "chords": [1.0, 1.059, 1.189, 1.0]},
+        "senate_drama":       {"bpm": 80,  "drums": "pulse",   "dist": 1.6, "arp": False, "chords": [1.0, 1.189, 1.059, 1.0]},
+        "transition_90s":     {"bpm": 108, "drums": "grunge",  "dist": 4.2, "arp": False, "chords": [1.0, 1.189, 1.335, 1.059]},
+        "finale_epic":        {"bpm": 114, "drums": "arena",   "dist": 2.4, "arp": True,  "chords": [1.0, 1.335, 1.498, 1.0]},
+    }
+    cfg = style_cfg.get(style, style_cfg["intro_crescendo"])
+    bpm = cfg["bpm"]
+    beat_sec = 60.0 / bpm
+    bar_sec = beat_sec * 4.0
+    root_f = freqs[0]
+    chords = cfg["chords"]
+
+    # 1. Chordal rhythm guitar / synth bed (changes every 2 bars)
+    bar_idx = (t / (bar_sec * 2.0)).astype(np.int32) % len(chords)
+    mult = np.array([chords[i] for i in bar_idx], dtype=np.float32)
+    bass_f = root_f * mult
+    fifth_f = bass_f * 1.4983
+    oct_f = bass_f * 2.0
+
+    # Eighth-note chug envelope for rock styles, smooth swell for ballad/tension
+    if cfg["drums"] in ("ballad", "pulse"):
+        chug = 0.72 + 0.28 * np.sin(2 * np.pi * (1.0 / (beat_sec * 2.0)) * t)
+    else:
+        sub = (t % (beat_sec * 0.5)) / (beat_sec * 0.5)
+        chug = 0.45 + 0.55 * np.exp(-4.5 * sub)
+
+    # Power-chord electric guitar synthesis (soft-clipped harmonics)
+    phase_b = 2 * np.pi * np.cumsum(bass_f) / sr
+    phase_5 = 2 * np.pi * np.cumsum(fifth_f) / sr
+    phase_o = 2 * np.pi * np.cumsum(oct_f) / sr
+    raw_gtr = (np.sin(phase_b) * 0.6 + np.sin(phase_5) * 0.45 + np.sin(phase_o) * 0.25) * chug
+    gtr_l = np.tanh(raw_gtr * cfg["dist"]) * 0.34
+    gtr_r = np.tanh((np.sin(phase_b * 1.002) * 0.6 + np.sin(phase_5 * 0.998) * 0.45 + np.sin(phase_o) * 0.25) * chug * cfg["dist"]) * 0.34
+
+    # Warm bassline
+    bass = np.sin(phase_b * 0.5) * 0.30 * chug
+    left += gtr_l + bass
+    right += gtr_r + bass
+
+    # 2. Melodic arpeggio / 80s synth lead
+    if cfg["arp"]:
+        arp_notes = [2.0, 2.5, 3.0, 4.0] if cfg["drums"] != "ballad" else [2.0, 2.378, 3.0, 4.0]
+        step_sec = beat_sec * (0.5 if cfg["drums"] != "ballad" else 1.0)
+        step_idx = (t / step_sec).astype(np.int32) % len(arp_notes)
+        arp_mult = np.array([arp_notes[i] for i in step_idx], dtype=np.float32)
+        arp_f = bass_f * arp_mult
+        arp_env = np.exp(-6.0 * ((t % step_sec) / step_sec))
+        arp_sig = np.sin(2 * np.pi * np.cumsum(arp_f) / sr) * arp_env * 0.16
+        left += arp_sig * 0.85
+        right += arp_sig * 1.15
+
+    # 3. 80s Drum Groove (gated snare, punchy kick, crisp hats)
+    kick = _synth_kick(sr)
+    snare = _synth_snare(sr, gated=(cfg["drums"] in ("arena", "rock", "driving")))
+    hat = _synth_hat(sr)
+    total_beats = int(duration_sec / beat_sec)
+    for b in range(total_beats):
+        pos = int(b * beat_sec * sr)
+        b_in_bar = b % 4
+        if cfg["drums"] in ("rock", "driving", "arena", "grunge"):
+            if b_in_bar in (0, 2):
+                end = min(n, pos + len(kick))
+                left[pos:end] += kick[:end - pos] * 0.42
+                right[pos:end] += kick[:end - pos] * 0.42
+            if b_in_bar in (1, 3):
+                end = min(n, pos + len(snare))
+                left[pos:end] += snare[:end - pos] * 0.36
+                right[pos:end] += snare[:end - pos] * 0.36
+            # 8th hats
+            for sub_i in (0, 1):
+                hp = pos + int(sub_i * beat_sec * 0.5 * sr)
+                end = min(n, hp + len(hat))
+                if hp < n:
+                    left[hp:end] += hat[:end - hp] * 0.28
+                    right[hp:end] += hat[:end - hp] * 0.32
+        elif cfg["drums"] == "stomp":
+            if b_in_bar in (0, 2):
+                end = min(n, pos + len(kick))
+                left[pos:end] += kick[:end - pos] * 0.48
+                right[pos:end] += kick[:end - pos] * 0.48
+            if b_in_bar in (1, 3):
+                end = min(n, pos + len(snare))
+                left[pos:end] += snare[:end - pos] * 0.42
+                right[pos:end] += snare[:end - pos] * 0.42
+        elif cfg["drums"] == "ballad":
+            if b_in_bar == 0:
+                end = min(n, pos + len(kick))
+                left[pos:end] += kick[:end - pos] * 0.25
+                right[pos:end] += kick[:end - pos] * 0.25
+            if b_in_bar == 2:
+                end = min(n, pos + len(snare))
+                left[pos:end] += snare[:end - pos] * 0.16
+                right[pos:end] += snare[:end - pos] * 0.16
+        elif cfg["drums"] == "pulse":
+            if b_in_bar == 0:
+                end = min(n, pos + len(kick))
+                left[pos:end] += kick[:end - pos] * 0.22
+                right[pos:end] += kick[:end - pos] * 0.22
+
     # Soft fade in/out
-    fade = min(int(sr * 2.5), n // 4)
+    fade_in = min(int(sr * 1.5), n // 5)
+    fade_out = min(int(sr * 2.5), n // 4)
     env = np.ones(n, dtype=np.float32)
-    env[:fade] = np.linspace(0, 1, fade, dtype=np.float32)
-    env[-fade:] = np.linspace(1, 0, fade, dtype=np.float32)
-    left *= env * 0.22
-    right *= env * 0.22
+    env[:fade_in] = np.linspace(0, 1, fade_in, dtype=np.float32)
+    env[-fade_out:] = np.linspace(1, 0, fade_out, dtype=np.float32)
+    left = np.tanh(left * env * 0.9) * 0.55
+    right = np.tanh(right * env * 0.9) * 0.55
+
     stereo = np.stack([left, right], axis=1)
     pcm = np.clip(stereo * 32767, -32768, 32767).astype(np.int16)
     with wave.open(str(out_wav), "wb") as wf:
@@ -346,20 +479,21 @@ def generate_bed_wav(out_wav: Path, duration_sec: float, freqs: list, sr: int = 
         wf.writeframes(pcm.tobytes())
 
 
-def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre: float = 2.0, pad_post: float = 2.5):
+def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre: float = 2.5, pad_post: float = 3.0):
     if out_mp3.exists() and out_mp3.stat().st_size > 10000:
         print(f"  [REUSE MIX] {out_mp3.name}", flush=True)
         return
-    # Delay voice by pad_pre, duck bed to -18dB, mix, and normalize to -16 LUFS / -1 dBTP
+    # Dynamic ducking via sidechaincompress so music plays prominently on intro/pauses/outro and ducks cleanly under DJ Fredd's voice!
     delay_ms = int(pad_pre * 1000)
     cmd = [
         "ffmpeg", "-y", "-v", "error",
         "-i", str(voice_mp3),
         "-i", str(bed_wav),
         "-filter_complex",
-        f"[0:a]aresample=48000,adelay={delay_ms}|{delay_ms},apad=pad_dur={pad_post}[v];"
-        f"[1:a]aresample=48000,volume=0.18[b];"
-        f"[v][b]amix=inputs=2:duration=first:dropout_transition=2,"
+        f"[0:a]aresample=48000,adelay={delay_ms}|{delay_ms},apad=pad_dur={pad_post},asplit=2[v_mix][v_sc];"
+        f"[1:a]aresample=48000,lowpass=f=4200,volume=0.52[b_raw];"
+        f"[b_raw][v_sc]sidechaincompress=threshold=0.02:ratio=4:attack=80:release=450:makeup=1[b_duck];"
+        f"[v_mix][b_duck]amix=inputs=2:duration=first:dropout_transition=2,"
         f"loudnorm=I=-16:TP=-1.0:LRA=11[out]",
         "-map", "[out]",
         "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "48000",
@@ -384,7 +518,7 @@ def main():
         v_dur = probe_duration(voice_path)
 
         bed_path = BASE / "original-music" / f"bed_{sc['bed_key']}.wav"
-        generate_bed_wav(bed_path, v_dur + 6.0, sc["bed_freqs"])
+        generate_bed_wav(bed_path, v_dur + 7.0, sc["bed_freqs"], style=sc["bed_key"])
 
         mix_path = BASE / "mixes" / f"{sid}_mix.mp3"
         mix_and_master_scene(voice_path, bed_path, mix_path)
