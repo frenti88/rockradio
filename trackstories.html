@@ -6070,7 +6070,7 @@
         </style>
 
         <div class="ts-special-header">
-          <img class="ts-special-cover" src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.jpg" alt="Glam Rock: Cuando el rock conquistó los 80" loading="lazy" />
+          <img class="ts-special-cover" src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.png" alt="Glam Rock: Cuando el rock conquistó los 80" loading="lazy" />
           <div class="ts-special-info">
             <span class="ts-special-badge">Especial Documental • TrackStories</span>
             <h3 class="ts-special-title" id="glamSpecialTitle">GLAM ROCK: Cuando el rock conquistó los 80</h3>
@@ -6306,7 +6306,7 @@
                     : `${seg.artist} • Glam Rock: Documental`;
                 }
                 if (bThumb) {
-                  const artSrc = (seg.type === 'song' && seg.cover) ? seg.cover : (manifest.artwork || 'specials/glam-rock-80s/artwork/glam_rock_80s_cover.jpg');
+                  const artSrc = (seg.type === 'song' && seg.cover) ? seg.cover : (manifest.artwork || 'specials/glam-rock-80s/artwork/glam_rock_80s_cover.png');
                   if (bThumb.tagName === 'IMG') bThumb.src = artSrc;
                   else bThumb.innerHTML = `<img src="${artSrc}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">`;
                 }
@@ -16786,7 +16786,7 @@
         glamPlCard.className = 'home-sp-card' + ((window.GlamRockSpecial && window.GlamRockSpecial.isActive()) ? ' active-playing' : '');
         glamPlCard.innerHTML = `
           <div class="home-sp-card-art">
-            <img src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.jpg" alt="GLAM ROCK: Cuando el rock conquistó los 80" loading="lazy">
+            <img src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.png" alt="GLAM ROCK: Cuando el rock conquistó los 80" loading="lazy">
             <span class="home-sp-card-badge">ESPECIAL • 10 CAP.</span>
             <button class="home-sp-card-play" type="button" title="Reproducir Especial Glam Rock 80s" aria-label="Reproducir especial">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
