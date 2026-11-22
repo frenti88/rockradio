@@ -6108,7 +6108,7 @@
         <script>
           (function initGlamRockSpecial() {
             const STORAGE_KEY = 'ts_glam80s_resume_v1';
-            const OVERLAY_VOL = 0.10;
+            const OVERLAY_VOL = 0.06; // Perceived ~10% vs -8 LUFS mastered rock tracks on Spotify
             const CHAPTER_BG_SONGS = {
               ch01_s01: { title: 'Here I Go Again', artist: 'Whitesnake' },
               ch02_s01: { title: 'Rock and Roll All Nite', artist: 'KISS' },
@@ -6212,12 +6212,19 @@
                 });
                 if (resp.ok || resp.status === 204) {
                   activeSpotifyUri = uri;
+                  const pct = Math.max(0, Math.min(100, Math.round(vol * 100)));
+                  fetch(`https://api.spotify.com/v1/me/player/volume?volume_percent=${pct}&device_id=${encodeURIComponent(spotifySdkDeviceId)}`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                  }).catch(() => {});
                   // Re-assert target volume right after play starts so SDK never spikes to 100%
-                  setTimeout(() => {
-                    if (isSpotifyReady() && typeof spotifySdkPlayer.setVolume === 'function') {
-                      spotifySdkPlayer.setVolume(vol).catch(() => {});
-                    }
-                  }, 350);
+                  [250, 900].forEach(ms => {
+                    setTimeout(() => {
+                      if (isSpotifyReady() && typeof spotifySdkPlayer.setVolume === 'function') {
+                        spotifySdkPlayer.setVolume(vol).catch(() => {});
+                      }
+                    }, ms);
+                  });
                   return true;
                 }
               } catch (_) {}

@@ -491,9 +491,9 @@ def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre:
         "-i", str(bed_wav),
         "-filter_complex",
         f"[0:a]aresample=48000,adelay={delay_ms}|{delay_ms},apad=pad_dur={pad_post},asplit=2[v_mix][v_sc];"
-        f"[1:a]aresample=48000,lowpass=f=3400,volume=0.10[b_raw];"
-        f"[b_raw][v_sc]sidechaincompress=threshold=0.015:ratio=5:attack=60:release=400:makeup=1[b_duck];"
-        f"[v_mix][b_duck]amix=inputs=2:duration=first:dropout_transition=2,"
+        f"[1:a]aresample=48000,lowpass=f=2400,volume=0.035[b_raw];"
+        f"[b_raw][v_sc]sidechaincompress=threshold=0.01:ratio=6:attack=40:release=400:makeup=1[b_duck];"
+        f"[v_mix][b_duck]amix=inputs=2:duration=first:normalize=0:dropout_transition=2,"
         f"loudnorm=I=-16:TP=-1.0:LRA=11[out]",
         "-map", "[out]",
         "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "48000",
