@@ -6659,12 +6659,12 @@
           </div>
         </div>
 
-        <!-- 7. Fred - La Radio de la IA -->
-        <div class="home-shelf-section" id="shelfDjFred">
+        <!-- 7. Fred - Integrado ahora en Tus Playlists -->
+        <div class="home-shelf-section" id="shelfDjFred" style="display:none;">
           <div class="home-shelf-header">
             <div>
-              <h2 class="home-shelf-title">🎙️ Fred Rewind • Con Fred</h2>
-              <p class="home-shelf-subtitle">«La música tiene memoria.» Canciones completas con historia real narrada por Fred: De regreso al pasado.</p>
+              <h2 class="home-shelf-title">La otra cara • TrackStories</h2>
+              <p class="home-shelf-subtitle">«La música tiene memoria.» Canciones completas con historia real narrada por Fred.</p>
             </div>
             <button class="home-shelf-more" type="button" data-filterjump="djfred">Mostrar todo</button>
           </div>
@@ -16738,7 +16738,7 @@
         backFromPlaylistBtn.addEventListener('click', () => switchAppView('home'));
       }
 
-      // 1. Shelf: Tus Playlists
+      // 1. Shelf: Tus Playlists (incluyendo "La otra cara — TrackStories" como playlist principal)
       const userPlRow = document.getElementById('userPlaylistsRow');
       const subUserPl = document.getElementById('subUserPlaylists');
       const btnMoreUserPl = document.getElementById('btnMoreUserPlaylists');
@@ -16747,20 +16747,53 @@
         let playlistsToShow = [];
         if (token) {
           playlistsToShow = await fetchSpotifyUserPlaylists(token);
-          if (subUserPl) subUserPl.textContent = `${playlistsToShow.length} playlists sincronizadas desde tu cuenta de Spotify`;
+          if (subUserPl) subUserPl.textContent = `TrackStories + ${playlistsToShow.length} playlists sincronizadas desde tu cuenta de Spotify`;
         }
         if (!playlistsToShow || !playlistsToShow.length) {
           playlistsToShow = CURATED_ROCK_PLAYLISTS;
-          if (subUserPl) subUserPl.textContent = 'Selección de playlists clásicas de rock para ti';
+          if (subUserPl) subUserPl.textContent = 'TrackStories y selección de playlists de rock para ti';
         }
         const plFrag = document.createDocumentFragment();
+
+        // Card #1: Playlist de Historias de Canciones (TrackStories — La otra cara)
+        const storiesPlCard = document.createElement('div');
+        storiesPlCard.className = 'home-sp-card' + (isDjFredActive ? ' active-playing' : '');
+        storiesPlCard.innerHTML = `
+          <div class="home-sp-card-art" style="background: linear-gradient(145deg, #1db954 0%, #0f3d2e 48%, #121212 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="color:#ffffff; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.45));">
+              <rect x="2" y="9" width="2.4" height="6" rx="1.2" fill="currentColor"/>
+              <rect x="6.4" y="5" width="2.4" height="14" rx="1.2" fill="currentColor"/>
+              <rect x="10.8" y="2.5" width="2.4" height="19" rx="1.2" fill="currentColor"/>
+              <rect x="15.2" y="6.5" width="2.4" height="11" rx="1.2" fill="currentColor"/>
+              <rect x="19.6" y="10" width="2.4" height="4" rx="1.2" fill="currentColor"/>
+            </svg>
+            <span class="home-sp-card-badge">${catalog.length} CANCIONES</span>
+            <button class="home-sp-card-play" type="button" title="Reproducir La otra cara — TrackStories" aria-label="Reproducir playlist">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <div class="home-sp-card-title">La otra cara</div>
+          <div class="home-sp-card-sub">Playlist • TrackStories • ${catalog.length} canciones con historia</div>
+        `;
+        storiesPlCard.addEventListener('click', (e) => {
+          if (e.target.closest('.home-sp-card-play')) {
+            e.stopPropagation();
+            openDjFredPlaylistView();
+            const firstIntro = djFredQueue.findIndex(x => x.isIntro);
+            playDjFredItem(firstIntro >= 0 ? firstIntro : 0, false);
+            return;
+          }
+          openDjFredPlaylistView();
+        });
+        plFrag.appendChild(storiesPlCard);
+
         playlistsToShow.slice(0, 6).forEach(pl => {
           plFrag.appendChild(createSpotifyHomePlaylistCard(pl));
         });
         userPlRow.appendChild(plFrag);
         if (btnMoreUserPl) {
           btnMoreUserPl.onclick = () => {
-            if (playlistsToShow.length) openSpotifyPlaylistView(playlistsToShow[0]);
+            openDjFredPlaylistView();
           };
         }
       }
@@ -16959,11 +16992,11 @@
 
       if (cat === 'all') {
         if (djHero) djHero.style.display = '';
-        if (shelfDj) shelfDj.style.display = '';
+        if (shelfDj) shelfDj.style.display = 'none';
         if (shelfArt) shelfArt.style.display = '';
       } else if (cat === 'djfred') {
         if (djHero) djHero.style.display = '';
-        if (shelfDj) shelfDj.style.display = '';
+        if (shelfDj) shelfDj.style.display = 'none';
         if (shelfArt) shelfArt.style.display = 'none';
       } else if (cat === 'artists') {
         if (djHero) djHero.style.display = 'none';
