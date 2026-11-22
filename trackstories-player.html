@@ -6603,6 +6603,19 @@
           </div>
         </div>
 
+        <!-- 2b. Tus álbumes guardados (Saved Albums) -->
+        <div class="home-shelf-section" id="shelfSavedAlbums" style="display:none;">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">Tus álbumes guardados</h2>
+              <p class="home-shelf-subtitle" id="subSavedAlbums">Álbumes guardados en tu biblioteca de Spotify</p>
+            </div>
+          </div>
+          <div class="home-cards-row" id="savedAlbumsRow">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
         <!-- 3. Tus canciones más escuchadas (Top Tracks) -->
         <div class="home-shelf-section" id="shelfTopTracks">
           <div class="home-shelf-header">
@@ -16075,9 +16088,101 @@
       }
       playDjFredPrevIntro();
     }
-    function renderQuickBanners() {
+    async function renderQuickBanners() {
       const container = document.getElementById('spotifyQuickBannersGrid');
-      if (container) container.innerHTML = '';
+      const sec = document.getElementById('spotifyQuickBannersSection');
+      if (!container) return;
+      if (sec) sec.style.display = '';
+
+      const items = [
+        {
+          title: 'TrackStories',
+          cover: 'img/trackstories_playlist_cover.png',
+          onClick: () => openDjFredPlaylistView()
+        },
+        {
+          title: 'GLAM ROCK: Los 80',
+          cover: 'specials/glam-rock-80s/artwork/glam_rock_80s_cover.png',
+          onClick: () => {
+            const bar = document.getElementById('glamSpecialPlayerBar');
+            const gSec = document.getElementById('glamRockSpecialSection');
+            if (bar) bar.classList.add('open');
+            if (gSec) gSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        },
+        {
+          title: 'Canciones que te gustan',
+          isLiked: true,
+          onClick: () => openSpotifyLikedSongsView()
+        }
+      ];
+
+      try {
+        const token = await getValidSpotifyToken();
+        const pls = token ? await fetchSpotifyUserPlaylists(token) : [];
+        const sourcePls = (pls && pls.length) ? pls : (typeof CURATED_ROCK_PLAYLISTS !== 'undefined' ? CURATED_ROCK_PLAYLISTS : []);
+        sourcePls.slice(0, 5).forEach(pl => {
+          const img = (pl.images && pl.images[0] && pl.images[0].url) ? pl.images[0].url : 'img/trackstories_playlist_cover.png';
+          items.push({
+            title: pl.name || 'Playlist',
+            cover: img,
+            onClick: () => openSpotifyPlaylistView(pl)
+          });
+        });
+      } catch (_) {}
+
+      container.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      items.slice(0, 8).forEach(it => {
+        const card = document.createElement('div');
+        card.className = 'quick-banner-card';
+        card.style.cssText = 'display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.07); border-radius:6px; overflow:hidden; cursor:pointer; min-height:54px; padding-right:10px; transition:background 0.15s ease;';
+        card.onmouseenter = () => { card.style.background = 'rgba(255,255,255,0.16)'; };
+        card.onmouseleave = () => { card.style.background = 'rgba(255,255,255,0.07)'; };
+        const artHtml = it.isLiked
+          ? `<div style="width:54px;height:54px;flex-shrink:0;background:linear-gradient(135deg,#450af5,#c4efd9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.25rem;">♥</div>`
+          : `<img src="${escapeHtmlStr(it.cover)}" alt="" loading="lazy" style="width:54px;height:54px;object-fit:cover;flex-shrink:0;">`;
+        card.innerHTML = `${artHtml}<span style="font-size:0.8rem;font-weight:700;color:#fff;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtmlStr(it.title)}</span>`;
+        card.addEventListener('click', it.onClick);
+        frag.appendChild(card);
+      });
+      container.appendChild(frag);
+    }
+
+    async function fetchSpotifySavedAlbums(token, limit = 12) {
+      if (!token) return [];
+      try {
+        const cached = sessionStorage.getItem('sp_cache_saved_albums');
+        if (cached) return JSON.parse(cached);
+        const res = await fetch(`https://api.spotify.com/v1/me/albums?limit=${limit}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const items = (data.items || []).map(x => x.album).filter(Boolean);
+        sessionStorage.setItem('sp_cache_saved_albums', JSON.stringify(items));
+        return items;
+      } catch (e) {
+        return [];
+      }
+    }
+
+    async function fetchSpotifyFollowedArtists(token, limit = 12) {
+      if (!token) return [];
+      try {
+        const cached = sessionStorage.getItem('sp_cache_followed_artists');
+        if (cached) return JSON.parse(cached);
+        const res = await fetch(`https://api.spotify.com/v1/me/following?type=artist&limit=${limit}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const items = (data.artists && data.artists.items) ? data.artists.items : [];
+        sessionStorage.setItem('sp_cache_followed_artists', JSON.stringify(items));
+        return items;
+      } catch (e) {
+        return [];
+      }
     }
 
     // ========================================================
@@ -16851,6 +16956,55 @@
         }
       }
 
+      // 3b. Shelf: Tus álbumes guardados (Spotify Library)
+      const savedAlbumsShelf = document.getElementById('shelfSavedAlbums');
+      const savedAlbumsRow = document.getElementById('savedAlbumsRow');
+      const subSavedAlbums = document.getElementById('subSavedAlbums');
+      if (savedAlbumsShelf && savedAlbumsRow) {
+        savedAlbumsRow.innerHTML = '';
+        const savedAlbums = token ? await fetchSpotifySavedAlbums(token, 12) : [];
+        if (savedAlbums.length) {
+          savedAlbumsShelf.style.display = '';
+          if (subSavedAlbums) subSavedAlbums.textContent = `${savedAlbums.length} álbumes guardados en tu biblioteca de Spotify`;
+          const albFrag = document.createDocumentFragment();
+          savedAlbums.forEach(alb => {
+            const artUrl = (alb.images && alb.images[0] && alb.images[0].url) ? alb.images[0].url : 'img/trackstories_playlist_cover.png';
+            const artistNames = (alb.artists || []).map(a => a.name).join(', ') || 'Spotify';
+            const year = (alb.release_date || '').slice(0, 4);
+            const card = document.createElement('div');
+            card.className = 'home-sp-card';
+            card.innerHTML = `
+              <div class="home-sp-card-art">
+                <img src="${escapeHtmlStr(artUrl)}" alt="${escapeHtmlStr(alb.name || '')}" loading="lazy">
+                <button class="home-sp-card-play" type="button" title="Reproducir álbum">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">${escapeHtmlStr(alb.name || 'Álbum')}</div>
+              <div class="home-sp-card-sub">${escapeHtmlStr(year ? `${year} • ${artistNames}` : artistNames)}</div>
+            `;
+            card.addEventListener('click', () => {
+              if (alb.tracks && alb.tracks.items && alb.tracks.items.length) {
+                const trks = alb.tracks.items.map(t => ({
+                  ...t,
+                  album: { name: alb.name, images: alb.images }
+                }));
+                GlobalAudioPlayer.playSpotify(trks[0], trks, 0);
+              } else if (alb.external_urls && alb.external_urls.spotify) {
+                window.open(alb.external_urls.spotify, '_blank', 'noopener');
+              }
+            });
+            albFrag.appendChild(card);
+          });
+          savedAlbumsRow.appendChild(albFrag);
+        } else {
+          savedAlbumsShelf.style.display = 'none';
+        }
+      }
+
+      // Sync top 2x4 Quick-Access Grid with live Spotify account
+      renderQuickBanners();
+
       // 4. Shelf: Tus canciones más escuchadas (Top Tracks)
       const topTracksRow = document.getElementById('topTracksRow');
       const subTopTracks = document.getElementById('subTopTracks');
@@ -16928,9 +17082,20 @@
         artRow.innerHTML = '';
         let artistsToShow = [];
         if (token) {
-          const userTopArtists = await fetchSpotifyTopArtists(token, 14);
-          if (userTopArtists && userTopArtists.length) {
-            artistsToShow = userTopArtists;
+          const [userTopArtists, userFollowed] = await Promise.all([
+            fetchSpotifyTopArtists(token, 12),
+            fetchSpotifyFollowedArtists(token, 12)
+          ]);
+          const seen = new Set();
+          const merged = [];
+          for (const a of [...(userTopArtists || []), ...(userFollowed || [])]) {
+            if (a && a.id && !seen.has(a.id)) {
+              seen.add(a.id);
+              merged.push(a);
+            }
+          }
+          if (merged.length) {
+            artistsToShow = merged.slice(0, 16);
           }
         }
         if (!artistsToShow.length) {
@@ -18112,7 +18277,8 @@
       'playlist-read-collaborative',
       'user-top-read',
       'user-library-read',
-      'user-read-recently-played'
+      'user-read-recently-played',
+      'user-follow-read'
     ].join(' ');
 
     const btnSpotifyAuthTop = document.getElementById('topbarAvatarBtn');
