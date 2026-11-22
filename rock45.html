@@ -6107,11 +6107,32 @@
         <script>
           (function initGlamRockSpecial() {
             const STORAGE_KEY = 'ts_glam80s_resume_v1';
+            const CHAPTER_BG_SONGS = {
+              ch01_s01: { title: 'Live Wire', artist: 'Mötley Crüe' },
+              ch02_s01: { title: 'Rock and Roll All Nite', artist: 'KISS' },
+              ch03_s01: { title: 'Live Wire', artist: 'Mötley Crüe' },
+              ch04_s01: { title: 'Cum On Feel the Noize', artist: 'Quiet Riot' },
+              ch05_s01: { title: 'Round and Round', artist: 'Ratt' },
+              ch05_s02: { title: 'Talk Dirty to Me', artist: 'Poison' },
+              ch06_s01: { title: "Livin' on a Prayer", artist: 'Bon Jovi' },
+              ch06_s02: { title: 'Pour Some Sugar on Me', artist: 'Def Leppard' },
+              ch07_s01: { title: 'Every Rose Has Its Thorn', artist: 'Poison' },
+              ch08_s01: { title: 'Hysteria', artist: 'Def Leppard' },
+              ch08_s02: { title: "We're Not Gonna Take It", artist: 'Twisted Sister' },
+              ch09_s01: { title: 'Youth Gone Wild', artist: 'Skid Row' },
+              ch10_s01: { title: 'Home Sweet Home', artist: 'Mötley Crüe' }
+            };
+
             let manifest = null;
             let currentIdx = 0;
             let isPlaying = false;
+            let activeSpotifyUri = null;
+            let songTimer = null;
+            let songElapsedSec = 0;
 
             const audioEl = document.getElementById('glamDocAudio');
+            const bgFallbackAudio = new Audio();
+            bgFallbackAudio.preload = 'none';
             const playBtn = document.getElementById('glamPlayPauseBtn');
             const toggleBtn = document.getElementById('glamToggleChaptersBtn');
             const prevBtn = document.getElementById('glamPrevSegBtn');
@@ -6131,6 +6152,67 @@
               const m = Math.floor(s / 60);
               const r = s % 60;
               return `${m}:${r < 10 ? '0' : ''}${r}`;
+            }
+
+            function clearSongTimer() {
+              if (songTimer) { clearInterval(songTimer); songTimer = null; }
+            }
+
+            function isSpotifyReady() {
+              return typeof spotifySdkPlayer !== 'undefined' && spotifySdkPlayer &&
+                     typeof spotifyDeviceId !== 'undefined' && spotifyDeviceId &&
+                     typeof spotifyAccessToken !== 'undefined' && spotifyAccessToken;
+            }
+
+            async function setSpotifyVolSmooth(targetVol, ms = 600) {
+              if (!isSpotifyReady() || typeof spotifySdkPlayer.setVolume !== 'function') return;
+              try {
+                const startVol = await spotifySdkPlayer.getVolume().catch(() => targetVol);
+                const steps = 8;
+                const stepMs = Math.max(20, Math.floor(ms / steps));
+                for (let i = 1; i <= steps; i++) {
+                  const v = startVol + (targetVol - startVol) * (i / steps);
+                  await spotifySdkPlayer.setVolume(Math.max(0, Math.min(1, v))).catch(() => {});
+                  await new Promise(r => setTimeout(r, stepMs));
+                }
+              } catch (_) {}
+            }
+
+            async function startSpotifyUri(uri, vol) {
+              if (!isSpotifyReady() || !uri) return false;
+              try {
+                if (typeof spotifySdkPlayer.setVolume === 'function') {
+                  await spotifySdkPlayer.setVolume(vol).catch(() => {});
+                }
+                const resp = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(spotifyDeviceId)}`, {
+                  method: 'PUT',
+                  headers: {
+                    'Authorization': `Bearer ${spotifyAccessToken}`,
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ uris: [uri] })
+                });
+                if (resp.ok || resp.status === 204) {
+                  activeSpotifyUri = uri;
+                  return true;
+                }
+              } catch (_) {}
+              return false;
+            }
+
+            async function pauseSpotifyIfActive() {
+              if (isSpotifyReady() && typeof spotifySdkPlayer.pause === 'function') {
+                try { await spotifySdkPlayer.pause().catch(() => {}); } catch (_) {}
+              }
+            }
+
+            async function resolveDocSong(keyId, title, artist) {
+              if (typeof resolveFullSongForTrack !== 'function') return null;
+              try {
+                return await resolveFullSongForTrack(`doc_${keyId}`, title, artist);
+              } catch (_) {
+                return null;
+              }
             }
 
             async function ensureManifest() {
@@ -6177,7 +6259,7 @@
                 ? `Cap. ${seg.chapter} — ${seg.chapter_title}`
                 : `${seg.title} — ${seg.artist}`;
               playBtn.textContent = isPlaying ? '⏸ Pausar Especial' : '▶ Reproducir Especial';
-              const cur = seg.type === 'narration' ? (audioEl.currentTime || 0) : 0;
+              const cur = seg.type === 'narration' ? (audioEl.currentTime || 0) : songElapsedSec;
               const tot = seg.duration_sec || 1;
               segElapsed.textContent = fmt(cur);
               segRemaining.textContent = `-${fmt(Math.max(0, tot - cur))}`;
@@ -6190,8 +6272,11 @@
 
             async function playSegment(idx) {
               await ensureManifest();
+              clearSongTimer();
+              bgFallbackAudio.pause();
               if (idx < 0 || idx >= manifest.segments.length) {
                 isPlaying = false;
+                await pauseSpotifyIfActive();
                 updateUI();
                 return;
               }
@@ -6201,7 +6286,16 @@
               localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, t: 0 }));
 
               if (seg.type === 'narration') {
-                audioEl.src = seg.mix_file;
+                // Start related documentary song in ducked Spotify overlay (volume 0.22) + clean DJ Fredd voice
+                const bgMeta = CHAPTER_BG_SONGS[seg.scene_id];
+                let usedSpotifyBg = false;
+                if (bgMeta && isSpotifyReady()) {
+                  const resolved = await resolveDocSong(seg.scene_id, bgMeta.title, bgMeta.artist);
+                  if (resolved && String(resolved).startsWith('spotify:')) {
+                    usedSpotifyBg = await startSpotifyUri(resolved, 0.22);
+                  }
+                }
+                audioEl.src = usedSpotifyBg ? seg.voice_file : seg.mix_file;
                 try {
                   await audioEl.play();
                   isPlaying = true;
@@ -6210,18 +6304,50 @@
                 }
                 updateUI();
               } else {
+                // Full announced song playback!
                 audioEl.pause();
+                songElapsedSec = 0;
                 isPlaying = true;
                 updateUI();
-                // Trigger TrackStories' Spotify search/playback if available
-                if (typeof resolveFullSongForTrack === 'function') {
-                  try {
-                    const fakeTrack = { songTitle: seg.title, title: seg.title, bandName: seg.artist };
-                    const sp = await resolveFullSongForTrack(fakeTrack);
-                    if (sp && sp.uri && typeof playSpotifyUri === 'function') {
-                      playSpotifyUri(sp.uri);
+
+                const resolved = await resolveDocSong(`song_${idx}`, seg.title, seg.artist);
+                if (resolved && String(resolved).startsWith('spotify:') && isSpotifyReady()) {
+                  if (activeSpotifyUri === resolved) {
+                    // Already playing in ducked overlay — ramp up smoothly to 100%!
+                    await setSpotifyVolSmooth(1.0, 1200);
+                  } else {
+                    await startSpotifyUri(resolved, 1.0);
+                  }
+                  songTimer = setInterval(() => {
+                    if (!isPlaying) return;
+                    songElapsedSec += 1;
+                    updateUI();
+                    if (songElapsedSec >= (seg.duration_sec || 180)) {
+                      clearSongTimer();
+                      if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
                     }
-                  } catch (_) {}
+                  }, 1000);
+                } else if (resolved && String(resolved).startsWith('http')) {
+                  // HTML5 audio fallback if Spotify SDK is not connected
+                  bgFallbackAudio.src = resolved;
+                  bgFallbackAudio.volume = 1.0;
+                  bgFallbackAudio.play().catch(() => {});
+                  bgFallbackAudio.onended = () => {
+                    if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
+                  };
+                  songTimer = setInterval(() => {
+                    if (!isPlaying) return;
+                    songElapsedSec = bgFallbackAudio.currentTime || (songElapsedSec + 1);
+                    updateUI();
+                  }, 500);
+                } else if (typeof showAppToast === 'function') {
+                  showAppToast({
+                    title: 'Conecta Spotify para escuchar la canción completa',
+                    desc: `${seg.title} — ${seg.artist}. Pulsa ⏭ para ir al siguiente capítulo.`,
+                    type: 'info',
+                    icon: '🎵',
+                    duration: 4500
+                  });
                 }
               }
             }
@@ -6237,6 +6363,7 @@
                 playSegment(currentIdx + 1);
               } else {
                 isPlaying = false;
+                pauseSpotifyIfActive();
                 updateUI();
               }
             });
@@ -6248,10 +6375,16 @@
                 const seg = manifest.segments[currentIdx];
                 if (isPlaying) {
                   audioEl.pause();
+                  bgFallbackAudio.pause();
+                  await pauseSpotifyIfActive();
+                  clearSongTimer();
                   isPlaying = false;
                   updateUI();
                 } else if (seg.type === 'narration' && audioEl.src && audioEl.currentTime > 0) {
                   audioEl.play();
+                  if (isSpotifyReady() && typeof spotifySdkPlayer.resume === 'function') {
+                    spotifySdkPlayer.resume().catch(() => {});
+                  }
                   isPlaying = true;
                   updateUI();
                 } else {
