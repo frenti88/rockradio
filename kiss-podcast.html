@@ -6306,13 +6306,13 @@
                   updateUI();
                 });
 
-                // Launch related documentary song on Spotify in ducked background overlay (22% volume)
+                // Launch related documentary song on Spotify in ducked background overlay (30% volume)
                 const bgMeta = CHAPTER_BG_SONGS[seg.scene_id];
                 if (bgMeta && spotifyAvailable) {
                   resolveDocSong(seg.scene_id, bgMeta.title, bgMeta.artist).then(resolved => {
                     if (currentIdx !== idx) return;
                     if (resolved && String(resolved).startsWith('spotify:')) {
-                      startSpotifyUri(resolved, 0.22);
+                      startSpotifyUri(resolved, 0.30);
                     }
                   });
                 }
@@ -6327,15 +6327,24 @@
                   if (currentIdx !== idx || !isPlaying) return;
                   if (resolved && String(resolved).startsWith('spotify:') && isSpotifyReady()) {
                     if (activeSpotifyUri === resolved) {
-                      await setSpotifyVolSmooth(1.0, 1000);
+                      // Ramp smoothly from 30% overlay up to 100% full song volume
+                      await setSpotifyVolSmooth(1.0, 1500);
                     } else {
-                      await startSpotifyUri(resolved, 1.0);
+                      await startSpotifyUri(resolved, 0.30);
+                      await setSpotifyVolSmooth(1.0, 1500);
                     }
+                    let fadingOut = false;
+                    const targetDur = seg.duration_sec || 180;
                     songTimer = setInterval(() => {
                       if (!isPlaying) return;
                       songElapsedSec += 1;
                       updateUI();
-                      if (songElapsedSec >= (seg.duration_sec || 180)) {
+                      // Smoothly duck volume down to 30% in the last 6 seconds to hand back to DJ Fredd
+                      if (!fadingOut && targetDur - songElapsedSec <= 6) {
+                        fadingOut = true;
+                        setSpotifyVolSmooth(0.30, 3500);
+                      }
+                      if (songElapsedSec >= targetDur) {
                         clearSongTimer();
                         if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
                       }
