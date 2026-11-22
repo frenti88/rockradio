@@ -6108,7 +6108,6 @@
           (function initGlamRockSpecial() {
             const STORAGE_KEY = 'ts_glam80s_resume_v1';
             const CHAPTER_BG_SONGS = {
-              ch01_s01: { title: 'Live Wire', artist: 'Mötley Crüe' },
               ch02_s01: { title: 'Rock and Roll All Nite', artist: 'KISS' },
               ch03_s01: { title: 'Live Wire', artist: 'Mötley Crüe' },
               ch04_s01: { title: 'Cum On Feel the Noize', artist: 'Quiet Riot' },
@@ -6294,9 +6293,22 @@
               try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, t: 0 })); } catch (_) {}
 
               if (seg.type === 'narration') {
-                // Start DJ Fredd immediately inside user gesture (never blocked by autoplay!)
+                // Launch related documentary song on Spotify in ducked background overlay (20% volume)
+                // Chapter 1 has no bgMeta so the documentary begins purely spoken!
                 const spotifyAvailable = isSpotifyReady();
-                audioEl.src = spotifyAvailable ? seg.voice_file : seg.mix_file;
+                const bgMeta = CHAPTER_BG_SONGS[seg.scene_id];
+                if (bgMeta && spotifyAvailable) {
+                  audioEl.src = seg.voice_file;
+                  resolveDocSong(seg.scene_id, bgMeta.title, bgMeta.artist).then(resolved => {
+                    if (currentIdx !== idx) return;
+                    if (resolved && String(resolved).startsWith('spotify:')) {
+                      startSpotifyUri(resolved, 0.20);
+                    }
+                  });
+                } else {
+                  pauseSpotifyIfActive();
+                  audioEl.src = seg.mix_file;
+                }
                 audioEl.currentTime = 0;
                 audioEl.play().then(() => {
                   isPlaying = true;
@@ -6305,17 +6317,6 @@
                   isPlaying = false;
                   updateUI();
                 });
-
-                // Launch related documentary song on Spotify in ducked background overlay (30% volume)
-                const bgMeta = CHAPTER_BG_SONGS[seg.scene_id];
-                if (bgMeta && spotifyAvailable) {
-                  resolveDocSong(seg.scene_id, bgMeta.title, bgMeta.artist).then(resolved => {
-                    if (currentIdx !== idx) return;
-                    if (resolved && String(resolved).startsWith('spotify:')) {
-                      startSpotifyUri(resolved, 0.30);
-                    }
-                  });
-                }
               } else {
                 // Full announced song playback!
                 audioEl.pause();
@@ -6327,10 +6328,10 @@
                   if (currentIdx !== idx || !isPlaying) return;
                   if (resolved && String(resolved).startsWith('spotify:') && isSpotifyReady()) {
                     if (activeSpotifyUri === resolved) {
-                      // Ramp smoothly from 30% overlay up to 100% full song volume
+                      // Ramp smoothly from 20% overlay up to 100% full song volume
                       await setSpotifyVolSmooth(1.0, 1500);
                     } else {
-                      await startSpotifyUri(resolved, 0.30);
+                      await startSpotifyUri(resolved, 0.20);
                       await setSpotifyVolSmooth(1.0, 1500);
                     }
                     let fadingOut = false;
@@ -6339,10 +6340,10 @@
                       if (!isPlaying) return;
                       songElapsedSec += 1;
                       updateUI();
-                      // Smoothly duck volume down to 30% in the last 6 seconds to hand back to DJ Fredd
+                      // Smoothly duck volume down to 20% in the last 6 seconds to hand back to DJ Fredd
                       if (!fadingOut && targetDur - songElapsedSec <= 6) {
                         fadingOut = true;
-                        setSpotifyVolSmooth(0.30, 3500);
+                        setSpotifyVolSmooth(0.20, 3500);
                       }
                       if (songElapsedSec >= targetDur) {
                         clearSongTimer();

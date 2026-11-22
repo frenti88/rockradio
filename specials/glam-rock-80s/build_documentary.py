@@ -479,11 +479,11 @@ def generate_bed_wav(out_wav: Path, duration_sec: float, freqs: list, sr: int = 
         wf.writeframes(pcm.tobytes())
 
 
-def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre: float = 2.5, pad_post: float = 3.0):
+def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre: float = 2.0, pad_post: float = 2.5):
     if out_mp3.exists() and out_mp3.stat().st_size > 10000:
         print(f"  [REUSE MIX] {out_mp3.name}", flush=True)
         return
-    # Dynamic ducking via sidechaincompress so music plays prominently on intro/pauses/outro and ducks cleanly under DJ Fredd's voice!
+    # Dynamic ducking at ~20% background level so DJ Fredd's voice is crystal clear
     delay_ms = int(pad_pre * 1000)
     cmd = [
         "ffmpeg", "-y", "-v", "error",
@@ -491,8 +491,8 @@ def mix_and_master_scene(voice_mp3: Path, bed_wav: Path, out_mp3: Path, pad_pre:
         "-i", str(bed_wav),
         "-filter_complex",
         f"[0:a]aresample=48000,adelay={delay_ms}|{delay_ms},apad=pad_dur={pad_post},asplit=2[v_mix][v_sc];"
-        f"[1:a]aresample=48000,lowpass=f=4200,volume=0.52[b_raw];"
-        f"[b_raw][v_sc]sidechaincompress=threshold=0.02:ratio=4:attack=80:release=450:makeup=1[b_duck];"
+        f"[1:a]aresample=48000,lowpass=f=3600,volume=0.22[b_raw];"
+        f"[b_raw][v_sc]sidechaincompress=threshold=0.015:ratio=5:attack=60:release=400:makeup=1[b_duck];"
         f"[v_mix][b_duck]amix=inputs=2:duration=first:dropout_transition=2,"
         f"loudnorm=I=-16:TP=-1.0:LRA=11[out]",
         "-map", "[out]",
@@ -521,7 +521,7 @@ def main():
         generate_bed_wav(bed_path, v_dur + 7.0, sc["bed_freqs"], style=sc["bed_key"])
 
         mix_path = BASE / "mixes" / f"{sid}_mix.mp3"
-        mix_and_master_scene(voice_path, bed_path, mix_path)
+        mix_and_master_scene(voice_path, bed_path, mix_path, pad_pre=(0.4 if sid == "ch01_s01" else 2.0))
         m_dur = probe_duration(mix_path)
         mixed_files.append(mix_path)
 
