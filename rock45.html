@@ -5914,6 +5914,373 @@
         </div>
       </section>
 
+      <!-- ESPECIAL DOCUMENTAL EDITORIAL — TRACKSTORIES -->
+      <section class="ts-special-section" id="glamRockSpecialSection" aria-labelledby="glamSpecialTitle">
+        <style>
+          .ts-special-section {
+            margin: 18px 24px 24px;
+            background: linear-gradient(135deg, rgba(36, 16, 48, 0.92) 0%, rgba(18, 18, 18, 0.98) 65%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 20px;
+            color: #fff;
+          }
+          @media (max-width: 768px) {
+            .ts-special-section { margin: 12px 12px 18px; padding: 14px; }
+          }
+          .ts-special-header {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+          }
+          .ts-special-cover {
+            width: 112px;
+            height: 112px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+            flex-shrink: 0;
+          }
+          .ts-special-info { flex: 1; min-width: 220px; }
+          .ts-special-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1ed760;
+            margin-bottom: 6px;
+          }
+          .ts-special-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 0 0 6px;
+            line-height: 1.2;
+          }
+          .ts-special-sub {
+            font-size: 0.88rem;
+            color: #b3b3b3;
+            margin: 0 0 12px;
+            line-height: 1.4;
+          }
+          .ts-special-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+          }
+          .ts-special-btn-primary {
+            background: #1ed760;
+            color: #000;
+            border: none;
+            border-radius: 999px;
+            padding: 9px 18px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .ts-special-btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+          }
+          .ts-special-player-bar {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: none;
+          }
+          .ts-special-player-bar.open { display: block; }
+          .ts-special-now {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            font-size: 0.84rem;
+          }
+          .ts-special-mode-pill {
+            background: rgba(30, 215, 96, 0.16);
+            color: #1ed760;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.72rem;
+          }
+          .ts-special-progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.74rem;
+            color: #b3b3b3;
+            margin-bottom: 12px;
+          }
+          .ts-special-progress-track {
+            flex: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+            overflow: hidden;
+            cursor: pointer;
+          }
+          .ts-special-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #1ed760;
+            border-radius: 999px;
+            transition: width 0.2s linear;
+          }
+          .ts-special-chapters {
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 10px;
+          }
+          .ts-special-seg {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            font-size: 0.82rem;
+            border: 1px solid transparent;
+          }
+          .ts-special-seg:hover { background: rgba(255, 255, 255, 0.08); }
+          .ts-special-seg.active {
+            background: rgba(30, 215, 96, 0.12);
+            border-color: rgba(30, 215, 96, 0.35);
+            color: #1ed760;
+          }
+          .ts-special-seg-meta { color: #b3b3b3; font-size: 0.74rem; white-space: nowrap; }
+        </style>
+
+        <div class="ts-special-header">
+          <img class="ts-special-cover" src="specials/glam-rock-80s/artwork/glam_rock_80s_cover.jpg" alt="Glam Rock: Cuando el rock conquistó los 80" loading="lazy" />
+          <div class="ts-special-info">
+            <span class="ts-special-badge">Especial Documental • TrackStories</span>
+            <h3 class="ts-special-title" id="glamSpecialTitle">GLAM ROCK: Cuando el rock conquistó los 80</h3>
+            <p class="ts-special-sub">Una hora entre guitarras, grandes escenarios, excesos y canciones que hicieron historia. Narrado por DJ Fredd — 10 capítulos y 9 clásicos esenciales.</p>
+            <div class="ts-special-controls">
+              <button type="button" class="ts-special-btn-primary" id="glamPlayPauseBtn">▶ Reproducir Especial</button>
+              <button type="button" class="ts-special-btn-secondary" id="glamToggleChaptersBtn">Ver capítulos (10)</button>
+              <button type="button" class="ts-special-btn-secondary" id="glamPrevSegBtn" title="Segmento anterior">⏮</button>
+              <button type="button" class="ts-special-btn-secondary" id="glamNextSegBtn" title="Siguiente segmento">⏭</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ts-special-player-bar" id="glamSpecialPlayerBar">
+          <div class="ts-special-now">
+            <div>
+              <span class="ts-special-mode-pill" id="glamModePill">🎙️ DJ Fredd — Documental</span>
+              <strong id="glamActiveLabel" style="margin-left:8px;">Cap. 1 — Una noche que cambiaría el rock</strong>
+            </div>
+            <span id="glamTimelineTotal" style="color:#b3b3b3;font-size:0.78rem;">00:00 / 46:14</span>
+          </div>
+          <div class="ts-special-progress-wrap">
+            <span id="glamSegElapsed">0:00</span>
+            <div class="ts-special-progress-track" id="glamProgressTrack">
+              <div class="ts-special-progress-fill" id="glamProgressFill"></div>
+            </div>
+            <span id="glamSegRemaining">-0:00</span>
+          </div>
+          <div class="ts-special-chapters" id="glamChaptersList"></div>
+        </div>
+
+        <audio id="glamDocAudio" preload="none"></audio>
+
+        <script>
+          (function initGlamRockSpecial() {
+            const STORAGE_KEY = 'ts_glam80s_resume_v1';
+            let manifest = null;
+            let currentIdx = 0;
+            let isPlaying = false;
+
+            const audioEl = document.getElementById('glamDocAudio');
+            const playBtn = document.getElementById('glamPlayPauseBtn');
+            const toggleBtn = document.getElementById('glamToggleChaptersBtn');
+            const prevBtn = document.getElementById('glamPrevSegBtn');
+            const nextBtn = document.getElementById('glamNextSegBtn');
+            const playerBar = document.getElementById('glamSpecialPlayerBar');
+            const modePill = document.getElementById('glamModePill');
+            const activeLabel = document.getElementById('glamActiveLabel');
+            const timelineTotal = document.getElementById('glamTimelineTotal');
+            const segElapsed = document.getElementById('glamSegElapsed');
+            const segRemaining = document.getElementById('glamSegRemaining');
+            const progressTrack = document.getElementById('glamProgressTrack');
+            const progressFill = document.getElementById('glamProgressFill');
+            const chaptersList = document.getElementById('glamChaptersList');
+
+            function fmt(sec) {
+              const s = Math.max(0, Math.floor(sec || 0));
+              const m = Math.floor(s / 60);
+              const r = s % 60;
+              return `${m}:${r < 10 ? '0' : ''}${r}`;
+            }
+
+            async function ensureManifest() {
+              if (manifest) return manifest;
+              const res = await fetch('specials/glam-rock-80s/manifest.json');
+              manifest = await res.json();
+              try {
+                const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+                if (saved && typeof saved.idx === 'number' && saved.idx < manifest.segments.length) {
+                  currentIdx = saved.idx;
+                }
+              } catch (_) {}
+              renderChapters();
+              updateUI();
+              return manifest;
+            }
+
+            function renderChapters() {
+              if (!manifest || !chaptersList) return;
+              chaptersList.innerHTML = manifest.segments.map((seg, i) => {
+                const icon = seg.type === 'narration' ? '🎙️' : '🎵';
+                const label = seg.type === 'narration'
+                  ? `Cap. ${seg.chapter} — ${seg.chapter_title}`
+                  : `${seg.title} — ${seg.artist} (${seg.year})`;
+                return `<div class="ts-special-seg ${i === currentIdx ? 'active' : ''}" data-seg-idx="${i}">
+                  <span>${icon} ${label}</span>
+                  <span class="ts-special-seg-meta">${fmt(seg.start_sec)} • ${fmt(seg.duration_sec)}</span>
+                </div>`;
+              }).join('');
+              chaptersList.querySelectorAll('.ts-special-seg').forEach(el => {
+                el.addEventListener('click', () => {
+                  const idx = Number(el.getAttribute('data-seg-idx'));
+                  playSegment(idx);
+                });
+              });
+            }
+
+            function updateUI() {
+              if (!manifest) return;
+              const seg = manifest.segments[currentIdx];
+              if (!seg) return;
+              modePill.textContent = seg.type === 'narration' ? '🎙️ DJ Fredd — Documental' : '🎵 Canción — Spotify';
+              activeLabel.textContent = seg.type === 'narration'
+                ? `Cap. ${seg.chapter} — ${seg.chapter_title}`
+                : `${seg.title} — ${seg.artist}`;
+              playBtn.textContent = isPlaying ? '⏸ Pausar Especial' : '▶ Reproducir Especial';
+              const cur = seg.type === 'narration' ? (audioEl.currentTime || 0) : 0;
+              const tot = seg.duration_sec || 1;
+              segElapsed.textContent = fmt(cur);
+              segRemaining.textContent = `-${fmt(Math.max(0, tot - cur))}`;
+              progressFill.style.width = `${Math.min(100, (cur / tot) * 100)}%`;
+              timelineTotal.textContent = `${fmt(seg.start_sec + cur)} / ${fmt(manifest.total_experience_duration_sec)}`;
+              chaptersList.querySelectorAll('.ts-special-seg').forEach((el, i) => {
+                el.classList.toggle('active', i === currentIdx);
+              });
+            }
+
+            async function playSegment(idx) {
+              await ensureManifest();
+              if (idx < 0 || idx >= manifest.segments.length) {
+                isPlaying = false;
+                updateUI();
+                return;
+              }
+              currentIdx = idx;
+              playerBar.classList.add('open');
+              const seg = manifest.segments[currentIdx];
+              localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, t: 0 }));
+
+              if (seg.type === 'narration') {
+                audioEl.src = seg.mix_file;
+                try {
+                  await audioEl.play();
+                  isPlaying = true;
+                } catch (_) {
+                  isPlaying = false;
+                }
+                updateUI();
+              } else {
+                audioEl.pause();
+                isPlaying = true;
+                updateUI();
+                // Trigger TrackStories' Spotify search/playback if available
+                if (typeof resolveFullSongForTrack === 'function') {
+                  try {
+                    const fakeTrack = { songTitle: seg.title, title: seg.title, bandName: seg.artist };
+                    const sp = await resolveFullSongForTrack(fakeTrack);
+                    if (sp && sp.uri && typeof playSpotifyUri === 'function') {
+                      playSpotifyUri(sp.uri);
+                    }
+                  } catch (_) {}
+                }
+              }
+            }
+
+            audioEl.addEventListener('timeupdate', () => {
+              updateUI();
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, t: audioEl.currentTime }));
+              } catch (_) {}
+            });
+            audioEl.addEventListener('ended', () => {
+              if (manifest && currentIdx + 1 < manifest.segments.length) {
+                playSegment(currentIdx + 1);
+              } else {
+                isPlaying = false;
+                updateUI();
+              }
+            });
+
+            if (playBtn) {
+              playBtn.addEventListener('click', async () => {
+                await ensureManifest();
+                playerBar.classList.add('open');
+                const seg = manifest.segments[currentIdx];
+                if (isPlaying) {
+                  audioEl.pause();
+                  isPlaying = false;
+                  updateUI();
+                } else if (seg.type === 'narration' && audioEl.src && audioEl.currentTime > 0) {
+                  audioEl.play();
+                  isPlaying = true;
+                  updateUI();
+                } else {
+                  playSegment(currentIdx);
+                }
+              });
+            }
+
+            if (toggleBtn) {
+              toggleBtn.addEventListener('click', async () => {
+                await ensureManifest();
+                playerBar.classList.toggle('open');
+              });
+            }
+            if (prevBtn) prevBtn.addEventListener('click', () => playSegment(Math.max(0, currentIdx - 1)));
+            if (nextBtn) nextBtn.addEventListener('click', () => playSegment(currentIdx + 1));
+            if (progressTrack) {
+              progressTrack.addEventListener('click', (e) => {
+                if (!manifest || !audioEl.duration) return;
+                const rect = progressTrack.getBoundingClientRect();
+                const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                audioEl.currentTime = ratio * audioEl.duration;
+                updateUI();
+              });
+            }
+          })();
+        </script>
+      </section>
+
       <!-- ESTANTERÍAS DEL HOME DE SPOTIFY (Playlists + Liked Songs + Top Tracks + Recomendados + Recientes + Artistas + DJ Fred) -->
       <section class="spotify-home-shelves" id="spotifyHomeShelves">
 
