@@ -6080,6 +6080,7 @@
               <button type="button" class="ts-special-btn-secondary" id="glamToggleChaptersBtn">Ver capítulos (10)</button>
               <button type="button" class="ts-special-btn-secondary" id="glamPrevSegBtn" title="Segmento anterior">⏮</button>
               <button type="button" class="ts-special-btn-secondary" id="glamNextSegBtn" title="Siguiente segmento">⏭</button>
+              <button type="button" class="ts-special-btn-secondary" id="glamRestartBtn" title="Reiniciar desde el Capítulo 1">↺ Inicio</button>
             </div>
           </div>
         </div>
@@ -6090,7 +6091,7 @@
               <span class="ts-special-mode-pill" id="glamModePill">🎙️ DJ Fredd — Documental</span>
               <strong id="glamActiveLabel" style="margin-left:8px;">Cap. 1 — Una noche que cambiaría el rock</strong>
             </div>
-            <span id="glamTimelineTotal" style="color:#b3b3b3;font-size:0.78rem;">00:00 / 46:14</span>
+            <span id="glamTimelineTotal" style="color:#b3b3b3;font-size:0.78rem;">00:00 / 46:12</span>
           </div>
           <div class="ts-special-progress-wrap">
             <span id="glamSegElapsed">0:00</span>
@@ -6107,6 +6108,7 @@
         <script>
           (function initGlamRockSpecial() {
             const STORAGE_KEY = 'ts_glam80s_resume_v1';
+            const OVERLAY_VOL = 0.20;
             const CHAPTER_BG_SONGS = {
               ch02_s01: { title: 'Rock and Roll All Nite', artist: 'KISS' },
               ch03_s01: { title: 'Live Wire', artist: 'Mötley Crüe' },
@@ -6128,6 +6130,8 @@
             let activeSpotifyUri = null;
             let songTimer = null;
             let songElapsedSec = 0;
+            let songDurationSec = 180;
+            let playSeq = 0;
 
             const audioEl = document.getElementById('glamDocAudio');
             const bgFallbackAudio = new Audio();
@@ -6136,6 +6140,7 @@
             const toggleBtn = document.getElementById('glamToggleChaptersBtn');
             const prevBtn = document.getElementById('glamPrevSegBtn');
             const nextBtn = document.getElementById('glamNextSegBtn');
+            const restartBtn = document.getElementById('glamRestartBtn');
             const playerBar = document.getElementById('glamSpecialPlayerBar');
             const modePill = document.getElementById('glamModePill');
             const activeLabel = document.getElementById('glamActiveLabel');
@@ -6157,18 +6162,29 @@
               if (songTimer) { clearInterval(songTimer); songTimer = null; }
             }
 
+            function stopMainAppAudio() {
+              try {
+                if (typeof GlobalAudioPlayer !== 'undefined' && GlobalAudioPlayer) {
+                  if (typeof GlobalAudioPlayer.stopHtmlAudio === 'function') GlobalAudioPlayer.stopHtmlAudio();
+                  if (typeof GlobalAudioPlayer.stopDjVoice === 'function') GlobalAudioPlayer.stopDjVoice();
+                }
+                const mainAudio = document.getElementById('spotifyAudio');
+                if (mainAudio && !mainAudio.paused) mainAudio.pause();
+              } catch (_) {}
+            }
+
             function isSpotifyReady() {
               return typeof spotifySdkPlayer !== 'undefined' && spotifySdkPlayer &&
                      typeof spotifySdkDeviceId !== 'undefined' && spotifySdkDeviceId &&
                      typeof getValidSpotifyToken === 'function';
             }
 
-            async function setSpotifyVolSmooth(targetVol, ms = 600) {
+            async function setSpotifyVolSmooth(targetVol, ms = 800) {
               if (!isSpotifyReady() || typeof spotifySdkPlayer.setVolume !== 'function') return;
               try {
                 const startVol = await spotifySdkPlayer.getVolume().catch(() => targetVol);
-                const steps = 6;
-                const stepMs = Math.max(20, Math.floor(ms / steps));
+                const steps = 8;
+                const stepMs = Math.max(25, Math.floor(ms / steps));
                 for (let i = 1; i <= steps; i++) {
                   const v = startVol + (targetVol - startVol) * (i / steps);
                   await spotifySdkPlayer.setVolume(Math.max(0, Math.min(1, v))).catch(() => {});
@@ -6195,6 +6211,12 @@
                 });
                 if (resp.ok || resp.status === 204) {
                   activeSpotifyUri = uri;
+                  // Re-assert target volume right after play starts so SDK never spikes to 100%
+                  setTimeout(() => {
+                    if (isSpotifyReady() && typeof spotifySdkPlayer.setVolume === 'function') {
+                      spotifySdkPlayer.setVolume(vol).catch(() => {});
+                    }
+                  }, 350);
                   return true;
                 }
               } catch (_) {}
@@ -6231,7 +6253,7 @@
               return manifest;
             }
 
-            // Preload manifest immediately so Play button responds synchronously on first tap!
+            // Preload manifest immediately so Play button responds synchronously on first tap
             ensureManifest().catch(() => {});
 
             function renderChapters() {
@@ -6264,7 +6286,7 @@
                 : `${seg.title} — ${seg.artist}`;
               playBtn.textContent = isPlaying ? '⏸ Pausar Especial' : '▶ Reproducir Especial';
               const cur = seg.type === 'narration' ? (audioEl.currentTime || 0) : songElapsedSec;
-              const tot = seg.duration_sec || 1;
+              const tot = seg.type === 'narration' ? (audioEl.duration || seg.duration_sec || 1) : (songDurationSec || seg.duration_sec || 1);
               segElapsed.textContent = fmt(cur);
               segRemaining.textContent = `-${fmt(Math.max(0, tot - cur))}`;
               progressFill.style.width = `${Math.min(100, (cur / tot) * 100)}%`;
@@ -6274,13 +6296,58 @@
               });
             }
 
+            function startRealSpotifySongSync(seqId, seg) {
+              let fadingOut = false;
+              let seenPlaying = false;
+              songDurationSec = seg.duration_sec || 180;
+              clearSongTimer();
+              songTimer = setInterval(async () => {
+                if (!isPlaying || seqId !== playSeq) return;
+                if (isSpotifyReady() && typeof spotifySdkPlayer.getCurrentState === 'function') {
+                  try {
+                    const st = await spotifySdkPlayer.getCurrentState();
+                    if (st && st.duration > 0) {
+                      songDurationSec = st.duration / 1000;
+                      songElapsedSec = st.position / 1000;
+                      if (!st.paused) seenPlaying = true;
+                      updateUI();
+                      const rem = songDurationSec - songElapsedSec;
+                      if (!fadingOut && rem <= 6 && rem > 0) {
+                        fadingOut = true;
+                        setSpotifyVolSmooth(OVERLAY_VOL, 3500);
+                      }
+                      // Advance cleanly when song finishes (either paused at end or <= 1s remaining)
+                      if ((seenPlaying && st.paused && st.position === 0) || rem <= 1.0) {
+                        clearSongTimer();
+                        if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
+                      }
+                      return;
+                    }
+                  } catch (_) {}
+                }
+                songElapsedSec += 1;
+                updateUI();
+                if (!fadingOut && songDurationSec - songElapsedSec <= 6) {
+                  fadingOut = true;
+                  setSpotifyVolSmooth(OVERLAY_VOL, 3500);
+                }
+                if (songElapsedSec >= songDurationSec) {
+                  clearSongTimer();
+                  if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
+                }
+              }, 1000);
+            }
+
             function playSegment(idx) {
               if (!manifest) {
                 ensureManifest().then(() => playSegment(idx));
                 return;
               }
+              const seqId = ++playSeq;
               clearSongTimer();
               bgFallbackAudio.pause();
+              stopMainAppAudio();
+
               if (idx < 0 || idx >= manifest.segments.length) {
                 isPlaying = false;
                 pauseSpotifyIfActive();
@@ -6293,24 +6360,24 @@
               try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ idx: currentIdx, t: 0 })); } catch (_) {}
 
               if (seg.type === 'narration') {
-                // Launch related documentary song on Spotify in ducked background overlay (20% volume)
-                // Chapter 1 has no bgMeta so the documentary begins purely spoken!
                 const spotifyAvailable = isSpotifyReady();
                 const bgMeta = CHAPTER_BG_SONGS[seg.scene_id];
                 if (bgMeta && spotifyAvailable) {
                   audioEl.src = seg.voice_file;
                   resolveDocSong(seg.scene_id, bgMeta.title, bgMeta.artist).then(resolved => {
-                    if (currentIdx !== idx) return;
+                    if (seqId !== playSeq || !isPlaying) return;
                     if (resolved && String(resolved).startsWith('spotify:')) {
-                      startSpotifyUri(resolved, 0.20);
+                      startSpotifyUri(resolved, OVERLAY_VOL);
                     }
                   });
                 } else {
                   pauseSpotifyIfActive();
                   audioEl.src = seg.mix_file;
                 }
+                audioEl.volume = 1.0;
                 audioEl.currentTime = 0;
                 audioEl.play().then(() => {
+                  if (seqId !== playSeq) return;
                   isPlaying = true;
                   updateUI();
                 }).catch(() => {
@@ -6318,48 +6385,33 @@
                   updateUI();
                 });
               } else {
-                // Full announced song playback!
                 audioEl.pause();
                 songElapsedSec = 0;
+                songDurationSec = seg.duration_sec || 180;
                 isPlaying = true;
                 updateUI();
 
                 resolveDocSong(`song_${idx}`, seg.title, seg.artist).then(async resolved => {
-                  if (currentIdx !== idx || !isPlaying) return;
+                  if (seqId !== playSeq || !isPlaying) return;
                   if (resolved && String(resolved).startsWith('spotify:') && isSpotifyReady()) {
                     if (activeSpotifyUri === resolved) {
-                      // Ramp smoothly from 20% overlay up to 100% full song volume
                       await setSpotifyVolSmooth(1.0, 1500);
                     } else {
-                      await startSpotifyUri(resolved, 0.20);
+                      await startSpotifyUri(resolved, OVERLAY_VOL);
                       await setSpotifyVolSmooth(1.0, 1500);
                     }
-                    let fadingOut = false;
-                    const targetDur = seg.duration_sec || 180;
-                    songTimer = setInterval(() => {
-                      if (!isPlaying) return;
-                      songElapsedSec += 1;
-                      updateUI();
-                      // Smoothly duck volume down to 20% in the last 6 seconds to hand back to DJ Fredd
-                      if (!fadingOut && targetDur - songElapsedSec <= 6) {
-                        fadingOut = true;
-                        setSpotifyVolSmooth(0.20, 3500);
-                      }
-                      if (songElapsedSec >= targetDur) {
-                        clearSongTimer();
-                        if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
-                      }
-                    }, 1000);
+                    startRealSpotifySongSync(seqId, seg);
                   } else if (resolved && String(resolved).startsWith('http')) {
                     bgFallbackAudio.src = resolved;
                     bgFallbackAudio.volume = 1.0;
                     bgFallbackAudio.play().catch(() => {});
                     bgFallbackAudio.onended = () => {
-                      if (currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
+                      if (seqId === playSeq && currentIdx + 1 < manifest.segments.length) playSegment(currentIdx + 1);
                     };
                     songTimer = setInterval(() => {
-                      if (!isPlaying) return;
+                      if (!isPlaying || seqId !== playSeq) return;
                       songElapsedSec = bgFallbackAudio.currentTime || (songElapsedSec + 1);
+                      if (bgFallbackAudio.duration) songDurationSec = bgFallbackAudio.duration;
                       updateUI();
                     }, 500);
                   } else if (typeof showAppToast === 'function') {
@@ -6392,23 +6444,34 @@
             });
 
             if (playBtn) {
-              playBtn.addEventListener('click', async () => {
-                await ensureManifest();
+              playBtn.addEventListener('click', () => {
+                if (!manifest) {
+                  ensureManifest().then(() => playSegment(currentIdx));
+                  return;
+                }
                 playerBar.classList.add('open');
                 const seg = manifest.segments[currentIdx];
                 if (isPlaying) {
                   audioEl.pause();
                   bgFallbackAudio.pause();
-                  await pauseSpotifyIfActive();
+                  pauseSpotifyIfActive();
                   clearSongTimer();
                   isPlaying = false;
                   updateUI();
-                } else if (seg.type === 'narration' && audioEl.src && audioEl.currentTime > 0) {
-                  audioEl.play();
-                  if (isSpotifyReady() && typeof spotifySdkPlayer.resume === 'function') {
+                } else if (seg.type === 'narration' && audioEl.src && audioEl.currentTime > 0 && !audioEl.ended) {
+                  stopMainAppAudio();
+                  audioEl.play().catch(() => {});
+                  if (CHAPTER_BG_SONGS[seg.scene_id] && isSpotifyReady() && typeof spotifySdkPlayer.resume === 'function') {
+                    spotifySdkPlayer.setVolume(OVERLAY_VOL).catch(() => {});
                     spotifySdkPlayer.resume().catch(() => {});
                   }
                   isPlaying = true;
+                  updateUI();
+                } else if (seg.type === 'song' && songElapsedSec > 0 && isSpotifyReady() && typeof spotifySdkPlayer.resume === 'function') {
+                  stopMainAppAudio();
+                  spotifySdkPlayer.resume().catch(() => {});
+                  isPlaying = true;
+                  startRealSpotifySongSync(playSeq, seg);
                   updateUI();
                 } else {
                   playSegment(currentIdx);
@@ -6424,13 +6487,22 @@
             }
             if (prevBtn) prevBtn.addEventListener('click', () => playSegment(Math.max(0, currentIdx - 1)));
             if (nextBtn) nextBtn.addEventListener('click', () => playSegment(currentIdx + 1));
+            if (restartBtn) restartBtn.addEventListener('click', () => playSegment(0));
             if (progressTrack) {
               progressTrack.addEventListener('click', (e) => {
-                if (!manifest || !audioEl.duration) return;
+                if (!manifest) return;
+                const seg = manifest.segments[currentIdx];
                 const rect = progressTrack.getBoundingClientRect();
                 const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                audioEl.currentTime = ratio * audioEl.duration;
-                updateUI();
+                if (seg && seg.type === 'narration' && audioEl.duration) {
+                  audioEl.currentTime = ratio * audioEl.duration;
+                  updateUI();
+                } else if (seg && seg.type === 'song' && isSpotifyReady() && typeof spotifySdkPlayer.seek === 'function') {
+                  const targetMs = Math.floor(ratio * (songDurationSec || seg.duration_sec || 180) * 1000);
+                  spotifySdkPlayer.seek(targetMs).catch(() => {});
+                  songElapsedSec = targetMs / 1000;
+                  updateUI();
+                }
               });
             }
           })();
