@@ -17926,7 +17926,15 @@
     if (initBand && bands[initBand]) {
       loadBand(initBand, false);
     } else {
-      loadBand("kiss", false);
+      // Clean TrackStories default state (no legacy KISS track stuck on reload)
+      if (barTitle) barTitle.textContent = 'TrackStories';
+      if (barArtist) barArtist.textContent = 'Fred • La música tiene memoria';
+      const barThumbImg = document.getElementById('barThumbImg');
+      if (barThumbImg) {
+        barThumbImg.src = 'img/trackstories_playlist_cover.png';
+        barThumbImg.style.display = 'block';
+      }
+      if (barThumbText) barThumbText.style.display = 'none';
     }
 
     if (scrollTarget === 'members') {
