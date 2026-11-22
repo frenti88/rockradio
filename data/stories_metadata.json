@@ -3390,6 +3390,71 @@
       "total_presentation_seconds": 33.36,
       "voice_file": "audio/fred_voice_miguel_mateos_malos_pensamientos.mp3",
       "script": "Al arrancar los años noventa, Miguel Mateos dejó atrás la etapa de Zas para abrir su capítulo solista con un sonido de estadio. Incluida en el álbum Obsesión de mil novecientos noventa, esta canción combinó teclados elegantes y guitarras rockeras que conquistaron radios de toda América. Viajemos al inicio de los noventa con Miguel Mateos. Suena Malos Pensamientos."
+    },
+    "song_bajo_tierra_el_pobre": {
+      "id": "song_bajo_tierra_el_pobre",
+      "song": "El Pobre",
+      "artist": "Bajo Tierra",
+      "album": "Lavandería Real",
+      "year": 1997,
+      "story_type": "local_classic",
+      "opening_style": "closing_track_trivia",
+      "closing_style": "energetic_cue",
+      "total_presentation_seconds": 36.78,
+      "voice_file": "audio/fred_voice_bajo_tierra_el_pobre.mp3",
+      "script": "En mil novecientos noventa y siete, desde Medellín, Bajo Tierra cerró su álbum Lavandería Real con la canción que definiría toda su historia. Con guitarras directas y un humor ácido bien paisa, este tema se volvió infaltable en bares, radios universitarias y generaciones enteras del rock colombiano. Subile al volumen y disfrutá este clásico de Medellín con Bajo Tierra. Esto es El Pobre."
+    },
+    "song_estados_alterados_muevete": {
+      "id": "song_estados_alterados_muevete",
+      "song": "Muévete",
+      "artist": "Estados Alterados",
+      "album": "Estados Alterados",
+      "year": 1991,
+      "story_type": "radio_breakthrough",
+      "opening_style": "pulse_scene",
+      "closing_style": "dance_rock_launch",
+      "total_presentation_seconds": 36.68,
+      "voice_file": "audio/fred_voice_estados_alterados_muevete.mp3",
+      "script": "Antes de que el rock colombiano conquistara la televisión continental, Estados Alterados abrió la puerta de la radio con un ritmo imparable. Adelantada en mil novecientos noventa e incluida en su debut homónimo de mil novecientos noventa y uno, esta canción fusionó sintetizadores y guitarras como nadie en el país. Dejá que el pulso te atrape junto a Estados Alterados. Acá suena Muévete."
+    },
+    "song_mana_de_pies_a_cabeza": {
+      "id": "song_mana_de_pies_a_cabeza",
+      "song": "De Pies a Cabeza",
+      "artist": "Maná",
+      "album": "¿Dónde Jugarán los Niños?",
+      "year": 1992,
+      "story_type": "record_breaker",
+      "opening_style": "milestone_fact",
+      "closing_style": "romantic_rock_cue",
+      "total_presentation_seconds": 37.62,
+      "voice_file": "audio/fred_voice_mana_de_pies_a_cabeza.mp3",
+      "script": "Con más de trece millones de copias vendidas, ¿Dónde Jugarán los Niños? de mil novecientos noventa y dos convirtió a Maná en un fenómeno global. Elegida como segundo sencillo del álbum, esta canción dominó las radios durante seis semanas combinando el pulso rockero de Guadalajara con puro romanticismo. Cantala de principio a fin en TrackStories con Maná. Esto es De Pies a Cabeza."
+    },
+    "song_fito_paez_mariposa_tecknicolor": {
+      "id": "song_fito_paez_mariposa_tecknicolor",
+      "song": "Mariposa Tecknicolor",
+      "artist": "Fito Páez",
+      "album": "Circo Beat",
+      "year": 1994,
+      "story_type": "signature_anthem",
+      "opening_style": "nostalgic_memory",
+      "closing_style": "uplifting_handover",
+      "total_presentation_seconds": 34.72,
+      "voice_file": "audio/fred_voice_fito_paez_mariposa_tecknicolor.mp3",
+      "script": "Cada vez que nos miramos, todos los recuerdos vuelven de golpe, y Fito Páez lo capturó mejor que nadie en mil novecientos noventa y cuatro. Corazón del álbum Circo Beat, esta joya luminosa se convirtió en uno de los himnos más coreados del rock argentino en estadios y plazas de toda Latinoamérica. Preparate para cantar el estribillo con Fito Páez. Con ustedes, Mariposa Tecknicolor."
+    },
+    "song_charly_garcia_no_voy_en_tren": {
+      "id": "song_charly_garcia_no_voy_en_tren",
+      "song": "No Voy en Tren",
+      "artist": "Charly García",
+      "album": "Parte de la Religión",
+      "year": 1987,
+      "story_type": "opening_manifesto",
+      "opening_style": "bold_statement",
+      "closing_style": "classic_handover",
+      "total_presentation_seconds": 34.74,
+      "voice_file": "audio/fred_voice_charly_garcia_no_voy_en_tren.mp3",
+      "script": "Junio de mil novecientos ochenta y siete: Charly García abre su obra maestra Parte de la Religión con una declaración total de independencia. En menos de tres minutos, el maestro del rock argentino firmó un riff inolvidable que resume su genio irreverente y su libertad creativa sin filtros. Despegamos sin mirar atrás con Charly García. Acá llega No Voy en Tren."
     }
   },
   "last_overlay_intros": [
