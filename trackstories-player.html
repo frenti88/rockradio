@@ -15428,6 +15428,7 @@
       const quickSec = document.getElementById('spotifyQuickBannersSection');
       const filterBarEl = document.getElementById('spotifyHomeFilterBar');
       const djHeroSec = document.getElementById('djFredHeroSection');
+      const glamSpecialSec = document.getElementById('glamRockSpecialSection');
       const homeShelvesSec = document.getElementById('spotifyHomeShelves');
       const djPlaylistSec = document.getElementById('djFredPlaylistSection');
       const spPlaylistSec = document.getElementById('spotifyPlaylistSection');
@@ -15439,6 +15440,8 @@
       const aboutSecEl = document.querySelector('.spotify-about-section');
       const discoSecEl = document.querySelector('.spotify-discography-section');
       const membersSecEl = document.querySelector('.spotify-members-section');
+
+      if (glamSpecialSec) glamSpecialSec.style.display = (mode === 'home') ? '' : 'none';
 
       if (mode === 'home') {
         if (filterBarEl) filterBarEl.style.display = 'none';
