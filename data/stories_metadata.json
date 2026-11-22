@@ -3624,6 +3624,58 @@
       "total_presentation_seconds": 33.51,
       "voice_file": "audio/fred_voice_sandro_tengo.mp3",
       "script": "Antes de convertirse en el ídolo romántico de América, Sandro encendió la mecha del rock argentino con una fuerza arrolladora. Elegida por la revista Rolling Stone entre las quince mejores canciones de la historia del rock nacional, esta joya de fines de los sesenta es pura energía y actitud. Subí el volumen y sentí el fuego del Gitano. Con ustedes, Sandro y Tengo."
+    },
+    "song_caifanes_afuera": {
+      "id": "song_caifanes_afuera",
+      "song": "Afuera",
+      "artist": "Caifanes",
+      "album": "El Nervio del Volcán",
+      "year": 1994,
+      "story_type": "lead_single_anthem",
+      "opening_style": "album_opener_scene",
+      "closing_style": "soaring_rock_cue",
+      "total_presentation_seconds": 36.68,
+      "voice_file": "audio/fred_voice_caifanes_afuera.mp3",
+      "script": "Mayo de mil novecientos noventa y cuatro: Caifanes abre su último disco de estudio, El Nervio del Volcán, con un rugido que sacudió a toda Latinoamérica. Con un solo de guitarra inolvidable de Alejandro Marcovich y la voz visceral de Saúl Hernández, este primer sencillo se convirtió en un himno eterno del rock mexicano. Abrí las ventanas y dejá que suene Caifanes. Esto es Afuera."
+    },
+    "song_kraken_lenguaje_de_mi_piel": {
+      "id": "song_kraken_lenguaje_de_mi_piel",
+      "song": "Lenguaje de Mi Piel",
+      "artist": "Kraken",
+      "album": "Piel de Cobre",
+      "year": 1993,
+      "story_type": "international_chart",
+      "opening_style": "poetic_tribute",
+      "closing_style": "titan_handover",
+      "total_presentation_seconds": 36.13,
+      "voice_file": "audio/fred_voice_kraken_lenguaje_de_mi_piel.mp3",
+      "script": "En mil novecientos noventa y tres, Elkin Ramírez llevó a Kraken a un nuevo nivel poético con el primer sencillo de su cuarto álbum, Piel de Cobre. La canción no solo dominó las emisoras juveniles de Colombia, sino que además alcanzó el top diez del chart hispanoamericano en Los Ángeles durante tres semanas seguidas. Sentí la fuerza y la melancolía de Kraken. Acá llega Lenguaje de Mi Piel."
+    },
+    "song_hombres_g_marta_tiene_un_marcapasos": {
+      "id": "song_hombres_g_marta_tiene_un_marcapasos",
+      "song": "Marta Tiene un Marcapasos",
+      "artist": "Hombres G",
+      "album": "La Cagaste... Burt Lancaster",
+      "year": 1986,
+      "story_type": "bestseller_trivia",
+      "opening_style": "surreal_pop_fact",
+      "closing_style": "fast_punk_cue",
+      "total_presentation_seconds": 40.23,
+      "voice_file": "audio/fred_voice_hombres_g_marta_tiene_un_marcapasos.mp3",
+      "script": "En poco más de dos minutos de pura energía, Hombres G convirtió una historia surrealista en el sencillo más vendido de toda su carrera. Recuperada en mil novecientos ochenta y seis para su segundo álbum, su éxito fue tan gigantesco que décadas después dio nombre al famoso musical de la banda madrileña. A toda velocidad en TrackStories con Hombres G: Marta Tiene un Marcapasos."
+    },
+    "song_los_toreros_muertos_los_toreros_muertos": {
+      "id": "song_los_toreros_muertos_los_toreros_muertos",
+      "song": "Los Toreros Muertos",
+      "artist": "Los Toreros Muertos",
+      "album": "30 Años de Éxitos",
+      "year": 1986,
+      "story_type": "movida_irreverence",
+      "opening_style": "madrid_80s_scene",
+      "closing_style": "playful_punk_launch",
+      "total_presentation_seconds": 38.16,
+      "voice_file": "audio/fred_voice_los_toreros_muertos_los_toreros_muertos.mp3",
+      "script": "En pleno estallido de la Movida Madrileña de mediados de los ochenta, Pablo Carbonell y su banda decidieron burlarse de todo, empezando por ellos mismos. Su canción homónima se convirtió en una carta de presentación explosiva, llena de humor ácido y guitarras punk que conquistó escenarios desde España hasta Colombia. Sin solemnidad y con pura fiesta, acá suenan Los Toreros Muertos."
     }
   },
   "last_overlay_intros": [
