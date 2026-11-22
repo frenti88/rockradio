@@ -6,12 +6,12 @@
 - **Curaduría musical ponderada (9 canciones):** `research/song_selection.md` (`COMPLETADO`)
 - **Guion maestro (10 capítulos / 13 escenas):** `scripts/master_script.md` (`COMPLETADO`)
 - **Portada editorial:** `artwork/glam_rock_80s_cover.jpg` (`COMPLETADO`)
-- **Narración DJ Fredd (13 escenas, Fish Audio `drama-3`):** `narration/ch01_s01.mp3` … `narration/ch10_s01.mp3` (`COMPLETADO`)
+- **Narración Fred (13 escenas, Fish Audio `drama-3`):** `narration/ch01_s01.mp3` … `narration/ch10_s01.mp3` (`COMPLETADO`)
 - **Música instrumental original estéreo (13 camas, 48 kHz):** `original-music/bed_*.wav` (`COMPLETADO`)
 - **Mezcla y masterización por escena (`-16 LUFS / -1 dBTP`):** `mixes/ch01_s01_mix.mp3` … `mixes/ch10_s01_mix.mp3` (`COMPLETADO`)
 - **Archivo maestro continuo (Narración + Score Original):** `masters/glam_rock_80s_narration_master.mp3` (`644.62 s` / `10:45`, `COMPLETADO`)
 - **Manifiesto de reproducción:** `manifest.json` (`COMPLETADO`)
-- **Integración en TrackStories:** Tarjeta destacada + reproductor con capítulos navegables, barra de progreso, indicador DJ Fredd vs. Canción y reanudación en `localStorage` (`index.html`, `rock45.html`, `kiss.html`, `kiss-podcast.html`, `COMPLETADO`).
+- **Integración en TrackStories:** Tarjeta destacada + reproductor con capítulos navegables, barra de progreso, indicador Fred vs. Canción y reanudación en `localStorage` (`index.html`, `trackstories.html`, `trackstories-player.html`, `trackstories-podcast.html`, `COMPLETADO`).
 
 ### 2. Auditoría de Audio
 - Se auditaron de oído los masters finales `mixes/ch01_s01_mix.mp3` (Apertura — Sunset Strip) y `mixes/ch10_s01_mix.mp3` (Cierre — *TrackStories. La música tiene memoria*): voz cálida y natural, cama instrumental equilibrada sin competir con la locución y transiciones limpias.

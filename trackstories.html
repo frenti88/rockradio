@@ -10,7 +10,7 @@
   <meta name="apple-mobile-web-app-title" content="TrackStories">
   <meta name="application-name" content="TrackStories">
   <meta name="msapplication-TileColor" content="#121212">
-  <title>Fred Rewind — La música tiene memoria | Con DJ Fred</title>
+  <title>Fred Rewind — La música tiene memoria | Con Fred</title>
   <meta name="description" content="Proyecto de uso personal y no comercial.">
   <meta property="og:description" content="Proyecto de uso personal y no comercial.">
   <meta name="twitter:description" content="Proyecto de uso personal y no comercial.">
@@ -1123,7 +1123,7 @@
     }
 
     /* ========================================================
-       SPOTIFY HOME SCREEN & DJ FRED (LA RADIO DE LA IA)
+       SPOTIFY HOME SCREEN & FRED (LA RADIO DE LA IA)
        ======================================================== */
     .spotify-home-filter-bar {
       display: flex;
@@ -1171,7 +1171,7 @@
       box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
     }
 
-    /* DJ Fredd Hero Section — Spotify Encore Design System */
+    /* Fred Hero Section — Spotify Encore Design System */
     .dj-fred-hero-section {
       padding: 20px 24px 24px;
       background: linear-gradient(180deg, var(--sp-card-base) 0%, var(--sp-dark-base) 100%);
@@ -3193,7 +3193,7 @@
     }
 
     
-    /* Global Player Source Badges (Spotify vs DJ Fred Radio IA vs Artista) */
+    /* Global Player Source Badges (Spotify vs Fred Radio IA vs Artista) */
     .player-source-badge {
       display: inline-flex;
       align-items: center;
@@ -3226,7 +3226,7 @@
 
     
     /* ========================================================
-       DJ FRED PLAYLIST / SONG LIST VIEW (SPOTIFY PLAYLIST STYLE)
+       FRED PLAYLIST / SONG LIST VIEW (SPOTIFY PLAYLIST STYLE)
        ======================================================== */
     .dj-fred-playlist-view {
       padding: 16px 24px 28px;
@@ -3563,7 +3563,7 @@
       }
     }
 
-    /* SPOTIFY & DJ FRED INTEGRATION STYLES */
+    /* SPOTIFY & FRED INTEGRATION STYLES */
     .sp-btn-add-dj {
       display: inline-flex;
       align-items: center;
@@ -3598,7 +3598,7 @@
       }
     }
 
-    /* DJ Fred Track Status Badges */
+    /* Fred Track Status Badges */
     .dj-status-badge {
       display: inline-flex;
       align-items: center;
@@ -4630,7 +4630,7 @@
       }
 
       /* ========================================================
-         DJ FRED PLAYLIST VIEW - SPOTIFY MOBILE ADAPTATION
+         FRED PLAYLIST VIEW - SPOTIFY MOBILE ADAPTATION
          ======================================================== */
       .dj-fred-playlist-view {
         padding: 10px 14px 140px !important;
@@ -5886,18 +5886,18 @@
         </div>
       </section>
 
-      <!-- SECCIÓN DJ FREDD — FRED REWIND (Spotify Encore) -->
+      <!-- SECCIÓN FRED — FRED REWIND (Spotify Encore) -->
       <section class="dj-fred-hero-section" id="djFredHeroSection" aria-labelledby="djFredHeroTitle">
         <div class="dj-fred-hero-inner">
           <div class="dj-fred-avatar" aria-hidden="true">
             <div class="dj-fred-orb-waves">
               <span></span><span></span><span></span><span></span>
             </div>
-            <span>DJ FREDD</span>
+            <span>FRED</span>
           </div>
           <p class="dj-fred-brand">Fred Rewind</p>
           <h2 class="dj-fred-title" id="djFredHeroTitle">La música tiene memoria.</h2>
-          <p class="dj-fred-subtitle">Soy DJ Fredd</p>
+          <p class="dj-fred-subtitle">Soy Fred</p>
           <p class="dj-fred-desc" id="djFredHeroDesc">
             Vuelvo al pasado para contarte la historia que vive detrás de cada clásico. Antes de que suene la canción, te acompaño con esa anécdota que huele a radio, noche y recuerdos.
           </p>
@@ -6074,7 +6074,7 @@
           <div class="ts-special-info">
             <span class="ts-special-badge">Especial Documental • TrackStories</span>
             <h3 class="ts-special-title" id="glamSpecialTitle">GLAM ROCK: Cuando el rock conquistó los 80</h3>
-            <p class="ts-special-sub">Una hora entre guitarras, grandes escenarios, excesos y canciones que hicieron historia. Narrado por DJ Fredd — 10 capítulos y 9 clásicos esenciales.</p>
+            <p class="ts-special-sub">Una hora entre guitarras, grandes escenarios, excesos y canciones que hicieron historia. Narrado por Fred — 10 capítulos y 9 clásicos esenciales.</p>
             <div class="ts-special-controls">
               <button type="button" class="ts-special-btn-primary" id="glamPlayPauseBtn">▶ Reproducir Especial</button>
               <button type="button" class="ts-special-btn-secondary" id="glamToggleChaptersBtn">Ver capítulos (10)</button>
@@ -6088,7 +6088,7 @@
         <div class="ts-special-player-bar" id="glamSpecialPlayerBar">
           <div class="ts-special-now">
             <div>
-              <span class="ts-special-mode-pill" id="glamModePill">🎙️ DJ Fredd — Documental</span>
+              <span class="ts-special-mode-pill" id="glamModePill">🎙️ Fred — Documental</span>
               <strong id="glamActiveLabel" style="margin-left:8px;">Cap. 1 — Una noche que cambiaría el rock</strong>
             </div>
             <span id="glamTimelineTotal" style="color:#b3b3b3;font-size:0.78rem;">00:00 / 46:12</span>
@@ -6288,7 +6288,7 @@
               if (!manifest) return;
               const seg = manifest.segments[currentIdx];
               if (!seg) return;
-              modePill.textContent = seg.type === 'narration' ? '🎙️ DJ Fredd — Documental' : '🎵 Canción — Spotify';
+              modePill.textContent = seg.type === 'narration' ? '🎙️ Fred — Documental' : '🎵 Canción — Spotify';
               activeLabel.textContent = seg.type === 'narration'
                 ? `Cap. ${seg.chapter} — ${seg.chapter_title}`
                 : `${seg.title} — ${seg.artist}`;
@@ -6517,7 +6517,7 @@
         </script>
       </section>
 
-      <!-- ESTANTERÍAS DEL HOME DE SPOTIFY (Playlists + Liked Songs + Top Tracks + Recomendados + Recientes + Artistas + DJ Fred) -->
+      <!-- ESTANTERÍAS DEL HOME DE SPOTIFY (Playlists + Liked Songs + Top Tracks + Recomendados + Recientes + Artistas + Fred) -->
       <section class="spotify-home-shelves" id="spotifyHomeShelves">
 
         <!-- 1. Tus Playlists -->
@@ -6604,12 +6604,12 @@
           </div>
         </div>
 
-        <!-- 7. DJ Fred - La Radio de la IA -->
+        <!-- 7. Fred - La Radio de la IA -->
         <div class="home-shelf-section" id="shelfDjFred">
           <div class="home-shelf-header">
             <div>
-              <h2 class="home-shelf-title">🎙️ Fred Rewind • Con DJ Fred</h2>
-              <p class="home-shelf-subtitle">«La música tiene memoria.» Canciones completas con historia real narrada por DJ Fred: De regreso al pasado.</p>
+              <h2 class="home-shelf-title">🎙️ Fred Rewind • Con Fred</h2>
+              <p class="home-shelf-subtitle">«La música tiene memoria.» Canciones completas con historia real narrada por Fred: De regreso al pasado.</p>
             </div>
             <button class="home-shelf-more" type="button" data-filterjump="djfred">Mostrar todo</button>
           </div>
@@ -6620,7 +6620,7 @@
       </section>
 
       <!-- ========================================================
-           VISTA DE PLAYLIST / LISTADO DE CANCIONES DE DJ FRED
+           VISTA DE PLAYLIST / LISTADO DE CANCIONES DE FRED
            ======================================================== -->
       <section class="dj-fred-playlist-view" id="djFredPlaylistSection" style="display: none;">
         <div class="dj-playlist-top-nav">
@@ -6652,15 +6652,15 @@
 
         <div class="dj-playlist-action-bar">
           <div class="dj-action-bar-left">
-            <button class="dj-icon-action-btn danger" id="btnDjPlaylistClearAll" type="button" title="Vaciar y reiniciar lista de DJ Fred" aria-label="Vaciar lista" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
+            <button class="dj-icon-action-btn danger" id="btnDjPlaylistClearAll" type="button" title="Vaciar y reiniciar lista de Fred" aria-label="Vaciar lista" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
               <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M5.25 3v-.917C5.25.933 6.183 0 7.333 0h1.334c1.15 0 2.083.933 2.083 2.083V3h4.75v1.5h-.972l-1.257 9.544A2.25 2.25 0 0 1 11.041 16H4.96a2.25 2.25 0 0 1-2.23-1.956L1.472 4.5H.5V3h4.75zm1.5-.917V3h2.5v-.917a.583.583 0 0 0-.583-.583H7.333a.583.583 0 0 0-.583.583zM2.986 4.5l1.23 9.348a.75.75 0 0 0 .744.652h6.08a.75.75 0 0 0 .744-.652L13.015 4.5H2.985z"/></svg>
             </button>
           </div>
           <div class="dj-action-bar-right" style="display:flex; align-items:center; gap:16px; margin-left:auto;">
-            <button class="dj-icon-action-btn" id="btnDjPlaylistShuffle" type="button" title="Reproducir una canción aleatoria de DJ Fred" aria-label="Aleatorio" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
+            <button class="dj-icon-action-btn" id="btnDjPlaylistShuffle" type="button" title="Reproducir una canción aleatoria de Fred" aria-label="Aleatorio" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
             </button>
-            <button class="btn-spotify-play-big" id="btnDjPlaylistPlayAll" type="button" title="Reproducir / Pausar DJ Fred">
+            <button class="btn-spotify-play-big" id="btnDjPlaylistPlayAll" type="button" title="Reproducir / Pausar Fred">
               <svg id="djPlaylistPlayIcon" viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
               <svg id="djPlaylistPauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M5.7 3a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7H5.7zm10 0a.7.7 0 0 0-.7.7v16.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V3.7a.7.7 0 0 0-.7-.7h-2.6z"/></svg>
             </button>
@@ -6717,7 +6717,7 @@
             <svg viewBox="0 0 24 24"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
           </button>
           <button class="btn-dj-fred-play" id="btnSpPlaylistAddAllToDj" type="button" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(52, 211, 153, 0.45); color: #6ee7b7;">
-            <span>🎙️ Añadir todas las canciones a DJ Fred</span>
+            <span>🎙️ Añadir todas las canciones a Fred</span>
           </button>
         </div>
 
@@ -6890,7 +6890,7 @@
       </div>
       <div class="now-playing-info">
         <div class="now-playing-title" id="barTitle">Fred Rewind</div>
-        <div class="now-playing-artist" id="barArtist">DJ Fred • De regreso al pasado</div>
+        <div class="now-playing-artist" id="barArtist">Fred • De regreso al pasado</div>
       </div>
       <button class="btn-transport" id="barHeartBtn" style="color: var(--sp-green);">
         <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -7042,8 +7042,8 @@
         <div class="drawer-menu-item-left">
           <span class="drawer-menu-item-icon">🎙️</span>
           <div>
-            <div class="drawer-menu-item-text">Locutor Oficial: DJ Fred</div>
-            <div style="font-size: 0.75rem; color: var(--sp-text-muted);">Voz oficial de DJ Fred • "La música tiene memoria"</div>
+            <div class="drawer-menu-item-text">Locutor Oficial: Fred</div>
+            <div style="font-size: 0.75rem; color: var(--sp-text-muted);">Voz oficial de Fred • "La música tiene memoria"</div>
           </div>
         </div>
       </div>
@@ -7099,7 +7099,7 @@
       <div class="fred-script-modal-header">
         <div class="fred-script-modal-title-box">
           <h3 id="fredScriptModalSongTitle">Guion de la Historia</h3>
-          <p id="fredScriptModalBand">Fred Rewind • Locutor: DJ Fred • «La música tiene memoria»</p>
+          <p id="fredScriptModalBand">Fred Rewind • Locutor: Fred • «La música tiene memoria»</p>
         </div>
         <button class="fred-script-close-btn" id="btnFredScriptModalClose" type="button" title="Cerrar ventana">✕</button>
       </div>
@@ -7107,7 +7107,7 @@
       <div class="fred-script-modal-content">
         <div class="fred-script-block apertura">
           <span class="fred-script-label">🎙️ APERTURA OFICIAL</span>
-          <p class="fred-script-text" id="fredScriptAperturaText">Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fred.</p>
+          <p class="fred-script-text" id="fredScriptAperturaText">Estás escuchando Fred Rewind, de regreso al pasado. Soy Fred.</p>
         </div>
 
         <div class="fred-script-block desarrollo">
@@ -7128,7 +7128,7 @@
         </div>
         <div class="fred-script-actions-row">
           <button class="btn-fred-script-copy" id="btnFredScriptCopy" type="button" title="Copiar guion al portapapeles">📋 Copiar guion</button>
-          <button class="btn-fred-script-play" id="btnFredScriptPlay" type="button" title="Reproducir historia con DJ Fred">▶ Reproducir</button>
+          <button class="btn-fred-script-play" id="btnFredScriptPlay" type="button" title="Reproducir historia con Fred">▶ Reproducir</button>
         </div>
       </div>
     </div>
@@ -7534,9 +7534,9 @@
           </td>
           <td class="td-genre th-album"><span style="color: var(--sp-text-muted); font-size: 0.85rem;">${escapeHtmlStr(trk.album)}</span></td>
           <td class="td-action" style="text-align: center; width: 190px;">
-            <button class="btn-table-add-dj" type="button" title="Añadir a playlist de DJ Fred" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px; font-size: 0.75rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease;">
+            <button class="btn-table-add-dj" type="button" title="Añadir a playlist de Fred" style="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-radius: 999px; padding: 5px 12px; font-size: 0.75rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; transition: all 0.2s ease;">
               <span style="font-size: 0.82rem;">🎙️</span>
-              <span>+ Añadir a DJ Fred</span>
+              <span>+ Añadir a Fred</span>
             </button>
           </td>
           <td class="td-duration" style="text-align: right; font-variant-numeric: tabular-nums; color: var(--sp-text-muted); font-size: 0.85rem; font-weight: 500; width: 70px;">${escapeHtmlStr(trk.duration)}</td>
@@ -7547,11 +7547,11 @@
           btnAdd.addEventListener('click', (e) => {
             e.stopPropagation();
             addCustomTrackToDjFred(trk.title, b.name, safeCover);
-            btnAdd.innerHTML = '<span>✅ En DJ Fred</span>';
+            btnAdd.innerHTML = '<span>✅ En Fred</span>';
             btnAdd.style.borderColor = 'var(--sp-green)';
             btnAdd.style.color = 'var(--sp-green)';
             setTimeout(() => {
-              btnAdd.innerHTML = '<span style="font-size: 0.82rem;">🎙️</span><span>+ Añadir a DJ Fred</span>';
+              btnAdd.innerHTML = '<span style="font-size: 0.82rem;">🎙️</span><span>+ Añadir a Fred</span>';
               btnAdd.style.borderColor = 'rgba(255,255,255,0.18)';
               btnAdd.style.color = '#fff';
             }, 2500);
@@ -7766,7 +7766,7 @@
 
       const sidebarFrag = document.createDocumentFragment();
       const count = djFredQueue.length ? djFredQueue.length : 11;
-      // Item #1 pinned: DJ Fred • Radio IA
+      // Item #1 pinned: Fred • Radio IA
       const djItem = document.createElement('div');
       djItem.className = 'playlist-item' + (currentAppView === 'djfred' ? ' active' : '');
       djItem.innerHTML = `
@@ -7774,7 +7774,7 @@
           <span>🎙️</span>
         </div>
         <div class="playlist-info">
-          <div class="playlist-name" style="color:#6ee7b7;">Fred Rewind • DJ Fred</div>
+          <div class="playlist-name" style="color:#6ee7b7;">Fred Rewind • Fred</div>
           <div class="playlist-sub">Fred Rewind • ${count} canciones</div>
         </div>
       `;
@@ -7850,7 +7850,7 @@
     }
 
     // ========================================================
-    // DJ FRED (LA RADIO DE LA IA) & SPOTIFY HOME ENGINE
+    // FRED (LA RADIO DE LA IA) & SPOTIFY HOME ENGINE
     // ========================================================
     let djFredQueue = [];
     let djFredIndex = 0;
@@ -7873,7 +7873,7 @@
 
       if (!title) {
         if (toastType === 'generating') {
-          title = 'Generando historia con DJ Fred';
+          title = 'Generando historia con Fred';
           icon = icon || '🎙️';
         } else if (toastType === 'success') {
           title = '¡Operación exitosa!';
@@ -14407,10 +14407,10 @@
       }
     ];
 
-    // Flag for DJ Fred broadcast shuffle mode
+    // Flag for Fred broadcast shuffle mode
     let isDjShuffleActive = false;
 
-    // DJ Fred Custom Tracks Local Storage Persistence (v2 Paired Structure)
+    // Fred Custom Tracks Local Storage Persistence (v2 Paired Structure)
     function getDjFredCustomTracks() {
       try {
         if (!localStorage.getItem('dj_fred_reset_v91_clean')) {
@@ -14492,7 +14492,7 @@
         }
       }
 
-      return `Estás escuchando TrackStories, de regreso al pasado. Soy DJ Fred. ${devStory} ¡Sube el volumen y escuchemos a ${songTitle} aquí en TrackStories, de regreso al pasado!`;
+      return `Estás escuchando TrackStories, de regreso al pasado. Soy Fred. ${devStory} ¡Sube el volumen y escuchemos a ${songTitle} aquí en TrackStories, de regreso al pasado!`;
     }
 
     // Curated catalog of authentic rock lyrics with relative time-offsets for full synchronization
@@ -14673,7 +14673,7 @@
           lastError = err;
         }
       }
-      throw lastError || new Error(`No se pudo conectar al servicio de audio de DJ Fred (${endpoint})`);
+      throw lastError || new Error(`No se pudo conectar al servicio de audio de Fred (${endpoint})`);
     }
 
     // Automatic Full Song Resolver (Local Service -> Spotify Web API -> iTunes Public Fallback)
@@ -14806,7 +14806,7 @@
       return null;
     }
 
-    // Add Track from Spotify to DJ Fred (Creates Intro Canción + Normal Song Pair)
+    // Add Track from Spotify to Fred (Creates Intro Canción + Normal Song Pair)
     function addSpotifyTrackToDjFred(track) {
       if (!track || !track.id) return;
       const artistNames = (track.artists || []).map(a => a.name).join(', ') || 'Artista de Rock';
@@ -14830,7 +14830,7 @@
       });
 
       if (isDuplicate) {
-        showAppToast(`Esta canción ya está en la lista de DJ Fred`, 'warn');
+        showAppToast(`Esta canción ya está en la lista de Fred`, 'warn');
         return;
       }
 
@@ -14891,7 +14891,7 @@
       saveDjFredCustomTracks(customTracks);
       buildDjFredCatalog();
 
-      showAppToast(`✓ "${songTitle}" añadida a DJ Fred. Pulsa "Generar historia" para crear su locución.`, 'success');
+      showAppToast(`✓ "${songTitle}" añadida a Fred. Pulsa "Generar historia" para crear su locución.`, 'success');
 
       if (currentAppView === 'djfred') {
         renderDjFredPlaylistSongs();
@@ -14918,7 +14918,7 @@
       return addSpotifyTrackToDjFred(trackObj);
     }
 
-    // Remove Track Pair from DJ Fred
+    // Remove Track Pair from Fred
     function removeCustomTrackFromDjFred(pairId) {
       if (activeStoryGenerations[pairId]) {
         cancelStoryGeneration(pairId);
@@ -14940,7 +14940,7 @@
 
       buildDjFredCatalog();
 
-      showAppToast(`🗑️ "${title}" eliminada de DJ Fred`, 'info');
+      showAppToast(`🗑️ "${title}" eliminada de Fred`, 'info');
       renderDjFredPlaylistSongs();
       if (currentAppView === 'home') {
         renderSpotifyHomeShelves();
@@ -14956,7 +14956,7 @@
       buildDjFredCatalog();
       renderDjFredPlaylistSongs();
       if (currentAppView === 'home') renderSpotifyHomeShelves();
-      showAppToast('🗑️ Lista de DJ Fred vaciada. Puedes añadir nuevas canciones con "+ Añadir a DJ Fred".', 'info');
+      showAppToast('🗑️ Lista de Fred vaciada. Puedes añadir nuevas canciones con "+ Añadir a Fred".', 'info');
     }
 
     // Active Generation Tracking System
@@ -15093,7 +15093,7 @@
           console.log(`Generación de texto abortada para job ${jobId}`);
           return;
         }
-        console.warn('Fallo en API de texto de DJ Fred, usando respaldo maestro:', err);
+        console.warn('Fallo en API de texto de Fred, usando respaldo maestro:', err);
       }
 
       if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) return;
@@ -15114,7 +15114,7 @@
       await new Promise(r => setTimeout(r, 800));
       if (!activeStoryGenerations[pairId] || activeStoryGenerations[pairId].jobId !== jobId) return;
 
-      // FASE 4: Sintetizando locución con DJ Fred en Chatterbox («generando_audio»)
+      // FASE 4: Sintetizando locución con Fred en Chatterbox («generando_audio»)
       introItem.status = 'generando_audio';
       customTracks[introIdx] = introItem;
       saveDjFredCustomTracks(customTracks);
@@ -15147,7 +15147,7 @@
           console.log(`Petición abortada para job ${jobId}`);
           return;
         }
-        console.warn('Fallo en la API de síntesis de audio de DJ Fred:', err);
+        console.warn('Fallo en la API de síntesis de audio de Fred:', err);
       }
 
       // Race condition protection: ensure this job is still the active one
@@ -15188,7 +15188,7 @@
 
         // Alerta no invasiva al finalizar con el tiempo real de backend
         showAppToast({
-          title: '¡Historia de DJ Fred lista!',
+          title: '¡Historia de Fred lista!',
           desc: `«${introItem.songTitle}» lista para escuchar. Generada en ${introItem.genElapsedSec}s.`,
           type: 'success',
           icon: '✅',
@@ -15452,9 +15452,9 @@
         listEl.innerHTML = `
           <div class="dj-empty-state" style="text-align: center; padding: 60px 20px; color: var(--sp-text-muted);">
             <div style="font-size: 3.5rem; margin-bottom: 16px;">🎙️</div>
-            <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 8px;">No hay canciones en la lista de DJ Fred</h3>
+            <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 8px;">No hay canciones en la lista de Fred</h3>
             <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto 20px; line-height: 1.5; color: #9ca3af;">
-              Busca cualquier canción en la barra superior de Spotify y presiona <strong>"+ Añadir a DJ Fred"</strong> para generar su historia y narración oficial con voz de radio clásica.
+              Busca cualquier canción en la barra superior de Spotify y presiona <strong>"+ Añadir a Fred"</strong> para generar su historia y narración oficial con voz de radio clásica.
             </p>
           </div>
         `;
@@ -15486,7 +15486,7 @@
             statusBadgeHtml = `<span class="dj-status-badge pending">Sin historia</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Fred">✨ Generar historia</button>
+                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de Fred">✨ Generar historia</button>
                 <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind" aria-label="Eliminar de la lista"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5.25 3v-.917C5.25.933 6.183 0 7.333 0h1.334c1.15 0 2.083.933 2.083 2.083V3h4.75v1.5h-.972l-1.257 9.544A2.25 2.25 0 0 1 11.041 16H4.96a2.25 2.25 0 0 1-2.23-1.956L1.472 4.5H.5V3h4.75zm1.5-.917V3h2.5v-.917a.583.583 0 0 0-.583-.583H7.333a.583.583 0 0 0-.583.583zM2.986 4.5l1.23 9.348a.75.75 0 0 0 .744.652h6.08a.75.75 0 0 0 .744-.652L13.015 4.5H2.985z"/></svg></button>
               </div>
             `;
@@ -15526,7 +15526,7 @@
             statusBadgeHtml = `<span class="dj-status-badge cancelled">Generación cancelada</span>`;
             actionsHtml = `
               <div class="dj-col-actions">
-                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de DJ Fred">✨ Generar historia</button>
+                <button class="dj-action-btn gen-story" type="button" title="Generar guion y voz de Fred">✨ Generar historia</button>
                 <button class="dj-action-btn del-track" type="button" title="Eliminar de Fred Rewind" aria-label="Eliminar de la lista"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M5.25 3v-.917C5.25.933 6.183 0 7.333 0h1.334c1.15 0 2.083.933 2.083 2.083V3h4.75v1.5h-.972l-1.257 9.544A2.25 2.25 0 0 1 11.041 16H4.96a2.25 2.25 0 0 1-2.23-1.956L1.472 4.5H.5V3h4.75zm1.5-.917V3h2.5v-.917a.583.583 0 0 0-.583-.583H7.333a.583.583 0 0 0-.583.583zM2.986 4.5l1.23 9.348a.75.75 0 0 0 .744.652h6.08a.75.75 0 0 0 .744-.652L13.015 4.5H2.985z"/></svg></button>
               </div>
             `;
@@ -15669,16 +15669,16 @@
       const bandName = item.bandName || 'Artista';
 
       if (titleEl) titleEl.textContent = songTitle;
-      if (bandEl) bandEl.textContent = `${bandName} • Locutor: DJ Fred • Fred Rewind`;
+      if (bandEl) bandEl.textContent = `${bandName} • Locutor: Fred • Fred Rewind`;
       if (durChip) durChip.textContent = `⏱️ ${item.duration ? formatTime(item.duration) : '45s'}`;
 
       // Parse script into Apertura, Desarrollo and Cierre
       const rawText = item.summary || buildFredRadioScript(songTitle, bandName, item.albumName, item.year);
-      let apertura = 'Estás escuchando Fred Rewind, de regreso al pasado. Soy DJ Fred.';
+      let apertura = 'Estás escuchando Fred Rewind, de regreso al pasado. Soy Fred.';
       let cierre = `¡Sube el volumen y escuchemos a ${songTitle} aquí en Fred Rewind, de regreso al pasado!`;
       let desarrollo = rawText;
 
-      const apMatch = rawText.match(/^(Estás escuchando (?:Fred Rewind|TrackStories).*?Soy DJ Fred\.?)/i);
+      const apMatch = rawText.match(/^(Estás escuchando (?:Fred Rewind|TrackStories).*?Soy (?:DJ )?Fredd?\.?)/i);
       if (apMatch) {
         apertura = apMatch[0].replace(/TrackStories/g, 'Fred Rewind');
         desarrollo = rawText.slice(apMatch[0].length).trim();
@@ -15785,7 +15785,7 @@
       const statusEl = document.getElementById('djFredCurrentStatus');
       if (statusEl) {
         statusEl.textContent = item.isIntro
-          ? `Sonando: Historia de ${item.songTitle} — ${item.bandName} (Locución: DJ Fred)`
+          ? `Sonando: Historia de ${item.songTitle} — ${item.bandName} (Locución: Fred)`
           : `Sonando: ${item.songTitle} — ${item.bandName} (Canción completa)`;
       }
 
@@ -16370,8 +16370,8 @@
       const addBtn = document.createElement('button');
       addBtn.className = 'home-card-add-dj';
       addBtn.type = 'button';
-      addBtn.innerHTML = '<span>🎙️ + Añadir a DJ Fred</span>';
-      addBtn.title = `Añadir "${track.name}" a DJ Fred para narrar su historia`;
+      addBtn.innerHTML = '<span>🎙️ + Añadir a Fred</span>';
+      addBtn.title = `Añadir "${track.name}" a Fred para narrar su historia`;
       addBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         addSpotifyTrackToDjFred(track);
@@ -16548,7 +16548,7 @@
             addSpotifyTrackToDjFred(tr);
             countAdded++;
           });
-          showAppToast(`✓ ${countAdded} canciones añadidas a DJ Fred para narrar sus historias`, 'success');
+          showAppToast(`✓ ${countAdded} canciones añadidas a Fred para narrar sus historias`, 'success');
         };
       }
     }
@@ -16646,7 +16646,7 @@
             addSpotifyTrackToDjFred(tr);
             countAdded++;
           });
-          showAppToast(`✓ ${countAdded} canciones añadidas a DJ Fred para narrar sus historias`, 'success');
+          showAppToast(`✓ ${countAdded} canciones añadidas a Fred para narrar sus historias`, 'success');
         };
       }
     }
@@ -16842,7 +16842,7 @@
         artRow.appendChild(artFrag);
       }
 
-      // 8. Shelf: DJ Fred • La Radio de la IA (Main Card)
+      // 8. Shelf: Fred • La Radio de la IA (Main Card)
       const djRow = document.getElementById('djFredTracksRow');
       if (djRow) {
         djRow.innerHTML = '';
@@ -16858,14 +16858,14 @@
         mainDjCard.innerHTML = `
           <div class="home-sp-card-art" style="background: radial-gradient(circle at 50% 45%, #10b981 0%, #1d4ed8 55%, #090d16 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
             <div style="font-size:3rem; filter:drop-shadow(0 6px 16px rgba(0,0,0,0.6));">🤖</div>
-            <div style="font-size:0.75rem; font-weight:900; letter-spacing:0.12em; color:#ffffff; background:rgba(0,0,0,0.45); padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.2);">DJ FRED</div>
+            <div style="font-size:0.75rem; font-weight:900; letter-spacing:0.12em; color:#ffffff; background:rgba(0,0,0,0.45); padding:3px 10px; border-radius:999px; border:1px solid rgba(255,255,255,0.2);">FRED</div>
             <span class="home-sp-card-badge">${catalog.length} CANCIONES</span>
-            <button class="home-sp-card-play" type="button" title="Ver listado de canciones de DJ Fred">
+            <button class="home-sp-card-play" type="button" title="Ver listado de canciones de Fred">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
-          <div class="home-sp-card-title" style="color:#6ee7b7;">Fred Rewind • Con DJ Fred</div>
-          <div class="home-sp-card-sub">Ingresa para ver el listado de las ${catalog.length} canciones con historias narradas por DJ Fred: De regreso al pasado</div>
+          <div class="home-sp-card-title" style="color:#6ee7b7;">Fred Rewind • Con Fred</div>
+          <div class="home-sp-card-sub">Ingresa para ver el listado de las ${catalog.length} canciones con historias narradas por Fred: De regreso al pasado</div>
         `;
         mainDjCard.addEventListener('click', () => {
           openDjFredPlaylistView();
@@ -16900,7 +16900,7 @@
     }
 
     // ========================================================
-    // UNIFIED GLOBAL AUDIO PLAYER ENGINE (DJ FRED + SPOTIFY)
+    // UNIFIED GLOBAL AUDIO PLAYER ENGINE (FRED + SPOTIFY)
     // ========================================================
     const radioVoiceAudio = new Audio();
     radioVoiceAudio.preload = 'auto';
@@ -17021,7 +17021,7 @@
           }, 100);
         };
 
-        // Esperar intro musical de la propia canción (5.0s en el nuevo estándar) antes de entrar DJ Fred
+        // Esperar intro musical de la propia canción (5.0s en el nuevo estándar) antes de entrar Fred
         this.radioOverlayTimer = setTimeout(() => {
           if (seqToken !== this.playbackSeq || !this.spotifyIsPlaying) return;
           radioVoiceAudio.src = cleanVoiceUrl;
@@ -17257,7 +17257,7 @@
               this.playSpotify(this.spotifyTrack, this.spotifyQueue, this.spotifyIndex);
             }
           } else {
-            // DJ Fred or Local Band Audio (HTML audio)
+            // Fred or Local Band Audio (HTML audio)
             if (spotifyAudio.src && !spotifyAudio.src.endsWith('/') && spotifyAudio.src !== window.location.href) {
               this.stopSpotifySdk();
               this.activeEngine = 'audio';
@@ -17348,7 +17348,7 @@
       if (!('mediaSession' in navigator)) return;
       try {
         const title = (barTitle && barTitle.textContent) ? barTitle.textContent.trim() : 'Trackstories';
-        const artist = (barArtist && barArtist.textContent) ? barArtist.textContent.replace(/🟢\s*SPOTIFY\s*/i, '').trim() : 'DJ Fred';
+        const artist = (barArtist && barArtist.textContent) ? barArtist.textContent.replace(/🟢\s*SPOTIFY\s*/i, '').trim() : 'Fred';
         const imgEl = document.getElementById('barThumbImg');
         const artworkSrc = (imgEl && imgEl.src) ? imgEl.src : '';
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -17519,7 +17519,7 @@
           djPlPause.classList.add('hidden');
         }
       }
-      // Synchronize in-list rows (in DJ Fred table) in real-time
+      // Synchronize in-list rows (in Fred table) in real-time
       const rows = document.querySelectorAll('.dj-song-row');
       rows.forEach((row, rIdx) => {
         const isThisRowActive = (isDjFredActive && djFredIndex === rIdx);
@@ -17572,7 +17572,7 @@
         return;
       }
 
-      // DJ Fred / Local Band audio
+      // Fred / Local Band audio
       const b = bands[activeBandId];
       const isFull = Boolean(b && b.hasFullTrack && b.fullTrack);
       const expectedDur = isFull ? b.fullTrack.duration : 44.95;
@@ -17844,7 +17844,7 @@
           <span>🤖</span>
         </div>
         <div>
-          <div class="mobile-sheet-band-name" style="color:#6ee7b7;">DJ Fred • Radio IA</div>
+          <div class="mobile-sheet-band-name" style="color:#6ee7b7;">Fred • Radio IA</div>
           <div class="mobile-sheet-band-sub">Listado de ${count} canciones completas con IA</div>
         </div>
       `;
@@ -18348,7 +18348,7 @@
         </div>
         <div class="sp-song-row-right">
           <span>${durFormatted}</span>
-          <button class="sp-btn-add-dj" type="button" title="Añadir a DJ Fred • Radio IA">+ Añadir a DJ Fred</button>
+          <button class="sp-btn-add-dj" type="button" title="Añadir a Fred • Radio IA">+ Añadir a Fred</button>
           <button class="sp-track-play-pill" type="button" title="Reproducir ${escapeHtmlStr(track.name)}">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
@@ -18708,7 +18708,7 @@
                 <span>${escapeHtmlStr(trArtists)}</span>
               </div>
               <div style="margin-top: 10px;">
-                <button class="sp-btn-add-dj sp-top-add-dj-btn" type="button" title="Añadir a DJ Fred • Radio IA">+ Añadir a DJ Fred</button>
+                <button class="sp-btn-add-dj sp-top-add-dj-btn" type="button" title="Añadir a Fred • Radio IA">+ Añadir a Fred</button>
               </div>
             </div>
             <button class="sp-top-result-play" type="button" title="Reproducir ${escapeHtmlStr(topTrack.name)}">
@@ -19062,7 +19062,7 @@
       }
     })();
 
-    // Wire Home Filter Pills & DJ Fred Controls
+    // Wire Home Filter Pills & Fred Controls
     document.querySelectorAll('.home-filter-pill').forEach(pill => {
       pill.addEventListener('click', () => {
         applyHomeCategoryFilter(pill.dataset.homefilter || 'all');
@@ -19119,7 +19119,7 @@
       btnDjPlaylistPlayAll.addEventListener('click', () => {
         isDjShuffleActive = false;
         if (!djFredQueue.length) {
-          showAppToast('Añade canciones a DJ Fred desde el buscador para reproducir', 'info');
+          showAppToast('Añade canciones a Fred desde el buscador para reproducir', 'info');
           return;
         }
         if (GlobalAudioPlayer.source === 'djfred' && isDjFredActive) {
@@ -19136,7 +19136,7 @@
     if (btnDjPlaylistShuffle) {
       btnDjPlaylistShuffle.addEventListener('click', () => {
         if (!djFredQueue.length) {
-          showAppToast('Añade canciones a DJ Fred desde el buscador para reproducir', 'info');
+          showAppToast('Añade canciones a Fred desde el buscador para reproducir', 'info');
           return;
         }
         isDjShuffleActive = true;
@@ -19148,7 +19148,7 @@
     const btnDjPlaylistClearAll = document.getElementById('btnDjPlaylistClearAll');
     if (btnDjPlaylistClearAll) {
       btnDjPlaylistClearAll.addEventListener('click', () => {
-        if (confirm('¿Deseas vaciar la lista de DJ Fred para iniciar desde cero con las nuevas estructuras?')) {
+        if (confirm('¿Deseas vaciar la lista de Fred para iniciar desde cero con las nuevas estructuras?')) {
           clearAllDjFredTracks();
         }
       });

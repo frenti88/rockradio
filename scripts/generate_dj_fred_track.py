@@ -51,7 +51,7 @@ WORKSPACE_AUDIO_DIR = os.path.join(PROJECT_ROOT, 'audio')
 DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
 STORIES_METADATA_PATH = os.path.join(DATA_DIR, 'stories_metadata.json')
 INDEX_HTML_PATH = os.path.join(PROJECT_ROOT, 'index.html')
-HTML_CLONES = ['rock45.html', 'kiss.html', 'kiss-podcast.html']
+HTML_CLONES = ['trackstories.html', 'trackstories-player.html', 'trackstories-podcast.html']
 
 os.makedirs(WORKSPACE_AUDIO_DIR, exist_ok=True)
 os.makedirs(DATA_DIR, exist_ok=True)
@@ -2294,7 +2294,7 @@ def find_existing_catalog_pair(band_name, song_title):
 def update_player_catalog(story_record):
     """
     Integra o actualiza la historia y canción en BASE_DJ_FRED_TRACKS dentro de index.html
-    y sincroniza rock45.html, kiss.html y kiss-podcast.html sin tocar botones ni UI del reproductor.
+    y sincroniza trackstories.html, trackstories-player.html y trackstories-podcast.html sin tocar botones ni UI del reproductor.
     """
     if not os.path.exists(INDEX_HTML_PATH):
         return False

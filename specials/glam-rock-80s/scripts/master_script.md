@@ -1,5 +1,5 @@
 # Guion Maestro — GLAM ROCK: Cuando el rock conquistó los 80
-**Producción:** TrackStories | **Narrador:** DJ Fredd | **Duración total:** 60:00 (3.600 s)
+**Producción:** TrackStories | **Narrador:** Fred | **Duración total:** 60:00 (3.600 s)
 **Lema:** *La música tiene memoria.*
 
 ---
@@ -7,7 +7,7 @@
 ## CAPÍTULO 1 — Una noche que cambiaría el rock (00:00–02:35)
 - **Emoción:** Intriga y expectativa | **Música original:** `bed_01_intro_crescendo.wav` + `amb_sunset_strip.wav`
 - **Escena 1 (`ch01_s01`):**
-  > Los Ángeles. Comienzos de los años ochenta. Hay músicos que apenas tienen dinero para pagar el alquiler, pero salen a la calle vestidos como si fueran los dueños de Hollywood. Botas de cuero, maquillaje, guitarras al límite y suficiente laca para poner nervioso a cualquier bombero. Algunos todavía no han vendido un solo disco. Otros están a punto de cambiar la historia del rock. Bienvenidos a TrackStories. Soy DJ Fredd, y durante la próxima hora vamos a viajar desde los clubes sudorosos de Sunset Strip hasta los estadios más grandes del planeta. Vamos a descubrir las rivalidades, las noches absurdas, las tragedias reales y las canciones que convirtieron a los ochenta en una década irrepetible.
+  > Los Ángeles. Comienzos de los años ochenta. Hay músicos que apenas tienen dinero para pagar el alquiler, pero salen a la calle vestidos como si fueran los dueños de Hollywood. Botas de cuero, maquillaje, guitarras al límite y suficiente laca para poner nervioso a cualquier bombero. Algunos todavía no han vendido un solo disco. Otros están a punto de cambiar la historia del rock. Bienvenidos a TrackStories. Soy Fred, y durante la próxima hora vamos a viajar desde los clubes sudorosos de Sunset Strip hasta los estadios más grandes del planeta. Vamos a descubrir las rivalidades, las noches absurdas, las tragedias reales y las canciones que convirtieron a los ochenta en una década irrepetible.
 
 ## CAPÍTULO 2 — Antes de los 80: los padres del espectáculo (02:35–07:45)
 - **Emoción:** Descubrimiento y fascinación | **Música original:** `bed_02_discovery.wav`
@@ -67,4 +67,4 @@
 ## CAPÍTULO 10 — Cuando el concierto termina, la música permanece (57:30–60:00)
 - **Emoción:** Nostalgia, gratitud y legado | **Música original:** `bed_10_finale_epic.wav`
 - **Escena 1 (`ch10_s01`):**
-  > Volvamos por un instante a aquella noche en Sunset Strip donde empezó todo. Músicos con más sueños que dinero, cargando amplificadores bajo las luces de neón. Hubo excesos, contradicciones y caídas, pero también hubo talento genuino, canciones construidas para emocionar a estadios enteros y una alegría contagiosa que hoy sigue llenando giras alrededor del mundo. Porque las modas pasan, los peinados cambian y las décadas se cierran, pero una gran canción guarda para siempre el instante exacto en que nos hizo sentir vivos. Esto fue Glam Rock: Cuando el rock conquistó los ochenta. Soy DJ Fredd. TrackStories. La música tiene memoria.
+  > Volvamos por un instante a aquella noche en Sunset Strip donde empezó todo. Músicos con más sueños que dinero, cargando amplificadores bajo las luces de neón. Hubo excesos, contradicciones y caídas, pero también hubo talento genuino, canciones construidas para emocionar a estadios enteros y una alegría contagiosa que hoy sigue llenando giras alrededor del mundo. Porque las modas pasan, los peinados cambian y las décadas se cierran, pero una gran canción guarda para siempre el instante exacto en que nos hizo sentir vivos. Esto fue Glam Rock: Cuando el rock conquistó los ochenta. Soy Fred. TrackStories. La música tiene memoria.
