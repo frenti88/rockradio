@@ -16755,25 +16755,19 @@
         }
         const plFrag = document.createDocumentFragment();
 
-        // Card #1: Playlist de Historias de Canciones (TrackStories — La otra cara)
+        // Card #1: Playlist de Historias de Canciones (TrackStories)
         const storiesPlCard = document.createElement('div');
         storiesPlCard.className = 'home-sp-card' + (isDjFredActive ? ' active-playing' : '');
         storiesPlCard.innerHTML = `
-          <div class="home-sp-card-art" style="background: linear-gradient(145deg, #1db954 0%, #0f3d2e 48%, #121212 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="color:#ffffff; filter:drop-shadow(0 6px 14px rgba(0,0,0,0.45));">
-              <rect x="2" y="9" width="2.4" height="6" rx="1.2" fill="currentColor"/>
-              <rect x="6.4" y="5" width="2.4" height="14" rx="1.2" fill="currentColor"/>
-              <rect x="10.8" y="2.5" width="2.4" height="19" rx="1.2" fill="currentColor"/>
-              <rect x="15.2" y="6.5" width="2.4" height="11" rx="1.2" fill="currentColor"/>
-              <rect x="19.6" y="10" width="2.4" height="4" rx="1.2" fill="currentColor"/>
-            </svg>
+          <div class="home-sp-card-art">
+            <img src="img/trackstories_playlist_cover.png" alt="TrackStories" loading="lazy">
             <span class="home-sp-card-badge">${catalog.length} CANCIONES</span>
-            <button class="home-sp-card-play" type="button" title="Reproducir La otra cara — TrackStories" aria-label="Reproducir playlist">
+            <button class="home-sp-card-play" type="button" title="Reproducir TrackStories" aria-label="Reproducir TrackStories">
               <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
-          <div class="home-sp-card-title">La otra cara</div>
-          <div class="home-sp-card-sub">Playlist • TrackStories • ${catalog.length} canciones con historia</div>
+          <div class="home-sp-card-title">TrackStories</div>
+          <div class="home-sp-card-sub">Playlist • ${catalog.length} canciones con historia</div>
         `;
         storiesPlCard.addEventListener('click', (e) => {
           if (e.target.closest('.home-sp-card-play')) {
