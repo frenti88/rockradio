@@ -1,5 +1,6 @@
-// Rock Radio — Fred Rewind Service Worker (PWA)
-const CACHE_NAME = 'rockradio-pwa-v2';
+// TrackStories Service Worker (PWA + Offline Audio Cache with HTTP Range support)
+const CACHE_NAME = 'trackstories-pwa-v3';
+const OFFLINE_CACHE = 'trackstories-offline-v1';
 
 const PRECACHE_ASSETS = [
   '/',
@@ -30,13 +31,13 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate Event: clean up obsolete caches and claim clients immediately
+// Activate Event: clean up obsolete app caches while preserving OFFLINE_CACHE
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((name) => {
-          if (name !== CACHE_NAME) {
+          if (name !== CACHE_NAME && name !== OFFLINE_CACHE) {
             return caches.delete(name);
           }
         })
@@ -45,6 +46,42 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Serve cached audio with proper 206 Partial Content when browser sends a Range header
+async function serveCachedAudio(req) {
+  const offlineCache = await caches.open(OFFLINE_CACHE);
+  const cached = await offlineCache.match(req.url, { ignoreSearch: false });
+  if (!cached) return null;
+
+  const rangeHeader = req.headers.get('range');
+  if (!rangeHeader) return cached;
+
+  const buf = await cached.arrayBuffer();
+  const total = buf.byteLength;
+  const match = /bytes=(\d+)-(\d*)/.exec(rangeHeader);
+  if (!match) return cached;
+
+  const start = Number(match[1]);
+  const end = match[2] ? Math.min(Number(match[2]), total - 1) : total - 1;
+  if (start >= total || start > end) {
+    return new Response(null, {
+      status: 416,
+      headers: { 'Content-Range': `bytes */${total}` }
+    });
+  }
+
+  const chunk = buf.slice(start, end + 1);
+  return new Response(chunk, {
+    status: 206,
+    statusText: 'Partial Content',
+    headers: {
+      'Content-Type': cached.headers.get('Content-Type') || 'audio/mpeg',
+      'Content-Range': `bytes ${start}-${end}/${total}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': String(chunk.byteLength)
+    }
+  });
+}
+
 // Fetch Event
 self.addEventListener('fetch', (event) => {
   const req = event.request;
@@ -52,13 +89,19 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
 
-  // Never cache API calls or streaming audio range requests
+  // Never intercept backend API calls
+  if (url.pathname.startsWith('/api/')) {
+    return;
+  }
+
+  // Audio & offline media: check OFFLINE_CACHE first (with Range support), fallback to network
   if (
-    url.pathname.startsWith('/api/') ||
-    url.pathname.endsWith('.mp3') ||
-    url.pathname.includes('/audio/') ||
-    req.headers.has('range')
+    url.origin === self.location.origin &&
+    (url.pathname.endsWith('.mp3') || url.pathname.includes('/audio/') || url.pathname.includes('/specials/'))
   ) {
+    event.respondWith(
+      serveCachedAudio(req).then((cachedResp) => cachedResp || fetch(req))
+    );
     return;
   }
 
@@ -80,7 +123,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets & same-origin requests: Stale-While-Revalidate
+  // Static assets & same-origin requests: check OFFLINE_CACHE + CACHE_NAME
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(req).then((cachedResp) => {

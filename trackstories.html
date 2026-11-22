@@ -6651,7 +6651,25 @@
         </div>
 
         <div class="dj-playlist-action-bar">
-          <div class="dj-action-bar-left">
+          <div class="dj-action-bar-left" style="display:flex; align-items:center; gap:14px;">
+            <button class="dj-icon-action-btn" id="btnDjPlaylistDownload" type="button" title="Descargar playlist para escuchar sin conexión" aria-label="Descargar playlist" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%; position:relative;">
+              <!-- Spotify Encore Download (outline circle + downward arrow) -->
+              <svg id="djDownloadIconIdle" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12z"/>
+                <path d="M12 6.75a.75.75 0 0 1 .75.75v6.69l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.22 2.22V7.5A.75.75 0 0 1 12 6.75z"/>
+              </svg>
+              <!-- Spotify Encore Downloading (circular progress ring) -->
+              <svg id="djDownloadIconProgress" class="hidden" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" style="transform:rotate(-90deg);">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"></circle>
+                <circle id="djDownloadRingCircle" cx="12" cy="12" r="10" fill="none" stroke="#1ed760" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="62.83" stroke-dashoffset="62.83"></circle>
+              </svg>
+              <!-- Spotify Encore Downloaded (filled green circle + black downward arrow) -->
+              <svg id="djDownloadIconDone" class="hidden" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="11" fill="#1ed760"></circle>
+                <path d="M12 6.75a.75.75 0 0 1 .75.75v6.44l2.22-2.22a.75.75 0 1 1 1.06 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0l-3.5-3.5a.75.75 0 1 1 1.06-1.06l2.22 2.22V7.5A.75.75 0 0 1 12 6.75z" fill="#000000"></path>
+              </svg>
+            </button>
+            <span id="djDownloadStatusText" style="display:none; font-size:0.75rem; font-weight:600; color:#1ed760;"></span>
             <button class="dj-icon-action-btn danger" id="btnDjPlaylistClearAll" type="button" title="Vaciar y reiniciar lista de Fred" aria-label="Vaciar lista" style="background:transparent; border:none; color:#b3b3b3; width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border-radius:50%;">
               <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M5.25 3v-.917C5.25.933 6.183 0 7.333 0h1.334c1.15 0 2.083.933 2.083 2.083V3h4.75v1.5h-.972l-1.257 9.544A2.25 2.25 0 0 1 11.041 16H4.96a2.25 2.25 0 0 1-2.23-1.956L1.472 4.5H.5V3h4.75zm1.5-.917V3h2.5v-.917a.583.583 0 0 0-.583-.583H7.333a.583.583 0 0 0-.583.583zM2.986 4.5l1.23 9.348a.75.75 0 0 0 .744.652h6.08a.75.75 0 0 0 .744-.652L13.015 4.5H2.985z"/></svg>
             </button>
@@ -19153,6 +19171,152 @@
         }
       });
     }
+
+    // ========================================================
+    // SPOTIFY-STYLE OFFLINE PLAYLIST DOWNLOADER (PWA Cache API)
+    // ========================================================
+    (function initOfflinePlaylistDownloader() {
+      const OFFLINE_CACHE = 'trackstories-offline-v1';
+      const OFFLINE_FLAG_KEY = 'ts_playlist_offline_ready_v1';
+      const btn = document.getElementById('btnDjPlaylistDownload');
+      const iconIdle = document.getElementById('djDownloadIconIdle');
+      const iconProgress = document.getElementById('djDownloadIconProgress');
+      const iconDone = document.getElementById('djDownloadIconDone');
+      const ringCircle = document.getElementById('djDownloadRingCircle');
+      const statusText = document.getElementById('djDownloadStatusText');
+      if (!btn) return;
+
+      let state = 'idle'; // 'idle' | 'downloading' | 'done'
+      const CIRC = 62.83;
+
+      function setVisualState(newState, pct = 0, label = '') {
+        state = newState;
+        if (iconIdle) iconIdle.classList.toggle('hidden', state !== 'idle');
+        if (iconProgress) iconProgress.classList.toggle('hidden', state !== 'downloading');
+        if (iconDone) iconDone.classList.toggle('hidden', state !== 'done');
+        if (ringCircle && state === 'downloading') {
+          const offset = CIRC * (1 - Math.max(0, Math.min(100, pct)) / 100);
+          ringCircle.setAttribute('stroke-dashoffset', offset.toFixed(2));
+        }
+        if (statusText) {
+          if (label) {
+            statusText.textContent = label;
+            statusText.style.display = 'inline';
+          } else {
+            statusText.style.display = 'none';
+          }
+        }
+        btn.title = state === 'done'
+          ? 'Playlist descargada sin conexión (toca para eliminar descarga)'
+          : state === 'downloading'
+            ? `Descargando sin conexión (${Math.round(pct)}%)...`
+            : 'Descargar playlist para escuchar sin conexión';
+      }
+
+      function collectOfflineUrls() {
+        const urls = new Set(['/', '/index.html']);
+        const list = (typeof BASE_DJ_FRED_TRACKS !== 'undefined' && Array.isArray(BASE_DJ_FRED_TRACKS))
+          ? BASE_DJ_FRED_TRACKS
+          : [];
+        const custom = (typeof getDjFredCustomTracks === 'function') ? getDjFredCustomTracks() : [];
+        for (const item of [...list, ...custom]) {
+          if (!item) continue;
+          if (item.voiceAudioUrl) urls.add(item.voiceAudioUrl);
+          if (item.cover && !String(item.cover).startsWith('http')) urls.add(item.cover);
+          if (item.audioUrl && !String(item.audioUrl).startsWith('spotify:')) urls.add(item.audioUrl);
+          if (item.fileUrl && !String(item.fileUrl).startsWith('spotify:')) urls.add(item.fileUrl);
+        }
+        return Array.from(urls);
+      }
+
+      async function checkInitialState() {
+        if (!('caches' in window)) return;
+        try {
+          if (localStorage.getItem(OFFLINE_FLAG_KEY) === '1') {
+            const cache = await caches.open(OFFLINE_CACHE);
+            const keys = await cache.keys();
+            if (keys.length >= 10) {
+              setVisualState('done', 100, 'Descargado');
+              return;
+            }
+          }
+        } catch (_) {}
+        setVisualState('idle');
+      }
+
+      async function downloadPlaylistOffline() {
+        if (!('caches' in window)) {
+          showAppToast('Tu navegador no soporta almacenamiento sin conexión (Cache API).', 'warn');
+          return;
+        }
+        const urls = collectOfflineUrls();
+        if (!urls.length) return;
+
+        setVisualState('downloading', 1, '0%');
+        showAppToast(`⬇️ Descargando ${urls.length} archivos (intros de Fred, portadas y audios locales)...`, 'info');
+
+        try {
+          const cache = await caches.open(OFFLINE_CACHE);
+          let completed = 0;
+          let saved = 0;
+          const BATCH = 6;
+
+          for (let i = 0; i < urls.length; i += BATCH) {
+            if (state !== 'downloading') return; // Cancelled
+            const chunk = urls.slice(i, i + BATCH);
+            await Promise.all(chunk.map(async (u) => {
+              try {
+                const existing = await cache.match(u);
+                if (!existing) {
+                  const resp = await fetch(u, { cache: 'no-cache' });
+                  if (resp && resp.ok) {
+                    await cache.put(u, resp.clone());
+                    saved++;
+                  }
+                } else {
+                  saved++;
+                }
+              } catch (_) {}
+              completed++;
+              const pct = Math.round((completed / urls.length) * 100);
+              setVisualState('downloading', pct, `${pct}%`);
+            }));
+          }
+
+          localStorage.setItem(OFFLINE_FLAG_KEY, '1');
+          setVisualState('done', 100, 'Descargado');
+          showAppToast(
+            `✓ Playlist lista sin conexión (${saved} archivos: intros de Fred, portadas y pistas locales). Nota: las canciones en streaming de Spotify requieren internet por DRM.`,
+            'success'
+          );
+        } catch (err) {
+          setVisualState('idle');
+          showAppToast('Error al descargar la playlist sin conexión.', 'error');
+        }
+      }
+
+      btn.addEventListener('click', async () => {
+        if (state === 'downloading') {
+          setVisualState('idle');
+          showAppToast('Descarga pausada.', 'info');
+          return;
+        }
+        if (state === 'done') {
+          if (confirm('¿Deseas eliminar los archivos descargados sin conexión para liberar espacio?')) {
+            try {
+              await caches.delete(OFFLINE_CACHE);
+              localStorage.removeItem(OFFLINE_FLAG_KEY);
+            } catch (_) {}
+            setVisualState('idle');
+            showAppToast('Descarga sin conexión eliminada.', 'info');
+          }
+          return;
+        }
+        await downloadPlaylistOffline();
+      });
+
+      checkInitialState();
+    })();
 
     const btnBarShuffle = document.getElementById('btnBarShuffle');
     if (btnBarShuffle) {
