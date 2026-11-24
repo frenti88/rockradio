@@ -6598,6 +6598,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardAparte05" role="button" tabindex="0" aria-label="Reproducir Aparte: El arte de no hacer nada">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Aparte — El arte de no hacer nada" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 16:38</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">El arte de no hacer nada</div>
+              <div class="home-sp-card-sub">Aparte • Fred &amp; María • 16:38</div>
+            </div>
             <div class="home-sp-card" id="podcastCardMasAlla01" role="button" tabindex="0" aria-label="Reproducir Más allá de la interfaz: ¿Y si las interfaces aprendieran a entendernos?">
               <div class="home-sp-card-art">
                 <img src="podcasts/aparte_cover.jpg" alt="Más allá de la interfaz — ¿Y si las interfaces aprendieran a entendernos?" loading="lazy">
@@ -6657,6 +6668,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardAparte05',
+                  title: 'El arte de no hacer nada',
+                  artist: 'Aparte • Podcast • Fred & María',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/aparte_no_hacer_nada.mp3'
+                },
                 {
                   id: 'podcastCardMasAlla01',
                   title: '¿Y si las interfaces aprendieran a entendernos?',
