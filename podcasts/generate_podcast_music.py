@@ -123,6 +123,58 @@ def add_stereo(buf: np.ndarray, start: int, mono: np.ndarray, pan: float = 0.0):
 
 
 def render_bed_wav(out_wav: Path, duration_sec: float, sr: int = 48000):
+    custom_mp3 = OUT_DIR / "aparte_custom_bed.mp3"
+    if custom_mp3.exists() and custom_mp3.stat().st_size > 10000:
+        tmp_src = Path("/tmp/aparte_custom_bed_48k.wav")
+        subprocess.run(
+            [
+                "ffmpeg", "-y", "-v", "error",
+                "-i", str(custom_mp3),
+                "-ar", str(sr), "-ac", "2",
+                str(tmp_src),
+            ],
+            check=True,
+        )
+        with wave.open(str(tmp_src), "rb") as wf:
+            raw = wf.readframes(wf.getnframes())
+            src = (np.frombuffer(raw, dtype=np.int16).astype(np.float32) / 32768.0).reshape(-1, 2)
+
+        total_samples = int(duration_sec * sr)
+        xfade = min(int(3.0 * sr), len(src) // 4)
+        step = len(src) - xfade
+        out = np.zeros((total_samples, 2), dtype=np.float32)
+
+        pos = 0
+        first = True
+        while pos < total_samples:
+            chunk = src.copy()
+            if not first and xfade > 0:
+                ramp_in = np.linspace(0.0, 1.0, xfade, dtype=np.float32)[:, None]
+                chunk[:xfade] *= ramp_in
+            if pos + len(chunk) < total_samples and xfade > 0:
+                ramp_out = np.linspace(1.0, 0.0, xfade, dtype=np.float32)[:, None]
+                chunk[-xfade:] *= ramp_out
+            end = min(total_samples, pos + len(chunk))
+            out[pos:end] += chunk[: end - pos]
+            pos += step
+            first = False
+
+        t_all = np.arange(total_samples, dtype=np.float32) / sr
+        fade_in = np.minimum(1.0, t_all / 1.8)
+        fade_out = np.minimum(1.0, np.maximum(0.0, (duration_sec - t_all) / 3.0))
+        out *= (fade_in * fade_out)[:, None]
+
+        peak = np.max(np.abs(out)) + 1e-9
+        if peak > 0.95:
+            out *= 0.95 / peak
+        pcm = (np.clip(out, -1.0, 1.0) * 32767.0).astype(np.int16)
+        with wave.open(str(out_wav), "wb") as wf:
+            wf.setnchannels(2)
+            wf.setsampwidth(2)
+            wf.setframerate(sr)
+            wf.writeframes(pcm.tobytes())
+        return
+
     rng = np.random.default_rng(2027)
     bpm = 110.0
     beat_s = 60.0 / bpm
