@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Builds Aparte Podcast Episode 7 (Solo Fred): "Encuentra un propósito para escribir"
+Builds Aparte Podcast Episode 7 (Solo Fred):
+"La dura rutina de George Orwell: escribir 1984 en una isla remota"
 Intimate solo monologue narrated by Fred (g.DEFAULT_FISH_VOICE) in Fish Audio drama-3,
 with expressive natural variations, thoughts out loud, short anecdotes, soft laughs,
-sighs, reflective pauses, custom Drive background music bed, and minimalist SVG cover.
+sighs, reflective pauses, and the custom Drive background music bed.
 """
 import subprocess
 import sys
@@ -29,87 +30,91 @@ VOICE_FRED = g.DEFAULT_FISH_VOICE
 CHUNKS = [
     (
         "01_intro", 0,
-        "Hola… ¿qué tal? Bienvenido a Aparte. Hoy estoy solo frente al micrófono, sin invitados, sin libreto rígido… "
-        "solo con un café tibio y una idea que me viene dando vueltas en la cabeza toda la semana: ¿para qué escribimos?"
+        "Hola… ¿qué tal? Bienvenido a Aparte. Hoy estoy solo frente al micrófono, con un café en la mano y una historia que, te soy sincero, "
+        "me dejó pensando toda la semana. En 1947, George Orwell se estaba muriendo. Y él lo sabía. Era plenamente consciente de su final."
     ),
     (
-        "02_duda", 450,
-        "A ver… suena a pregunta de taller literario, ¿cierto? (chuckle) Pero te juro que no va por ahí. "
-        "Hace unos días me senté frente a la pantalla en blanco, con el cursor parpadeando… y durante veinte minutos no escribí ni una línea decente. "
-        "Borré tres párrafos, abrí el celular, volví, miré el techo… (sigh) Y ahí me cayó el veinte: no era falta de ideas. Era falta de propósito."
+        "02_barnhill", 450,
+        "Aun así, ¿qué hizo? Se marchó a una granja remota en la isla escocesa de Jura. Instaló su vieja máquina de escribir en la sala principal "
+        "y allí pasó los dos años siguientes escribiendo 1984, refugiado prácticamente como un ermitaño. "
+        "La casa se llamaba Barnhill. Imagínate esto: sin electricidad, con un suministro de agua poco fiable y el hospital más cercano a un viaje durísimo de distancia. "
+        "Cuando se sentía bien, escribía en la sala. Cuando la enfermedad no le dejaba levantarse… trabajaba desde la cama."
     ),
     (
-        "03_orwell", 550,
-        "Pensé mucho en George Orwell. Orwell decía que sus experiencias y sus preocupaciones políticas eran exactamente lo que le daba sentido a toda su obra. "
-        "Él no se sentaba a escribir simplemente para llenar páginas o para sonar inteligente. Tenía algo que necesitaba decir. Una urgencia. Un para qué."
+        "03_manuscrito_muerte", 500,
+        "Vivía rodeado de cuadernos, herramientas de granja, manuscritos y una máquina de escribir que era casi una reliquia y se averiaba a cada rato. "
+        "En octubre de 1948, a punto de terminar 1984, calculaba que el manuscrito llegaría a las ciento veinticinco mil palabras… y ni siquiera estaba satisfecho. "
+        "1984 se publicó el ocho de junio de 1949. Y Orwell murió el veintiuno de enero de 1950, con apenas cuarenta y seis años, sin llegar a ver el legado gigantesco de su obra."
     ),
     (
-        "04_peor_dia", 480,
-        "Y eso lo cambia todo, ¿sabes? Porque tener una intención clara para escribir es lo único que te va a hacer volver a la silla… "
-        "es lo que te va a empujar incluso en tu peor día, cuando estás cansado, cuando nadie te lee, cuando sientes que todo lo que escribes suena horrible. "
-        "(chuckle) Que, seamos honestos, pasa más seguido de lo que admitimos."
+        "04_reflexion_excusas", 550,
+        "(sigh) A mí esto me dejó bastante pensativo… ¿Cuántas veces evitamos una tarea con la excusa más mínima? "
+        "Que si hace frío, que si no tengo la silla ergonómica, que si el primer borrador me salió feo… (chuckle) "
+        "Mientras tanto, un hombre enfermo de tuberculosis, en una granja remota sin luz, creó una de las novelas más influyentes de la historia. "
+        "No hay que tenerlo todo a favor. Y, seamos honestos, jamás lo tendrás por mucho que esperes."
     ),
     (
-        "05_rumbo", 520,
-        "Como todo en la vida, sin rumbo es muy difícil llegar a algún lugar. "
-        "La mayoría de la gente deambula… escribe un día porque le dio inspiración, lo deja tres semanas, cambia de tema, persigue la tendencia del momento… "
-        "y al final del año siente que caminó muchísimo pero no llegó a ninguna parte. Asegúrate de tener rumbo."
+        "05_rutina_ritual", 550,
+        "Miremos su rutina con lupa, porque tiene detalles buenísimos. No tenía un horario rígido de esos de gurú de productividad, pero en Jura se levantaba con el sol "
+        "para aprovechar la luz natural, ya que solo tenía velas. Escribía a mano en cuadernos o a máquina según el día. Era flexible, sí, pero obsesivamente perfeccionista: "
+        "en su diario de 1940 confesó que prácticamente todo lo había escrito al menos dos veces, sus libros completos tres veces, y algunos fragmentos… ¡hasta diez!"
     ),
     (
-        "06_cuatro_lineas_intro", 650,
-        "Y para que esto no se quede en filosofía abstracta —ni en una charla eterna— quiero dejarte cuatro ideas muy concretas. "
-        "En cuatro líneas, para que no se te escape ninguna."
+        "06_el_te", 450,
+        "Y tenía su ritual sagrado: el té. Se lo tomaba tan en serio que en 1946 publicó un ensayo entero llamado A Nice Cup of Tea, "
+        "con once reglas exactas para prepararlo, incluyendo el orden correcto de añadir el té y la leche. (laughing) ¡Once reglas para un té! "
+        "Pero fíjate en lo importante: era su señal del entorno. Ese pequeño ritual que le decía a su cerebro: ya empezamos. "
+        "¿Cuál es el tuyo? Un café, abrir un cuaderno, una ducha previa, poner música… el ser humano es rutinario, y un buen ritual te ahorra media batalla."
     ),
     (
-        "07_regla_1_observa", 450,
-        "Primera: observa lo que te rodea. "
-        "De verdad, levanta la cabeza. Las mejores historias no están escondidas en una biblioteca secreta; están en la fila del café, en una conversación a medias en el bus, "
-        "en ese detalle pequeño que todo el mundo pasa por alto porque va mirando el teléfono. Si no observas, no tienes materia prima."
+        "07_eric_blair", 550,
+        "Ahora, quizá no lo sepas, pero él ni siquiera se llamaba George Orwell. Su nombre real era Eric Arthur Blair. "
+        "Venía de una familia acomodada y estudió en el prestigioso Eton College, pero siempre sintió que no encajaba. "
+        "Fue policía colonial en Birmania, vivió en la pobreza en París y Londres, fue profesor, librero, miliciano en la Guerra Civil española, y en Jura cultivaba verduras y criaba animales. "
+        "Toda esa vida variopinta le mostró de primera mano las desigualdades y los abusos de poder."
     ),
     (
-        "08_regla_2_reescribe", 520,
-        "Segunda: reescribe con esmero. "
-        "El primer borrador casi siempre es un desastre… y está perfecto que lo sea. (laughing) El mío de esta mañana parecía escrito por alguien con sueño y prisa. "
-        "Escribir de verdad empieza cuando vuelves sobre tus palabras, tachas lo que sobra y pules la idea hasta que brilla."
+        "08_corryvreckan_hospital", 500,
+        "Y en Barnhill la vida era sencilla, pero durísima. Sin teléfono, con caminos que se volvían intransitables con el mal tiempo. "
+        "En agosto de 1947 casi muere ahogado en un accidente de barca cerca del peligroso remolino de Corryvreckan, junto a su hijo adoptado Richard y otros familiares. Salió vivo por los pelos. "
+        "Meses después, la tuberculosis lo mandó siete meses al hospital de Hairmyres. Y ahí, tumbado en la camilla, seguía escribiendo. "
+        "En su diario anotó algo que me dolió leer: que solo cuando intentaba escribir se daba cuenta del deterioro dentro de su cabeza."
     ),
     (
-        "09_regla_3_minimalista", 520,
-        "Tercera: sé minimalista. "
-        "Si puedes decirlo en diez palabras claras, no uses cuarenta palabras adornadas. La claridad es una forma de respeto hacia quien te lee o te escucha. "
-        "Menos ruido, más verdad."
+        "09_mecanografiar", 500,
+        "Aun así, regresó a Jura en julio de 1948. En octubre le escribió a su editor, Fredric Warburg, preocupado por el esfuerzo físico de pasar a máquina la copia final de ciento veinticinco mil palabras. "
+        "Intentó buscar un mecanógrafo… pero claro, ¿quién iba a irse hasta esa granja perdida? Nadie se ofreció. "
+        "Así que volvió a mecanografiar la novela entera él mismo, con dolores, a un ritmo de unas cuatro mil palabras diarias en diciembre de 1948. "
+        "Cuando terminó estaba exhausto. En enero de 1949 dejó Jura para entrar de nuevo a un sanatorio, sabiendo que probablemente no volvería."
     ),
     (
-        "10_regla_4_meta", 520,
-        "Y cuarta: ten una meta. "
-        "No tiene que ser escribir la gran novela del siglo. Puede ser publicar un texto corto cada domingo, terminar un ensayo, o simplemente aclarar tus propios pensamientos en un cuaderno. "
-        "Pero ponle nombre, ponle dirección."
+        "10_por_que_escribo", 550,
+        "Uno podría pensar que Orwell era simplemente un ermitaño obsesionado. Pero no. En su ensayo Por qué escribo explicó sus cuatro motivos: "
+        "el puro egoísmo, el impulso histórico, el entusiasmo estético y el propósito político. Y después de la Guerra Civil española, el propósito político pasó al centro. "
+        "Quería dejar un legado literario advirtiendo sobre el totalitarismo, la propaganda y la censura. "
+        "No estaba esperando el momento ideal. Empieza con las condiciones que tienes y adapta el trabajo a tus posibilidades."
     ),
     (
-        "11_resumen_cierre", 750,
-        "Así que, en cuatro líneas, para que te lo lleves hoy: "
-        "observa lo que te rodea. Reescribe con esmero. Sé minimalista. Ten una meta. "
-        "Encuentra tu propósito para escribir… y vuelve a él, incluso en tus peores días. "
+        "11_diarios_caoticos", 500,
+        "Otro detalle que me encanta: sus diarios personales, de 1938 a 1949. No eran esos cuadernos estéticos y perfectos que uno ve hoy en redes sociales para fingir. (chuckle) "
+        "Eran hojas caóticas donde convivían semillas plantadas en la granja, conteo de huevos recogidos, dibujos, cálculos de un monumento megalítico, recortes de prensa y reflexiones políticas. "
+        "Así se ve de verdad la cabeza de un creador."
+    ),
+    (
+        "12_cuatro_ideas", 550,
+        "Entonces, ¿qué podemos robar de la historia de George Orwell para escribir cada día, incluso con pereza? Cuatro ideas concretas. "
+        "Primera: escribe un diario. Anota lo que observas, el clima, lo que piensas cuando consumes contenido en vez de seguir haciendo scroll. El noventa y nueve por ciento consume ideas ajenas; recuerda pensar las tuyas. "
+        "Segunda: reescribe. El primer borrador es solo material bruto; la calidad real aparece en la refinación. "
+        "Tercera: sé minimalista. Orwell solo necesitaba una máquina de escribir, un cuaderno y un rato sin interrupción. No necesitas un estudio de película."
+    ),
+    (
+        "13_proposito_cierre", 550,
+        "Y cuarta: encuentra un propósito para escribir. Orwell creía que sus experiencias y preocupaciones políticas daban sentido a su obra. "
+        "Tener una intención para escribir te hará volver; es lo que te empujará incluso en tu peor día. Como todo en la vida, sin rumbo es difícil llegar a algún lugar. La mayoría deambula; asegúrate de tener rumbo. "
+        "En cuatro líneas, para que no se te escape: observa lo que te rodea. Reescribe con esmero. Sé minimalista. Ten una meta. "
         "Hasta aquí por hoy. Esto fue Aparte. Ideas que merecen ser escuchadas."
     ),
 ]
-
-
-def write_cover_svg():
-    svg = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
-  <rect width="800" height="800" fill="#365314"/>
-  <g transform="translate(400, 385)" fill="none" stroke="#ECFCCB" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="0" cy="0" r="135"/>
-    <polygon points="0,-95 28,-12 0,95 -28,-12" fill="#BEF264" stroke="#ECFCCB" stroke-width="14"/>
-    <circle cx="0" cy="0" r="16" fill="#365314" stroke="none"/>
-    <line x1="0" y1="-135" x2="0" y2="-112"/>
-    <line x1="0" y1="112" x2="0" y2="135"/>
-    <line x1="-135" y1="0" x2="-112" y2="0"/>
-    <line x1="112" y1="0" x2="135" y2="0"/>
-  </g>
-  <text x="400" y="690" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" letter-spacing="8" fill="#ECFCCB" opacity="0.92">APARTE</text>
-</svg>
-"""
-    (OUT_DIR / "cover_ep07_escribir.svg").write_text(svg, encoding="utf-8")
 
 
 def load_wav_mono(path: Path) -> np.ndarray:
@@ -122,7 +127,6 @@ def load_wav_mono(path: Path) -> np.ndarray:
 
 
 def main():
-    write_cover_svg()
     sr = 48000
     clips = []
 
@@ -182,7 +186,7 @@ def main():
         wf.writeframes(pcm.tobytes())
 
     total_dur = probe_dur(voice_full)
-    print(f"[TIMELINE] Assembled Solo Fred episode: {total_dur}s", flush=True)
+    print(f"[TIMELINE] Assembled Solo Fred Orwell episode: {total_dur}s", flush=True)
 
     bed_wav = Path("/tmp/aparte_07_bed.wav")
     print(f"[BED] Rendering custom Drive music bed ({total_dur}s)...", flush=True)
