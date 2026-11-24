@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#1E3A8A"/>
+  
+        <g transform="translate(400, 385)" fill="none" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 0 -130 L 85 15 L 48 115 L -48 115 L -85 15 Z"/>
+          <line x1="0" y1="-130" x2="0" y2="-10"/>
+          <circle cx="0" cy="5" r="22" fill="#FDE047" stroke="#FFFFFF" stroke-width="14"/>
+          <path d="M -115 -70 Q 0 -150 115 -70" stroke="#FDE047" stroke-width="10" stroke-dasharray="12 16"/>
+          <circle cx="-115" cy="-70" r="10" fill="#FDE047" stroke="none"/>
+          <circle cx="115" cy="-70" r="10" fill="#FDE047" stroke="none"/>
+        </g>
+        
+  <text x="400" y="690" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="700" letter-spacing="8" fill="#FFFFFF" opacity="0.92">APARTE</text>
+</svg>
