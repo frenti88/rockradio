@@ -6598,6 +6598,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardAparte03" role="button" tabindex="0" aria-label="Reproducir Aparte: 10 tendencias de diseño UI/UX para 2027">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Aparte — 10 tendencias de diseño UI/UX para 2027" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 9:55</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">10 tendencias de diseño UI/UX para 2027</div>
+              <div class="home-sp-card-sub">Aparte • Fred &amp; María • 9:55</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte02" role="button" tabindex="0" aria-label="Reproducir Aparte: A cada nuevo medio se le tacha de trampa">
               <div class="home-sp-card-art">
                 <img src="podcasts/aparte_cover.jpg" alt="Aparte — A cada nuevo medio se le tacha de trampa" loading="lazy">
@@ -6624,6 +6635,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardAparte03',
+                  title: '10 tendencias de diseño UI/UX para 2027',
+                  artist: 'Aparte • Podcast • Fred & María',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/aparte_tendencias_uiux_2027.mp3'
+                },
                 {
                   id: 'podcastCardAparte02',
                   title: 'A cada nuevo medio se le tacha de trampa',
