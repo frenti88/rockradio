@@ -6598,6 +6598,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardMasAlla01" role="button" tabindex="0" aria-label="Reproducir Más allá de la interfaz: ¿Y si las interfaces aprendieran a entendernos?">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Más allá de la interfaz — ¿Y si las interfaces aprendieran a entendernos?" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 18:55</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">¿Y si las interfaces aprendieran a entendernos?</div>
+              <div class="home-sp-card-sub">Más allá de la interfaz • Fred &amp; María • 18:55</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte04" role="button" tabindex="0" aria-label="Reproducir Aparte: Resumen Semanal IA, Diseño y Tech (16–23 Nov)">
               <div class="home-sp-card-art">
                 <img src="podcasts/aparte_cover.jpg" alt="Aparte — Resumen Semanal 16 al 23 de Noviembre 2026" loading="lazy">
@@ -6646,6 +6657,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardMasAlla01',
+                  title: '¿Y si las interfaces aprendieran a entendernos?',
+                  artist: 'Más allá de la interfaz • Podcast • Fred & María',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/mas_alla_interfaces_contextuales.mp3'
+                },
                 {
                   id: 'podcastCardAparte04',
                   title: 'Resumen Semanal: IA, Diseño y Tech (16–23 Nov)',
