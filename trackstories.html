@@ -6598,6 +6598,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardAparte06" role="button" tabindex="0" aria-label="Reproducir Aparte: La máquina como horror sobrenatural">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Aparte — La máquina como horror sobrenatural" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 17:08</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">La máquina como horror sobrenatural</div>
+              <div class="home-sp-card-sub">Aparte • Fred &amp; María • 17:08</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte05" role="button" tabindex="0" aria-label="Reproducir Aparte: El arte de no hacer nada">
               <div class="home-sp-card-art">
                 <img src="podcasts/aparte_cover.jpg" alt="Aparte — El arte de no hacer nada" loading="lazy">
@@ -6668,6 +6679,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardAparte06',
+                  title: 'La máquina como horror sobrenatural',
+                  artist: 'Aparte • Podcast • Fred & María',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/aparte_maquina_horror_sobrenatural.mp3'
+                },
                 {
                   id: 'podcastCardAparte05',
                   title: 'El arte de no hacer nada',
