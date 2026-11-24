@@ -6598,41 +6598,70 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardAparte02" role="button" tabindex="0" aria-label="Reproducir Aparte: A cada nuevo medio se le tacha de trampa">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Aparte — A cada nuevo medio se le tacha de trampa" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 11:37</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">A cada nuevo medio se le tacha de trampa</div>
+              <div class="home-sp-card-sub">Aparte • Fred &amp; Lucía • 11:37</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte01" role="button" tabindex="0" aria-label="Reproducir Aparte: ¿La época dorada del diseño apenas comienza?">
               <div class="home-sp-card-art">
                 <img src="podcasts/aparte_cover.jpg" alt="Aparte — Ideas que merecen ser escuchadas" loading="lazy">
-                <span class="home-sp-card-badge">PODCAST • 8:12</span>
+                <span class="home-sp-card-badge">PODCAST • 8:18</span>
                 <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
                   <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 </button>
               </div>
               <div class="home-sp-card-title">¿La época dorada del diseño apenas comienza?</div>
-              <div class="home-sp-card-sub">Aparte • Ideas que merecen ser escuchadas • 8:12</div>
+              <div class="home-sp-card-sub">Aparte • Ideas que merecen ser escuchadas • 8:18</div>
             </div>
           </div>
           <script>
             (function initPodcastsShelf() {
-              const card = document.getElementById('podcastCardAparte01');
-              if (!card) return;
-              card.addEventListener('click', () => {
-                if (window.GlamRockSpecial) window.GlamRockSpecial.stop();
-                if (typeof GlobalAudioPlayer !== 'undefined' && GlobalAudioPlayer) {
-                  GlobalAudioPlayer.source = 'podcast';
-                  GlobalAudioPlayer.playbackSeq++;
-                  const seq = GlobalAudioPlayer.playbackSeq;
-                  const bTitle = document.getElementById('barTitle');
-                  const bArtist = document.getElementById('barArtist');
-                  const bThumbImg = document.getElementById('barThumbImg');
-                  const bThumbText = document.getElementById('barThumbText');
-                  if (bTitle) bTitle.textContent = '¿La época dorada del diseño apenas comienza?';
-                  if (bArtist) bArtist.textContent = 'Aparte • Podcast • Fred';
-                  if (bThumbImg) {
-                    bThumbImg.src = 'podcasts/aparte_cover.jpg';
-                    bThumbImg.style.display = 'block';
-                  }
-                  if (bThumbText) bThumbText.style.display = 'none';
-                  GlobalAudioPlayer.playViaHtmlAudio('podcasts/aparte_epoca_dorada_diseno.mp3', seq);
+              const episodes = [
+                {
+                  id: 'podcastCardAparte02',
+                  title: 'A cada nuevo medio se le tacha de trampa',
+                  artist: 'Aparte • Podcast • Fred & Lucía',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/aparte_nuevo_medio_trampa.mp3'
+                },
+                {
+                  id: 'podcastCardAparte01',
+                  title: '¿La época dorada del diseño apenas comienza?',
+                  artist: 'Aparte • Podcast • Fred',
+                  cover: 'podcasts/aparte_cover.jpg',
+                  audio: 'podcasts/aparte_epoca_dorada_diseno.mp3'
                 }
+              ];
+              episodes.forEach((ep) => {
+                const card = document.getElementById(ep.id);
+                if (!card) return;
+                card.addEventListener('click', () => {
+                  if (window.GlamRockSpecial) window.GlamRockSpecial.stop();
+                  if (typeof GlobalAudioPlayer !== 'undefined' && GlobalAudioPlayer) {
+                    GlobalAudioPlayer.source = 'podcast';
+                    GlobalAudioPlayer.playbackSeq++;
+                    const seq = GlobalAudioPlayer.playbackSeq;
+                    const bTitle = document.getElementById('barTitle');
+                    const bArtist = document.getElementById('barArtist');
+                    const bThumbImg = document.getElementById('barThumbImg');
+                    const bThumbText = document.getElementById('barThumbText');
+                    if (bTitle) bTitle.textContent = ep.title;
+                    if (bArtist) bArtist.textContent = ep.artist;
+                    if (bThumbImg) {
+                      bThumbImg.src = ep.cover;
+                      bThumbImg.style.display = 'block';
+                    }
+                    if (bThumbText) bThumbText.style.display = 'none';
+                    GlobalAudioPlayer.playViaHtmlAudio(ep.audio, seq);
+                  }
+                });
               });
             })();
           </script>
