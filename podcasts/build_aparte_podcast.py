@@ -127,47 +127,93 @@ def probe_dur(p: Path) -> float:
 
 
 def generate_editorial_bed(out_wav: Path, duration_sec: float, sr: int = 48000):
-    """Warm, minimalist editorial podcast music bed (Rhodes-like maj7/min9 pads + gentle pulse)."""
+    """Upbeat 112 BPM morning-news / modern tech-podcast music bed (marimba pulse, light groove, clean bass)."""
     n = int(sr * duration_sec)
     t = np.linspace(0, duration_sec, n, endpoint=False, dtype=np.float32)
 
-    # 4-chord warm modern editorial progression (Am9 -> Fmaj7 -> Cmaj7 -> G6), 4 seconds per chord
+    bpm = 112.0
+    beat_sec = 60.0 / bpm
+    sixteenth_sec = beat_sec / 4.0
+    bar_sec = beat_sec * 4.0
+
+    # Upbeat modern news progression (Dm7 -> Bbmaj7 -> Fmaj7 -> C), 2 bars per chord
     chords = [
-        [110.0, 220.0, 261.63, 329.63, 392.0],   # Am7/9
-        [87.31, 174.61, 220.0, 261.63, 329.63],  # Fmaj7
-        [130.81, 196.0, 246.94, 329.63, 392.0],  # Cmaj7
-        [98.0, 196.0, 246.94, 293.66, 329.63],   # G6
+        [146.83, 293.66, 349.23, 440.0, 523.25],   # Dm7
+        [116.54, 233.08, 293.66, 349.23, 440.0],   # Bbmaj7
+        [174.61, 261.63, 349.23, 440.0, 523.25],   # Fmaj7
+        [130.81, 261.63, 329.63, 392.0, 523.25],   # C
     ]
-    chord_dur = 4.0
-    chord_idx = (t / chord_dur).astype(np.int32) % len(chords)
-    local_t = t % chord_dur
-    # Smooth crossfade envelope on each chord change
-    chord_env = np.minimum(1.0, local_t / 0.35) * np.minimum(1.0, (chord_dur - local_t) / 0.35)
-    chord_env = (0.75 + 0.25 * chord_env).astype(np.float32)
+    chord_idx = (t / (bar_sec * 2.0)).astype(np.int32) % len(chords)
 
     left = np.zeros(n, dtype=np.float32)
     right = np.zeros(n, dtype=np.float32)
 
-    for voice_i in range(5):
-        freqs = np.array([chords[c][voice_i] for c in chord_idx], dtype=np.float32)
-        phase_l = 2 * np.pi * np.cumsum(freqs) / sr
-        phase_r = 2 * np.pi * np.cumsum(freqs * (1.0018 if voice_i % 2 == 0 else 0.9982)) / sr
-        weight = 0.32 if voice_i == 0 else (0.18 if voice_i < 3 else 0.11)
-        lfo = 0.78 + 0.22 * np.sin(2 * np.pi * (0.11 + 0.03 * voice_i) * t)
-        # Soft electric-piano-like overtone
-        sig_l = (np.sin(phase_l) + 0.12 * np.sin(phase_l * 2.0)) * weight * lfo * chord_env
-        sig_r = (np.sin(phase_r) + 0.12 * np.sin(phase_r * 2.0)) * weight * lfo * chord_env
-        left += sig_l
-        right += sig_r
+    # 1. Crisp 16th-note marimba / plucked news-magazine arpeggio pattern
+    arp_pattern = [1, 2, 3, 2, 4, 2, 3, 1, 2, 3, 4, 3, 2, 1, 3, 2]
+    step_idx = (t / sixteenth_sec).astype(np.int32)
+    step_in_bar = step_idx % 16
+    local_16 = (t % sixteenth_sec) / sixteenth_sec
+    pluck_env = np.exp(-9.0 * local_16).astype(np.float32)
+
+    note_slots = np.array([arp_pattern[s] for s in step_in_bar], dtype=np.int32)
+    arp_freqs = np.array([chords[c][ns] for c, ns in zip(chord_idx, note_slots)], dtype=np.float32)
+    arp_phase = 2 * np.pi * np.cumsum(arp_freqs) / sr
+    # Marimba-like fundamental + woody 4th harmonic transient
+    marimba = (np.sin(arp_phase) * 0.8 + np.sin(arp_phase * 4.0) * 0.15 * np.exp(-24.0 * local_16)) * pluck_env * 0.24
+    pan_l = np.where((step_idx % 2) == 0, 1.05, 0.80).astype(np.float32)
+    pan_r = np.where((step_idx % 2) == 0, 0.80, 1.05).astype(np.float32)
+    left += marimba * pan_l
+    right += marimba * pan_r
+
+    # 2. Clean bouncing bassline on 8th-note groove
+    bass_f = np.array([chords[c][0] * 0.5 for c in chord_idx], dtype=np.float32)
+    eighth_local = (t % (beat_sec * 0.5)) / (beat_sec * 0.5)
+    bass_env = (0.35 + 0.65 * np.exp(-5.0 * eighth_local)).astype(np.float32)
+    bass = np.sin(2 * np.pi * np.cumsum(bass_f) / sr) * bass_env * 0.28
+    left += bass
+    right += bass
+
+    # 3. Light, crisp morning-news percussion (soft kick, rimshot on 2 & 4, ticking 8th shaker)
+    rng = np.random.default_rng(19)
+    kick_n = int(sr * 0.14)
+    kt = np.linspace(0, 0.14, kick_n, endpoint=False, dtype=np.float32)
+    kick = np.sin(2 * np.pi * np.cumsum(125.0 * np.exp(-28.0 * kt) + 48.0) / sr) * np.exp(-15.0 * kt) * 0.36
+
+    rim_n = int(sr * 0.045)
+    rt = np.linspace(0, 0.045, rim_n, endpoint=False, dtype=np.float32)
+    rim = (np.sin(2 * np.pi * 880.0 * rt) * 0.5 + rng.standard_normal(rim_n).astype(np.float32) * 0.25) * np.exp(-65.0 * rt) * 0.22
+
+    hat_n = int(sr * 0.035)
+    ht = np.linspace(0, 0.035, hat_n, endpoint=False, dtype=np.float32)
+    hat = np.diff(rng.standard_normal(hat_n).astype(np.float32), prepend=0.0) * np.exp(-75.0 * ht) * 0.09
+
+    total_beats = int(duration_sec / beat_sec)
+    for b in range(total_beats):
+        pos = int(b * beat_sec * sr)
+        bi = b % 4
+        if bi in (0, 2):
+            end = min(n, pos + kick_n)
+            left[pos:end] += kick[:end - pos]
+            right[pos:end] += kick[:end - pos]
+        if bi in (1, 3):
+            end = min(n, pos + rim_n)
+            left[pos:end] += rim[:end - pos] * 0.9
+            right[pos:end] += rim[:end - pos] * 1.1
+        for sub_i in (0, 1):
+            hp = pos + int(sub_i * beat_sec * 0.5 * sr)
+            if hp < n:
+                end = min(n, hp + hat_n)
+                left[hp:end] += hat[:end - hp] * 1.1
+                right[hp:end] += hat[:end - hp] * 0.9
 
     # Soft intro/outro fade
-    fade_in = min(int(sr * 2.5), n // 6)
-    fade_out = min(int(sr * 4.5), n // 5)
+    fade_in = min(int(sr * 1.8), n // 6)
+    fade_out = min(int(sr * 4.0), n // 5)
     env = np.ones(n, dtype=np.float32)
     env[:fade_in] = np.linspace(0, 1, fade_in, dtype=np.float32)
     env[-fade_out:] = np.linspace(1, 0, fade_out, dtype=np.float32)
-    left = np.tanh(left * env * 0.85) * 0.48
-    right = np.tanh(right * env * 0.85) * 0.48
+    left = np.tanh(left * env * 0.9) * 0.52
+    right = np.tanh(right * env * 0.9) * 0.52
 
     stereo = np.stack([left, right], axis=1)
     pcm = np.clip(stereo * 32767, -32768, 32767).astype(np.int16)
