@@ -114,12 +114,68 @@ CHUNKS = [
 ]
 
 
+import wave
+import numpy as np
+
+
 def probe_dur(p: Path) -> float:
     out = subprocess.check_output(
         ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", str(p)],
         text=True,
     ).strip()
     return round(float(out), 2)
+
+
+def generate_editorial_bed(out_wav: Path, duration_sec: float, sr: int = 48000):
+    """Warm, minimalist editorial podcast music bed (Rhodes-like maj7/min9 pads + gentle pulse)."""
+    n = int(sr * duration_sec)
+    t = np.linspace(0, duration_sec, n, endpoint=False, dtype=np.float32)
+
+    # 4-chord warm modern editorial progression (Am9 -> Fmaj7 -> Cmaj7 -> G6), 4 seconds per chord
+    chords = [
+        [110.0, 220.0, 261.63, 329.63, 392.0],   # Am7/9
+        [87.31, 174.61, 220.0, 261.63, 329.63],  # Fmaj7
+        [130.81, 196.0, 246.94, 329.63, 392.0],  # Cmaj7
+        [98.0, 196.0, 246.94, 293.66, 329.63],   # G6
+    ]
+    chord_dur = 4.0
+    chord_idx = (t / chord_dur).astype(np.int32) % len(chords)
+    local_t = t % chord_dur
+    # Smooth crossfade envelope on each chord change
+    chord_env = np.minimum(1.0, local_t / 0.35) * np.minimum(1.0, (chord_dur - local_t) / 0.35)
+    chord_env = (0.75 + 0.25 * chord_env).astype(np.float32)
+
+    left = np.zeros(n, dtype=np.float32)
+    right = np.zeros(n, dtype=np.float32)
+
+    for voice_i in range(5):
+        freqs = np.array([chords[c][voice_i] for c in chord_idx], dtype=np.float32)
+        phase_l = 2 * np.pi * np.cumsum(freqs) / sr
+        phase_r = 2 * np.pi * np.cumsum(freqs * (1.0018 if voice_i % 2 == 0 else 0.9982)) / sr
+        weight = 0.32 if voice_i == 0 else (0.18 if voice_i < 3 else 0.11)
+        lfo = 0.78 + 0.22 * np.sin(2 * np.pi * (0.11 + 0.03 * voice_i) * t)
+        # Soft electric-piano-like overtone
+        sig_l = (np.sin(phase_l) + 0.12 * np.sin(phase_l * 2.0)) * weight * lfo * chord_env
+        sig_r = (np.sin(phase_r) + 0.12 * np.sin(phase_r * 2.0)) * weight * lfo * chord_env
+        left += sig_l
+        right += sig_r
+
+    # Soft intro/outro fade
+    fade_in = min(int(sr * 2.5), n // 6)
+    fade_out = min(int(sr * 4.5), n // 5)
+    env = np.ones(n, dtype=np.float32)
+    env[:fade_in] = np.linspace(0, 1, fade_in, dtype=np.float32)
+    env[-fade_out:] = np.linspace(1, 0, fade_out, dtype=np.float32)
+    left = np.tanh(left * env * 0.85) * 0.48
+    right = np.tanh(right * env * 0.85) * 0.48
+
+    stereo = np.stack([left, right], axis=1)
+    pcm = np.clip(stereo * 32767, -32768, 32767).astype(np.int16)
+    with wave.open(str(out_wav), "wb") as wf:
+        wf.setnchannels(2)
+        wf.setsampwidth(2)
+        wf.setframerate(sr)
+        wf.writeframes(pcm.tobytes())
 
 
 def main():
@@ -131,7 +187,6 @@ def main():
             g._fish_audio_tts_sync(text, str(mp3), model="drama-3")
         else:
             print(f"[REUSE] {name}.mp3", flush=True)
-        # Pad each chunk with natural breathing silence at the end
         padded = CHUNKS_DIR / f"{name}_pad.wav"
         subprocess.run(
             [
@@ -147,12 +202,35 @@ def main():
     list_file = Path("/tmp/aparte_concat.txt")
     list_file.write_text("\n".join(concat_entries) + "\n", encoding="utf-8")
 
-    out_mp3 = OUT_DIR / "aparte_epoca_dorada_diseno.mp3"
+    voice_full = Path("/tmp/aparte_voice_full.wav")
     subprocess.run(
         [
             "ffmpeg", "-y", "-v", "error",
             "-f", "concat", "-safe", "0", "-i", str(list_file),
-            "-af", "loudnorm=I=-16:TP=-1.0:LRA=11",
+            "-af", "aresample=48000,adelay=2000|2000,apad=pad_dur=4.0",
+            str(voice_full),
+        ],
+        check=True,
+    )
+    total_dur = probe_dur(voice_full)
+
+    bed_wav = Path("/tmp/aparte_editorial_bed.wav")
+    print(f"[BED] Generating warm editorial music bed ({total_dur}s)...", flush=True)
+    generate_editorial_bed(bed_wav, total_dur + 1.0)
+
+    out_mp3 = OUT_DIR / "aparte_epoca_dorada_diseno.mp3"
+    subprocess.run(
+        [
+            "ffmpeg", "-y", "-v", "error",
+            "-i", str(voice_full),
+            "-i", str(bed_wav),
+            "-filter_complex",
+            "[0:a]asplit=2[v_mix][v_sc];"
+            "[1:a]aresample=48000,lowpass=f=2200,volume=0.055[b_raw];"
+            "[b_raw][v_sc]sidechaincompress=threshold=0.01:ratio=5:attack=60:release=500:makeup=1[b_duck];"
+            "[v_mix][b_duck]amix=inputs=2:duration=first:normalize=0:dropout_transition=2,"
+            "loudnorm=I=-16:TP=-1.0:LRA=11[out]",
+            "-map", "[out]",
             "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "48000",
             str(out_mp3),
         ],
