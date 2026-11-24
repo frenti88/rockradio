@@ -27,7 +27,7 @@ CHUNKS_DIR = OUT_DIR / "chunks_aparte_03"
 CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
 VOICE_FRED = g.DEFAULT_FISH_VOICE
-VOICE_MARIA = "43536a5ca1a34eee8ca1cd737af551c1"
+VOICE_MARIA = "1cb68a6f33be463ebb0902d4aa4740af"
 
 # (id, speaker, gap_ms_before, text)
 TURNS = [
@@ -255,8 +255,9 @@ def main():
     print(f"[TIMELINE] Assembled 2-host morning-show dialogue: {total_dur}s", flush=True)
 
     bed_wav = Path("/tmp/aparte_03_bed.wav")
-    print(f"[BED] Generating upbeat morning-news music bed ({total_dur}s)...", flush=True)
-    generate_editorial_bed(bed_wav, total_dur + 1.0)
+    print(f"[BED] Generating Morning-Show Jazz-Pop music bed ({total_dur}s)...", flush=True)
+    from generate_podcast_music import render_bed_wav
+    render_bed_wav(bed_wav, total_dur + 1.0)
 
     out_mp3 = OUT_DIR / "aparte_tendencias_uiux_2027.mp3"
     subprocess.run(
@@ -266,8 +267,8 @@ def main():
             "-i", str(bed_wav),
             "-filter_complex",
             "[0:a]asplit=2[v_mix][v_sc];"
-            "[1:a]aresample=48000,lowpass=f=2200,volume=0.055[b_raw];"
-            "[b_raw][v_sc]sidechaincompress=threshold=0.01:ratio=5:attack=60:release=500:makeup=1[b_duck];"
+            "[1:a]aresample=48000,aecho=0.8:0.88:28|42:0.16|0.10,lowpass=f=4200,volume=0.12[b_raw];"
+            "[b_raw][v_sc]sidechaincompress=threshold=0.012:ratio=4.5:attack=50:release=450:makeup=1[b_duck];"
             "[v_mix][b_duck]amix=inputs=2:duration=first:normalize=0:dropout_transition=2,"
             "loudnorm=I=-16:TP=-1.0:LRA=11[out]",
             "-map", "[out]",
