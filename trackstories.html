@@ -6598,6 +6598,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardInquieto" role="button" tabindex="0" aria-label="Reproducir Inquieto: Retrato de una mente que nunca deja de explorar">
+              <div class="home-sp-card-art">
+                <img src="podcasts/cover_inquieto.svg" alt="Inquieto — Retrato de una mente que nunca deja de explorar" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 8:34</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">Inquieto: Retrato de una mente que nunca deja de explorar</div>
+              <div class="home-sp-card-sub">Inquieto • Fred • 8:34</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte07" role="button" tabindex="0" aria-label="Reproducir Aparte: La dura rutina de George Orwell">
               <div class="home-sp-card-art">
                 <img src="podcasts/cover_ep07_escribir.svg" alt="Aparte — La dura rutina de George Orwell" loading="lazy">
@@ -6690,6 +6701,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardInquieto',
+                  title: 'Inquieto: Retrato de una mente que nunca deja de explorar',
+                  artist: 'Inquieto • Podcast • Fred',
+                  cover: 'podcasts/cover_inquieto.svg',
+                  audio: 'podcasts/inquieto_retrato_mente.mp3'
+                },
                 {
                   id: 'podcastCardAparte07',
                   title: 'La dura rutina de George Orwell: escribir 1984',

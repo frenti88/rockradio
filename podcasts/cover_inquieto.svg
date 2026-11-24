@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#0F172A"/>
+  <g transform="translate(400, 375)" fill="none" stroke="#F8FAFC" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Concentric exploration orbits -->
+    <ellipse cx="0" cy="0" rx="165" ry="68" transform="rotate(-24)" stroke="#F59E0B" stroke-width="12" opacity="0.9"/>
+    <ellipse cx="0" cy="0" rx="165" ry="68" transform="rotate(24)" stroke="#38BDF8" stroke-width="12" opacity="0.75"/>
+    <!-- Central compass / spark of curiosity -->
+    <circle cx="0" cy="0" r="68" fill="#0F172A" stroke="#F8FAFC" stroke-width="16"/>
+    <polygon points="0,-46 14,-14 46,0 14,14 0,46 -14,14 -46,0 -14,-14" fill="#F59E0B" stroke="none"/>
+    <!-- Orbiting nodes (ideas & questions) -->
+    <circle cx="-142" cy="-64" r="14" fill="#F8FAFC" stroke="none"/>
+    <circle cx="146" cy="56" r="14" fill="#F59E0B" stroke="none"/>
+    <circle cx="0" cy="-130" r="10" fill="#38BDF8" stroke="none"/>
+  </g>
+  <text x="400" y="665" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" letter-spacing="14" fill="#F8FAFC" opacity="0.96">INQUIETO</text>
+  <text x="400" y="710" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#F59E0B" opacity="0.9">RETRATO SONORO • FRED</text>
+</svg>
