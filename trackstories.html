@@ -6589,6 +6589,55 @@
           </div>
         </div>
 
+        <!-- 1b. Podcasts (Nueva categoría editorial) -->
+        <div class="home-shelf-section" id="shelfPodcasts">
+          <div class="home-shelf-header">
+            <div>
+              <h2 class="home-shelf-title">Podcasts</h2>
+              <p class="home-shelf-subtitle">Episodios originales narrados por Fred • Ideas que merecen ser escuchadas</p>
+            </div>
+          </div>
+          <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardAparte01" role="button" tabindex="0" aria-label="Reproducir Aparte: ¿La época dorada del diseño apenas comienza?">
+              <div class="home-sp-card-art">
+                <img src="podcasts/aparte_cover.jpg" alt="Aparte — Ideas que merecen ser escuchadas" loading="lazy">
+                <span class="home-sp-card-badge">PODCAST • 8:12</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">¿La época dorada del diseño apenas comienza?</div>
+              <div class="home-sp-card-sub">Aparte • Ideas que merecen ser escuchadas • 8:12</div>
+            </div>
+          </div>
+          <script>
+            (function initPodcastsShelf() {
+              const card = document.getElementById('podcastCardAparte01');
+              if (!card) return;
+              card.addEventListener('click', () => {
+                if (window.GlamRockSpecial) window.GlamRockSpecial.stop();
+                if (typeof GlobalAudioPlayer !== 'undefined' && GlobalAudioPlayer) {
+                  GlobalAudioPlayer.source = 'podcast';
+                  GlobalAudioPlayer.playbackSeq++;
+                  const seq = GlobalAudioPlayer.playbackSeq;
+                  const bTitle = document.getElementById('barTitle');
+                  const bArtist = document.getElementById('barArtist');
+                  const bThumbImg = document.getElementById('barThumbImg');
+                  const bThumbText = document.getElementById('barThumbText');
+                  if (bTitle) bTitle.textContent = '¿La época dorada del diseño apenas comienza?';
+                  if (bArtist) bArtist.textContent = 'Aparte • Podcast • Fred';
+                  if (bThumbImg) {
+                    bThumbImg.src = 'podcasts/aparte_cover.jpg';
+                    bThumbImg.style.display = 'block';
+                  }
+                  if (bThumbText) bThumbText.style.display = 'none';
+                  GlobalAudioPlayer.playViaHtmlAudio('podcasts/aparte_epoca_dorada_diseno.mp3', seq);
+                }
+              });
+            })();
+          </script>
+        </div>
+
         <!-- 2. Canciones que te gustan (Liked Songs) -->
         <div class="home-shelf-section" id="shelfLikedSongs">
           <div class="home-shelf-header">
