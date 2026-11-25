@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#09090B">
+  <title>KISS: Más allá del maquillaje — Especial Documental | TrackStories</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #09090B;
+      --surface: #141417;
+      --surface-hover: #1E1E24;
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #E11D48;
+      --accent-hover: #F43F5E;
+      --green: #1DB954;
+      --text: #FAFAFA;
+      --muted: #A1A1AA;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      padding-bottom: 120px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(9, 9, 11, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.15s;
+    }
+    .back-link:hover { background: rgba(255,255,255,0.12); }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 28px 20px 40px;
+    }
+    .hero {
+      display: flex;
+      gap: 28px;
+      align-items: flex-end;
+      padding: 28px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.22) 0%, rgba(20, 20, 23, 0.95) 60%);
+      border: 1px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .hero-cover {
+      width: 210px;
+      height: 210px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #FDA4AF;
+      margin-bottom: 10px;
+    }
+    .hero-title {
+      font-size: clamp(1.8rem, 4vw, 2.75rem);
+      font-weight: 900;
+      line-height: 1.08;
+      margin-bottom: 12px;
+    }
+    .hero-desc {
+      color: #D4D4D8;
+      font-size: 0.95rem;
+      line-height: 1.55;
+      max-width: 580px;
+      margin-bottom: 18px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 14px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s, background 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-hover); transform: scale(1.02); }
+    .hero-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .track-row {
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .track-row:hover { background: var(--surface-hover); }
+    .track-row.active {
+      background: rgba(225, 29, 72, 0.14);
+      border-color: rgba(225, 29, 72, 0.45);
+    }
+    .track-num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+    .track-row.active .track-num { color: var(--accent-hover); }
+    .track-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .track-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .song-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      color: #E4E4E7;
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+    .track-dur {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .player-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 30;
+      background: rgba(18, 18, 21, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+    .player-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .player-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .now-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .now-sub {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .ctrl-btn {
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .ctrl-btn.play {
+      background: var(--accent);
+      width: 42px;
+      height: 42px;
+    }
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-wrap input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    @media (max-width: 700px) {
+      .hero { flex-direction: column; align-items: flex-start; padding: 20px; }
+      .hero-cover { width: 150px; height: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="index.html">← Volver a TrackStories</a>
+    <span style="font-size:0.8rem;color:#A1A1AA;font-weight:600;">ESPECIAL DOCUMENTAL</span>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <img class="hero-cover" src="podcasts/cover_kiss_doc.svg" alt="KISS: Más allá del maquillaje">
+      <div>
+        <div class="hero-tag">Especial Radiofónico de Colección • 1972–2026</div>
+        <h1 class="hero-title">KISS: Más allá del maquillaje</h1>
+        <p class="hero-desc">
+          Un recorrido cronológico de 25 pistas narrativas por toda la discografía de KISS —desde Wicked Lester y <em>Alive!</em> hasta <em>The Elder</em>, la era sin maquillaje, <em>Revenge</em> y su legado contemporáneo— narrado por Fred.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="btnPlayAll" type="button">▶ Reproducir especial desde el inicio</button>
+          <span class="hero-meta" id="heroMeta">25 pistas narrativas • 30:00</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="track-list" id="trackList"></section>
+  </main>
+
+  <div class="player-bar">
+    <div class="player-inner">
+      <div class="player-top">
+        <div style="min-width:0;">
+          <div class="now-title" id="nowTitle">Selecciona una pista para comenzar</div>
+          <div class="now-sub" id="nowSub">KISS: Más allá del maquillaje • Fred</div>
+        </div>
+        <div class="controls">
+          <button class="ctrl-btn" id="btnPrev" type="button" title="Anterior">⏮</button>
+          <button class="ctrl-btn play" id="btnPlayPause" type="button" title="Reproducir / Pausar">▶</button>
+          <button class="ctrl-btn" id="btnNext" type="button" title="Siguiente">⏭</button>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <span id="curTime">0:00</span>
+        <input type="range" id="seekBar" min="0" max="100" value="0" step="0.1">
+        <span id="totTime">0:00</span>
+      </div>
+    </div>
+  </div>
+
+  <audio id="docAudio" preload="metadata"></audio>
+
+  <script>
+    const audio = document.getElementById('docAudio');
+    const trackListEl = document.getElementById('trackList');
+    const nowTitle = document.getElementById('nowTitle');
+    const nowSub = document.getElementById('nowSub');
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnPlayAll = document.getElementById('btnPlayAll');
+    const seekBar = document.getElementById('seekBar');
+    const curTime = document.getElementById('curTime');
+    const totTime = document.getElementById('totTime');
+    const heroMeta = document.getElementById('heroMeta');
+
+    let tracks = [];
+    let currentIdx = -1;
+
+    function fmt(sec) {
+      if (!isFinite(sec) || sec < 0) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2, '0')}`;
+    }
+
+    function renderList() {
+      trackListEl.innerHTML = '';
+      tracks.forEach((t, idx) => {
+        const row = document.createElement('div');
+        row.className = 'track-row' + (idx === currentIdx ? ' active' : '');
+        row.innerHTML = `
+          <div class="track-num">${idx === currentIdx && !audio.paused ? '▶' : String(idx + 1).padStart(2, '0')}</div>
+          <div>
+            <div class="track-title">${t.title}</div>
+            <div class="track-sub">
+              <span>${t.year}</span>
+              ${t.song_after ? `<span class="song-pill">🎵 Después: ${t.song_after}</span>` : ''}
+            </div>
+          </div>
+          <div class="track-dur">${fmt(t.duration_sec)}</div>
+        `;
+        row.addEventListener('click', () => playIndex(idx));
+        trackListEl.appendChild(row);
+      });
+    }
+
+    function playIndex(idx) {
+      if (idx < 0 || idx >= tracks.length) return;
+      currentIdx = idx;
+      const t = tracks[idx];
+      audio.src = t.audio;
+      audio.play();
+      nowTitle.textContent = `${String(idx + 1).padStart(2, '0')}. ${t.title}`;
+      nowSub.textContent = t.song_after ? `Álbum: ${t.album} (${t.year}) • Canción sugerida: ${t.song_after}` : `${t.year} • KISS: Más allá del maquillaje`;
+      btnPlayPause.textContent = '⏸';
+      renderList();
+    }
+
+    btnPlayAll.addEventListener('click', () => playIndex(0));
+    btnPlayPause.addEventListener('click', () => {
+      if (currentIdx === -1) return playIndex(0);
+      if (audio.paused) { audio.play(); btnPlayPause.textContent = '⏸'; }
+      else { audio.pause(); btnPlayPause.textContent = '▶'; }
+      renderList();
+    });
+    btnPrev.addEventListener('click', () => { if (currentIdx > 0) playIndex(currentIdx - 1); });
+    btnNext.addEventListener('click', () => { if (currentIdx + 1 < tracks.length) playIndex(currentIdx + 1); });
+
+    audio.addEventListener('timeupdate', () => {
+      curTime.textContent = fmt(audio.currentTime);
+      totTime.textContent = fmt(audio.duration);
+      if (audio.duration > 0) seekBar.value = (audio.currentTime / audio.duration) * 100;
+    });
+    audio.addEventListener('ended', () => {
+      if (currentIdx + 1 < tracks.length) playIndex(currentIdx + 1);
+      else { btnPlayPause.textContent = '▶'; renderList(); }
+    });
+    seekBar.addEventListener('input', () => {
+      if (audio.duration > 0) audio.currentTime = (seekBar.value / 100) * audio.duration;
+    });
+
+    fetch('podcasts/kiss_doc/playlist.json')
+      .then(r => r.json())
+      .then(data => {
+        tracks = data.tracks || [];
+        heroMeta.textContent = `${tracks.length} pistas narrativas • ${fmt(data.total_narration_sec)}`;
+        renderList();
+      });
+  </script>
+</body>
+</html>
