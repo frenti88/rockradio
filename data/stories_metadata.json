@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "curiosidad",
     "confidencia",
     "curiosidad",
     "curiosidad",
@@ -3693,10 +3692,10 @@
     "viaje_temporal",
     "viaje_temporal",
     "confidencia",
-    "contraste"
+    "contraste",
+    "curiosidad"
   ],
   "last_overlay_outros": [
-    "revelacion",
     "revelacion",
     "revelacion",
     "revelacion",
@@ -3710,7 +3709,8 @@
     "energia",
     "energia",
     "reflexion",
-    "revelacion"
+    "revelacion",
+    "nostalgia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9067,21 +9067,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-25T03:19:25.718963+00:00"
+    },
+    "red_hot_chili_peppers_dosed": {
+      "song_title": "Dosed",
+      "band_name": "Red Hot Chili Peppers",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "ternura",
+      "source_mode": "agent_custom",
+      "diversity_score": 83.2,
+      "paragraph_1": "Hay canciones tan complejas en el estudio que ni sus propios creadores se atreven a tocarlas en vivo.",
+      "paragraph_2": "En dos mil dos, John Frusciante grabó cuatro guitarras entrelazadas para este tema de By the Way, y por eso los Red Hot Chili Peppers tardaron casi quince años en estrenarla en concierto.",
+      "paragraph_3": "Cuando por fin la tocaron en dos mil diecisiete, fue un homenaje inolvidable para una fan. Aquí suena Dosed, de Red Hot Chili Peppers.",
+      "vocal_p1": "Hay canciones tan complejas en el estudio que ni sus propios creadores se atreven a tocarlas en vivo.",
+      "vocal_p2": "En dos mil dos, John Frusciante grabó cuatro guitarras entrelazadas para este tema de By the Way, y por eso los Red Hot Chili Peppers tardaron casi quince años en estrenarla en concierto.",
+      "vocal_p3": "Cuando por fin la tocaron en dos mil diecisiete, fue un homenaje inolvidable para una fan. Aquí suena Dosed, de Red Hot Chili Peppers.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 5.17,
+        "p2": 10.61,
+        "p3": 8.21
+      },
+      "voice_duration_sec": 26.02,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.17,
+        "pause1End": 6.17,
+        "pause2Start": 16.78,
+        "pause2End": 17.78,
+        "outroEnd": 26.02,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.02
+      },
+      "audio_file": "audio/fred_voice_red_hot_chili_peppers_dosed.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-25T04:04:59.388846+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Youth of the Nation",
-      "band_name": "P.O.D.",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "emotional",
-      "paragraph_1": "En marzo de 2001, P.O.D. ensayaba a pocas cuadras de una escuela en California cuando las sirenas lo detuvieron todo.",
-      "paragraph_3": "Un mensaje poderoso que sigue resonando con fuerza. Escuchemos Youth of the Nation, de P.O.D.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:33:13.083520+00:00"
-    },
     {
       "song_title": "Island in the Sun",
       "band_name": "Weezer",
@@ -9249,6 +9282,18 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-25T03:19:45.545298+00:00"
+    },
+    {
+      "song_title": "Dosed",
+      "band_name": "Red Hot Chili Peppers",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "nostalgia",
+      "emotion": "ternura",
+      "paragraph_1": "Hay canciones tan complejas en el estudio que ni sus propios creadores se atreven a tocarlas en vivo.",
+      "paragraph_3": "Cuando por fin la tocaron en dos mil diecisiete, fue un homenaje inolvidable para una fan. Aquí suena Dosed, de Red Hot Chili Peppers.",
+      "mentions_brand": false,
+      "diversity_score": 83.2,
+      "generated_at": "2026-11-25T04:04:59.388846+00:00"
     }
   ]
 }
