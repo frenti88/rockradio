@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#042F2E"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#F0FDFA" stroke-width="15" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Contextual shield / human-centered orbit -->
+    <circle cx="0" cy="0" r="148" stroke="#14B8A6" stroke-width="12" stroke-dasharray="18 14"/>
+    <path d="M 0 -105 L 88 -62 L 88 20 C 88 78 44 114 0 132 C -44 114 -88 78 -88 20 L -88 -62 Z" fill="#0F766E" stroke="#F0FDFA" stroke-width="15"/>
+    <!-- Central human eye / judgment spark -->
+    <circle cx="0" cy="10" r="34" fill="#F59E0B" stroke="#F0FDFA" stroke-width="12"/>
+    <circle cx="0" cy="10" r="11" fill="#042F2E" stroke="none"/>
+    <!-- Satellite nodes -->
+    <circle cx="-148" cy="0" r="14" fill="#2DD4BF" stroke="none"/>
+    <circle cx="148" cy="0" r="14" fill="#F59E0B" stroke="none"/>
+    <circle cx="0" cy="-148" r="12" fill="#F0FDFA" stroke="none"/>
+  </g>
+  <text x="400" y="645" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="800" letter-spacing="8" fill="#F0FDFA">EL DISEÑO DESPUÉS DE LA IA</text>
+  <text x="400" y="692" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="700" letter-spacing="5" fill="#F59E0B">PARTE 2 • EXPERIENCIAS DIGITALES</text>
+  <text x="400" y="730" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="#5EEAD4">APARTE • FRED • NOVIEMBRE 2026</text>
+</svg>
