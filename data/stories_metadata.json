@@ -3680,9 +3680,6 @@
   },
   "last_overlay_intros": [
     "curiosidad",
-    "curiosidad",
-    "curiosidad",
-    "curiosidad",
     "confidencia",
     "curiosidad",
     "curiosidad",
@@ -3693,12 +3690,12 @@
     "curiosidad",
     "contraste",
     "confidencia",
-    "viaje_temporal"
+    "viaje_temporal",
+    "viaje_temporal",
+    "confidencia",
+    "contraste"
   ],
   "last_overlay_outros": [
-    "revelacion",
-    "revelacion",
-    "revelacion",
     "revelacion",
     "revelacion",
     "revelacion",
@@ -3710,7 +3707,10 @@
     "revelacion",
     "revelacion",
     "reflexion",
-    "energia"
+    "energia",
+    "energia",
+    "reflexion",
+    "revelacion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -7864,30 +7864,30 @@
       "outro_strategy": "reflexion",
       "emotion": "melancolia",
       "source_mode": "agent_custom",
-      "diversity_score": 100.0,
+      "diversity_score": 0.0,
       "paragraph_1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
       "paragraph_2": "Mientras el mundo bailaba sus hits, Roland Orzabal escribió este tema agotado por la presión de la fama, sumando el saxofón hipnótico de Will Gregory y Mel Collins.",
       "paragraph_3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
-      "vocal_p1": "[warm, confident] En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
-      "vocal_p2": "[warm, conversational] Mientras el mundo bailaba sus hits, Roland Orzabal escribió este tema agotado por la presión de la fama, sumando el saxofón hipnótico de Will Gregory y Mel Collins.",
-      "vocal_p3": "[warm, smiling] Un respiro íntimo en medio de Songs from the Big Chair. [smiling, upbeat] Escucha con calma The Working Hour, de Tears for Fears.",
+      "vocal_p1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
+      "vocal_p2": "Mientras el mundo bailaba sus hits, Roland Orzabal escribió este tema agotado por la presión de la fama, sumando el saxofón hipnótico de Will Gregory y Mel Collins.",
+      "vocal_p3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
       "model": "drama-3",
       "voice": "96e5d63e023a4fd5b7926226ed8db011",
       "segment_durations_sec": {
-        "p1": 6.24,
-        "p2": 10.88,
-        "p3": 7.04
+        "p1": 6.41,
+        "p2": 10.31,
+        "p3": 7.74
       },
-      "voice_duration_sec": 26.2,
+      "voice_duration_sec": 26.51,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 6.24,
-        "pause1End": 7.24,
-        "pause2Start": 18.12,
-        "pause2End": 19.12,
-        "outroEnd": 26.2,
+        "pause1Start": 6.41,
+        "pause1End": 7.41,
+        "pause2Start": 17.73,
+        "pause2End": 18.73,
+        "outroEnd": 26.51,
         "rampSec": 2.0,
-        "totalPresentationSec": 33.2
+        "totalPresentationSec": 33.51
       },
       "audio_file": "audio/fred_voice_tears_for_fears_the_working_hour.mp3",
       "ducking": {
@@ -7896,7 +7896,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-25T02:58:18.852821+00:00"
+      "generated_at": "2026-11-25T03:19:35.050950+00:00"
     },
     "heart_alone": {
       "song_title": "Alone",
@@ -8989,30 +8989,30 @@
       "outro_strategy": "revelacion",
       "emotion": "asombro",
       "source_mode": "agent_custom",
-      "diversity_score": 53.53,
+      "diversity_score": 0.0,
       "paragraph_1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
       "paragraph_2": "Pero en realidad Mike Score se inspiró en un póster de ciencia ficción donde una pareja huía de un rayo alienígena, pieza clave de su álbum conceptual debut.",
       "paragraph_3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
-      "vocal_p1": "[warm, confident] Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
-      "vocal_p2": "[warm, conversational] Pero en realidad Mike Score se inspiró en un póster de ciencia ficción donde una pareja huía de un rayo alienígena, pieza clave de su álbum conceptual debut.",
-      "vocal_p3": "[warm, smiling] Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. [smiling, upbeat] Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
+      "vocal_p1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
+      "vocal_p2": "Pero en realidad Mike Score se inspiró en un póster de ciencia ficción donde una pareja huía de un rayo alienígena, pieza clave de su álbum conceptual debut.",
+      "vocal_p3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
       "model": "drama-3",
       "voice": "96e5d63e023a4fd5b7926226ed8db011",
       "segment_durations_sec": {
-        "p1": 6.01,
-        "p2": 9.06,
-        "p3": 9.72
+        "p1": 6.26,
+        "p2": 9.99,
+        "p3": 9.76
       },
-      "voice_duration_sec": 26.83,
+      "voice_duration_sec": 28.06,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 6.01,
-        "pause1End": 7.01,
-        "pause2Start": 16.07,
-        "pause2End": 17.07,
-        "outroEnd": 26.83,
+        "pause1Start": 6.26,
+        "pause1End": 7.26,
+        "pause2Start": 17.25,
+        "pause2End": 18.25,
+        "outroEnd": 28.06,
         "rampSec": 2.0,
-        "totalPresentationSec": 33.83
+        "totalPresentationSec": 35.06
       },
       "audio_file": "audio/fred_voice_a_flock_of_seagulls_i_ran_so_far_away.mp3",
       "ducking": {
@@ -9021,7 +9021,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-25T02:48:33.121714+00:00"
+      "generated_at": "2026-11-25T03:19:45.545298+00:00"
     },
     "peter_schilling_major_tom_coming_home": {
       "song_title": "Major Tom (Coming Home)",
@@ -9034,30 +9034,30 @@
       "outro_strategy": "energia",
       "emotion": "alegria",
       "source_mode": "agent_custom",
-      "diversity_score": 100.0,
+      "diversity_score": 0.0,
       "paragraph_1": "En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
       "paragraph_2": "Peter Schilling imaginó qué pasó con el astronauta perdido de Space Oddity, grabó la canción primero en alemán y arrasó en Europa antes de conquistar Norteamérica.",
       "paragraph_3": "Una secuela inesperada que terminó volando por cuenta propia. ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
-      "vocal_p1": "[warm, confident] En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
-      "vocal_p2": "[warm, conversational] Peter Schilling imaginó qué pasó con el astronauta perdido de Space Oddity, grabó la canción primero en alemán y arrasó en Europa antes de conquistar Norteamérica.",
-      "vocal_p3": "[warm, smiling] Una secuela inesperada que terminó volando por cuenta propia. [smiling, upbeat] ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
+      "vocal_p1": "En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
+      "vocal_p2": "Peter Schilling imaginó qué pasó con el astronauta perdido de Space Oddity, grabó la canción primero en alemán y arrasó en Europa antes de conquistar Norteamérica.",
+      "vocal_p3": "Una secuela inesperada que terminó volando por cuenta propia. ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
       "model": "drama-3",
       "voice": "96e5d63e023a4fd5b7926226ed8db011",
       "segment_durations_sec": {
-        "p1": 5.69,
-        "p2": 9.71,
-        "p3": 8.26
+        "p1": 5.66,
+        "p2": 9.65,
+        "p3": 8.78
       },
-      "voice_duration_sec": 25.7,
+      "voice_duration_sec": 26.15,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 5.69,
-        "pause1End": 6.69,
-        "pause2Start": 16.4,
-        "pause2End": 17.4,
-        "outroEnd": 25.7,
+        "pause1Start": 5.66,
+        "pause1End": 6.66,
+        "pause2Start": 16.31,
+        "pause2End": 17.31,
+        "outroEnd": 26.15,
         "rampSec": 2.0,
-        "totalPresentationSec": 32.7
+        "totalPresentationSec": 33.15
       },
       "audio_file": "audio/fred_voice_peter_schilling_major_tom_coming_home.mp3",
       "ducking": {
@@ -9066,46 +9066,10 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-25T03:14:03.436399+00:00"
+      "generated_at": "2026-11-25T03:19:25.718963+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Save Tonight",
-      "band_name": "Eagle-Eye Cherry",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "nostalgic",
-      "paragraph_1": "Cuatro acordes acústicos le bastaron al sueco Eagle-Eye Cherry para firmar uno de los himnos definitivos de finales de los noventa.",
-      "paragraph_3": "Fresca, nocturna e imposible de no cantar. Vámonos con Save Tonight, de Eagle-Eye Cherry.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:32:51.244616+00:00"
-    },
-    {
-      "song_title": "Wonderwall",
-      "band_name": "Oasis",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "curious",
-      "paragraph_1": "Durante mucho tiempo esta canción se llamó Wishing Stone, hasta que Noel Gallagher se acordó de un Beatle.",
-      "paragraph_3": "Apenas suenan los primeros rasgueos ya la estás cantando. Aquí está Wonderwall, de Oasis.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:32:58.608621+00:00"
-    },
-    {
-      "song_title": "Mr. Jones",
-      "band_name": "Counting Crows",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "playful",
-      "paragraph_1": "Todo empezó una noche en un bar de San Francisco, cuando dos músicos soñaban con ser grandes estrellas del rock.",
-      "paragraph_3": "Espontánea, contagiosa y con todo el espíritu de los noventa. Disfrutemos Mr. Jones, de Counting Crows.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:33:06.016943+00:00"
-    },
     {
       "song_title": "Youth of the Nation",
       "band_name": "P.O.D.",
@@ -9249,6 +9213,42 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-25T03:14:03.436399+00:00"
+    },
+    {
+      "song_title": "Major Tom (Coming Home)",
+      "band_name": "Peter Schilling",
+      "intro_strategy": "viaje_temporal",
+      "outro_strategy": "energia",
+      "emotion": "alegria",
+      "paragraph_1": "En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
+      "paragraph_3": "Una secuela inesperada que terminó volando por cuenta propia. ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-25T03:19:25.718963+00:00"
+    },
+    {
+      "song_title": "The Working Hour",
+      "band_name": "Tears for Fears",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "paragraph_1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
+      "paragraph_3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-25T03:19:35.050950+00:00"
+    },
+    {
+      "song_title": "I Ran (So Far Away)",
+      "band_name": "A Flock of Seagulls",
+      "intro_strategy": "contraste",
+      "outro_strategy": "revelacion",
+      "emotion": "asombro",
+      "paragraph_1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
+      "paragraph_3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-25T03:19:45.545298+00:00"
     }
   ]
 }

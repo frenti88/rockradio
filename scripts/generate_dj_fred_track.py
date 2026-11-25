@@ -287,7 +287,7 @@ def build_dual_scripts(
         vocal_p1 = tts_p1.strip()
         vocal_p2 = tts_p2.strip()
         vocal_p3 = tts_p3.strip()
-    elif caps["supports_bracket_tags"]:
+    elif caps["supports_bracket_tags"] and caps["family"] != "drama-3":
         vocal_p1 = f"{opening_tag} {clean_p1}"
         vocal_p2 = f"{profile['story']} {clean_p2}"
         close_part = f"{profile['closing']} {clean_p3_close}"
