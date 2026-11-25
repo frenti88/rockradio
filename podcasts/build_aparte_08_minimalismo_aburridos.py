@@ -21,17 +21,19 @@ from pathlib import Path
 import numpy as np
 
 REPO = Path("/home/antigravity/frenti88/rockradio")
+sys.path.insert(0, str(REPO / "scripts"))
 sys.path.insert(0, str(REPO / "podcasts"))
 
+import generate_dj_fred_track as g
 from build_aparte_podcast import probe_dur
 from generate_podcast_music import render_bed_wav
 
 OUT_DIR = REPO / "podcasts"
-CHUNKS_DIR = OUT_DIR / "chunks_aparte_08_elevenlabs"
+CHUNKS_DIR = OUT_DIR / "chunks_aparte_08_fish_new"
 CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
-ELEVEN_VOICE_ID = "XTaJGjpMayd6Yf596zn2"
-ELEVEN_MODEL_ID = "eleven_v3"
+FISH_VOICE_ID = "96e5d63e023a4fd5b7926226ed8db011"
+FISH_MODEL_ID = "s2.1-pro-free"
 
 # (id, gap_ms_before, stability, text)
 # In eleven_v3, stability supports 0.0 (Creative), 0.5 (Natural), 1.0 (Robust).
@@ -150,74 +152,58 @@ CHUNKS = [
     ),
     (
         "18_ejemplo_carrito", 650, 0.5,
-        "Pero cuando el movimiento se diseña con intención, se convierte en un lenguaje. No necesitas estar viendo una pantalla ahora mismo para imaginarlo. "
-        "Piensa en cuando borras un producto de un carrito de compras. Si simplemente desaparece de golpe en un parpadeo, tu cerebro duda un instante: ¿Se borró? ¿Le di bien? ¿Qué pasó? "
-        "En cambio, si el elemento se desliza suavemente hacia afuera mientras el contador del carrito se actualiza en ese mismo instante, no hace falta ningún letrero explicándote nada. "
-        "El movimiento te contó la historia completa en medio segundo. "
-        "Lo mismo pasa con las microinteracciones: ese pequeño cambio de estado de un botón que te confirma que sí recibió tu toque, "
-        "o esa transición que te muestra de dónde salió una pantalla para que no pierdas el sentido de orientación."
+        "Pero cuando el movimiento se diseña con intención, se convierte en un lenguaje. "
+        "Piensa en cuando borras algo de un carrito de compras: si desaparece de golpe, dudas si realmente se borró. "
+        "En cambio, si se desliza suavemente mientras el contador se actualiza, el movimiento te contó toda la historia en medio segundo. "
+        "Lo mismo hacen las microinteracciones: te confirman un toque o te orientan al cambiar de pantalla."
     ),
     (
         "19_espacial_3d", 850, 0.5,
-        "Y si llevamos esa lógica un paso más allá, llegamos a las experiencias espaciales y en tres dimensiones. "
-        "Durante décadas diseñamos atrapados en rectángulos planos. Hoy, con realidad aumentada o mixta, la interfaz empieza a convivir con el espacio físico. "
-        "Imaginen querer comprar un sofá y poder proyectarlo a escala real en la sala de su casa antes de pagarlo, caminar alrededor, ver si bloquea el paso o si combina con la luz natural. "
-        "Ahí el 3D no es un truco futurista para presumir en una presentación; es una herramienta práctica para tomar una mejor decisión. "
-        "Claro, igual que con el resto, toca ser críticos. No todo necesita ser espacial ni todo necesita moverse. "
-        "Si una animación no aclara una relación, no da retroalimentación o no orienta tu atención, entonces es ruido."
+        "Y un paso más allá están las experiencias espaciales en 3D. "
+        "Imagina proyectar un sofá a escala real en tu sala con realidad aumentada antes de comprarlo. "
+        "Ahí el 3D no es un truco futurista; es una herramienta práctica. "
+        "Claro, toca ser críticos: si una animación o un efecto espacial no aclara ni orienta, es solo ruido."
     ),
     (
         "20_accesibilidad", 1300, 0.5,
-        "Y esto me lleva a una parte del artículo que, honestamente, creo que debería estar siempre en el centro de cualquier conversación sobre diseño, "
-        "aunque a veces sea la menos glamorosa en redes sociales: la accesibilidad, el data storytelling y el diseño sostenible. "
-        "Es que hay algo muy curioso con esto. A veces celebramos productos que se ven espectaculares en un monitor enorme de última generación, con internet de alta velocidad y en una oficina con luz perfecta. "
-        "Pero en el mundo real… no existe el usuario promedio."
+        "Y esto me lleva a lo que siempre debería estar en el centro: la accesibilidad, el data storytelling y el diseño sostenible. "
+        "A veces celebramos productos que lucen increíbles en un monitor enorme y con internet perfecto, pero en el mundo real… no existe el usuario promedio."
     ),
     (
         "21_accesibilidad_real", 700, 0.5,
-        "Dolly lo recuerda muy bien en su texto: las personas usan nuestros productos en condiciones completamente distintas. "
-        "Hay quienes tienen discapacidades visuales, auditivas, motoras o cognitivas. "
-        "Pero también está quien intenta leer una pantalla bajo el sol del mediodía, quien navega con una sola mano en el transporte público o quien tiene una conexión lenta y un teléfono de hace varios años. "
-        "Si tu aplicación solo usa el color rojo para indicar un error, alguien con daltonismo puede quedarse completamente perdido. "
-        "Si el contraste es demasiado suave porque se ve más elegante en gris clarito, estás excluyendo gente por pura vanidad estética. "
-        "La accesibilidad no es una lista de verificación que se revisa el viernes antes de salir a producción; es la base de diseñar para seres humanos reales."
+        "Dolly lo recuerda bien: hay personas con discapacidades visuales, auditivas, motoras o cognitivas, "
+        "pero también quien lee bajo el sol, navega con una sola mano o usa una conexión lenta. "
+        "Si indicas un error solo con color rojo o usas un gris casi invisible por vanidad estética, estás excluyendo gente. "
+        "La accesibilidad no es un checklist final; es diseñar para humanos reales."
     ),
     (
         "22_data_y_sostenible", 850, 0.5,
-        "Y pasa algo muy parecido con los datos. Nos encanta llenar pantallas de gráficos, números y porcentajes, como si mostrar información fuera lo mismo que hacerla comprensible. "
-        "El data storytelling propone otra cosa: darle contexto a los números. Conectar puntos. "
-        "Que si entras a ver tus hábitos de salud o tus gastos del mes, el producto no te suelte una tabla fría, sino que te ayude a entender qué cambió, por qué importa y qué podrías hacer al respecto. "
-        "Y por último, algo en lo que casi nunca pensamos cuando estamos moviendo píxeles: la huella digital. El diseño sostenible. "
-        "A veces olvidamos que cada video pesado que se reproduce automáticamente sin que nadie lo pida, cada imagen sin optimizar y cada script innecesario consume energía en servidores, redes y dispositivos. "
-        "Diseñar de forma sostenible no significa pintar la página de verde ni poner un mensaje ecológico en el inicio. "
-        "Significa diseñar con respeto por los recursos, por el planeta y también por la batería y el plan de datos de la persona que está usando tu producto."
+        "Pasa lo mismo con los datos: mostrar gráficos no es hacerlos comprensibles. "
+        "El data storytelling le da contexto a los números para que entiendas qué cambió y por qué importa. "
+        "Y en diseño sostenible, cada video en reproducción automática y cada imagen pesada consume energía y batería. "
+        "Diseñar sostenible es respetar los recursos, el planeta y el dispositivo de quien te usa."
     ),
     (
         "23_clasicos_norman_krug", 1100, 0.5,
-        "En el fondo, me gusta que al final del artículo la autora vuelva a los clásicos: a Don Norman, recordándonos que lo comprensible y lo emocional van de la mano, "
-        "y a Steve Krug, con esa idea tan simple y tan vigente de no hacer pensar innecesariamente al usuario. "
-        "Porque las tendencias cambian cada dos años, pero la forma en que funcionamos los seres humanos cambia muchísimo más despacio."
+        "Me gusta que la autora vuelva a Don Norman y Steve Krug: las tendencias cambian cada dos años, "
+        "pero la forma en que funcionamos los humanos cambia mucho más despacio."
     ),
     (
         "24_reflexion_valor", 1400, 0.5,
-        "Y todo esto me deja pensando en algo más grande. "
-        "Hoy en día, generar una interfaz limpia, moderna y visualmente correcta es cada vez más rápido. "
-        "Con librerías de componentes, sistemas de diseño e inteligencia artificial, armar una pantalla bonita ya no es el cuello de botella que era hace diez años. "
+        "Hoy generar una pantalla bonita es cada vez más rápido con inteligencia artificial. "
         "Entonces… ¿dónde queda realmente nuestro valor?"
     ),
     (
         "25_cierre", 1500, 0.5,
-        "Tal vez el futuro del diseño no esté en aprender a hacer interfaces más bonitas… "
-        "Porque eso, cada vez más, lo puede hacer una máquina. "
-        "Tal vez esté en aprender a mirar mejor. En desarrollar criterio para saber cuándo una tendencia suma y cuándo solo distrae. "
-        "En hacer mejores preguntas antes de abrir cualquier herramienta. "
-        "En entender qué necesita realmente una persona, incluso cuando esa persona todavía no sabe cómo explicarlo. "
+        "Tal vez el futuro del diseño no esté en hacer interfaces más bonitas… porque eso ya lo puede hacer una máquina. "
+        "Tal vez esté en aprender a mirar mejor, tener criterio y entender qué necesita realmente una persona, "
+        "incluso cuando todavía no sabe cómo explicarlo. "
         "Y eso… eso cambia completamente lo que significa ser diseñador."
     ),
 ]
 
 
-def elevenlabs_tts(text: str, out_mp3: Path, stability: float = 0.5) -> None:
+def elevenlabs_tts(text: str, out_mp3: Path, previous_text: str = "", next_text: str = "") -> None:
     api_key = os.environ.get("ELEVENLABS_API_KEY", "").strip()
     if not api_key:
         raise RuntimeError("ELEVENLABS_API_KEY no está configurada.")
@@ -227,6 +213,10 @@ def elevenlabs_tts(text: str, out_mp3: Path, stability: float = 0.5) -> None:
         "text": text,
         "model_id": ELEVEN_MODEL_ID,
     }
+    if previous_text:
+        payload["previous_text"] = previous_text[-400:]
+    if next_text:
+        payload["next_text"] = next_text[:400]
 
     for attempt in range(4):
         try:
@@ -271,13 +261,15 @@ def main():
     total_words = sum(len(t.split()) for _, _, _, t in CHUNKS)
     print(f"[SCRIPT] Total spoken words (approx): {total_words}", flush=True)
 
-    for tid, gap_ms, stability, text in CHUNKS:
+    for idx, (tid, gap_ms, _stability, text) in enumerate(CHUNKS):
         mp3 = CHUNKS_DIR / f"{tid}.mp3"
         wav = CHUNKS_DIR / f"{tid}.wav"
+        prev_txt = CHUNKS[idx - 1][3] if idx > 0 else ""
+        next_txt = CHUNKS[idx + 1][3] if idx + 1 < len(CHUNKS) else ""
 
         if not (mp3.exists() and mp3.stat().st_size > 2000):
-            print(f"[TTS-EL] {tid} (eleven_v3, stability={stability})...", flush=True)
-            elevenlabs_tts(text, mp3, stability=stability)
+            print(f"[TTS-FISH] {tid} ({FISH_MODEL_ID}, voice={FISH_VOICE_ID[:8]})...", flush=True)
+            g._fish_audio_tts_sync(text, str(mp3), reference_id=FISH_VOICE_ID, model=FISH_MODEL_ID)
         else:
             print(f"[REUSE] {tid}.mp3", flush=True)
 
