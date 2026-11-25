@@ -29,11 +29,11 @@ from build_aparte_podcast import probe_dur
 from generate_podcast_music import render_bed_wav
 
 OUT_DIR = REPO / "podcasts"
-CHUNKS_DIR = OUT_DIR / "chunks_aparte_08_fish_new"
+CHUNKS_DIR = OUT_DIR / "chunks_aparte_08_drama3"
 CHUNKS_DIR.mkdir(parents=True, exist_ok=True)
 
 FISH_VOICE_ID = "96e5d63e023a4fd5b7926226ed8db011"
-FISH_MODEL_ID = "s2.1-pro-free"
+FISH_MODEL_ID = "drama-3"
 
 # (id, gap_ms_before, stability, text)
 # In eleven_v3, stability supports 0.0 (Creative), 0.5 (Natural), 1.0 (Robust).
