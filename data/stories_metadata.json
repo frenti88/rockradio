@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "contraste",
     "pregunta",
     "curiosidad",
     "curiosidad",
@@ -3693,10 +3692,10 @@
     "curiosidad",
     "curiosidad",
     "curiosidad",
-    "contraste"
+    "contraste",
+    "confidencia"
   ],
   "last_overlay_outros": [
-    "revelacion",
     "revelacion",
     "revelacion",
     "revelacion",
@@ -3710,7 +3709,8 @@
     "nostalgia",
     "revelacion",
     "revelacion",
-    "revelacion"
+    "revelacion",
+    "reflexion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -7859,35 +7859,35 @@
       "intro_id": "creative_confidencia",
       "intro_name": "confidencia",
       "intro_strategy": "confidencia",
-      "outro_id": "creative_revelacion",
-      "outro_name": "revelacion",
-      "outro_strategy": "revelacion",
-      "emotion": "nostalgic",
+      "outro_id": "creative_reflexion",
+      "outro_name": "reflexion",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
       "source_mode": "agent_custom",
-      "diversity_score": 68.0,
-      "paragraph_1": "Nunca salió como sencillo, pero para muchos seguidores es la joya secreta de Songs from the Big Chair.",
-      "paragraph_2": "En 1985, Tears for Fears reunió en esta pista a dos saxofonistas excepcionales, Will Gregory y Mel Collins, envolviendo la voz intensa de Roland Orzabal en una atmósfera cinematográfica y nocturna.",
-      "paragraph_3": "Elegancia pura para escuchar sin prisa. Déjate llevar por The Working Hour, de Tears for Fears.",
-      "vocal_p1": "[warm, reflective] Nunca salió como sencillo, pero para muchos seguidores es la joya secreta de Songs from the Big Chair.",
-      "vocal_p2": "En 1985, Tears for Fears reunió en esta pista a dos saxofonistas excepcionales, Will Gregory y Mel Collins, envolviendo la voz intensa de Roland Orzabal en una atmósfera cinematográfica y nocturna.",
-      "vocal_p3": "[soft, warm] Elegancia pura para escuchar sin prisa. Déjate llevar por The Working Hour, de Tears for Fears.",
+      "diversity_score": 100.0,
+      "paragraph_1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
+      "paragraph_2": "Mientras el mundo bailaba sus hits, Roland Orzabal escribió este tema agotado por la presión de la fama, sumando el saxofón hipnótico de Will Gregory y Mel Collins.",
+      "paragraph_3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
+      "vocal_p1": "[warm, confident] En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
+      "vocal_p2": "[warm, conversational] Mientras el mundo bailaba sus hits, Roland Orzabal escribió este tema agotado por la presión de la fama, sumando el saxofón hipnótico de Will Gregory y Mel Collins.",
+      "vocal_p3": "[warm, smiling] Un respiro íntimo en medio de Songs from the Big Chair. [smiling, upbeat] Escucha con calma The Working Hour, de Tears for Fears.",
       "model": "drama-3",
-      "voice": "e8303fcb17bd4a8ba7709b1f6d3416f7",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
       "segment_durations_sec": {
-        "p1": 7.37,
-        "p2": 16.57,
-        "p3": 7.88
+        "p1": 6.24,
+        "p2": 10.88,
+        "p3": 7.04
       },
-      "voice_duration_sec": 33.85,
+      "voice_duration_sec": 26.2,
       "overlay_timings": {
         "introDelaySec": 5.0,
-        "pause1Start": 7.37,
-        "pause1End": 8.37,
-        "pause2Start": 24.94,
-        "pause2End": 25.94,
-        "outroEnd": 33.85,
+        "pause1Start": 6.24,
+        "pause1End": 7.24,
+        "pause2Start": 18.12,
+        "pause2End": 19.12,
+        "outroEnd": 26.2,
         "rampSec": 2.0,
-        "totalPresentationSec": 40.85
+        "totalPresentationSec": 33.2
       },
       "audio_file": "audio/fred_voice_tears_for_fears_the_working_hour.mp3",
       "ducking": {
@@ -7896,7 +7896,7 @@
         "pause_db": -7.5,
         "normal_db": 0
       },
-      "generated_at": "2026-11-20T22:49:47.404186+00:00"
+      "generated_at": "2026-11-25T02:58:18.852821+00:00"
     },
     "heart_alone": {
       "song_title": "Alone",
@@ -9026,18 +9026,6 @@
   },
   "overlay_narrative_history": [
     {
-      "song_title": "Adam's Song",
-      "band_name": "blink-182",
-      "intro_strategy": "contraste",
-      "outro_strategy": "revelacion",
-      "emotion": "melancholic",
-      "paragraph_1": "En medio de un disco famoso por sus bromas y su humor irreverente, blink-182 se atrevió a abrir una herida real.",
-      "paragraph_3": "El lado más humano y sincero del pop punk. Escuchemos Adam's Song, de blink-182.",
-      "mentions_brand": false,
-      "diversity_score": 52.13,
-      "generated_at": "2026-11-21T10:32:36.089218+00:00"
-    },
-    {
       "song_title": "Mmm Mmm Mmm Mmm",
       "band_name": "Crash Test Dummies",
       "intro_strategy": "pregunta",
@@ -9204,6 +9192,18 @@
       "mentions_brand": false,
       "diversity_score": 53.53,
       "generated_at": "2026-11-25T02:48:33.121714+00:00"
+    },
+    {
+      "song_title": "The Working Hour",
+      "band_name": "Tears for Fears",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "paragraph_1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
+      "paragraph_3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-25T02:58:18.852821+00:00"
     }
   ]
 }
