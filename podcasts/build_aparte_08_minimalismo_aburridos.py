@@ -44,7 +44,7 @@ CHUNKS = [
     (
         "02_apertura_observacion", 650, 0.5,
         "Es que… uno abre una aplicación bancaria, después entra a una herramienta de productividad, "
-        "luego abre una página de inteligencia artificial… y, bueno… [chuckles] parece que todas hubieran contratado al mismo diseñador. "
+        "luego abre una página de inteligencia artificial… y, bueno… parece que todas hubieran contratado al mismo diseñador. "
         "Las mismas tarjetas redondeadas, los mismos fondos blancos, las mismas tipografías limpias, los mismos botones flotando en el mismo lugar."
     ),
     (
@@ -55,7 +55,7 @@ CHUNKS = [
     ),
     (
         "04_articulo_intro", 1200, 0.5,
-        "[sighs] A ver… hace poco me topé con un artículo que me puso a pensar bastante en esto. "
+        "A ver… hace poco me topé con un artículo que me puso a pensar bastante en esto. "
         "Lo escribió Dolly Borade Solanki y se titula Más allá del minimalismo: nueve tendencias de diseño que están transformando silenciosamente la industria UX. "
         "Y lo interesante, al menos para mí, no fue leerlo como una lista de modas para salir corriendo a copiar mañana, sino como un síntoma. "
         "Como una señal de que algo está cambiando por debajo de la superficie en cómo pensamos el diseño digital."
@@ -85,7 +85,7 @@ CHUNKS = [
         "Ahora… seamos honestos también. Porque a uno como diseñador le encanta emocionarse con lo nuevo, y luego pasa lo de siempre. "
         "Piensen en las famosas cuadrículas tipo Bento, esas cajas modulares organizadas como si fueran una lonchera japonesa, que también menciona el artículo. "
         "Cuando aparecieron, fueron una maravilla. Te permiten mostrar métricas, notificaciones, estados y accesos rápidos en un mismo golpe de vista sin que todo parezca una lista interminable hacia abajo. "
-        "[chuckles] ¿Y qué pasó después? Que todo el mundo empezó a meterlo todo en cajas Bento. Portafolios, dashboards, páginas de producto, hasta menús que no lo necesitaban. "
+        "¿Y qué pasó después? Que todo el mundo empezó a meterlo todo en cajas Bento. Portafolios, dashboards, páginas de producto, hasta menús que no lo necesitaban. "
         "Es casi irónico, ¿no? Una tendencia que nace para darle estructura y frescura a las interfaces termina convirtiéndose en el nuevo uniforme de la industria."
     ),
     (
@@ -111,7 +111,7 @@ CHUNKS = [
     ),
     (
         "12_contextuales_intro", 950, 0.5,
-        "[sighs] Y eso me conecta directo con algo que me obsesiona bastante: las interfaces contextuales y la personalización real. "
+        "Y eso me conecta directo con algo que me obsesiona bastante: las interfaces contextuales y la personalización real. "
         "No esa personalización superficial de poner tu nombre en un saludo arriba a la derecha o mostrarte tres productos parecidos al último que compraste. "
         "Hablo de experiencias capaces de entender el momento en el que estás, tu nivel de conocimiento previo y lo que de verdad estás tratando de resolver."
     ),
@@ -145,7 +145,7 @@ CHUNKS = [
         "17_movimiento_lenguaje", 1250, 0.5,
         "Y mientras pensaba en cómo se comunican los sistemas con nosotros, me llamó mucho la atención otro bloque de ideas del artículo: el movimiento y las interfaces espaciales. "
         "A ver… durante mucho tiempo, muchos equipos trataron las animaciones como si fueran el adorno del final. "
-        "Cuando terminemos el desarrollo, si queda tiempo, le ponemos unas transiciones bonitas. [chuckles] "
+        "Cuando terminemos el desarrollo, si queda tiempo, le ponemos unas transiciones bonitas. "
         "Y claro, si la animación es solo un adorno, sobra. Peor aún: a veces estorba y te hace perder segundos valiosos esperando a que una tarjeta termine de rebotar."
     ),
     (
@@ -168,7 +168,7 @@ CHUNKS = [
     ),
     (
         "20_accesibilidad", 1300, 0.5,
-        "[sighs] Y esto me lleva a una parte del artículo que, honestamente, creo que debería estar siempre en el centro de cualquier conversación sobre diseño, "
+        "Y esto me lleva a una parte del artículo que, honestamente, creo que debería estar siempre en el centro de cualquier conversación sobre diseño, "
         "aunque a veces sea la menos glamorosa en redes sociales: la accesibilidad, el data storytelling y el diseño sostenible. "
         "Es que hay algo muy curioso con esto. A veces celebramos productos que se ven espectaculares en un monitor enorme de última generación, con internet de alta velocidad y en una oficina con luz perfecta. "
         "Pero en el mundo real… no existe el usuario promedio."
@@ -200,7 +200,7 @@ CHUNKS = [
     ),
     (
         "24_reflexion_valor", 1400, 0.5,
-        "[sighs] Y todo esto me deja pensando en algo más grande. "
+        "Y todo esto me deja pensando en algo más grande. "
         "Hoy en día, generar una interfaz limpia, moderna y visualmente correcta es cada vez más rápido. "
         "Con librerías de componentes, sistemas de diseño e inteligencia artificial, armar una pantalla bonita ya no es el cuello de botella que era hace diez años. "
         "Entonces… ¿dónde queda realmente nuestro valor?"
@@ -226,10 +226,6 @@ def elevenlabs_tts(text: str, out_mp3: Path, stability: float = 0.5) -> None:
     payload = {
         "text": text,
         "model_id": ELEVEN_MODEL_ID,
-        "voice_settings": {
-            "stability": stability,
-            "similarity_boost": 0.80,
-        },
     }
 
     for attempt in range(4):
