@@ -15276,8 +15276,7 @@
       };
 
       const customTracks = getDjFredCustomTracks();
-      customTracks.push(introItem);
-      customTracks.push(songItem);
+      customTracks.unshift(introItem, songItem);
       saveDjFredCustomTracks(customTracks);
       buildDjFredCatalog();
 
@@ -15689,7 +15688,7 @@
         }
         return copy;
       });
-      const rawList = [...base, ...custom];
+      const rawList = [...custom, ...base];
       const pairedList = [];
       const visitedIds = new Set();
       rawList.forEach(item => {
