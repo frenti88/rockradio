@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "curiosidad",
     "contraste",
     "pregunta",
     "curiosidad",
@@ -3693,7 +3692,8 @@
     "curiosidad",
     "curiosidad",
     "curiosidad",
-    "curiosidad"
+    "curiosidad",
+    "contraste"
   ],
   "last_overlay_outros": [
     "revelacion",
@@ -3707,8 +3707,8 @@
     "revelacion",
     "revelacion",
     "revelacion",
-    "revelacion",
     "nostalgia",
+    "revelacion",
     "revelacion",
     "revelacion"
   ],
@@ -8977,21 +8977,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-21T23:30:47.510688+00:00"
+    },
+    "a_flock_of_seagulls_i_ran_so_far_away": {
+      "song_title": "I Ran (So Far Away)",
+      "band_name": "A Flock of Seagulls",
+      "intro_id": "creative_contraste",
+      "intro_name": "contraste",
+      "intro_strategy": "contraste",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "asombro",
+      "source_mode": "agent_custom",
+      "diversity_score": 53.53,
+      "paragraph_1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
+      "paragraph_2": "Pero en realidad Mike Score se inspiró en un póster de ciencia ficción donde una pareja huía de un rayo alienígena, pieza clave de su álbum conceptual debut.",
+      "paragraph_3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
+      "vocal_p1": "[warm, confident] Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
+      "vocal_p2": "[warm, conversational] Pero en realidad Mike Score se inspiró en un póster de ciencia ficción donde una pareja huía de un rayo alienígena, pieza clave de su álbum conceptual debut.",
+      "vocal_p3": "[warm, smiling] Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. [smiling, upbeat] Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 6.01,
+        "p2": 9.06,
+        "p3": 9.72
+      },
+      "voice_duration_sec": 26.83,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.01,
+        "pause1End": 7.01,
+        "pause2Start": 16.07,
+        "pause2End": 17.07,
+        "outroEnd": 26.83,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.83
+      },
+      "audio_file": "audio/fred_voice_a_flock_of_seagulls_i_ran_so_far_away.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-25T02:48:33.121714+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Blurry",
-      "band_name": "Puddle of Mudd",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "melancholic",
-      "paragraph_1": "Detrás de esas guitarras de principios de los dos mil late la carta más vulnerable de un padre lejos de casa.",
-      "paragraph_3": "Nostalgia post-grunge cargada de sentimiento real. Aquí suena Blurry, de Puddle of Mudd.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T10:32:28.504947+00:00"
-    },
     {
       "song_title": "Adam's Song",
       "band_name": "blink-182",
@@ -9159,6 +9192,18 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-21T23:30:47.510688+00:00"
+    },
+    {
+      "song_title": "I Ran (So Far Away)",
+      "band_name": "A Flock of Seagulls",
+      "intro_strategy": "contraste",
+      "outro_strategy": "revelacion",
+      "emotion": "asombro",
+      "paragraph_1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
+      "paragraph_3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
+      "mentions_brand": false,
+      "diversity_score": 53.53,
+      "generated_at": "2026-11-25T02:48:33.121714+00:00"
     }
   ]
 }
