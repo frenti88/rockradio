@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#18181B"/>
+  <g transform="translate(400, 375)" fill="none" stroke="#FAFAFA" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Uniform minimalist grid boxes -->
+    <rect x="-140" y="-125" width="118" height="110" rx="18" opacity="0.45"/>
+    <rect x="22" y="-125" width="118" height="110" rx="18" opacity="0.45"/>
+    <rect x="-140" y="15" width="118" height="110" rx="18" opacity="0.45"/>
+    <!-- Expressive breakout card tilting out of the uniform grid -->
+    <g transform="translate(81, 70) rotate(12)">
+      <rect x="-64" y="-60" width="128" height="120" rx="22" fill="#F43F5E" stroke="#FAFAFA" stroke-width="14"/>
+      <polygon points="0,-32 9,-9 32,0 9,9 0,32 -9,9 -32,0 -9,-9" fill="#FDE047" stroke="none"/>
+    </g>
+    <!-- Expressive floating accent dots -->
+    <circle cx="-81" cy="-70" r="10" fill="#FAFAFA" stroke="none" opacity="0.6"/>
+    <circle cx="81" cy="-70" r="10" fill="#38BDF8" stroke="none"/>
+  </g>
+  <text x="400" y="665" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="800" letter-spacing="10" fill="#FAFAFA" opacity="0.94">APARTE</text>
+  <text x="400" y="708" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="600" letter-spacing="4" fill="#F43F5E" opacity="0.92">¿EL MINIMALISMO NOS VOLVIÓ ABURRIDOS?</text>
+</svg>
