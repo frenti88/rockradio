@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "pregunta",
     "curiosidad",
     "curiosidad",
     "curiosidad",
@@ -3693,10 +3692,10 @@
     "curiosidad",
     "curiosidad",
     "contraste",
-    "confidencia"
+    "confidencia",
+    "viaje_temporal"
   ],
   "last_overlay_outros": [
-    "revelacion",
     "revelacion",
     "revelacion",
     "revelacion",
@@ -3710,7 +3709,8 @@
     "revelacion",
     "revelacion",
     "revelacion",
-    "reflexion"
+    "reflexion",
+    "energia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9022,21 +9022,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-25T02:48:33.121714+00:00"
+    },
+    "peter_schilling_major_tom_coming_home": {
+      "song_title": "Major Tom (Coming Home)",
+      "band_name": "Peter Schilling",
+      "intro_id": "creative_viaje_temporal",
+      "intro_name": "viaje_temporal",
+      "intro_strategy": "viaje_temporal",
+      "outro_id": "creative_energia",
+      "outro_name": "energia",
+      "outro_strategy": "energia",
+      "emotion": "alegria",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
+      "paragraph_2": "Peter Schilling imaginó qué pasó con el astronauta perdido de Space Oddity, grabó la canción primero en alemán y arrasó en Europa antes de conquistar Norteamérica.",
+      "paragraph_3": "Una secuela inesperada que terminó volando por cuenta propia. ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
+      "vocal_p1": "[warm, confident] En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
+      "vocal_p2": "[warm, conversational] Peter Schilling imaginó qué pasó con el astronauta perdido de Space Oddity, grabó la canción primero en alemán y arrasó en Europa antes de conquistar Norteamérica.",
+      "vocal_p3": "[warm, smiling] Una secuela inesperada que terminó volando por cuenta propia. [smiling, upbeat] ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 5.69,
+        "p2": 9.71,
+        "p3": 8.26
+      },
+      "voice_duration_sec": 25.7,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.69,
+        "pause1End": 6.69,
+        "pause2Start": 16.4,
+        "pause2End": 17.4,
+        "outroEnd": 25.7,
+        "rampSec": 2.0,
+        "totalPresentationSec": 32.7
+      },
+      "audio_file": "audio/fred_voice_peter_schilling_major_tom_coming_home.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-25T03:14:03.436399+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Mmm Mmm Mmm Mmm",
-      "band_name": "Crash Test Dummies",
-      "intro_strategy": "pregunta",
-      "outro_strategy": "revelacion",
-      "emotion": "playful",
-      "paragraph_1": "¿Cómo logras un éxito mundial en los noventa con un coro que ni siquiera tiene letra?",
-      "paragraph_3": "Una rareza encantadora que conquistó la radio entera. Recibamos a Crash Test Dummies con Mmm Mmm Mmm Mmm.",
-      "mentions_brand": false,
-      "diversity_score": 50.73,
-      "generated_at": "2026-11-21T10:32:43.608732+00:00"
-    },
     {
       "song_title": "Save Tonight",
       "band_name": "Eagle-Eye Cherry",
@@ -9204,6 +9237,18 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-25T02:58:18.852821+00:00"
+    },
+    {
+      "song_title": "Major Tom (Coming Home)",
+      "band_name": "Peter Schilling",
+      "intro_strategy": "viaje_temporal",
+      "outro_strategy": "energia",
+      "emotion": "alegria",
+      "paragraph_1": "En mil novecientos ochenta y dos, un músico alemán se atrevió a continuar la historia de David Bowie.",
+      "paragraph_3": "Una secuela inesperada que terminó volando por cuenta propia. ¡Sube el ánimo y despega con Major Tom (Coming Home), de Peter Schilling!",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-25T03:14:03.436399+00:00"
     }
   ]
 }
