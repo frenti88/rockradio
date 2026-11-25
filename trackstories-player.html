@@ -5915,6 +5915,245 @@
       </section>
 
       <!-- ESPECIAL DOCUMENTAL EDITORIAL — TRACKSTORIES -->
+      <section class="ts-special-section" id="kissDocSpecialSection" aria-labelledby="kissSpecialTitle">
+        <div class="ts-special-card">
+          <img class="ts-special-cover" src="podcasts/cover_kiss_doc.svg" alt="KISS: Más allá del maquillaje" loading="lazy" />
+          <div class="ts-special-meta">
+            <span class="ts-special-badge">🎙️ Especial Documental • 25 Pistas + Canciones</span>
+            <h3 class="ts-special-title" id="kissSpecialTitle">KISS: Más allá del maquillaje</h3>
+            <p class="ts-special-subtitle">De Wicked Lester a Las Vegas 2026: toda su discografía narrada por Fred junto a las 23 canciones completas que marcaron cada etapa.</p>
+            <div class="ts-special-actions">
+              <button type="button" class="ts-special-btn-primary" id="kissPlayPauseBtn">▶ Reproducir Especial</button>
+              <button type="button" class="ts-special-btn-secondary" id="kissToggleChaptersBtn">Ver capítulos (25)</button>
+              <button type="button" class="ts-special-btn-secondary" id="kissPrevSegBtn" title="Segmento anterior">⏮</button>
+              <button type="button" class="ts-special-btn-secondary" id="kissNextSegBtn" title="Siguiente segmento">⏭</button>
+              <button type="button" class="ts-special-btn-secondary" id="kissRestartBtn" title="Reiniciar desde la Introducción">↺ Inicio</button>
+            </div>
+          </div>
+        </div>
+        <div class="ts-special-player-bar" id="kissSpecialPlayerBar">
+          <div class="ts-special-status-row">
+            <div>
+              <span class="ts-special-mode-pill" id="kissModePill">🎙️ Fred — Documental</span>
+              <strong id="kissActiveLabel" style="margin-left:8px;">01. Introducción: Antes de que se encendieran las luces</strong>
+            </div>
+            <span id="kissTimelineTotal" style="color:#b3b3b3;font-size:0.78rem;">00:00 / 117:30</span>
+          </div>
+          <div class="ts-special-progress-row">
+            <span id="kissSegElapsed">0:00</span>
+            <div class="ts-special-progress-track" id="kissProgressTrack">
+              <div class="ts-special-progress-fill" id="kissProgressFill"></div>
+            </div>
+            <span id="kissSegRemaining">-0:00</span>
+          </div>
+          <div class="ts-special-chapters" id="kissChaptersList"></div>
+        </div>
+        <audio id="kissDocAudio" preload="none"></audio>
+        <script>
+          (function initKissDocSpecial() {
+            const STORAGE_KEY = "ts_kiss_doc_resume_v1";
+            let manifest = null;
+            let currentIdx = 0;
+            let isPlaying = false;
+            let songTimer = null;
+            let songElapsedSec = 0;
+            let songDurationSec = 180;
+            let playSeq = 0;
+
+            const audioEl = document.getElementById("kissDocAudio");
+            const playBtn = document.getElementById("kissPlayPauseBtn");
+            const toggleBtn = document.getElementById("kissToggleChaptersBtn");
+            const prevBtn = document.getElementById("kissPrevSegBtn");
+            const nextBtn = document.getElementById("kissNextSegBtn");
+            const restartBtn = document.getElementById("kissRestartBtn");
+            const playerBar = document.getElementById("kissSpecialPlayerBar");
+            const modePill = document.getElementById("kissModePill");
+            const activeLabel = document.getElementById("kissActiveLabel");
+            const timelineTotal = document.getElementById("kissTimelineTotal");
+            const segElapsed = document.getElementById("kissSegElapsed");
+            const segRemaining = document.getElementById("kissSegRemaining");
+            const progressTrack = document.getElementById("kissProgressTrack");
+            const progressFill = document.getElementById("kissProgressFill");
+            const chaptersList = document.getElementById("kissChaptersList");
+
+            function fmt(sec) {
+              const s = Math.max(0, Math.floor(sec || 0));
+              const m = Math.floor(s / 60);
+              const r = s % 60;
+              return `${m}:${r < 10 ? "0" : ""}${r}`;
+            }
+
+            function clearSongTimer() {
+              if (songTimer) { clearInterval(songTimer); songTimer = null; }
+            }
+
+            function isSpotifyReady() {
+              return typeof spotifySdkPlayer !== "undefined" && spotifySdkPlayer &&
+                     typeof spotifySdkDeviceId !== "undefined" && spotifySdkDeviceId &&
+                     typeof getValidSpotifyToken === "function";
+            }
+
+            async function searchSpotifyTrack(title, artist) {
+              if (!isSpotifyReady()) return null;
+              try {
+                const token = await getValidSpotifyToken();
+                if (!token) return null;
+                const q = encodeURIComponent(`track:${title} artist:${artist}`);
+                const r = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=1`, {
+                  headers: { Authorization: `Bearer ${token}` }
+                });
+                const d = await r.json();
+                return d?.tracks?.items?.[0] || null;
+              } catch (_) { return null; }
+            }
+
+            async function playSpotifySong(uri) {
+              if (!isSpotifyReady() || !uri) return false;
+              try {
+                const token = await getValidSpotifyToken();
+                if (!token) return false;
+                if (typeof spotifySdkPlayer.setVolume === "function") {
+                  await spotifySdkPlayer.setVolume(0.85).catch(() => {});
+                }
+                const resp = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(spotifySdkDeviceId)}`, {
+                  method: "PUT",
+                  headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+                  body: JSON.stringify({ uris: [uri] })
+                });
+                return resp.ok;
+              } catch (_) { return false; }
+            }
+
+            async function pauseSpotify() {
+              try {
+                if (isSpotifyReady() && typeof spotifySdkPlayer.pause === "function") {
+                  await spotifySdkPlayer.pause().catch(() => {});
+                }
+              } catch (_) {}
+            }
+
+            function renderChapters() {
+              if (!manifest || !chaptersList) return;
+              chaptersList.innerHTML = manifest.segments.map((s, idx) => {
+                const isAct = idx === currentIdx ? " active" : "";
+                const icon = s.type === "song" ? "🎵" : "🎙️";
+                const lbl = s.type === "song" ? `${s.title} — ${s.artist}` : `${String(s.chapter).padStart(2, "0")}. ${s.chapter_title}`;
+                return `<div class="ts-special-chapter-row${isAct}" data-kidx="${idx}"><span>${icon} ${lbl}</span><span>${fmt(s.duration_sec)}</span></div>`;
+              }).join("");
+              chaptersList.querySelectorAll("[data-kidx]").forEach(el => {
+                el.addEventListener("click", () => startSegment(parseInt(el.dataset.kidx, 10)));
+              });
+            }
+
+            async function startSegment(idx) {
+              if (!manifest || idx < 0 || idx >= manifest.segments.length) return;
+              const mySeq = ++playSeq;
+              clearSongTimer();
+              audioEl.pause();
+              await pauseSpotify();
+
+              currentIdx = idx;
+              isPlaying = true;
+              playBtn.textContent = "⏸ Pausar Especial";
+              if (playerBar) playerBar.classList.add("visible");
+              localStorage.setItem(STORAGE_KEY, String(idx));
+              renderChapters();
+
+              const seg = manifest.segments[idx];
+              if (seg.type === "narration") {
+                modePill.textContent = "🎙️ Fred — Documental";
+                activeLabel.textContent = `${String(seg.chapter).padStart(2, "0")}. ${seg.chapter_title}`;
+                audioEl.src = seg.mix_file;
+                audioEl.currentTime = 0;
+                audioEl.play().catch(() => {});
+              } else {
+                modePill.textContent = "🎵 Canción completa — Spotify";
+                activeLabel.textContent = `${seg.title} — ${seg.artist}`;
+                songElapsedSec = 0;
+                songDurationSec = seg.duration_sec || 210;
+                const found = await searchSpotifyTrack(seg.search_title || seg.title, seg.artist);
+                if (mySeq !== playSeq) return;
+                if (found && found.uri) {
+                  songDurationSec = Math.round((found.duration_ms || songDurationSec * 1000) / 1000);
+                  const ok = await playSpotifySong(found.uri);
+                  if (!ok && mySeq === playSeq) {
+                    activeLabel.textContent = `${seg.title} — Conecta Spotify para escuchar la canción completa`;
+                  }
+                } else {
+                  activeLabel.textContent = `${seg.title} — Conecta Spotify para escuchar la canción completa`;
+                }
+                songTimer = setInterval(() => {
+                  if (!isPlaying || mySeq !== playSeq) return;
+                  songElapsedSec += 1;
+                  segElapsed.textContent = fmt(songElapsedSec);
+                  segRemaining.textContent = "-" + fmt(Math.max(0, songDurationSec - songElapsedSec));
+                  progressFill.style.width = `${Math.min(100, (songElapsedSec / Math.max(1, songDurationSec)) * 100)}%`;
+                  if (songElapsedSec >= songDurationSec) {
+                    clearSongTimer();
+                    if (currentIdx + 1 < manifest.segments.length) startSegment(currentIdx + 1);
+                    else { isPlaying = false; playBtn.textContent = "▶ Reproducir Especial"; }
+                  }
+                }, 1000);
+              }
+            }
+
+            audioEl.addEventListener("timeupdate", () => {
+              if (!manifest) return;
+              const seg = manifest.segments[currentIdx];
+              if (!seg || seg.type !== "narration") return;
+              const d = audioEl.duration || seg.duration_sec || 1;
+              segElapsed.textContent = fmt(audioEl.currentTime);
+              segRemaining.textContent = "-" + fmt(Math.max(0, d - audioEl.currentTime));
+              progressFill.style.width = `${Math.min(100, (audioEl.currentTime / d) * 100)}%`;
+              timelineTotal.textContent = `${fmt(seg.start_sec + audioEl.currentTime)} / ${fmt(manifest.total_experience_duration_sec)}`;
+            });
+
+            audioEl.addEventListener("ended", () => {
+              if (currentIdx + 1 < (manifest?.segments?.length || 0)) startSegment(currentIdx + 1);
+              else { isPlaying = false; playBtn.textContent = "▶ Reproducir Especial"; }
+            });
+
+            playBtn.addEventListener("click", async () => {
+              if (!manifest) return;
+              if (!isPlaying) {
+                const saved = parseInt(localStorage.getItem(STORAGE_KEY) || "0", 10);
+                startSegment(isFinite(saved) && saved < manifest.segments.length ? saved : 0);
+              } else {
+                isPlaying = false;
+                playBtn.textContent = "▶ Reproducir Especial";
+                audioEl.pause();
+                clearSongTimer();
+                await pauseSpotify();
+              }
+            });
+
+            toggleBtn.addEventListener("click", () => {
+              if (chaptersList) chaptersList.classList.toggle("open");
+              if (playerBar) playerBar.classList.add("visible");
+            });
+            prevBtn.addEventListener("click", () => { if (currentIdx > 0) startSegment(currentIdx - 1); });
+            nextBtn.addEventListener("click", () => { if (manifest && currentIdx + 1 < manifest.segments.length) startSegment(currentIdx + 1); });
+            restartBtn.addEventListener("click", () => startSegment(0));
+            progressTrack.addEventListener("click", (e) => {
+              const seg = manifest?.segments?.[currentIdx];
+              if (!seg || seg.type !== "narration" || !audioEl.duration) return;
+              const rect = progressTrack.getBoundingClientRect();
+              const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+              audioEl.currentTime = ratio * audioEl.duration;
+            });
+
+            fetch("specials/kiss-mas-alla-del-maquillaje/manifest.json")
+              .then(r => r.json())
+              .then(data => {
+                manifest = data;
+                timelineTotal.textContent = `00:00 / ${fmt(manifest.total_experience_duration_sec)}`;
+                renderChapters();
+              })
+              .catch(() => {});
+          })();
+        </script>
+      </section>
+
       <section class="ts-special-section" id="glamRockSpecialSection" aria-labelledby="glamSpecialTitle">
         <style>
           .ts-special-section {
