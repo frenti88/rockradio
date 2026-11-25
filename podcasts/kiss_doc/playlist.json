@@ -1,0 +1,232 @@
+{
+  "title": "KISS: MÁS ALLÁ DEL MAQUILLAJE",
+  "total_tracks": 25,
+  "total_narration_sec": 1798.66,
+  "tracks": [
+    {
+      "slug": "01_introduccion",
+      "title": "Introducción: Antes de que se encendieran las luces",
+      "album": "—",
+      "year": "1972–1973",
+      "song_after": null,
+      "audio": "podcasts/kiss_doc/01_introduccion.mp3",
+      "duration_sec": 126.29
+    },
+    {
+      "slug": "02_kiss_1974",
+      "title": "Cap. I — KISS (1974)",
+      "album": "KISS",
+      "year": "1974",
+      "song_after": "Strutter",
+      "audio": "podcasts/kiss_doc/02_kiss_1974.mp3",
+      "duration_sec": 81.72
+    },
+    {
+      "slug": "03_hotter_than_hell_1974",
+      "title": "Hotter Than Hell (1974)",
+      "album": "Hotter Than Hell",
+      "year": "1974",
+      "song_after": "Parasite",
+      "audio": "podcasts/kiss_doc/03_hotter_than_hell_1974.mp3",
+      "duration_sec": 78.84
+    },
+    {
+      "slug": "04_dressed_to_kill_1975",
+      "title": "Dressed to Kill (1975)",
+      "album": "Dressed to Kill",
+      "year": "1975",
+      "song_after": "C'mon and Love Me",
+      "audio": "podcasts/kiss_doc/04_dressed_to_kill_1975.mp3",
+      "duration_sec": 64.9
+    },
+    {
+      "slug": "05_alive_1975",
+      "title": "Cap. II — Alive! (1975) y la KISS Army",
+      "album": "Alive!",
+      "year": "1975",
+      "song_after": "Rock and Roll All Nite (Alive!)",
+      "audio": "podcasts/kiss_doc/05_alive_1975.mp3",
+      "duration_sec": 118.75
+    },
+    {
+      "slug": "06_destroyer_1976",
+      "title": "Destroyer (1976)",
+      "album": "Destroyer",
+      "year": "1976",
+      "song_after": "Detroit Rock City",
+      "audio": "podcasts/kiss_doc/06_destroyer_1976.mp3",
+      "duration_sec": 75.17
+    },
+    {
+      "slug": "07_rock_and_roll_over_1976",
+      "title": "Rock and Roll Over (1976)",
+      "album": "Rock and Roll Over",
+      "year": "1976",
+      "song_after": "Calling Dr. Love",
+      "audio": "podcasts/kiss_doc/07_rock_and_roll_over_1976.mp3",
+      "duration_sec": 58.22
+    },
+    {
+      "slug": "08_love_gun_1977",
+      "title": "Love Gun (1977)",
+      "album": "Love Gun",
+      "year": "1977",
+      "song_after": "Love Gun",
+      "audio": "podcasts/kiss_doc/08_love_gun_1977.mp3",
+      "duration_sec": 58.3
+    },
+    {
+      "slug": "09_alive_ii_1977",
+      "title": "Alive II (1977)",
+      "album": "Alive II",
+      "year": "1977",
+      "song_after": "I Stole Your Love (Alive II)",
+      "audio": "podcasts/kiss_doc/09_alive_ii_1977.mp3",
+      "duration_sec": 51.86
+    },
+    {
+      "slug": "10_solistas_1978",
+      "title": "Cap. III — El imperio y los cuatro álbumes solistas (1978)",
+      "album": "Solo Albums",
+      "year": "1978",
+      "song_after": "New York Groove (Ace Frehley)",
+      "audio": "podcasts/kiss_doc/10_solistas_1978.mp3",
+      "duration_sec": 120.77
+    },
+    {
+      "slug": "11_dynasty_1979",
+      "title": "Dynasty (1979)",
+      "album": "Dynasty",
+      "year": "1979",
+      "song_after": "I Was Made for Lovin' You",
+      "audio": "podcasts/kiss_doc/11_dynasty_1979.mp3",
+      "duration_sec": 63.48
+    },
+    {
+      "slug": "12_unmasked_1980",
+      "title": "Unmasked (1980)",
+      "album": "Unmasked",
+      "year": "1980",
+      "song_after": "Shandi",
+      "audio": "podcasts/kiss_doc/12_unmasked_1980.mp3",
+      "duration_sec": 54.19
+    },
+    {
+      "slug": "13_the_elder_1981",
+      "title": "Music from “The Elder” (1981)",
+      "album": "Music from “The Elder”",
+      "year": "1981",
+      "song_after": "A World Without Heroes",
+      "audio": "podcasts/kiss_doc/13_the_elder_1981.mp3",
+      "duration_sec": 93.0
+    },
+    {
+      "slug": "14_creatures_of_the_night_1982",
+      "title": "Creatures of the Night (1982)",
+      "album": "Creatures of the Night",
+      "year": "1982",
+      "song_after": "I Love It Loud",
+      "audio": "podcasts/kiss_doc/14_creatures_of_the_night_1982.mp3",
+      "duration_sec": 62.38
+    },
+    {
+      "slug": "15_lick_it_up_1983",
+      "title": "Cap. IV — Lick It Up (1983)",
+      "album": "Lick It Up",
+      "year": "1983",
+      "song_after": "Lick It Up",
+      "audio": "podcasts/kiss_doc/15_lick_it_up_1983.mp3",
+      "duration_sec": 55.32
+    },
+    {
+      "slug": "16_animalize_1984",
+      "title": "Animalize (1984)",
+      "album": "Animalize",
+      "year": "1984",
+      "song_after": "Heaven's on Fire",
+      "audio": "podcasts/kiss_doc/16_animalize_1984.mp3",
+      "duration_sec": 49.06
+    },
+    {
+      "slug": "17_asylum_1985",
+      "title": "Asylum (1985)",
+      "album": "Asylum",
+      "year": "1985",
+      "song_after": "Tears Are Falling",
+      "audio": "podcasts/kiss_doc/17_asylum_1985.mp3",
+      "duration_sec": 42.58
+    },
+    {
+      "slug": "18_crazy_nights_1987",
+      "title": "Crazy Nights (1987)",
+      "album": "Crazy Nights",
+      "year": "1987",
+      "song_after": "Crazy Crazy Nights",
+      "audio": "podcasts/kiss_doc/18_crazy_nights_1987.mp3",
+      "duration_sec": 45.22
+    },
+    {
+      "slug": "19_hot_in_the_shade_1989",
+      "title": "Hot in the Shade (1989)",
+      "album": "Hot in the Shade",
+      "year": "1989",
+      "song_after": "Forever",
+      "audio": "podcasts/kiss_doc/19_hot_in_the_shade_1989.mp3",
+      "duration_sec": 45.62
+    },
+    {
+      "slug": "20_revenge_1992",
+      "title": "Cap. V — Eric Carr y Revenge (1992)",
+      "album": "Revenge",
+      "year": "1992",
+      "song_after": "Unholy",
+      "audio": "podcasts/kiss_doc/20_revenge_1992.mp3",
+      "duration_sec": 66.55
+    },
+    {
+      "slug": "21_carnival_of_souls_1997",
+      "title": "Carnival of Souls: The Final Sessions (1997)",
+      "album": "Carnival of Souls: The Final Sessions",
+      "year": "1997",
+      "song_after": "Hate",
+      "audio": "podcasts/kiss_doc/21_carnival_of_souls_1997.mp3",
+      "duration_sec": 66.82
+    },
+    {
+      "slug": "22_psycho_circus_1998",
+      "title": "Cap. VI — La reunión y Psycho Circus (1998)",
+      "album": "Psycho Circus",
+      "year": "1998",
+      "song_after": "Psycho Circus",
+      "audio": "podcasts/kiss_doc/22_psycho_circus_1998.mp3",
+      "duration_sec": 66.34
+    },
+    {
+      "slug": "23_sonic_boom_2009",
+      "title": "Sonic Boom (2009)",
+      "album": "Sonic Boom",
+      "year": "2009",
+      "song_after": "Modern Day Delilah",
+      "audio": "podcasts/kiss_doc/23_sonic_boom_2009.mp3",
+      "duration_sec": 56.02
+    },
+    {
+      "slug": "24_monster_2012",
+      "title": "Monster (2012)",
+      "album": "Monster",
+      "year": "2012",
+      "song_after": "Hell or Hallelujah",
+      "audio": "podcasts/kiss_doc/24_monster_2012.mp3",
+      "duration_sec": 38.45
+    },
+    {
+      "slug": "25_epilogo_el_maquillaje_es_eterno",
+      "title": "Cap. VII y Epílogo — El maquillaje es eterno (2013–2026)",
+      "album": "—",
+      "year": "2013–2026",
+      "song_after": null,
+      "audio": "podcasts/kiss_doc/25_epilogo_el_maquillaje_es_eterno.mp3",
+      "duration_sec": 158.81
+    }
+  ]
+}
