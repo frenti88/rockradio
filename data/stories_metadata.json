@@ -3680,7 +3680,6 @@
   },
   "last_overlay_intros": [
     "curiosidad",
-    "curiosidad",
     "contraste",
     "confidencia",
     "viaje_temporal",
@@ -3693,12 +3692,12 @@
     "memoria_musical",
     "contraste",
     "viaje_temporal",
-    "viaje_temporal"
+    "viaje_temporal",
+    "inicio_directo"
   ],
   "last_overlay_outros": [
     "revelacion",
     "revelacion",
-    "revelacion",
     "reflexion",
     "energia",
     "energia",
@@ -3710,7 +3709,8 @@
     "nostalgia",
     "revelacion",
     "energia",
-    "reflexion"
+    "reflexion",
+    "energia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9382,21 +9382,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-26T13:39:28.595552+00:00"
+    },
+    "linkin_park_given_up": {
+      "song_title": "Given Up",
+      "band_name": "Linkin Park",
+      "intro_id": "creative_inicio_directo",
+      "intro_name": "inicio_directo",
+      "intro_strategy": "inicio_directo",
+      "outro_id": "creative_energia",
+      "outro_name": "energia",
+      "outro_strategy": "energia",
+      "emotion": "intensidad",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Pocos vocalistas en la historia del rock lograron convertir diecisiete segundos de furia pura en leyenda.",
+      "paragraph_2": "En dos mil siete, para el álbum Minutes to Midnight, Linkin Park abrió este tema con palmas y un manojo de llaves antes de que Chester Bennington desatara su grito más memorable.",
+      "paragraph_3": "Cruda, directa y sin filtros, así marcó una generación entera. Sube el volumen que suena Given Up, de Linkin Park.",
+      "vocal_p1": "Pocos vocalistas en la historia del rock lograron convertir diecisiete segundos de furia pura en leyenda.",
+      "vocal_p2": "En dos mil siete, para el álbum Minutes to Midnight, Linkin Park abrió este tema con palmas y un manojo de llaves antes de que Chester Bennington desatara su grito más memorable.",
+      "vocal_p3": "Cruda, directa y sin filtros, así marcó una generación entera. Sube el volumen que suena Given Up, de Linkin Park.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 5.84,
+        "p2": 10.51,
+        "p3": 7.71
+      },
+      "voice_duration_sec": 26.1,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.84,
+        "pause1End": 6.84,
+        "pause2Start": 17.35,
+        "pause2End": 18.35,
+        "outroEnd": 26.1,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.1
+      },
+      "audio_file": "audio/fred_voice_linkin_park_given_up.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T14:25:41.963023+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Signos",
-      "band_name": "Soda Stereo",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "curiosidad_tecnica",
-      "paragraph_1": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
-      "paragraph_3": "Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T23:29:35.332549+00:00"
-    },
     {
       "song_title": "Signos",
       "band_name": "Soda Stereo",
@@ -9564,6 +9597,18 @@
       "mentions_brand": false,
       "diversity_score": 68.0,
       "generated_at": "2026-11-26T13:39:28.595552+00:00"
+    },
+    {
+      "song_title": "Given Up",
+      "band_name": "Linkin Park",
+      "intro_strategy": "inicio_directo",
+      "outro_strategy": "energia",
+      "emotion": "intensidad",
+      "paragraph_1": "Pocos vocalistas en la historia del rock lograron convertir diecisiete segundos de furia pura en leyenda.",
+      "paragraph_3": "Cruda, directa y sin filtros, así marcó una generación entera. Sube el volumen que suena Given Up, de Linkin Park.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-26T14:25:41.963023+00:00"
     }
   ]
 }
