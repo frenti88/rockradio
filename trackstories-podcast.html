@@ -6837,6 +6837,17 @@
             </div>
           </div>
           <div class="home-cards-row" id="podcastsRow">
+            <div class="home-sp-card" id="podcastCardDeliciosaDistancia" role="button" tabindex="0" aria-label="Reproducir La deliciosa distancia">
+              <div class="home-sp-card-art">
+                <img src="podcasts/cover_la_deliciosa_distancia.svg" alt="La deliciosa distancia" loading="lazy">
+                <span class="home-sp-card-badge">RELATO • 0:49</span>
+                <button class="home-sp-card-play" type="button" title="Reproducir episodio" aria-label="Reproducir episodio">
+                  <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+              <div class="home-sp-card-title">La deliciosa distancia</div>
+              <div class="home-sp-card-sub">Relato íntimo • Fred • 0:49</div>
+            </div>
             <div class="home-sp-card" id="podcastCardAparte10" role="button" tabindex="0" aria-label="Reproducir Aparte: El diseño después de la IA — Parte 2">
               <div class="home-sp-card-art">
                 <img src="podcasts/cover_ep10_diseno_ia_p2.svg" alt="Aparte — El diseño después de la IA (Parte 2)" loading="lazy">
@@ -6984,6 +6995,13 @@
           <script>
             (function initPodcastsShelf() {
               const episodes = [
+                {
+                  id: 'podcastCardDeliciosaDistancia',
+                  title: 'La deliciosa distancia',
+                  artist: 'Relato íntimo • Fred',
+                  cover: 'podcasts/cover_la_deliciosa_distancia.svg',
+                  audio: 'podcasts/la_deliciosa_distancia.mp3'
+                },
                 {
                   id: 'podcastCardAparte10',
                   title: 'El diseño después de la IA — Parte 2: El futuro de las experiencias digitales',

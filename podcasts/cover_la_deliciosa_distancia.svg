@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#2A0A18"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#FFF1F2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Two soft overlapping silhouettes / crescents separated by a delicate space -->
+    <circle cx="-54" cy="0" r="105" stroke="#FB7185" opacity="0.85"/>
+    <circle cx="54" cy="0" r="105" stroke="#FDE68A" opacity="0.85"/>
+    <!-- Delicate spark in the space between -->
+    <circle cx="0" cy="0" r="10" fill="#FFF1F2" stroke="none"/>
+  </g>
+  <text x="400" y="645" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="800" letter-spacing="8" fill="#FFF1F2">LA DELICIOSA DISTANCIA</text>
+  <text x="400" y="692" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" letter-spacing="5" fill="#FB7185">RELATO ÍNTIMO • FRED</text>
+</svg>
