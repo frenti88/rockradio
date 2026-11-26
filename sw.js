@@ -1,5 +1,5 @@
 // TrackStories Service Worker (PWA + Offline Audio Cache with HTTP Range support)
-const CACHE_NAME = 'trackstories-pwa-v21';
+const CACHE_NAME = 'trackstories-pwa-v22';
 const OFFLINE_CACHE = 'trackstories-offline-v1';
 
 const PRECACHE_ASSETS = [
