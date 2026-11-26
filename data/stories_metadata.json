@@ -3681,7 +3681,6 @@
   "last_overlay_intros": [
     "curiosidad",
     "curiosidad",
-    "curiosidad",
     "contraste",
     "confidencia",
     "viaje_temporal",
@@ -3693,10 +3692,10 @@
     "curiosidad",
     "memoria_musical",
     "contraste",
+    "viaje_temporal",
     "viaje_temporal"
   ],
   "last_overlay_outros": [
-    "nostalgia",
     "revelacion",
     "revelacion",
     "revelacion",
@@ -3710,7 +3709,8 @@
     "energia",
     "nostalgia",
     "revelacion",
-    "energia"
+    "energia",
+    "reflexion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9337,21 +9337,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-26T13:03:46.869415+00:00"
+    },
+    "enrique_bunbury_lady_blue": {
+      "song_title": "Lady Blue",
+      "band_name": "Enrique Bunbury",
+      "intro_id": "creative_viaje_temporal",
+      "intro_name": "viaje_temporal",
+      "intro_strategy": "viaje_temporal",
+      "outro_id": "creative_reflexion",
+      "outro_name": "reflexion",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "source_mode": "agent_custom",
+      "diversity_score": 68.0,
+      "paragraph_1": "En dos mil dos, Enrique Bunbury decidió despegar rumbo al espacio para cerrar una etapa difícil.",
+      "paragraph_2": "Como un guiño poético a Space Oddity de David Bowie, escribió esta historia sobre mirar la Tierra desde lejos, en medio de las monumentales sesiones de su disco Flamingos.",
+      "paragraph_3": "Una despedida elegante que se convirtió en himno de su carrera solista. Aquí suena Lady Blue, de Enrique Bunbury.",
+      "vocal_p1": "En dos mil dos, Enrique Bunbury decidió despegar rumbo al espacio para cerrar una etapa difícil.",
+      "vocal_p2": "Como un guiño poético a Space Oddity de David Bowie, escribió esta historia sobre mirar la Tierra desde lejos, en medio de las monumentales sesiones de su disco Flamingos.",
+      "vocal_p3": "Una despedida elegante que se convirtió en himno de su carrera solista. Aquí suena Lady Blue, de Enrique Bunbury.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 4.95,
+        "p2": 10.38,
+        "p3": 7.83
+      },
+      "voice_duration_sec": 25.21,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 4.95,
+        "pause1End": 5.95,
+        "pause2Start": 16.33,
+        "pause2End": 17.33,
+        "outroEnd": 25.21,
+        "rampSec": 2.0,
+        "totalPresentationSec": 32.21
+      },
+      "audio_file": "audio/fred_voice_enrique_bunbury_lady_blue.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:39:28.595552+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Giros",
-      "band_name": "Fito Páez",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "nostalgia",
-      "emotion": "emotional",
-      "paragraph_1": "Con apenas veintidós años, Fito Páez cruzó el tango, el rock y los sintetizadores en un disco que lo consagró para siempre.",
-      "paragraph_3": "Poesía rosarina y movimiento puro desde el primer compás. Disfrutemos Giros, de Fito Páez.",
-      "mentions_brand": false,
-      "diversity_score": 68.0,
-      "generated_at": "2026-11-21T14:26:13.582938+00:00"
-    },
     {
       "song_title": "Signos",
       "band_name": "Soda Stereo",
@@ -9519,6 +9552,18 @@
       "mentions_brand": false,
       "diversity_score": 0.0,
       "generated_at": "2026-11-26T13:03:46.869415+00:00"
+    },
+    {
+      "song_title": "Lady Blue",
+      "band_name": "Enrique Bunbury",
+      "intro_strategy": "viaje_temporal",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "paragraph_1": "En dos mil dos, Enrique Bunbury decidió despegar rumbo al espacio para cerrar una etapa difícil.",
+      "paragraph_3": "Una despedida elegante que se convirtió en himno de su carrera solista. Aquí suena Lady Blue, de Enrique Bunbury.",
+      "mentions_brand": false,
+      "diversity_score": 68.0,
+      "generated_at": "2026-11-26T13:39:28.595552+00:00"
     }
   ]
 }
