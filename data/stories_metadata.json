@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "contraste",
     "confidencia",
     "viaje_temporal",
     "viaje_temporal",
@@ -3693,10 +3692,10 @@
     "viaje_temporal",
     "viaje_temporal",
     "inicio_directo",
-    "confidencia"
+    "confidencia",
+    "curiosidad"
   ],
   "last_overlay_outros": [
-    "revelacion",
     "reflexion",
     "energia",
     "energia",
@@ -3710,7 +3709,8 @@
     "energia",
     "reflexion",
     "energia",
-    "expectativa"
+    "expectativa",
+    "nostalgia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9472,21 +9472,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-26T14:27:55.053440+00:00"
+    },
+    "bts_mikrokosmos": {
+      "song_title": "Mikrokosmos",
+      "band_name": "BTS",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "ternura",
+      "source_mode": "agent_custom",
+      "diversity_score": 83.2,
+      "paragraph_1": "En dos mil diecinueve, BTS miró las luces de una ciudad de noche y vio algo distinto.",
+      "paragraph_2": "Inspirados en la idea de que cada persona guarda un universo propio, grabaron este tema para Map of the Soul: Persona, que incluso la NASA incluyó en su playlist lunar.",
+      "paragraph_3": "El cierre luminoso con el que iluminaron estadios enteros alrededor del mundo. Aquí suena Mikrokosmos, de BTS.",
+      "vocal_p1": "En dos mil diecinueve, BTS miró las luces de una ciudad de noche y vio algo distinto.",
+      "vocal_p2": "Inspirados en la idea de que cada persona guarda un universo propio, grabaron este tema para Map of the Soul: Persona, que incluso la NASA incluyó en su playlist lunar.",
+      "vocal_p3": "El cierre luminoso con el que iluminaron estadios enteros alrededor del mundo. Aquí suena Mikrokosmos, de BTS.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 5.13,
+        "p2": 9.73,
+        "p3": 7.52
+      },
+      "voice_duration_sec": 24.42,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.13,
+        "pause1End": 6.13,
+        "pause2Start": 15.86,
+        "pause2End": 16.86,
+        "outroEnd": 24.42,
+        "rampSec": 2.0,
+        "totalPresentationSec": 31.42
+      },
+      "audio_file": "audio/fred_voice_bts_mikrokosmos.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T14:37:09.361159+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "I Ran (So Far Away)",
-      "band_name": "A Flock of Seagulls",
-      "intro_strategy": "contraste",
-      "outro_strategy": "revelacion",
-      "emotion": "asombro",
-      "paragraph_1": "Mucha gente bailó este clásico de mil novecientos ochenta y dos creyendo que hablaba de un amor imposible.",
-      "paragraph_3": "Con un video envuelto en papel aluminio y espejos, conquistaron MTV al instante. Aquí suena I Ran (So Far Away), de A Flock of Seagulls.",
-      "mentions_brand": false,
-      "diversity_score": 53.53,
-      "generated_at": "2026-11-25T02:48:33.121714+00:00"
-    },
     {
       "song_title": "The Working Hour",
       "band_name": "Tears for Fears",
@@ -9654,6 +9687,18 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-26T14:27:55.053440+00:00"
+    },
+    {
+      "song_title": "Mikrokosmos",
+      "band_name": "BTS",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "nostalgia",
+      "emotion": "ternura",
+      "paragraph_1": "En dos mil diecinueve, BTS miró las luces de una ciudad de noche y vio algo distinto.",
+      "paragraph_3": "El cierre luminoso con el que iluminaron estadios enteros alrededor del mundo. Aquí suena Mikrokosmos, de BTS.",
+      "mentions_brand": false,
+      "diversity_score": 83.2,
+      "generated_at": "2026-11-26T14:37:09.361159+00:00"
     }
   ]
 }
