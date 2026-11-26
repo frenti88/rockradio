@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "curiosidad",
     "contraste",
     "confidencia",
     "viaje_temporal",
@@ -3693,11 +3692,11 @@
     "contraste",
     "viaje_temporal",
     "viaje_temporal",
-    "inicio_directo"
+    "inicio_directo",
+    "confidencia"
   ],
   "last_overlay_outros": [
     "revelacion",
-    "revelacion",
     "reflexion",
     "energia",
     "energia",
@@ -3710,7 +3709,8 @@
     "revelacion",
     "energia",
     "reflexion",
-    "energia"
+    "energia",
+    "expectativa"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9427,21 +9427,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-26T14:25:41.963023+00:00"
+    },
+    "iron_maiden_fear_of_the_dark": {
+      "song_title": "Fear of the Dark",
+      "band_name": "Iron Maiden",
+      "intro_id": "creative_confidencia",
+      "intro_name": "confidencia",
+      "intro_strategy": "confidencia",
+      "outro_id": "creative_expectativa",
+      "outro_name": "expectativa",
+      "outro_strategy": "expectativa",
+      "emotion": "misterio",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Todos hemos sentido alguna vez esa sombra incómoda al caminar solos cuando cae la noche.",
+      "paragraph_2": "En mil novecientos noventa y dos, Steve Harris transformó su propio miedo infantil a la oscuridad en un himno que arranca en susurro y estalla en metal puro.",
+      "paragraph_3": "Apaga las luces y déjate atrapar por el coro de miles de voces. Aquí suena Fear of the Dark, de Iron Maiden.",
+      "vocal_p1": "Todos hemos sentido alguna vez esa sombra incómoda al caminar solos cuando cae la noche.",
+      "vocal_p2": "En mil novecientos noventa y dos, Steve Harris transformó su propio miedo infantil a la oscuridad en un himno que arranca en susurro y estalla en metal puro.",
+      "vocal_p3": "Apaga las luces y déjate atrapar por el coro de miles de voces. Aquí suena Fear of the Dark, de Iron Maiden.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 4.48,
+        "p2": 9.6,
+        "p3": 7.44
+      },
+      "voice_duration_sec": 23.56,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 4.48,
+        "pause1End": 5.48,
+        "pause2Start": 15.08,
+        "pause2End": 16.08,
+        "outroEnd": 23.56,
+        "rampSec": 2.0,
+        "totalPresentationSec": 30.56
+      },
+      "audio_file": "audio/fred_voice_iron_maiden_fear_of_the_dark.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T14:27:55.053440+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Signos",
-      "band_name": "Soda Stereo",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "curiosidad_tecnica",
-      "paragraph_1": "Buenos Aires, mil novecientos ochenta y seis. Soda Stereo estaba por lanzar el disco que cambiaría el rock en español para siempre.",
-      "paragraph_3": "Subí el volumen y dejate llevar por la magia de Gustavo Cerati, Zeta y Charly. Esto es Signos.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T23:30:47.510688+00:00"
-    },
     {
       "song_title": "I Ran (So Far Away)",
       "band_name": "A Flock of Seagulls",
@@ -9609,6 +9642,18 @@
       "mentions_brand": false,
       "diversity_score": 100.0,
       "generated_at": "2026-11-26T14:25:41.963023+00:00"
+    },
+    {
+      "song_title": "Fear of the Dark",
+      "band_name": "Iron Maiden",
+      "intro_strategy": "confidencia",
+      "outro_strategy": "expectativa",
+      "emotion": "misterio",
+      "paragraph_1": "Todos hemos sentido alguna vez esa sombra incómoda al caminar solos cuando cae la noche.",
+      "paragraph_3": "Apaga las luces y déjate atrapar por el coro de miles de voces. Aquí suena Fear of the Dark, de Iron Maiden.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-26T14:27:55.053440+00:00"
     }
   ]
 }
