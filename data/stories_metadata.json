@@ -3679,11 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "confidencia",
-    "curiosidad",
-    "curiosidad",
-    "curiosidad",
-    "curiosidad",
     "curiosidad",
     "curiosidad",
     "curiosidad",
@@ -3693,14 +3688,14 @@
     "viaje_temporal",
     "confidencia",
     "contraste",
-    "curiosidad"
+    "curiosidad",
+    "escena_historica",
+    "curiosidad",
+    "memoria_musical",
+    "contraste",
+    "viaje_temporal"
   ],
   "last_overlay_outros": [
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
-    "revelacion",
     "nostalgia",
     "revelacion",
     "revelacion",
@@ -3710,7 +3705,12 @@
     "energia",
     "reflexion",
     "revelacion",
-    "nostalgia"
+    "nostalgia",
+    "reflexion",
+    "energia",
+    "nostalgia",
+    "revelacion",
+    "energia"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9112,69 +9112,234 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-25T04:04:59.388846+00:00"
+    },
+    "crowded_house_dont_dream_its_over": {
+      "song_title": "Don't Dream It's Over",
+      "band_name": "Crowded House",
+      "intro_id": "creative_escena_historica",
+      "intro_name": "escena_historica",
+      "intro_strategy": "escena_historica",
+      "outro_id": "creative_reflexion",
+      "outro_name": "reflexion",
+      "outro_strategy": "reflexion",
+      "emotion": "nostalgia",
+      "source_mode": "agent_custom",
+      "diversity_score": 100.0,
+      "paragraph_1": "Algunas de las melodías más luminosas de los ochenta nacieron casi por accidente frente a un piano prestado.",
+      "paragraph_2": "Neil Finn compuso este clásico en casa de su hermano Tim en mil novecientos ochenta y seis, y el productor Mitchell Froom le sumó ese órgano inolvidable que la llevó al número dos en Estados Unidos.",
+      "paragraph_3": "Un recordatorio eterno de no rendirse ante las paredes del mundo. Escuchemos Don't Dream It's Over, de Crowded House.",
+      "vocal_p1": "Algunas de las melodías más luminosas de los ochenta nacieron casi por accidente frente a un piano prestado.",
+      "vocal_p2": "Neil Finn compuso este clásico en casa de su hermano Tim en mil novecientos ochenta y seis, y el productor Mitchell Froom le sumó ese órgano inolvidable que la llevó al número dos en Estados Unidos.",
+      "vocal_p3": "Un recordatorio eterno de no rendirse ante las paredes del mundo. Escuchemos Don't Dream It's Over, de Crowded House.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 6.05,
+        "p2": 11.82,
+        "p3": 8.54
+      },
+      "voice_duration_sec": 28.45,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.05,
+        "pause1End": 7.05,
+        "pause2Start": 18.86,
+        "pause2End": 19.86,
+        "outroEnd": 28.45,
+        "rampSec": 2.0,
+        "totalPresentationSec": 35.45
+      },
+      "audio_file": "audio/fred_voice_crowded_house_dont_dream_its_over.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:03:05.221911+00:00"
+    },
+    "ric_ocasek_emotion_in_motion": {
+      "song_title": "Emotion in Motion",
+      "band_name": "Ric Ocasek",
+      "intro_id": "creative_curiosidad",
+      "intro_name": "curiosidad",
+      "intro_strategy": "curiosidad",
+      "outro_id": "creative_energia",
+      "outro_name": "energia",
+      "outro_strategy": "energia",
+      "emotion": "calidez",
+      "source_mode": "agent_custom",
+      "diversity_score": 63.13,
+      "paragraph_1": "En mil novecientos ochenta y seis, el líder de The Cars decidió probar suerte lejos de su propia banda.",
+      "paragraph_2": "Ric Ocasek grabó This Side of Paradise junto a Chris Hughes y hasta invitó a Roland Orzabal de Tears for Fears en la guitarra, logrando el mayor éxito solista de toda su carrera.",
+      "paragraph_3": "Sintetizadores elegantes y un coro que todavía emociona. Aquí suena Emotion in Motion, de Ric Ocasek.",
+      "vocal_p1": "En mil novecientos ochenta y seis, el líder de The Cars decidió probar suerte lejos de su propia banda.",
+      "vocal_p2": "Ric Ocasek grabó This Side of Paradise junto a Chris Hughes y hasta invitó a Roland Orzabal de Tears for Fears en la guitarra, logrando el mayor éxito solista de toda su carrera.",
+      "vocal_p3": "Sintetizadores elegantes y un coro que todavía emociona. Aquí suena Emotion in Motion, de Ric Ocasek.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 5.74,
+        "p2": 11.42,
+        "p3": 6.88
+      },
+      "voice_duration_sec": 26.07,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 5.74,
+        "pause1End": 6.74,
+        "pause2Start": 18.16,
+        "pause2End": 19.16,
+        "outroEnd": 26.07,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.07
+      },
+      "audio_file": "audio/fred_voice_ric_ocasek_emotion_in_motion.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:03:15.413457+00:00"
+    },
+    "information_society_repetition": {
+      "song_title": "Repetition",
+      "band_name": "Information Society",
+      "intro_id": "creative_memoria_musical",
+      "intro_name": "memoria_musical",
+      "intro_strategy": "memoria_musical",
+      "outro_id": "creative_nostalgia",
+      "outro_name": "nostalgia",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgia",
+      "source_mode": "agent_custom",
+      "diversity_score": 43.53,
+      "paragraph_1": "En mil novecientos ochenta y ocho, Information Society demostró que el synth pop también podía tener corazón.",
+      "paragraph_2": "Aunque el mundo entero recuerda su éxito Pure Energy, esta joya de su álbum debut se volvió un himno de culto en las pistas de baile de Latinoamérica gracias a la voz intensa de Kurt Harland.",
+      "paragraph_3": "Un viaje directo al pulso electrónico de finales de los ochenta. Vamos con Repetition, de Information Society.",
+      "vocal_p1": "En mil novecientos ochenta y ocho, Information Society demostró que el synth pop también podía tener corazón.",
+      "vocal_p2": "Aunque el mundo entero recuerda su éxito Pure Energy, esta joya de su álbum debut se volvió un himno de culto en las pistas de baile de Latinoamérica gracias a la voz intensa de Kurt Harland.",
+      "vocal_p3": "Un viaje directo al pulso electrónico de finales de los ochenta. Vamos con Repetition, de Information Society.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 6.65,
+        "p2": 11.41,
+        "p3": 6.6
+      },
+      "voice_duration_sec": 26.7,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.65,
+        "pause1End": 7.65,
+        "pause2Start": 19.06,
+        "pause2End": 20.06,
+        "outroEnd": 26.7,
+        "rampSec": 2.0,
+        "totalPresentationSec": 33.7
+      },
+      "audio_file": "audio/fred_voice_information_society_repetition.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:03:25.119225+00:00"
+    },
+    "black_wonderful_life": {
+      "song_title": "Wonderful Life",
+      "band_name": "Black",
+      "intro_id": "creative_contraste",
+      "intro_name": "contraste",
+      "intro_strategy": "contraste",
+      "outro_id": "creative_revelacion",
+      "outro_name": "revelacion",
+      "outro_strategy": "revelacion",
+      "emotion": "melancolia",
+      "source_mode": "agent_custom",
+      "diversity_score": 65.0,
+      "paragraph_1": "Por el título podrías pensar que esta canción celebra un momento feliz, pero su origen fue exactamente lo contrario.",
+      "paragraph_2": "En mil novecientos ochenta y siete, Colin Vearncombe venía de perder su contrato, sufrir dos accidentes de auto y atravesar un divorcio; escribió la letra con pura ironía en medio de su etapa más oscura.",
+      "paragraph_3": "De ese contraste nació una de las baladas más inolvidables de los ochenta. Escucha Wonderful Life, de Black.",
+      "vocal_p1": "Por el título podrías pensar que esta canción celebra un momento feliz, pero su origen fue exactamente lo contrario.",
+      "vocal_p2": "En mil novecientos ochenta y siete, Colin Vearncombe venía de perder su contrato, sufrir dos accidentes de auto y atravesar un divorcio; escribió la letra con pura ironía en medio de su etapa más oscura.",
+      "vocal_p3": "De ese contraste nació una de las baladas más inolvidables de los ochenta. Escucha Wonderful Life, de Black.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 6.56,
+        "p2": 12.34,
+        "p3": 6.77
+      },
+      "voice_duration_sec": 27.72,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 6.56,
+        "pause1End": 7.56,
+        "pause2Start": 19.9,
+        "pause2End": 20.9,
+        "outroEnd": 27.72,
+        "rampSec": 2.0,
+        "totalPresentationSec": 34.72
+      },
+      "audio_file": "audio/fred_voice_black_wonderful_life.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:03:35.672434+00:00"
+    },
+    "inxs_original_sin": {
+      "song_title": "Original Sin",
+      "band_name": "INXS",
+      "intro_id": "creative_viaje_temporal",
+      "intro_name": "viaje_temporal",
+      "intro_strategy": "viaje_temporal",
+      "outro_id": "creative_energia",
+      "outro_name": "energia",
+      "outro_strategy": "energia",
+      "emotion": "asombro",
+      "source_mode": "agent_custom",
+      "diversity_score": 0.0,
+      "paragraph_1": "En mil novecientos ochenta y cuatro, INXS dio el salto definitivo que los sacó de Australia hacia el resto del planeta.",
+      "paragraph_2": "Producida por Nile Rodgers de Chic y con Daryl Hall en los coros, esta canción llegó al número uno en Australia y Francia, aunque varias emisoras en Estados Unidos dudaron en programarla por su letra valiente.",
+      "paragraph_3": "Un groove imparable que anunció la llegada de una banda gigante. Aquí suena Original Sin, de INXS.",
+      "vocal_p1": "En mil novecientos ochenta y cuatro, INXS dio el salto definitivo que los sacó de Australia hacia el resto del planeta.",
+      "vocal_p2": "Producida por Nile Rodgers de Chic y con Daryl Hall en los coros, esta canción llegó al número uno en Australia y Francia, aunque varias emisoras en Estados Unidos dudaron en programarla por su letra valiente.",
+      "vocal_p3": "Un groove imparable que anunció la llegada de una banda gigante. Aquí suena Original Sin, de INXS.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 7.28,
+        "p2": 12.7,
+        "p3": 7.19
+      },
+      "voice_duration_sec": 29.2,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 7.28,
+        "pause1End": 8.28,
+        "pause2Start": 20.97,
+        "pause2End": 21.97,
+        "outroEnd": 29.2,
+        "rampSec": 2.0,
+        "totalPresentationSec": 36.2
+      },
+      "audio_file": "audio/fred_voice_inxs_original_sin.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T13:03:46.869415+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "Island in the Sun",
-      "band_name": "Weezer",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "revelacion",
-      "emotion": "playful",
-      "paragraph_1": "A veces lo único que necesitas para desconectar del ruido es una melodía sencilla que huela a vacaciones.",
-      "paragraph_3": "Sol, calma y guitarras luminosas al instante. Relájate con Island in the Sun, de Weezer.",
-      "mentions_brand": false,
-      "diversity_score": 51.67,
-      "generated_at": "2026-11-21T10:33:20.251908+00:00"
-    },
-    {
-      "song_title": "November Rain",
-      "band_name": "Guns N' Roses",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "emotional",
-      "paragraph_1": "Te cuento algo curioso en TrackStories: Axl Rose guardó esta melodía casi diez años en su cabeza.",
-      "paragraph_3": "Toda esa paciencia valió cada segundo. Déjate llevar por November Rain, de Guns N' Roses.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T14:21:19.722915+00:00"
-    },
-    {
-      "song_title": "Shout",
-      "band_name": "Tears for Fears",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "energetic",
-      "paragraph_1": "Te cuento un detalle desde TrackStories: este coro gigantesco empezó en un cuarto diminuto.",
-      "paragraph_3": "De aquella habitación conquistó el número uno mundial. Súbele todo el volumen a Shout, de Tears for Fears.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T14:21:28.581340+00:00"
-    },
-    {
-      "song_title": "Pet Sematary",
-      "band_name": "Ramones",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "curious",
-      "paragraph_1": "En TrackStories nos encantan los cruces inesperados, como el día en que Stephen King invitó a los Ramones a su casa.",
-      "paragraph_3": "Fue su mayor éxito radial de los ochenta. Desde aquel sótano llega Pet Sematary, de Ramones.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T14:21:36.153109+00:00"
-    },
-    {
-      "song_title": "Amor Descartable",
-      "band_name": "Virus",
-      "intro_strategy": "curiosidad",
-      "outro_strategy": "revelacion",
-      "emotion": "curious",
-      "paragraph_1": "En 1984, Virus dio un giro audaz hacia los sintetizadores y redefinió para siempre la elegancia del rock argentino.",
-      "paragraph_3": "Modernidad, pulso electrónico y carisma inolvidable. Aquí suena Amor Descartable, de Virus.",
-      "mentions_brand": false,
-      "diversity_score": 0.0,
-      "generated_at": "2026-11-21T14:26:05.347625+00:00"
-    },
     {
       "song_title": "Giros",
       "band_name": "Fito Páez",
@@ -9294,6 +9459,66 @@
       "mentions_brand": false,
       "diversity_score": 83.2,
       "generated_at": "2026-11-25T04:04:59.388846+00:00"
+    },
+    {
+      "song_title": "Don't Dream It's Over",
+      "band_name": "Crowded House",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "reflexion",
+      "emotion": "nostalgia",
+      "paragraph_1": "Algunas de las melodías más luminosas de los ochenta nacieron casi por accidente frente a un piano prestado.",
+      "paragraph_3": "Un recordatorio eterno de no rendirse ante las paredes del mundo. Escuchemos Don't Dream It's Over, de Crowded House.",
+      "mentions_brand": false,
+      "diversity_score": 100.0,
+      "generated_at": "2026-11-26T13:03:05.221911+00:00"
+    },
+    {
+      "song_title": "Emotion in Motion",
+      "band_name": "Ric Ocasek",
+      "intro_strategy": "curiosidad",
+      "outro_strategy": "energia",
+      "emotion": "calidez",
+      "paragraph_1": "En mil novecientos ochenta y seis, el líder de The Cars decidió probar suerte lejos de su propia banda.",
+      "paragraph_3": "Sintetizadores elegantes y un coro que todavía emociona. Aquí suena Emotion in Motion, de Ric Ocasek.",
+      "mentions_brand": false,
+      "diversity_score": 63.13,
+      "generated_at": "2026-11-26T13:03:15.413457+00:00"
+    },
+    {
+      "song_title": "Repetition",
+      "band_name": "Information Society",
+      "intro_strategy": "memoria_musical",
+      "outro_strategy": "nostalgia",
+      "emotion": "nostalgia",
+      "paragraph_1": "En mil novecientos ochenta y ocho, Information Society demostró que el synth pop también podía tener corazón.",
+      "paragraph_3": "Un viaje directo al pulso electrónico de finales de los ochenta. Vamos con Repetition, de Information Society.",
+      "mentions_brand": false,
+      "diversity_score": 43.53,
+      "generated_at": "2026-11-26T13:03:25.119225+00:00"
+    },
+    {
+      "song_title": "Wonderful Life",
+      "band_name": "Black",
+      "intro_strategy": "contraste",
+      "outro_strategy": "revelacion",
+      "emotion": "melancolia",
+      "paragraph_1": "Por el título podrías pensar que esta canción celebra un momento feliz, pero su origen fue exactamente lo contrario.",
+      "paragraph_3": "De ese contraste nació una de las baladas más inolvidables de los ochenta. Escucha Wonderful Life, de Black.",
+      "mentions_brand": false,
+      "diversity_score": 65.0,
+      "generated_at": "2026-11-26T13:03:35.672434+00:00"
+    },
+    {
+      "song_title": "Original Sin",
+      "band_name": "INXS",
+      "intro_strategy": "viaje_temporal",
+      "outro_strategy": "energia",
+      "emotion": "asombro",
+      "paragraph_1": "En mil novecientos ochenta y cuatro, INXS dio el salto definitivo que los sacó de Australia hacia el resto del planeta.",
+      "paragraph_3": "Un groove imparable que anunció la llegada de una banda gigante. Aquí suena Original Sin, de INXS.",
+      "mentions_brand": false,
+      "diversity_score": 0.0,
+      "generated_at": "2026-11-26T13:03:46.869415+00:00"
     }
   ]
 }
