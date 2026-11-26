@@ -3679,7 +3679,6 @@
     }
   },
   "last_overlay_intros": [
-    "confidencia",
     "viaje_temporal",
     "viaje_temporal",
     "confidencia",
@@ -3693,10 +3692,10 @@
     "viaje_temporal",
     "inicio_directo",
     "confidencia",
-    "curiosidad"
+    "curiosidad",
+    "escena_historica"
   ],
   "last_overlay_outros": [
-    "reflexion",
     "energia",
     "energia",
     "reflexion",
@@ -3710,7 +3709,8 @@
     "reflexion",
     "energia",
     "expectativa",
-    "nostalgia"
+    "nostalgia",
+    "reflexion"
   ],
   "radio_overlays": {
     "guns_n_roses_november_rain": {
@@ -9517,21 +9517,54 @@
         "normal_db": 0
       },
       "generated_at": "2026-11-26T14:37:09.361159+00:00"
+    },
+    "linkin_park_pushing_me_away": {
+      "song_title": "Pushing Me Away",
+      "band_name": "Linkin Park",
+      "intro_id": "creative_escena_historica",
+      "intro_name": "escena_historica",
+      "intro_strategy": "escena_historica",
+      "outro_id": "creative_reflexion",
+      "outro_name": "reflexion",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "source_mode": "agent_custom",
+      "diversity_score": 83.2,
+      "paragraph_1": "En el año dos mil, Linkin Park casi cierra su disco debut sin esta joya emocional.",
+      "paragraph_2": "Fue la última canción escrita para Hybrid Theory, y con los años Chester Bennington y Mike Shinoda incluso la reinventaron en vivo solo con piano, revelando toda su vulnerabilidad.",
+      "paragraph_3": "El broche perfecto para un álbum que cambió el rock moderno. Aquí suena Pushing Me Away, de Linkin Park.",
+      "vocal_p1": "En el año dos mil, Linkin Park casi cierra su disco debut sin esta joya emocional.",
+      "vocal_p2": "Fue la última canción escrita para Hybrid Theory, y con los años Chester Bennington y Mike Shinoda incluso la reinventaron en vivo solo con piano, revelando toda su vulnerabilidad.",
+      "vocal_p3": "El broche perfecto para un álbum que cambió el rock moderno. Aquí suena Pushing Me Away, de Linkin Park.",
+      "model": "drama-3",
+      "voice": "96e5d63e023a4fd5b7926226ed8db011",
+      "segment_durations_sec": {
+        "p1": 4.89,
+        "p2": 10.89,
+        "p3": 6.18
+      },
+      "voice_duration_sec": 23.98,
+      "overlay_timings": {
+        "introDelaySec": 5.0,
+        "pause1Start": 4.89,
+        "pause1End": 5.89,
+        "pause2Start": 16.77,
+        "pause2End": 17.77,
+        "outroEnd": 23.98,
+        "rampSec": 2.0,
+        "totalPresentationSec": 30.98
+      },
+      "audio_file": "audio/fred_voice_linkin_park_pushing_me_away.mp3",
+      "ducking": {
+        "intro_db": -8,
+        "voice_db": -17,
+        "pause_db": -7.5,
+        "normal_db": 0
+      },
+      "generated_at": "2026-11-26T14:40:37.016848+00:00"
     }
   },
   "overlay_narrative_history": [
-    {
-      "song_title": "The Working Hour",
-      "band_name": "Tears for Fears",
-      "intro_strategy": "confidencia",
-      "outro_strategy": "reflexion",
-      "emotion": "melancolia",
-      "paragraph_1": "En pleno éxito de mil novecientos ochenta y cinco, Tears for Fears escondió su confesión más vulnerable.",
-      "paragraph_3": "Un respiro íntimo en medio de Songs from the Big Chair. Escucha con calma The Working Hour, de Tears for Fears.",
-      "mentions_brand": false,
-      "diversity_score": 100.0,
-      "generated_at": "2026-11-25T02:58:18.852821+00:00"
-    },
     {
       "song_title": "Major Tom (Coming Home)",
       "band_name": "Peter Schilling",
@@ -9699,6 +9732,18 @@
       "mentions_brand": false,
       "diversity_score": 83.2,
       "generated_at": "2026-11-26T14:37:09.361159+00:00"
+    },
+    {
+      "song_title": "Pushing Me Away",
+      "band_name": "Linkin Park",
+      "intro_strategy": "escena_historica",
+      "outro_strategy": "reflexion",
+      "emotion": "melancolia",
+      "paragraph_1": "En el año dos mil, Linkin Park casi cierra su disco debut sin esta joya emocional.",
+      "paragraph_3": "El broche perfecto para un álbum que cambió el rock moderno. Aquí suena Pushing Me Away, de Linkin Park.",
+      "mentions_brand": false,
+      "diversity_score": 83.2,
+      "generated_at": "2026-11-26T14:40:37.016848+00:00"
     }
   ]
 }
