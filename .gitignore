@@ -13,3 +13,4 @@ backup_audio_pre_master/
 __pycache__/
 *.pyc
 .env*
+podcasts/chunks_aparte_*/
