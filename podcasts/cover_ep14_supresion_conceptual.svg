@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#2E1065"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#F5F3FF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Central suppressed / dashed assumption -->
+    <circle cx="0" cy="0" r="52" stroke="#FB7185" stroke-width="10" stroke-dasharray="12 12"/>
+    <line x1="-24" y1="-24" x2="24" y2="24" stroke="#FB7185" stroke-width="10"/>
+    <line x1="24" y1="-24" x2="-24" y2="24" stroke="#FB7185" stroke-width="10"/>
+    <!-- Radiating new ideas unlocked by removing the obvious -->
+    <line x1="0" y1="-68" x2="0" y2="-132" stroke="#FDE047" stroke-width="10"/>
+    <line x1="0" y1="68" x2="0" y2="132" stroke="#FDE047" stroke-width="10"/>
+    <line x1="-68" y1="0" x2="-132" y2="0" stroke="#FDE047" stroke-width="10"/>
+    <line x1="68" y1="0" x2="132" y2="0" stroke="#FDE047" stroke-width="10"/>
+    <circle cx="0" cy="-148" r="16" fill="#FDE047" stroke="none"/>
+    <circle cx="0" cy="148" r="16" fill="#FDE047" stroke="none"/>
+    <circle cx="-148" cy="0" r="16" fill="#F5F3FF" stroke="none"/>
+    <circle cx="148" cy="0" r="16" fill="#F5F3FF" stroke="none"/>
+    <circle cx="-105" cy="-105" r="12" fill="#FB7185" stroke="none"/>
+    <circle cx="105" cy="-105" r="12" fill="#FB7185" stroke="none"/>
+    <circle cx="-105" cy="105" r="12" fill="#FB7185" stroke="none"/>
+    <circle cx="105" cy="105" r="12" fill="#FB7185" stroke="none"/>
+  </g>
+  <text x="400" y="642" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="800" letter-spacing="7" fill="#F5F3FF">SUPRESIÓN CONCEPTUAL</text>
+  <text x="400" y="688" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#FDE047">SISTEMA INFINITO DE IDEAS • CAP. 3/6</text>
+  <text x="400" y="726" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="#C4B5FD">APARTE • FRED</text>
+</svg>
