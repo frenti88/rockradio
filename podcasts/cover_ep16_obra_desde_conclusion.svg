@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#4C0519"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#FFF1F2" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Single conclusion point at bottom expanding upward into a full work -->
+    <circle cx="0" cy="115" r="28" fill="#FBBF24" stroke="#FFF1F2" stroke-width="12"/>
+    <line x1="0" y1="87" x2="0" y2="-115" stroke="#FB7185" stroke-width="10"/>
+    <line x1="0" y1="50" x2="-115" y2="-65" stroke="#FBBF24" stroke-width="10"/>
+    <line x1="0" y1="50" x2="115" y2="-65" stroke="#FBBF24" stroke-width="10"/>
+    <!-- Expanded chapters / structure bars -->
+    <rect x="-155" y="-125" width="82" height="44" rx="10" fill="#4C0519" stroke="#FFF1F2" stroke-width="10"/>
+    <rect x="-41" y="-155" width="82" height="44" rx="10" fill="#4C0519" stroke="#FBBF24" stroke-width="10"/>
+    <rect x="73" y="-125" width="82" height="44" rx="10" fill="#4C0519" stroke="#FFF1F2" stroke-width="10"/>
+  </g>
+  <text x="400" y="642" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" letter-spacing="6" fill="#FFF1F2">UNA OBRA DESDE UNA CONCLUSIÓN</text>
+  <text x="400" y="688" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#FBBF24">SISTEMA INFINITO DE IDEAS • CAP. 5/6</text>
+  <text x="400" y="726" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="#FDA4AF">APARTE • FRED</text>
+</svg>
