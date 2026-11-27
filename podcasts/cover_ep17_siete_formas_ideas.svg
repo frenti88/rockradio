@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#111827"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#FEFCE8" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Radiant diamond / prism with 7 brilliance rays -->
+    <polygon points="0,-125 98,-20 62,115 -62,115 -98,-20" fill="#F59E0B" stroke="#FEFCE8" stroke-width="14"/>
+    <polyline points="-98,-20 98,-20" stroke="#FEFCE8" stroke-width="10"/>
+    <polyline points="0,-125 -36,-20 0,115 36,-20 0,-125" stroke="#FEFCE8" stroke-width="10"/>
+    <!-- 7 subtle golden rays -->
+    <line x1="0" y1="-168" x2="0" y2="-145" stroke="#FACC15" stroke-width="10"/>
+    <line x1="-125" y1="-115" x2="-105" y2="-98" stroke="#FACC15" stroke-width="10"/>
+    <line x1="125" y1="-115" x2="105" y2="-98" stroke="#FACC15" stroke-width="10"/>
+    <line x1="-160" y1="-15" x2="-135" y2="-15" stroke="#FACC15" stroke-width="10"/>
+    <line x1="160" y1="-15" x2="135" y2="-15" stroke="#FACC15" stroke-width="10"/>
+    <line x1="-125" y1="90" x2="-105" y2="75" stroke="#FACC15" stroke-width="10"/>
+    <line x1="125" y1="90" x2="105" y2="75" stroke="#FACC15" stroke-width="10"/>
+  </g>
+  <text x="400" y="642" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="800" letter-spacing="6" fill="#FEFCE8">7 FORMAS DE POTENCIAR IDEAS</text>
+  <text x="400" y="688" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#FACC15">SISTEMA INFINITO DE IDEAS • CAP. 6/6</text>
+  <text x="400" y="726" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="#9CA3AF">APARTE • FRED • FINAL DE SERIE</text>
+</svg>
