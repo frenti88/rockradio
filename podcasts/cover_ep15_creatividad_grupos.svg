@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <rect width="800" height="800" fill="#064E3B"/>
+  <g transform="translate(400, 365)" fill="none" stroke="#ECFDF5" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Circular rotation arrows representing Brainwriting rounds -->
+    <circle cx="0" cy="0" r="135" stroke="#34D399" stroke-width="10" stroke-dasharray="60 35"/>
+    <!-- Four people / sheet nodes passing ideas around -->
+    <rect x="-34" y="-168" width="68" height="52" rx="10" fill="#064E3B" stroke="#ECFDF5" stroke-width="12"/>
+    <rect x="-34" y="116" width="68" height="52" rx="10" fill="#064E3B" stroke="#ECFDF5" stroke-width="12"/>
+    <rect x="-168" y="-26" width="68" height="52" rx="10" fill="#064E3B" stroke="#FDE047" stroke-width="12"/>
+    <rect x="100" y="-26" width="68" height="52" rx="10" fill="#064E3B" stroke="#FDE047" stroke-width="12"/>
+    <!-- Central convergence spark -->
+    <circle cx="0" cy="0" r="32" fill="#FDE047" stroke="#ECFDF5" stroke-width="10"/>
+  </g>
+  <text x="400" y="642" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="800" letter-spacing="7" fill="#ECFDF5">CREATIVIDAD EN GRUPOS</text>
+  <text x="400" y="688" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#34D399">SISTEMA INFINITO DE IDEAS • CAP. 4/6</text>
+  <text x="400" y="726" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" letter-spacing="4" fill="#A7F3D0">APARTE • FRED</text>
+</svg>
